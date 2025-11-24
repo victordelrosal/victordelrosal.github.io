@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Victor del Rosal — Thinking, teaching, and building at the intersection of AI and society.">
+    <title>Victor del Rosal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== DESIGN TOKENS ===== */
+        :root {
+            /* Colors - Paper & Ink */
+            --color-paper: #FDFBF7;
+            --color-paper-alt: #F9F7F3;
+            --color-ink-primary: #1A1A1A;
+            --color-ink-secondary: #4A4A4A;
+
+            /* Academic Accent */
+            --color-oxford-navy: #002147;
+
+            /* Electric Accent (use <5%) */
+            --color-annotation: #D4B896;
+            --color-highlight: #E5D4A1;
+
+            /* Typography */
+            --font-serif: 'EB Garamond', 'Garamond', 'Georgia', serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+            /* Spacing & Layout */
+            --content-width: 680px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+        }
+
+        /* ===== BASE STYLES ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            line-height: 1.65;
+            color: var(--color-ink-primary);
+            background-color: var(--color-paper);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== TYPOGRAPHY SYSTEM ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: var(--spacing-lg);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: var(--spacing-md);
+        }
+
+        p {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        a {
+            color: var(--color-oxford-navy);
+            text-decoration: none;
+            position: relative;
+            transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        a:hover {
+            color: var(--color-annotation);
+        }
+
+        /* Animated underline sweep */
+        .content a:not(.card-link) {
+            border-bottom: 1px solid transparent;
+        }
+
+        .content a:not(.card-link)::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--color-oxford-navy);
+            transition: width 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .content a:not(.card-link):hover::after {
+            width: 100%;
+        }
+
+        /* Metadata (monospace) */
+        .meta {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-ink-secondary);
+            letter-spacing: 0.01em;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        section {
+            padding: var(--spacing-xl) 0;
+            border-top: 1px solid #E8E6E1;
+        }
+
+        section:first-of-type {
+            border-top: none;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-paper);
+            border-bottom: 1px solid #E8E6E1;
+            padding: var(--spacing-sm) 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(253, 251, 247, 0.95);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: var(--spacing-md);
+            list-style: none;
+        }
+
+        nav a {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            text-transform: lowercase;
+            letter-spacing: 0.02em;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+            transition: border-color 200ms ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            border-bottom-color: var(--color-oxford-navy);
+        }
+
+        .nav-logo {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ===== HERO SECTION ===== */
+        #hero {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            border-top: none;
+        }
+
+        #hero h1 {
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+        }
+
+        #hero .tagline {
+            font-size: 1.2rem;
+            color: var(--color-ink-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #hero .intro {
+            margin-top: var(--spacing-md);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--color-ink-secondary);
+        }
+
+        /* ===== CARDS (Publications, Output, Signals) ===== */
+        .card {
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .card-title a {
+            color: var(--color-ink-primary);
+        }
+
+        .card-title a:hover {
+            color: var(--color-oxford-navy);
+        }
+
+        .card-meta {
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .card-meta span {
+            display: inline-block;
+        }
+
+        .card-description {
+            color: var(--color-ink-secondary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .card-tags {
+            display: flex;
+            gap: var(--spacing-xs);
+            flex-wrap: wrap;
+            margin-top: var(--spacing-xs);
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--color-paper-alt);
+            border: 1px solid #E8E6E1;
+            border-radius: 2px;
+        }
+
+        .card-link {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-oxford-navy);
+            margin-top: var(--spacing-xs);
+            display: inline-block;
+        }
+
+        .card-link:hover {
+            color: var(--color-annotation);
+        }
+
+        /* ===== PROFILE SECTION ===== */
+        #profile .bio {
+            margin-bottom: var(--spacing-md);
+        }
+
+        #profile .cv-section {
+            margin-top: var(--spacing-md);
+        }
+
+        #profile .cv-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #profile .cv-entry {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #profile .cv-entry .title {
+            font-weight: 600;
+        }
+
+        /* ===== OUTPUT SECTION ===== */
+        #output .section-intro {
+            color: var(--color-ink-secondary);
+            margin-bottom: var(--spacing-md);
+            font-style: italic;
+        }
+
+        /* ===== SYLLABUS SECTION ===== */
+        #syllabus .course {
+            margin-bottom: var(--spacing-md);
+        }
+
+        #syllabus .course-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ===== SIGNALS SECTION ===== */
+        #signals .signal-entry {
+            margin-bottom: var(--spacing-md);
+        }
+
+        #signals .signal-date {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-ink-secondary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        #signals .signal-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        #signals .signal-category {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.2rem 0.4rem;
+            background-color: var(--color-paper-alt);
+            border: 1px solid #E8E6E1;
+            display: inline-block;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* ===== CONTACT/FOOTER ===== */
+        footer {
+            border-top: 1px solid #E8E6E1;
+            padding: var(--spacing-lg) 0 var(--spacing-md);
+            margin-top: var(--spacing-xl);
+            text-align: center;
+        }
+
+        footer .contact-info {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--color-ink-secondary);
+        }
+
+        footer .contact-info a {
+            color: var(--color-oxford-navy);
+            margin: 0 var(--spacing-xs);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            nav .nav-links {
+                gap: var(--spacing-sm);
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            section {
+                padding: var(--spacing-md) 0;
+            }
+
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        :focus-visible {
+            outline: 2px solid var(--color-oxford-navy);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-logo">VDR</div>
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link active">index</a></li>
+                <li><a href="#profile" class="nav-link">profile</a></li>
+                <li><a href="#output" class="nav-link">output</a></li>
+                <li><a href="#syllabus" class="nav-link">syllabus</a></li>
+                <li><a href="#signals" class="nav-link">signals</a></li>
+                <li><a href="#contact" class="nav-link">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>Victor del Rosal</h1>
+            <p class="tagline">Thinking, teaching, and building at the intersection of AI and society.</p>
+            <p class="intro">
+                A research archive, public intellectual profile, and founder's lab notebook.
+                Academic rigor meets builder's urgency.
+            </p>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile">
+        <div class="container content">
+            <h2>Profile</h2>
+
+            <div class="bio">
+                <p>
+                    Victor del Rosal is a lecturer, professor, and innovator working at the intersection of artificial intelligence,
+                    ethics, and organizational systems. His work combines rigorous academic inquiry with practical system-building,
+                    creating frameworks that bridge theoretical research and real-world implementation.
+                </p>
+                <p>
+                    His research focuses on the societal implications of AI systems, examining how computational technologies
+                    reshape institutions, decision-making processes, and human agency. This work manifests both as published
+                    scholarship and as deployed systems that encode ethical considerations into software architecture.
+                </p>
+            </div>
+
+            <div class="cv-section">
+                <h3>Current Positions</h3>
+                <div class="cv-entry">
+                    <div class="title">Senior Lecturer in AI and Society</div>
+                    <div class="meta">University Name | <span>2020–Present</span></div>
+                </div>
+                <div class="cv-entry">
+                    <div class="title">Founder & Principal Researcher</div>
+                    <div class="meta">Research Lab Name | <span>2018–Present</span></div>
+                </div>
+            </div>
+
+            <div class="cv-section">
+                <h3>Research Interests</h3>
+                <p class="meta">
+                    AI Ethics • Algorithmic Governance • Organizational Design •
+                    Innovation Systems • Technology Policy • Human-AI Interaction
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Output Section -->
+    <section id="output">
+        <div class="container content">
+            <h2>Output</h2>
+            <p class="section-intro">
+                A unified catalogue of research, publications, systems, and ventures.
+                No distinction between scholarship and building—only applied inquiry.
+            </p>
+
+            <!-- Research Paper -->
+            <article class="card">
+                <h3 class="card-title">
+                    <a href="#">Algorithmic Accountability in Organizational Decision-Making Systems</a>
+                </h3>
+                <div class="card-meta meta">
+                    <span>2024</span>
+                    <span>•</span>
+                    <span>Research Paper</span>
+                    <span>•</span>
+                    <span>Published in Journal of AI Ethics</span>
+                </div>
+                <p class="card-description">
+                    Examines how transparency mechanisms in algorithmic systems interact with organizational
+                    hierarchies, proposing a framework for embedding accountability at multiple system layers.
+                    Combines theoretical analysis with case studies from deployed enterprise systems.
+                </p>
+                <div class="card-tags">
+                    <span class="tag">AI Ethics</span>
+                    <span class="tag">Organizational Theory</span>
+                    <span class="tag">Systems Design</span>
+                </div>
+                <a href="#" class="card-link">[View Paper]</a>
+            </article>
+
+            <!-- System/Product -->
+            <article class="card">
+                <h3 class="card-title">
+                    <a href="#">COMPASS — Coding Operations Manual & Protocol</a>
+                </h3>
+                <div class="card-meta meta">
+                    <span>2024</span>
+                    <span>•</span>
+                    <span>System</span>
+                    <span>•</span>
+                    <span>Open Source</span>
+                </div>
+                <p class="card-description">
+                    A comprehensive framework for AI-assisted development that encodes software engineering
+                    best practices into operational protocols. Designed to improve code quality, security,
+                    and systematic decision-making in human-AI collaborative workflows.
+                </p>
+                <div class="card-tags">
+                    <span class="tag">Software Engineering</span>
+                    <span class="tag">AI Tools</span>
+                    <span class="tag">Methodology</span>
+                </div>
+                <a href="#" class="card-link">[View Repository]</a>
+            </article>
+
+            <!-- Venture -->
+            <article class="card">
+                <h3 class="card-title">
+                    <a href="#">Achord — Collaborative Intelligence Platform</a>
+                </h3>
+                <div class="card-meta meta">
+                    <span>2023</span>
+                    <span>•</span>
+                    <span>Venture</span>
+                    <span>•</span>
+                    <span>Active Development</span>
+                </div>
+                <p class="card-description">
+                    A platform enabling structured collaboration between human experts and AI systems.
+                    Implements research insights on hybrid intelligence to create tools for high-stakes
+                    decision-making in organizational contexts.
+                </p>
+                <div class="card-tags">
+                    <span class="tag">Enterprise Software</span>
+                    <span class="tag">Collaboration Tools</span>
+                    <span class="tag">Applied Research</span>
+                </div>
+                <a href="#" class="card-link">[Learn More]</a>
+            </article>
+
+            <!-- Book/Publication -->
+            <article class="card">
+                <h3 class="card-title">
+                    <a href="#">The Architecture of Intelligent Systems</a>
+                </h3>
+                <div class="card-meta meta">
+                    <span>2022</span>
+                    <span>•</span>
+                    <span>Book</span>
+                    <span>•</span>
+                    <span>Academic Press</span>
+                </div>
+                <p class="card-description">
+                    Explores how architectural decisions in AI systems encode values, assumptions, and power
+                    structures. Bridges computer science, philosophy, and organizational theory to examine
+                    the deep structure of computational decision-making.
+                </p>
+                <div class="card-tags">
+                    <span class="tag">AI Architecture</span>
+                    <span class="tag">Philosophy of Technology</span>
+                    <span class="tag">Critical Theory</span>
+                </div>
+                <a href="#" class="card-link">[View Book]</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- Syllabus Section -->
+    <section id="syllabus">
+        <div class="container content">
+            <h2>Syllabus</h2>
+
+            <div class="course">
+                <h3 class="course-title">Foundations of AI Ethics and Policy</h3>
+                <p class="meta">Graduate Seminar • Fall 2024 • University Name</p>
+                <p>
+                    An exploration of ethical frameworks for artificial intelligence, examining technical,
+                    philosophical, and policy dimensions. Students engage with case studies, current research,
+                    and build ethical evaluation frameworks for real AI systems.
+                </p>
+            </div>
+
+            <div class="course">
+                <h3 class="course-title">Systems Thinking for Innovation</h3>
+                <p class="meta">Undergraduate Course • Spring 2024 • University Name</p>
+                <p>
+                    Introduces systems theory, complexity science, and organizational design through the lens
+                    of technology innovation. Students learn to analyze and design interventions in complex
+                    socio-technical systems.
+                </p>
+            </div>
+
+            <div class="cv-section">
+                <h3>Selected Talks</h3>
+
+                <div class="cv-entry">
+                    <div class="title">"The Ethics of Automated Decision-Making"</div>
+                    <div class="meta">MIT AI Ethics Symposium | March 2024</div>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="title">"Building Systems That Think: Architecture and Agency"</div>
+                    <div class="meta">Stanford Technology & Society Forum | January 2024</div>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="title">"From Research to Reality: Deploying Ethical AI"</div>
+                    <div class="meta">Oxford Internet Institute | November 2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signals Section -->
+    <section id="signals">
+        <div class="container content">
+            <h2>Signals</h2>
+            <p class="section-intro">
+                Research notes, lab logs, and occasional essays. A builder's lab notebook.
+            </p>
+
+            <article class="signal-entry">
+                <div class="signal-date">2024.11.20</div>
+                <span class="signal-category">Lab Log</span>
+                <h3 class="signal-title">On the Difficulty of Measuring AI Alignment</h3>
+                <p class="card-description">
+                    Working through the implications of recent alignment research. The challenge isn't technical
+                    measurement but philosophical coherence—what does it mean for a system to be "aligned" when
+                    human values themselves are contested and context-dependent?
+                </p>
+            </article>
+
+            <article class="signal-entry">
+                <div class="signal-date">2024.11.15</div>
+                <span class="signal-category">Research Notes</span>
+                <h3 class="signal-title">Organizational Resistance to AI: Three Patterns</h3>
+                <p class="card-description">
+                    Observations from field research: resistance to AI adoption often masks deeper institutional
+                    anxieties about power redistribution, not technology itself. The politics of automation reveal
+                    organizational truth.
+                </p>
+            </article>
+
+            <article class="signal-entry">
+                <div class="signal-date">2024.11.08</div>
+                <span class="signal-category">Essay</span>
+                <h3 class="signal-title">The Scholar-Founder Identity</h3>
+                <p class="card-description">
+                    Reflecting on the tension between academic rigor and startup velocity. Perhaps they're not
+                    opposed—both require hypothesis generation, empirical testing, and intellectual honesty.
+                    The lab and the startup are different experimental contexts.
+                </p>
+            </article>
+
+            <article class="signal-entry">
+                <div class="signal-date">2024.10.29</div>
+                <span class="signal-category">Builder's Log</span>
+                <h3 class="signal-title">COMPASS Development Notes: Week 12</h3>
+                <p class="card-description">
+                    Refactoring the security protocols module. The challenge of encoding tacit knowledge into
+                    explicit rules continues to surface interesting questions about expertise, judgment, and
+                    what can actually be systematized.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Contact/Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="contact-info">
+                <a href="mailto:victor@victordelrosal.com">victor@victordelrosal.com</a>
+                <span>•</span>
+                <a href="https://twitter.com/victordelrosal" target="_blank">twitter</a>
+                <span>•</span>
+                <a href="https://linkedin.com/in/victordelrosal" target="_blank">linkedin</a>
+                <span>•</span>
+                <a href="https://github.com/victordelrosal" target="_blank">github</a>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-ink-secondary);">
+                © 2024 Victor del Rosal
+            </p>
+        </div>
+    </footer>
+
+    <!-- Minimal JavaScript for smooth navigation -->
+    <script>
+        // Smooth scroll with offset for fixed nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = target.offsetTop - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active nav link on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function updateActiveLink() {
+            let current = '';
+            const navHeight = document.querySelector('nav').offsetHeight;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight - 100;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Run on load
+    </script>
+</body>
+</html>
