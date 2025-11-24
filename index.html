@@ -4,415 +4,470 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Victor del Rosal — AI educator, Chief AI Officer at fiveinnolabs, author of Humanlike AI book, lecturer in MSc AI for Business at National College of Ireland">
-    <title>Victor del Rosal</title>
+    <title>Victor del Rosal — Scholar • Builder • Educator</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== CSS RESET & BASE ===== */
+        /* ===== BRUTALIST RESET ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ===== DESIGN TOKENS ===== */
+        /* ===== BOLD COLOR SYSTEM ===== */
         :root {
-            /* Colors - Paper & Ink */
-            --color-paper: #FDFBF7;
-            --color-paper-alt: #F9F7F3;
-            --color-ink-primary: #1A1A1A;
-            --color-ink-secondary: #4A4A4A;
+            /* Base */
+            --color-cream: #FDFBF7;
+            --color-black: #0A0A0A;
+            --color-navy: #002147;
 
-            /* Academic Accent */
-            --color-oxford-navy: #002147;
-
-            /* Electric Accent (use <5%) */
-            --color-annotation: #D4B896;
-            --color-highlight: #E5D4A1;
+            /* Vibrant Accents */
+            --color-electric: #0066FF;
+            --color-yellow: #FFD700;
+            --color-coral: #FF6B6B;
+            --color-lime: #BFFF00;
 
             /* Typography */
-            --font-serif: 'EB Garamond', 'Garamond', 'Georgia', serif;
-            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-
-            /* Spacing & Layout */
-            --content-width: 680px;
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1rem;
-            --spacing-md: 2rem;
-            --spacing-lg: 4rem;
-            --spacing-xl: 6rem;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-serif: 'EB Garamond', serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        /* ===== BASE STYLES ===== */
+        /* ===== BASE ===== */
         html {
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: var(--font-serif);
+            font-family: var(--font-display);
             font-size: 18px;
-            line-height: 1.65;
-            color: var(--color-ink-primary);
-            background-color: var(--color-paper);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-cream);
+            overflow-x: hidden;
         }
 
-        /* ===== TYPOGRAPHY SYSTEM ===== */
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-serif);
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: var(--spacing-sm);
+        ::selection {
+            background: var(--color-yellow);
+            color: var(--color-black);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-top: var(--spacing-lg);
-        }
-
-        h3 {
-            font-size: 1.4rem;
-            margin-top: var(--spacing-md);
-        }
-
-        p {
-            margin-bottom: var(--spacing-sm);
-        }
-
-        a {
-            color: var(--color-oxford-navy);
-            text-decoration: none;
-            position: relative;
-            transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        a:hover {
-            color: var(--color-annotation);
-        }
-
-        /* Animated underline sweep */
-        .content a:not(.card-link) {
-            border-bottom: 1px solid transparent;
-        }
-
-        .content a:not(.card-link)::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background-color: var(--color-oxford-navy);
-            transition: width 250ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .content a:not(.card-link):hover::after {
-            width: 100%;
-        }
-
-        /* Metadata (monospace) */
-        .meta {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--color-ink-secondary);
-            letter-spacing: 0.01em;
-        }
-
-        /* ===== LAYOUT ===== */
-        .container {
-            max-width: var(--content-width);
-            margin: 0 auto;
-            padding: 0 var(--spacing-md);
-        }
-
-        section {
-            padding: var(--spacing-xl) 0;
-            border-top: 1px solid #E8E6E1;
-        }
-
-        section:first-of-type {
-            border-top: none;
-        }
-
-        /* ===== NAVIGATION ===== */
+        /* ===== NAVIGATION (Brutal & Bold) ===== */
         nav {
-            position: sticky;
+            position: fixed;
             top: 0;
-            background-color: var(--color-paper);
-            border-bottom: 1px solid #E8E6E1;
-            padding: var(--spacing-sm) 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background-color: rgba(253, 251, 247, 0.95);
-        }
-
-        nav .container {
+            left: 0;
+            right: 0;
+            background: var(--color-navy);
+            color: white;
+            padding: 1.5rem;
+            z-index: 1000;
+            border-bottom: 4px solid var(--color-yellow);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
         nav .nav-links {
             display: flex;
-            gap: var(--spacing-md);
+            gap: 2rem;
             list-style: none;
         }
 
         nav a {
-            font-family: var(--font-serif);
-            font-size: 0.95rem;
-            text-transform: lowercase;
-            letter-spacing: 0.02em;
-            padding-bottom: 2px;
-            border-bottom: 2px solid transparent;
-            transition: border-color 200ms ease;
-        }
-
-        nav a:hover,
-        nav a.active {
-            border-bottom-color: var(--color-oxford-navy);
-        }
-
-        .nav-logo {
+            color: white;
+            text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color 100ms;
         }
 
-        /* ===== HERO SECTION ===== */
+        nav a:hover {
+            color: var(--color-yellow);
+        }
+
+        /* ===== HERO (HUGE & ASYMMETRIC) ===== */
         #hero {
-            text-align: center;
-            padding: var(--spacing-xl) 0;
-            border-top: none;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            background: var(--color-cream);
+        }
+
+        #hero .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         #hero h1 {
-            margin-bottom: var(--spacing-xs);
-            font-weight: 600;
+            font-size: clamp(3rem, 12vw, 9rem);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 2rem;
+            font-family: var(--font-display);
+        }
+
+        #hero h1 .highlight {
+            color: var(--color-electric);
+            display: block;
+        }
+
+        #hero h1 .accent {
+            color: var(--color-coral);
+            font-style: italic;
+            font-family: var(--font-serif);
         }
 
         #hero .tagline {
-            font-size: 1.2rem;
-            color: var(--color-ink-secondary);
-            font-weight: 400;
-            max-width: 600px;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            max-width: 800px;
+            margin-bottom: 3rem;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        #hero .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            font-family: var(--font-display);
+            transition: all 150ms;
+            border: 3px solid var(--color-black);
+            background: var(--color-yellow);
+            color: var(--color-black);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0 var(--color-black);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--color-navy);
+            color: var(--color-navy);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-navy);
+            color: white;
+        }
+
+        /* ===== SECTIONS (ASYMMETRIC) ===== */
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(135deg, #F9F7F3 0%, var(--color-cream) 100%);
+        }
+
+        .section-header {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--color-yellow);
+            transform: rotate(-1deg);
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-navy);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* ===== PROFILE (BOLD & VISUAL) ===== */
+        #profile {
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        #hero .intro {
-            margin-top: var(--spacing-md);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            color: var(--color-ink-secondary);
+        #profile .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
         }
 
-        /* ===== CARDS (Publications, Output, Signals) ===== */
-        .card {
-            margin-bottom: var(--spacing-md);
-            padding: var(--spacing-sm) 0;
-            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        #profile .bio-box {
+            background: white;
+            border: 4px solid var(--color-black);
+            padding: 3rem;
+            position: relative;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
+        #profile .bio-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: 10px;
+            bottom: 10px;
+            border: 4px solid var(--color-electric);
+            z-index: -1;
         }
 
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .card-title a {
-            color: var(--color-ink-primary);
-        }
-
-        .card-title a:hover {
-            color: var(--color-oxford-navy);
-        }
-
-        .card-meta {
-            margin-bottom: var(--spacing-xs);
-            display: flex;
-            gap: var(--spacing-sm);
-            flex-wrap: wrap;
-        }
-
-        .card-meta span {
-            display: inline-block;
-        }
-
-        .card-description {
-            color: var(--color-ink-secondary);
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .card-tags {
-            display: flex;
-            gap: var(--spacing-xs);
-            flex-wrap: wrap;
-            margin-top: var(--spacing-xs);
-        }
-
-        .tag {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            background-color: var(--color-paper-alt);
-            border: 1px solid #E8E6E1;
-            border-radius: 2px;
-        }
-
-        .card-link {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--color-oxford-navy);
-            margin-top: var(--spacing-xs);
-            display: inline-block;
-        }
-
-        .card-link:hover {
-            color: var(--color-annotation);
-        }
-
-        /* ===== PROFILE SECTION ===== */
-        #profile .bio {
-            margin-bottom: var(--spacing-md);
-        }
-
-        #profile .cv-section {
-            margin-top: var(--spacing-md);
-        }
-
-        #profile .cv-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        #profile .cv-entry {
-            margin-bottom: var(--spacing-sm);
-        }
-
-        #profile .cv-entry .title {
-            font-weight: 600;
-        }
-
-        /* ===== OUTPUT SECTION ===== */
-        #output .section-intro {
-            color: var(--color-ink-secondary);
-            margin-bottom: var(--spacing-md);
-            font-style: italic;
-        }
-
-        /* ===== SYLLABUS SECTION ===== */
-        #syllabus .course {
-            margin-bottom: var(--spacing-md);
-        }
-
-        #syllabus .course-title {
-            font-weight: 600;
+        #profile p {
             font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-serif);
         }
 
-        /* ===== SIGNALS SECTION ===== */
-        #signals .signal-entry {
-            margin-bottom: var(--spacing-md);
+        #profile .highlight-stat {
+            background: var(--color-yellow);
+            padding: 2rem;
+            border: 3px solid var(--color-black);
+            margin: 2rem 0;
         }
 
-        #signals .signal-date {
+        #profile .highlight-stat strong {
+            font-size: 3rem;
+            display: block;
+            font-family: var(--font-display);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        #profile .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tag-brutal {
+            background: var(--color-black);
+            color: white;
+            padding: 0.5rem 1rem;
             font-family: var(--font-mono);
             font-size: 0.85rem;
-            color: var(--color-ink-secondary);
-            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid var(--color-black);
+            transition: all 100ms;
         }
 
-        #signals .signal-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: var(--spacing-xs);
+        .tag-brutal:hover {
+            background: white;
+            color: var(--color-black);
+            transform: rotate(-2deg);
         }
 
-        #signals .signal-category {
+        /* ===== OUTPUT (BOLD CARDS) ===== */
+        #output {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #output .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .project-card {
+            background: white;
+            border: 4px solid var(--color-black);
+            padding: 2rem;
+            position: relative;
+            transition: transform 150ms;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: -12px;
+            bottom: -12px;
+            background: var(--color-coral);
+            z-index: -1;
+            transition: all 150ms;
+        }
+
+        .project-card:hover {
+            transform: translate(-4px, -4px);
+        }
+
+        .project-card:hover::before {
+            background: var(--color-electric);
+        }
+
+        .project-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .project-card .meta {
             font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--color-navy);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .project-card p {
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .project-card .tag-mini {
+            background: var(--color-cream);
+            padding: 0.3rem 0.6rem;
             font-size: 0.75rem;
-            padding: 0.2rem 0.4rem;
-            background-color: var(--color-paper-alt);
-            border: 1px solid #E8E6E1;
-            display: inline-block;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        /* ===== CONTACT/FOOTER ===== */
-        footer {
-            border-top: 1px solid #E8E6E1;
-            padding: var(--spacing-lg) 0 var(--spacing-md);
-            margin-top: var(--spacing-xl);
-            text-align: center;
-        }
-
-        footer .contact-info {
             font-family: var(--font-mono);
-            font-size: 0.9rem;
-            color: var(--color-ink-secondary);
+            border: 2px solid var(--color-black);
         }
 
-        footer .contact-info a {
-            color: var(--color-oxford-navy);
-            margin: 0 var(--spacing-xs);
+        /* ===== CONTACT (BOLD CTA) ===== */
+        #contact {
+            background: var(--color-navy);
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem;
+        }
+
+        #contact h2 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 2rem;
+            line-height: 1;
+        }
+
+        #contact .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        #contact .contact-links a {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border: 3px solid white;
+            transition: all 150ms;
+        }
+
+        #contact .contact-links a:hover {
+            background: var(--color-yellow);
+            color: var(--color-black);
+            border-color: var(--color-yellow);
+            transform: scale(1.05);
+        }
+
+        /* ===== VISUAL ELEMENTS (Hand-Drawn Style) ===== */
+        .arrow-doodle {
+            width: 100px;
+            height: 60px;
+            position: absolute;
+        }
+
+        .circle-accent {
+            width: 200px;
+            height: 200px;
+            border: 4px solid var(--color-coral);
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0.3;
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            body {
-                font-size: 16px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
+            nav {
+                flex-direction: column;
+                gap: 1rem;
             }
 
             nav .nav-links {
-                gap: var(--spacing-sm);
+                gap: 1rem;
             }
 
-            nav a {
-                font-size: 0.85rem;
+            #hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            #profile .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            #output .output-grid {
+                grid-template-columns: 1fr;
             }
 
             section {
-                padding: var(--spacing-md) 0;
-            }
-
-            .container {
-                padding: 0 var(--spacing-sm);
+                padding: 4rem 1.5rem;
             }
         }
 
         /* ===== ACCESSIBILITY ===== */
         :focus-visible {
-            outline: 2px solid var(--color-oxford-navy);
-            outline-offset: 2px;
+            outline: 4px solid var(--color-electric);
+            outline-offset: 4px;
         }
 
         @media (prefers-reduced-motion: reduce) {
             * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
@@ -420,485 +475,193 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <div class="container">
-            <div class="nav-logo">VDR</div>
-            <ul class="nav-links">
-                <li><a href="#hero" class="nav-link active">index</a></li>
-                <li><a href="#profile" class="nav-link">profile</a></li>
-                <li><a href="#output" class="nav-link">output</a></li>
-                <li><a href="#syllabus" class="nav-link">syllabus</a></li>
-                <li><a href="#signals" class="nav-link">signals</a></li>
-                <li><a href="#contact" class="nav-link">contact</a></li>
-            </ul>
-        </div>
+        <div class="logo">VDR</div>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#profile">About</a></li>
+            <li><a href="#output">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section id="hero">
-        <div class="container">
-            <h1>Victor del Rosal</h1>
-            <p class="tagline">AI educator, author, and Chief AI Officer bridging theory and practice in generative AI.</p>
-            <p class="intro">
-                Teaching AI transformation at National College of Ireland and UCD. Building practical GenAI solutions at fiveinnolabs.
-                Exploring what happens when artificial intelligence meets human enterprise.
+        <div class="hero-content">
+            <h1>
+                Victor del Rosal
+                <span class="highlight">teaches AI,</span>
+                <span class="accent">builds systems</span>
+            </h1>
+            <p class="tagline">
+                Chief AI Officer at fiveinnolabs. Lecturer at National College of Ireland & UCD.
+                Author of books on AI transformation. Making generative AI actually useful for businesses.
             </p>
+            <div class="cta-group">
+                <a href="#output" class="btn">See My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
         </div>
     </section>
 
-    <!-- Profile Section -->
+    <!-- Profile -->
     <section id="profile">
-        <div class="container content">
-            <h2>Profile</h2>
+        <span class="section-label">// About</span>
+        <h2 class="section-header">Who Am I?</h2>
 
-            <div class="bio">
-                <p>
-                    Victor del Rosal is Chief AI Officer and Founder at fiveinnolabs, an AI innovation consultancy focused on
-                    turning emerging generative AI capabilities into practical, high-impact solutions for businesses. He lectures
-                    in the MSc in AI for Business at National College of Ireland and teaches professional AI programs at UCD,
-                    where he brings together academic rigor and real-world implementation experience.
-                </p>
-                <p>
-                    Author of two books on technology transformation—<em>Humanlike: the AI Transformation</em> (exploring the intersection
-                    of generative AI and business) and <em>Disruption: Emerging Technologies and the Future of Work</em> (used as a textbook
-                    in universities across Ireland, Switzerland, and the United States). His work focuses on AI education, strategy,
-                    and the practical challenges of organizational AI adoption.
-                </p>
-                <p>
-                    With a background spanning business analysis at Tata Consultancy Services, strategy leadership at CloudStrong
-                    (acquired 2018), and over a decade of teaching innovation and emerging technologies, he combines engineering
-                    training (BSc Industrial Engineering, Monterrey Tech), business education (MSc Management, UCD Smurfit), and
-                    executive credentials (Oxford, Harvard) with hands-on AI implementation experience. Recipient of multiple teaching
-                    awards including the 2021 Teaching Hero Award and 2019 NCI President's Award for Distinguished Teaching.
-                </p>
-            </div>
+        <div class="profile-grid">
+            <div>
+                <div class="bio-box">
+                    <p>
+                        I'm Victor del Rosal, Chief AI Officer at <strong>fiveinnolabs</strong>, where we turn generative AI
+                        from hype into practical business value. I teach AI at National College of Ireland and UCD Professional Academy.
+                    </p>
+                    <p>
+                        <strong>Two books:</strong> <em>Humanlike: the AI Transformation</em> (2024) and <em>Disruption: Emerging
+                        Technologies and the Future of Work</em> (2015, used as a textbook across Ireland, Switzerland, and the US).
+                    </p>
+                </div>
 
-            <div class="cv-section">
-                <h3>Current Positions</h3>
-                <div class="cv-entry">
-                    <div class="title">Chief AI Officer & Founder</div>
-                    <div class="meta">fiveinnolabs | <span>2022–Present</span></div>
+                <div class="highlight-stat">
+                    <strong>10+ years</strong>
+                    teaching innovation & emerging tech
                 </div>
-                <div class="cv-entry">
-                    <div class="title">Adjunct Assistant Professor, Innovation and Emerging Technologies</div>
-                    <div class="meta">National College of Ireland | <span>2015–Present</span></div>
-                </div>
-                <div class="cv-entry">
-                    <div class="title">Subject Matter Expert (Generative AI), Lecturer in AI</div>
-                    <div class="meta">UCD Professional Academy | <span>2023–2025</span></div>
+
+                <div class="tags-cloud">
+                    <span class="tag-brutal">GenAI</span>
+                    <span class="tag-brutal">Strategy</span>
+                    <span class="tag-brutal">Education</span>
+                    <span class="tag-brutal">Innovation</span>
+                    <span class="tag-brutal">Systems</span>
                 </div>
             </div>
 
-            <div class="cv-section">
-                <h3>Research Interests</h3>
-                <p class="meta">
-                    Generative AI & Business Transformation • AI Education & Democratization •
-                    Emerging Technologies & Innovation Strategy • Societal Tech Entrepreneurship •
-                    Enterprise AI Adoption • Human-AI Collaboration
-                </p>
+            <div>
+                <div class="highlight-stat">
+                    <strong>🏆</strong>
+                    Teaching Hero Award (2021)
+                </div>
+
+                <div class="highlight-stat">
+                    <strong>🏆</strong>
+                    President's Award for Distinguished Teaching (2019)
+                </div>
+
+                <div class="bio-box">
+                    <p>
+                        <strong>Background:</strong> BSc Industrial Engineering (Monterrey Tech), MSc Management (UCD Smurfit),
+                        executive programs at Oxford and Harvard. Previously: business analyst at Tata Consultancy Services,
+                        strategy lead at CloudStrong (acquired 2018).
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Output Section -->
+    <!-- Output -->
     <section id="output">
-        <div class="container content">
-            <h2>Output</h2>
-            <p class="section-intro">
-                Books, programs, recognition, and industry contributions.
-                Scholarship meets practice—teaching, building, and thought leadership.
-            </p>
+        <span class="section-label">// Work</span>
+        <h2 class="section-header">What I've Built</h2>
 
-            <!-- Book: Humanlike -->
-            <article class="card">
-                <h3 class="card-title">
-                    <a href="https://www.amazon.com/dp/B0CTWC68MK">Humanlike: the AI Transformation</a>
-                </h3>
-                <div class="card-meta meta">
-                    <span>2024</span>
-                    <span>•</span>
-                    <span>Book</span>
-                    <span>•</span>
-                    <span>Amazon/Kindle</span>
-                </div>
-                <p class="card-description">
-                    Explores the intersection of generative AI and business, covering implications, applications,
-                    and the likely trajectory of AI transformation. A practitioner's guide to understanding and
-                    implementing GenAI in organizational contexts.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Generative AI</span>
-                    <span class="tag">Business Transformation</span>
-                    <span class="tag">AI Strategy</span>
-                </div>
-                <a href="https://www.amazon.com/dp/B0CTWC68MK" class="card-link">[View on Amazon]</a>
-            </article>
-
-            <!-- Book: Disruption -->
-            <article class="card">
-                <h3 class="card-title">
-                    <a href="https://www.amazon.com/dp/B016X7FWOK">Disruption: Emerging Technologies and the Future of Work</a>
-                </h3>
-                <div class="card-meta meta">
-                    <span>2015</span>
-                    <span>•</span>
-                    <span>Book</span>
-                    <span>•</span>
-                    <span>Amazon/Kindle</span>
-                </div>
-                <p class="card-description">
-                    Analyzes the impact of key emerging technologies including AI, robotics, 3D printing, autonomous vehicles,
-                    big data, biotech, IoT, and virtual reality. Used as a textbook in universities across Ireland, Switzerland,
-                    and the United States, including as required reading at Texas A&M.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Emerging Technologies</span>
-                    <span class="tag">Future of Work</span>
-                    <span class="tag">Innovation</span>
-                </div>
-                <a href="https://www.amazon.com/dp/B016X7FWOK" class="card-link">[View on Amazon]</a>
-            </article>
-
-            <!-- Program: HELIOS -->
-            <article class="card">
-                <h3 class="card-title">
-                    <a href="#">HELIOS Executive Masterclass</a>
-                </h3>
-                <div class="card-meta meta">
-                    <span>2023</span>
-                    <span>•</span>
-                    <span>Program</span>
-                    <span>•</span>
-                    <span>fiveinnolabs</span>
-                </div>
-                <p class="card-description">
-                    Comprehensive generative AI training program for executives and business leaders. Combines
-                    strategic AI roadmapping, hands-on implementation frameworks, and practical use-case development.
-                    Designed to deliver value fast with simple deployment pathways.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Executive Education</span>
-                    <span class="tag">GenAI Training</span>
-                    <span class="tag">AI Strategy</span>
-                </div>
-            </article>
-
-            <!-- Recognition: Teaching Awards -->
-            <article class="card">
-                <h3 class="card-title">Teaching Hero Award</h3>
-                <div class="card-meta meta">
-                    <span>2021</span>
-                    <span>•</span>
-                    <span>Recognition</span>
-                    <span>•</span>
-                    <span>National Forum & Union of Students in Ireland</span>
-                </div>
-                <p class="card-description">
-                    Student-led teaching award by the National Forum for the Enhancement of Teaching and Learning
-                    in Higher Education and the Union of Students in Ireland. Recognized for innovative approaches
-                    to AI and emerging technology education.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Teaching Excellence</span>
-                    <span class="tag">Student Recognition</span>
-                </div>
-            </article>
-
-            <!-- Recognition: President's Award -->
-            <article class="card">
-                <h3 class="card-title">President's Award for Distinguished Teaching</h3>
-                <div class="card-meta meta">
-                    <span>2019</span>
-                    <span>•</span>
-                    <span>Recognition</span>
-                    <span>•</span>
-                    <span>National College of Ireland</span>
-                </div>
-                <p class="card-description">
-                    Awarded for developing the societal tech entrepreneurship and innovation approach to tackle
-                    societal challenges. Recognized for pioneering methods in teaching students to apply emerging
-                    technologies to real-world problems.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Innovation in Teaching</span>
-                    <span class="tag">Social Entrepreneurship</span>
-                </div>
-            </article>
-
-            <!-- Student Competition Success -->
-            <article class="card">
-                <h3 class="card-title">National Student Innovation Competitions: 4 Awards</h3>
-                <div class="card-meta meta">
-                    <span>2017–2019</span>
-                    <span>•</span>
-                    <span>Student Teams</span>
-                    <span>•</span>
-                    <span>Citi upStart Programme</span>
-                </div>
-                <p class="card-description">
-                    Lecturer and innovation facilitator for NCI student teams that achieved four national awards:
-                    1st & 2nd places for Solar-bot and Diabetic Retinopathy EyeScan ML solution (Belfast 2019);
-                    2nd place for EZ-Leap contactless transportation solution (Dublin 2018); 1st place for Codaline
-                    enterprise cloud chatbot management (Belfast 2017).
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Innovation Facilitation</span>
-                    <span class="tag">Entrepreneurship</span>
-                    <span class="tag">Student Mentorship</span>
-                </div>
-            </article>
-
-            <!-- Publication -->
-            <article class="card">
-                <h3 class="card-title">
-                    <a href="#">AWS EC2 Spot Instances for Mission Critical Services</a>
-                </h3>
-                <div class="card-meta meta">
-                    <span>2015</span>
-                    <span>•</span>
-                    <span>Technical Publication</span>
-                    <span>•</span>
-                    <span>Cloud Computing</span>
-                </div>
-                <p class="card-description">
-                    Research on utilizing AWS EC2 Spot Instances for mission-critical workloads, exploring cost
-                    optimization strategies while maintaining reliability and performance requirements.
-                </p>
-                <div class="card-tags">
-                    <span class="tag">Cloud Computing</span>
-                    <span class="tag">Cost Optimization</span>
-                    <span class="tag">Infrastructure</span>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- Syllabus Section -->
-    <section id="syllabus">
-        <div class="container content">
-            <h2>Syllabus</h2>
-
-            <div class="course">
-                <h3 class="course-title">Customer Engagement and Artificial Intelligence</h3>
-                <p class="meta">MSc in AI for Business • National College of Ireland</p>
+        <div class="output-grid">
+            <!-- Book 1 -->
+            <div class="project-card">
+                <h3>Humanlike: the AI Transformation</h3>
+                <p class="meta">2024 • Book • Amazon/Kindle</p>
                 <p>
-                    Explores how AI transforms customer engagement strategies, combining theoretical frameworks
-                    with practical implementation. Students examine AI-driven personalization, conversational AI,
-                    predictive analytics, and ethical considerations in customer-facing AI systems.
+                    Exploring the intersection of generative AI and business. A practitioner's guide to understanding
+                    and implementing GenAI in organizational contexts.
                 </p>
+                <div class="tags">
+                    <span class="tag-mini">GenAI</span>
+                    <span class="tag-mini">Business</span>
+                    <span class="tag-mini">Strategy</span>
+                </div>
             </div>
 
-            <div class="course">
-                <h3 class="course-title">Entrepreneurship in FinTech</h3>
-                <p class="meta">MSc in FinTech • National College of Ireland</p>
+            <!-- Book 2 -->
+            <div class="project-card">
+                <h3>Disruption: Emerging Technologies</h3>
+                <p class="meta">2015 • Book • Textbook</p>
                 <p>
-                    Designed in collaboration with FinTech industry partners, this module examines innovation
-                    and entrepreneurship in financial technology. Students develop startup concepts and learn
-                    to navigate regulatory, technical, and market challenges in the FinTech ecosystem.
+                    Analyzing the impact of AI, robotics, 3D printing, autonomous vehicles, and more.
+                    Used as required reading at Texas A&M and universities across 3 countries.
                 </p>
+                <div class="tags">
+                    <span class="tag-mini">Future of Work</span>
+                    <span class="tag-mini">Innovation</span>
+                </div>
             </div>
 
-            <div class="course">
-                <h3 class="course-title">Innovation I & II</h3>
-                <p class="meta">MSc in Data Analytics • National College of Ireland</p>
+            <!-- Program -->
+            <div class="project-card">
+                <h3>HELIOS Executive Masterclass</h3>
+                <p class="meta">2023 • Program • fiveinnolabs</p>
                 <p>
-                    Two-part module exploring systematic innovation processes and emerging technology adoption.
-                    Students learn to identify opportunities, prototype solutions, and apply innovation frameworks
-                    to data analytics challenges. Co-designed for QQI revalidation.
+                    Comprehensive GenAI training for executives. Strategic AI roadmapping + hands-on implementation
+                    frameworks. Designed for fast value delivery.
                 </p>
+                <div class="tags">
+                    <span class="tag-mini">Executive Ed</span>
+                    <span class="tag-mini">Training</span>
+                </div>
             </div>
 
-            <div class="course">
-                <h3 class="course-title">Business Strategies for Cloud Computing</h3>
-                <p class="meta">MSc in Cloud Computing • National College of Ireland</p>
+            <!-- Teaching -->
+            <div class="project-card">
+                <h3>National Student Competition: 4 Awards</h3>
+                <p class="meta">2017–2019 • Student Teams • Citi upStart</p>
                 <p>
-                    Examines strategic and operational implications of cloud adoption for organizations.
-                    Covers cloud economics, migration strategies, service models, and organizational transformation.
-                    Bridges technical architecture with business decision-making.
+                    Mentored NCI teams to 4 national wins: Solar-bot, Diabetic Retinopathy EyeScan ML,
+                    EZ-Leap contactless transport, Codaline cloud chatbot platform.
                 </p>
+                <div class="tags">
+                    <span class="tag-mini">Mentorship</span>
+                    <span class="tag-mini">Innovation</span>
+                </div>
             </div>
 
-            <div class="course">
-                <h3 class="course-title">Doing Business on the Cloud</h3>
-                <p class="meta">Master in Business Administration • National College of Ireland</p>
+            <!-- Current -->
+            <div class="project-card">
+                <h3>fiveinnolabs AI Consultancy</h3>
+                <p class="meta">2022–Present • Venture • Active</p>
                 <p>
-                    Business-focused exploration of cloud computing's impact on organizational strategy,
-                    operations, and competitive advantage. Designed for non-technical MBA students to understand
-                    cloud technology's business implications.
+                    Turning emerging GenAI capabilities into practical, high-impact solutions for businesses.
+                    From strategy to implementation.
                 </p>
+                <div class="tags">
+                    <span class="tag-mini">Consulting</span>
+                    <span class="tag-mini">Applied AI</span>
+                </div>
             </div>
 
-            <div class="course">
-                <h3 class="course-title">Professional Diploma in Artificial Intelligence</h3>
-                <p class="meta">Professional Program • UCD Professional Academy</p>
+            <!-- Side Project -->
+            <div class="project-card">
+                <h3>COMPASS Development Framework</h3>
+                <p class="meta">2024 • System • Open Source</p>
                 <p>
-                    Comprehensive AI program for professionals seeking to understand and implement AI in their
-                    organizations. Covers foundations, applications, ethics, and practical implementation strategies.
+                    A comprehensive framework for AI-assisted development that encodes software engineering
+                    best practices into operational protocols.
                 </p>
-            </div>
-
-            <div class="course">
-                <h3 class="course-title">Professional Diploma in Advanced Artificial Intelligence</h3>
-                <p class="meta">Professional Program • UCD Professional Academy</p>
-                <p>
-                    Advanced AI program building on foundational knowledge. Deep dives into generative AI,
-                    enterprise implementation, AI strategy, and cutting-edge applications. Subject matter
-                    expert focus on GenAI integration.
-                </p>
-            </div>
-
-            <div class="cv-section">
-                <h3>Selected Talks</h3>
-
-                <div class="cv-entry">
-                    <div class="title">South by Southwest (SXSW)</div>
-                    <div class="meta">Austin, Texas, USA | Emerging Technologies Panel</div>
+                <div class="tags">
+                    <span class="tag-mini">Software Engineering</span>
+                    <span class="tag-mini">AI Tools</span>
                 </div>
-
-                <div class="cv-entry">
-                    <div class="title">Ministry of Telecommunications and Transportation</div>
-                    <div class="meta">Mexico City, Mexico | Technology Policy and Innovation</div>
-                </div>
-
-                <div class="cv-entry">
-                    <div class="title">Embassy of Mexico</div>
-                    <div class="meta">Berlin, Germany | Digital Transformation and Emerging Tech</div>
-                </div>
-
-                <div class="cv-entry">
-                    <div class="title">Congregation Event</div>
-                    <div class="meta">Cong, Ireland | Keynote Speaker</div>
-                </div>
-
-                <div class="cv-entry">
-                    <div class="title">Galway-Mayo Institute of Technology (GMIT) AI Event</div>
-                    <div class="meta">Ireland | Artificial Intelligence in Education</div>
-                </div>
-
-                <div class="cv-entry">
-                    <div class="title">TrendEpic Project Launch</div>
-                    <div class="meta">Mayo County Council | With Taoiseach Enda Kenny</div>
-                </div>
-
-                <p class="meta" style="margin-top: 1rem;">
-                    20+ speaking engagements as keynote speaker, panelist, and project evaluator across
-                    Ireland, Germany, USA, and Mexico
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- Signals Section -->
-    <section id="signals">
-        <div class="container content">
-            <h2>Signals</h2>
-            <p class="section-intro">
-                Insights from teaching AI, building GenAI solutions, and observing the transformation.
-                Notes from the intersection of pedagogy and practice.
-            </p>
-
-            <article class="signal-entry">
-                <div class="signal-date">Coming Soon</div>
-                <span class="signal-category">Teaching Notes</span>
-                <h3 class="signal-title">Teaching GenAI: What Students Actually Need to Know</h3>
-                <p class="card-description">
-                    Lessons from teaching AI for Business at NCI and UCD. The gap between AI capabilities and
-                    organizational readiness is larger than the technology gap. Education must bridge both.
-                </p>
-            </article>
-
-            <article class="signal-entry">
-                <div class="signal-date">Coming Soon</div>
-                <span class="signal-category">Practice Notes</span>
-                <h3 class="signal-title">From Workshop to Implementation: The Missing Middle</h3>
-                <p class="card-description">
-                    Observations from HELIOS executive training: executives understand the strategic imperative,
-                    they see the demos, but the path from insight to deployment remains unclear. The missing piece
-                    isn't technical—it's organizational courage and systematic experimentation.
-                </p>
-            </article>
-
-            <article class="signal-entry">
-                <div class="signal-date">Coming Soon</div>
-                <span class="signal-category">Essay</span>
-                <h3 class="signal-title">The Scholar-Founder Identity</h3>
-                <p class="card-description">
-                    Reflecting on the tension between academic rigor and startup velocity. Perhaps they're not
-                    opposed—both require hypothesis generation, empirical testing, and intellectual honesty.
-                    The classroom and the consultancy are different experimental contexts.
-                </p>
-            </article>
-
-            <article class="signal-entry">
-                <div class="signal-date">Coming Soon</div>
-                <span class="signal-category">AI Industry</span>
-                <h3 class="signal-title">Pattern Recognition: Ten Years of Teaching Emerging Tech</h3>
-                <p class="card-description">
-                    From cloud computing to big data to AI/ML to generative AI—teaching emerging technologies
-                    for a decade reveals consistent patterns in how organizations adopt (and resist) transformation.
-                    The technology changes. The organizational dynamics remain remarkably consistent.
-                </p>
-            </article>
+    <!-- Contact -->
+    <section id="contact">
+        <h2>Let's Talk</h2>
+        <p style="font-size: 1.3rem; max-width: 600px; margin: 0 auto;">
+            Working on AI transformation? Teaching emerging tech? Building something interesting?
+        </p>
+        <div class="contact-links">
+            <a href="mailto:victor@victordelrosal.com">Email</a>
+            <a href="https://linkedin.com/in/victordelrosal" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/victordelrosal" target="_blank">Twitter</a>
         </div>
+        <p style="margin-top: 4rem; opacity: 0.7; font-size: 0.9rem;">© 2024 Victor del Rosal</p>
     </section>
-
-    <!-- Contact/Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="contact-info">
-                <a href="mailto:victordelrosal@gmail.com">victordelrosal@gmail.com</a>
-                <span>•</span>
-                <a href="https://linkedin.com/in/victordelrosal" target="_blank">linkedin</a>
-            </div>
-            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-ink-secondary);">
-                © 2024 Victor del Rosal
-            </p>
-        </div>
-    </footer>
-
-    <!-- Minimal JavaScript for smooth navigation -->
-    <script>
-        // Smooth scroll with offset for fixed nav
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const targetPosition = target.offsetTop - navHeight;
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Update active nav link on scroll
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        function updateActiveLink() {
-            let current = '';
-            const navHeight = document.querySelector('nav').offsetHeight;
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - navHeight - 100;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateActiveLink);
-        updateActiveLink(); // Run on load
-    </script>
 </body>
 </html>
