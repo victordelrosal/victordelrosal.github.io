@@ -391,11 +391,26 @@
                         document.querySelector('meta[name="description"]').content =
                             window.PostsAPI.createExcerpt(post.content, 160);
 
+                        // Strip the first line (title) from content to avoid duplication
+                        // The title is already shown as the heading, so remove it from the body
+                        function stripFirstLine(html) {
+                            // Create a temporary container to parse the HTML
+                            const temp = document.createElement('div');
+                            temp.innerHTML = html;
+
+                            // Remove the first child element (the title paragraph)
+                            if (temp.firstElementChild) {
+                                temp.removeChild(temp.firstElementChild);
+                            }
+
+                            return temp.innerHTML.trim();
+                        }
+
                         // Populate post content
                         document.getElementById('post-date').textContent =
                             window.PostsAPI.formatDate(post.published_at);
                         document.getElementById('post-title').textContent = post.title;
-                        document.getElementById('post-content').innerHTML = post.content;
+                        document.getElementById('post-content').innerHTML = stripFirstLine(post.content);
 
                         // Show the post
                         document.getElementById('loading').style.display = 'none';

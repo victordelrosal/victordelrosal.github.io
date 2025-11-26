@@ -349,6 +349,16 @@
     <script src="/posts.js"></script>
 
     <script>
+        // Strip the first line (title) from content to avoid showing title in excerpt
+        function stripFirstLine(html) {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            if (temp.firstElementChild) {
+                temp.removeChild(temp.firstElementChild);
+            }
+            return temp.innerHTML.trim();
+        }
+
         // Fetch and render posts
         (async function() {
             try {
@@ -364,12 +374,12 @@
                     return;
                 }
 
-                // Render posts
+                // Render posts (excerpt from content without the title line)
                 container.innerHTML = posts.map(post => `
                     <a href="/${post.slug}" class="post-card">
                         <p class="post-card-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         <h2 class="post-card-title">${post.title}</h2>
-                        <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(post.content, 200)}</p>
+                        <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(stripFirstLine(post.content), 200)}</p>
                         <svg class="post-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
