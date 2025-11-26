@@ -95,16 +95,17 @@
         nav .logo img {
             height: 36px;
             width: auto;
+            filter: invert(1);
             animation: logo-pulse 3s ease-in-out infinite;
         }
 
         @keyframes logo-pulse {
             0%, 100% {
-                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+                filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
                 opacity: 0.85;
             }
             50% {
-                filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+                filter: invert(1) drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
                 opacity: 1;
             }
         }
@@ -653,36 +654,6 @@
                         twDesc.setAttribute('name', 'twitter:description');
                         twDesc.content = excerpt;
                         document.head.appendChild(twDesc);
-
-                        // Extract first image from post content for OG image
-                        function getFirstImage(html) {
-                            const temp = document.createElement('div');
-                            temp.innerHTML = html;
-                            const img = temp.querySelector('img');
-                            return img ? img.src : null;
-                        }
-
-                        // Get signal-specific image (first image in content, or default)
-                        const firstImageInContent = getFirstImage(post.content);
-                        const ogImageUrl = firstImageInContent || `https://victordelrosal.com/img/og-image.png`;
-
-                        // Update the existing static OG image meta tag
-                        const existingOgImage = document.querySelector('meta[property="og:image"]');
-                        if (existingOgImage) {
-                            existingOgImage.content = ogImageUrl;
-                        }
-
-                        // Update the existing Twitter image meta tag
-                        const existingTwImage = document.querySelector('meta[name="twitter:image"]');
-                        if (existingTwImage) {
-                            existingTwImage.content = ogImageUrl;
-                        }
-
-                        // Add og:image:alt for better accessibility
-                        const ogImageAlt = document.createElement('meta');
-                        ogImageAlt.setAttribute('property', 'og:image:alt');
-                        ogImageAlt.content = post.title;
-                        document.head.appendChild(ogImageAlt);
 
                         // Strip the first line (title) from content to avoid duplication
                         // The title is already shown as the heading, so remove it from the body
