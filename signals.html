@@ -93,11 +93,13 @@
         }
 
         nav .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-decoration: none;
-            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .logo img {
+            height: 36px;
+            width: auto;
         }
 
         nav .nav-links {
@@ -351,7 +353,7 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <a href="/" class="logo">VDR</a>
+        <a href="/" class="logo"><img src="/favicon.png" alt="VDR"></a>
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/#profile">About</a></li>
