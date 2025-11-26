@@ -208,7 +208,9 @@
             transition: transform 150ms;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
         }
 
         .post-card::before {
@@ -225,6 +227,21 @@
 
         .post-card:hover {
             transform: translate(-4px, -4px);
+        }
+
+        /* Post thumbnail */
+        .post-card-thumb {
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            border: 3px solid var(--color-black);
+            object-fit: cover;
+            background: var(--color-cream);
+        }
+
+        .post-card-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .post-card:hover::before {
@@ -284,6 +301,13 @@
 
             .post-card {
                 padding: 1.5rem;
+                flex-direction: column;
+            }
+
+            .post-card-thumb {
+                width: 80px;
+                height: 80px;
+                min-width: 80px;
             }
 
             .post-card-arrow {
@@ -359,6 +383,14 @@
             return temp.innerHTML.trim();
         }
 
+        // Extract the first image URL from HTML content
+        function getFirstImage(html) {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            const img = temp.querySelector('img');
+            return img ? img.src : null;
+        }
+
         // Fetch and render posts
         (async function() {
             try {
@@ -374,17 +406,27 @@
                     return;
                 }
 
-                // Render posts (excerpt from content without the title line)
-                container.innerHTML = posts.map(post => `
-                    <a href="/${post.slug}" class="post-card">
-                        <p class="post-card-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                        <h2 class="post-card-title">${post.title}</h2>
-                        <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(stripFirstLine(post.content), 200)}</p>
-                        <svg class="post-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                `).join('');
+                // Render posts (with thumbnail if image exists)
+                container.innerHTML = posts.map(post => {
+                    const imageUrl = getFirstImage(post.content);
+                    const thumbnailHtml = imageUrl
+                        ? `<img src="${imageUrl}" alt="" class="post-card-thumb">`
+                        : '';
+
+                    return `
+                        <a href="/${post.slug}" class="post-card">
+                            ${thumbnailHtml}
+                            <div class="post-card-content">
+                                <p class="post-card-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                                <h2 class="post-card-title">${post.title}</h2>
+                                <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(stripFirstLine(post.content), 200)}</p>
+                            </div>
+                            <svg class="post-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    `;
+                }).join('');
 
                 container.style.display = 'flex';
             } catch (error) {
