@@ -95,6 +95,18 @@
         nav .logo img {
             height: 36px;
             width: auto;
+            animation: logo-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+                opacity: 0.85;
+            }
+            50% {
+                filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+                opacity: 1;
+            }
         }
 
         nav .nav-links {
@@ -309,6 +321,163 @@
             color: var(--color-electric);
         }
 
+        /* ===== SHARE BUTTONS ===== */
+        .share-section {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 4px solid var(--color-yellow);
+        }
+
+        .share-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-navy);
+            margin-bottom: 1rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--color-black);
+            background: white;
+            cursor: pointer;
+            transition: all 150ms ease;
+            position: relative;
+        }
+
+        .share-btn::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: -4px;
+            bottom: -4px;
+            background: var(--color-black);
+            z-index: -1;
+            transition: all 150ms ease;
+        }
+
+        .share-btn:hover {
+            transform: translate(-2px, -2px);
+        }
+
+        .share-btn:hover::before {
+            top: 6px;
+            left: 6px;
+        }
+
+        .share-btn:active {
+            transform: translate(0, 0);
+        }
+
+        .share-btn:active::before {
+            top: 2px;
+            left: 2px;
+        }
+
+        .share-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-black);
+            transition: fill 150ms ease;
+        }
+
+        /* Platform-specific hover colors */
+        .share-btn--whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+        }
+        .share-btn--whatsapp:hover svg {
+            fill: white;
+        }
+        .share-btn--whatsapp:hover::before {
+            background: #128C7E;
+        }
+
+        .share-btn--linkedin:hover {
+            background: #0A66C2;
+            border-color: #0A66C2;
+        }
+        .share-btn--linkedin:hover svg {
+            fill: white;
+        }
+        .share-btn--linkedin:hover::before {
+            background: #004182;
+        }
+
+        .share-btn--x:hover {
+            background: var(--color-black);
+            border-color: var(--color-black);
+        }
+        .share-btn--x:hover svg {
+            fill: white;
+        }
+
+        .share-btn--bluesky:hover {
+            background: #0085FF;
+            border-color: #0085FF;
+        }
+        .share-btn--bluesky:hover svg {
+            fill: white;
+        }
+        .share-btn--bluesky:hover::before {
+            background: #0066CC;
+        }
+
+        .share-btn--copy:hover {
+            background: var(--color-yellow);
+            border-color: var(--color-black);
+        }
+
+        .share-btn--copy.copied {
+            background: var(--color-lime);
+        }
+
+        .share-btn--copy .icon-check {
+            display: none;
+        }
+
+        .share-btn--copy.copied .icon-copy {
+            display: none;
+        }
+
+        .share-btn--copy.copied .icon-check {
+            display: block;
+        }
+
+        /* Tooltip for copy button */
+        .share-btn--copy::after {
+            content: 'Copied!';
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-black);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 150ms ease;
+        }
+
+        .share-btn--copy.copied::after {
+            opacity: 1;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             nav {
@@ -379,6 +548,50 @@
                 <h1 id="post-title" class="post-title"></h1>
             </header>
             <div id="post-content" class="post-content"></div>
+
+            <!-- Share Buttons -->
+            <div class="share-section">
+                <p class="share-label">Share this signal</p>
+                <div class="share-buttons">
+                    <!-- WhatsApp -->
+                    <button class="share-btn share-btn--whatsapp" id="share-whatsapp" title="Share on WhatsApp" aria-label="Share on WhatsApp">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                    </button>
+
+                    <!-- LinkedIn -->
+                    <button class="share-btn share-btn--linkedin" id="share-linkedin" title="Share on LinkedIn" aria-label="Share on LinkedIn">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </button>
+
+                    <!-- X (Twitter) -->
+                    <button class="share-btn share-btn--x" id="share-x" title="Share on X" aria-label="Share on X">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Bluesky -->
+                    <button class="share-btn share-btn--bluesky" id="share-bluesky" title="Share on Bluesky" aria-label="Share on Bluesky">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 01-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Copy Link -->
+                    <button class="share-btn share-btn--copy" id="share-copy" title="Copy link" aria-label="Copy link to clipboard">
+                        <svg class="icon-copy" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                        </svg>
+                        <svg class="icon-check" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </article>
     </main>
 
@@ -441,6 +654,36 @@
                         twDesc.content = excerpt;
                         document.head.appendChild(twDesc);
 
+                        // Extract first image from post content for OG image
+                        function getFirstImage(html) {
+                            const temp = document.createElement('div');
+                            temp.innerHTML = html;
+                            const img = temp.querySelector('img');
+                            return img ? img.src : null;
+                        }
+
+                        // Get signal-specific image (first image in content, or default)
+                        const firstImageInContent = getFirstImage(post.content);
+                        const ogImageUrl = firstImageInContent || `https://victordelrosal.com/img/og-image.png`;
+
+                        // Update the existing static OG image meta tag
+                        const existingOgImage = document.querySelector('meta[property="og:image"]');
+                        if (existingOgImage) {
+                            existingOgImage.content = ogImageUrl;
+                        }
+
+                        // Update the existing Twitter image meta tag
+                        const existingTwImage = document.querySelector('meta[name="twitter:image"]');
+                        if (existingTwImage) {
+                            existingTwImage.content = ogImageUrl;
+                        }
+
+                        // Add og:image:alt for better accessibility
+                        const ogImageAlt = document.createElement('meta');
+                        ogImageAlt.setAttribute('property', 'og:image:alt');
+                        ogImageAlt.content = post.title;
+                        document.head.appendChild(ogImageAlt);
+
                         // Strip the first line (title) from content to avoid duplication
                         // The title is already shown as the heading, so remove it from the body
                         function stripFirstLine(html) {
@@ -465,6 +708,56 @@
                         // Show the post
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('post').classList.add('visible');
+
+                        // Setup share buttons
+                        const shareTitle = post.title;
+                        const shareText = `${post.title} by Victor del Rosal`;
+
+                        // WhatsApp
+                        document.getElementById('share-whatsapp').addEventListener('click', () => {
+                            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`;
+                            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                        });
+
+                        // LinkedIn
+                        document.getElementById('share-linkedin').addEventListener('click', () => {
+                            const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`;
+                            window.open(linkedinUrl, '_blank', 'noopener,noreferrer,width=600,height=600');
+                        });
+
+                        // X (Twitter)
+                        document.getElementById('share-x').addEventListener('click', () => {
+                            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`;
+                            window.open(xUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+                        });
+
+                        // Bluesky
+                        document.getElementById('share-bluesky').addEventListener('click', () => {
+                            const blueskyUrl = `https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`;
+                            window.open(blueskyUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
+                        });
+
+                        // Copy Link
+                        document.getElementById('share-copy').addEventListener('click', async (e) => {
+                            const btn = e.currentTarget;
+                            try {
+                                await navigator.clipboard.writeText(postUrl);
+                                btn.classList.add('copied');
+                                setTimeout(() => btn.classList.remove('copied'), 2000);
+                            } catch (err) {
+                                // Fallback for older browsers
+                                const textArea = document.createElement('textarea');
+                                textArea.value = postUrl;
+                                textArea.style.position = 'fixed';
+                                textArea.style.left = '-999999px';
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(textArea);
+                                btn.classList.add('copied');
+                                setTimeout(() => btn.classList.remove('copied'), 2000);
+                            }
+                        });
                     } else {
                         // Post not found
                         document.getElementById('loading').style.display = 'none';
