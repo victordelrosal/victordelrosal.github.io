@@ -6,6 +6,20 @@
     <meta name="description" content="Victor del Rosal - Signals">
     <title>Loading... | Victor del Rosal</title>
 
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Victor del Rosal">
+    <meta property="og:image" content="https://victordelrosal.com/img/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://victordelrosal.com/img/og-image.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -386,10 +400,44 @@
                     const post = await window.PostsAPI.fetchPostBySlug(slug);
 
                     if (post) {
-                        // Update page title
+                        const excerpt = window.PostsAPI.createExcerpt(post.content, 160);
+                        const postUrl = `https://victordelrosal.com/${slug}`;
+
+                        // Update page title and description
                         document.title = `${post.title} | Victor del Rosal`;
-                        document.querySelector('meta[name="description"]').content =
-                            window.PostsAPI.createExcerpt(post.content, 160);
+                        document.querySelector('meta[name="description"]').content = excerpt;
+
+                        // Update Open Graph meta tags
+                        const ogUrl = document.createElement('meta');
+                        ogUrl.setAttribute('property', 'og:url');
+                        ogUrl.content = postUrl;
+                        document.head.appendChild(ogUrl);
+
+                        const ogTitle = document.createElement('meta');
+                        ogTitle.setAttribute('property', 'og:title');
+                        ogTitle.content = `${post.title} | Victor del Rosal`;
+                        document.head.appendChild(ogTitle);
+
+                        const ogDesc = document.createElement('meta');
+                        ogDesc.setAttribute('property', 'og:description');
+                        ogDesc.content = excerpt;
+                        document.head.appendChild(ogDesc);
+
+                        // Update Twitter meta tags
+                        const twUrl = document.createElement('meta');
+                        twUrl.setAttribute('name', 'twitter:url');
+                        twUrl.content = postUrl;
+                        document.head.appendChild(twUrl);
+
+                        const twTitle = document.createElement('meta');
+                        twTitle.setAttribute('name', 'twitter:title');
+                        twTitle.content = `${post.title} | Victor del Rosal`;
+                        document.head.appendChild(twTitle);
+
+                        const twDesc = document.createElement('meta');
+                        twDesc.setAttribute('name', 'twitter:description');
+                        twDesc.content = excerpt;
+                        document.head.appendChild(twDesc);
 
                         // Strip the first line (title) from content to avoid duplication
                         // The title is already shown as the heading, so remove it from the body
