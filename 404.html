@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Victor del Rosal - Signals">
+    <title>Loading... | Victor del Rosal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== BRUTALIST RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== BOLD COLOR SYSTEM ===== */
+        :root {
+            /* Base */
+            --color-cream: #FDFBF7;
+            --color-black: #0A0A0A;
+            --color-navy: #002147;
+
+            /* Vibrant Accents */
+            --color-electric: #0066FF;
+            --color-yellow: #FFD700;
+            --color-coral: #FF6B6B;
+            --color-lime: #BFFF00;
+
+            /* Typography */
+            --font-display: 'IBM Plex Sans', sans-serif;
+            --font-body: 'EB Garamond', Georgia, serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+
+        /* ===== BASE ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-display);
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-cream);
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--color-yellow);
+            color: var(--color-black);
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-navy);
+            color: white;
+            padding: 1.5rem;
+            z-index: 1000;
+            border-bottom: 4px solid var(--color-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: white;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color 100ms;
+        }
+
+        nav a:hover {
+            color: var(--color-yellow);
+        }
+
+        nav a.active {
+            color: var(--color-yellow);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            padding: 8rem 2rem 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* ===== LOADING STATE ===== */
+        .loading {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-cream);
+            border-top-color: var(--color-navy);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== 404 STATE ===== */
+        .not-found {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .not-found h1 {
+            font-size: 6rem;
+            font-weight: 700;
+            color: var(--color-navy);
+            margin-bottom: 1rem;
+        }
+
+        .not-found p {
+            font-size: 1.2rem;
+            color: var(--color-black);
+            margin-bottom: 2rem;
+        }
+
+        .not-found a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--color-yellow);
+            color: var(--color-black);
+            text-decoration: none;
+            font-weight: 600;
+            border: 3px solid var(--color-black);
+            transition: all 150ms;
+        }
+
+        .not-found a:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0 var(--color-black);
+        }
+
+        /* ===== POST CONTENT ===== */
+        .post {
+            display: none;
+        }
+
+        .post.visible {
+            display: block;
+        }
+
+        .post-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 4px solid var(--color-yellow);
+        }
+
+        .post-meta {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .post-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--color-black);
+        }
+
+        .post-content {
+            font-family: var(--font-body);
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .post-content h1,
+        .post-content h2,
+        .post-content h3 {
+            font-family: var(--font-display);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .post-content h1 { font-size: 2rem; }
+        .post-content h2 { font-size: 1.5rem; }
+        .post-content h3 { font-size: 1.25rem; }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-content a {
+            color: var(--color-electric);
+            text-decoration: underline;
+        }
+
+        .post-content blockquote {
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 33, 71, 0.05);
+            border-left: 4px solid var(--color-navy);
+            font-style: italic;
+        }
+
+        .post-content code {
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .post-content pre {
+            background: var(--color-navy);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .post-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            border: 4px solid var(--color-black);
+        }
+
+        /* ===== BACK LINK ===== */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-navy);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 100ms;
+        }
+
+        .back-link:hover {
+            color: var(--color-electric);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav .nav-links {
+                gap: 1rem;
+            }
+
+            main {
+                padding: 6rem 1.5rem 3rem;
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        :focus-visible {
+            outline: 4px solid var(--color-electric);
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="/" class="logo">VDR</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#profile">About</a></li>
+            <li><a href="/#output">Work</a></li>
+            <li><a href="/signals.html" class="active">Signals</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+        <!-- 404 State -->
+        <div id="not-found" class="not-found" style="display: none;">
+            <h1>404</h1>
+            <p>This page doesn't exist yet.</p>
+            <a href="/">Back to Home</a>
+        </div>
+
+        <!-- Post Content -->
+        <article id="post" class="post">
+            <a href="/signals.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Signals
+            </a>
+            <header class="post-header">
+                <p class="post-meta"><span id="post-date"></span></p>
+                <h1 id="post-title" class="post-title"></h1>
+            </header>
+            <div id="post-content" class="post-content"></div>
+        </article>
+    </main>
+
+    <!-- Load Posts API -->
+    <script src="/posts.js"></script>
+
+    <script>
+        // Get the slug from the URL path
+        const path = window.location.pathname;
+        const slug = path.replace(/^\//, '').replace(/\/$/, ''); // Remove leading/trailing slashes
+
+        // Skip if we're on the homepage or signals page
+        if (!slug || slug === 'index.html' || slug === 'signals.html' || slug.includes('.')) {
+            // Redirect to 404 or homepage
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('not-found').style.display = 'block';
+        } else {
+            // Try to fetch the post
+            (async function() {
+                try {
+                    const post = await window.PostsAPI.fetchPostBySlug(slug);
+
+                    if (post) {
+                        // Update page title
+                        document.title = `${post.title} | Victor del Rosal`;
+                        document.querySelector('meta[name="description"]').content =
+                            window.PostsAPI.createExcerpt(post.content, 160);
+
+                        // Populate post content
+                        document.getElementById('post-date').textContent =
+                            window.PostsAPI.formatDate(post.published_at);
+                        document.getElementById('post-title').textContent = post.title;
+                        document.getElementById('post-content').innerHTML = post.content;
+
+                        // Show the post
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('post').classList.add('visible');
+                    } else {
+                        // Post not found
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('not-found').style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error loading post:', error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('not-found').style.display = 'block';
+                }
+            })();
+        }
+    </script>
+</body>
+</html>

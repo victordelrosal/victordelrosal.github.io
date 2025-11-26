@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Signals - Thoughts on AI, technology, and innovation from Victor del Rosal">
+    <title>Signals | Victor del Rosal</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== BRUTALIST RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== BOLD COLOR SYSTEM ===== */
+        :root {
+            /* Base */
+            --color-cream: #FDFBF7;
+            --color-black: #0A0A0A;
+            --color-navy: #002147;
+
+            /* Vibrant Accents */
+            --color-electric: #0066FF;
+            --color-yellow: #FFD700;
+            --color-coral: #FF6B6B;
+            --color-lime: #BFFF00;
+
+            /* Typography */
+            --font-display: 'IBM Plex Sans', sans-serif;
+            --font-body: 'EB Garamond', Georgia, serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+
+        /* ===== BASE ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-display);
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-cream);
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--color-yellow);
+            color: var(--color-black);
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-navy);
+            color: white;
+            padding: 1.5rem;
+            z-index: 1000;
+            border-bottom: 4px solid var(--color-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: white;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color 100ms;
+        }
+
+        nav a:hover {
+            color: var(--color-yellow);
+        }
+
+        nav a.active {
+            color: var(--color-yellow);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            padding: 8rem 2rem 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-navy);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--color-yellow);
+            transform: rotate(-1deg);
+        }
+
+        .page-description {
+            font-family: var(--font-body);
+            font-size: 1.3rem;
+            color: var(--color-black);
+            margin-top: 2rem;
+            max-width: 600px;
+        }
+
+        /* ===== LOADING STATE ===== */
+        .loading {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--color-cream);
+            border-top-color: var(--color-navy);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border: 4px solid var(--color-black);
+        }
+
+        .empty-state h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* ===== POST LIST ===== */
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .post-card {
+            background: white;
+            border: 4px solid var(--color-black);
+            padding: 2rem;
+            position: relative;
+            transition: transform 150ms;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: -12px;
+            bottom: -12px;
+            background: var(--color-coral);
+            z-index: -1;
+            transition: all 150ms;
+        }
+
+        .post-card:hover {
+            transform: translate(-4px, -4px);
+        }
+
+        .post-card:hover::before {
+            background: var(--color-electric);
+        }
+
+        .post-card-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--color-navy);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .post-card-excerpt {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: rgba(0, 0, 0, 0.7);
+            line-height: 1.6;
+        }
+
+        .post-card-arrow {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-navy);
+            opacity: 0;
+            transition: opacity 150ms;
+        }
+
+        .post-card:hover .post-card-arrow {
+            opacity: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav .nav-links {
+                gap: 1rem;
+            }
+
+            main {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .post-card {
+                padding: 1.5rem;
+            }
+
+            .post-card-arrow {
+                display: none;
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        :focus-visible {
+            outline: 4px solid var(--color-electric);
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="/" class="logo">VDR</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#profile">About</a></li>
+            <li><a href="/#output">Work</a></li>
+            <li><a href="/signals.html" class="active">Signals</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Header -->
+        <header class="page-header">
+            <span class="section-label">// Blog</span>
+            <h1 class="page-title">Signals</h1>
+            <p class="page-description">
+                Thoughts on AI, technology, innovation, and the future of work.
+                Raw ideas from the lab, polished insights from teaching.
+            </p>
+        </header>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading posts...</p>
+        </div>
+
+        <!-- Posts Container -->
+        <div id="posts-container" class="posts-list" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <h2>No signals yet</h2>
+            <p>Check back soon for new posts.</p>
+        </div>
+    </main>
+
+    <!-- Load Posts API -->
+    <script src="/posts.js"></script>
+
+    <script>
+        // Fetch and render posts
+        (async function() {
+            try {
+                const posts = await window.PostsAPI.fetchPosts();
+                const container = document.getElementById('posts-container');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('empty-state');
+
+                loading.style.display = 'none';
+
+                if (posts.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // Render posts
+                container.innerHTML = posts.map(post => `
+                    <a href="/${post.slug}" class="post-card">
+                        <p class="post-card-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <h2 class="post-card-title">${post.title}</h2>
+                        <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(post.content, 200)}</p>
+                        <svg class="post-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                `).join('');
+
+                container.style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+            }
+        })();
+    </script>
+</body>
+</html>
