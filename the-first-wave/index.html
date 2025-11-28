@@ -786,7 +786,37 @@
                         return temp.innerHTML.trim();
                     }
 
-                    // Convert plain text URLs to clickable links
+                    // Extract YouTube video ID from URL
+                    function getYouTubeVideoId(url) {
+                        const patterns = [
+                            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+                            /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/
+                        ];
+                        for (const pattern of patterns) {
+                            const match = url.match(pattern);
+                            if (match) return match[1];
+                        }
+                        return null;
+                    }
+
+                    // Create YouTube embed element
+                    function createYouTubeEmbed(videoId) {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'youtube-embed';
+                        wrapper.style.cssText = 'position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 1.5rem 0; border-radius: 8px;';
+
+                        const iframe = document.createElement('iframe');
+                        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                        iframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 8px;';
+                        iframe.setAttribute('allowfullscreen', '');
+                        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                        iframe.setAttribute('loading', 'lazy');
+
+                        wrapper.appendChild(iframe);
+                        return wrapper;
+                    }
+
+                    // Convert plain text URLs to clickable links (and embed YouTube videos)
                     function linkifyUrls(html) {
                         const temp = document.createElement('div');
                         temp.innerHTML = html;
@@ -823,12 +853,21 @@
                                         );
                                     }
 
-                                    const link = document.createElement('a');
-                                    link.href = match[0];
-                                    link.textContent = match[0];
-                                    link.target = '_blank';
-                                    link.rel = 'noopener noreferrer';
-                                    fragment.appendChild(link);
+                                    const url = match[0];
+                                    const youtubeId = getYouTubeVideoId(url);
+
+                                    if (youtubeId) {
+                                        // Embed YouTube video
+                                        fragment.appendChild(createYouTubeEmbed(youtubeId));
+                                    } else {
+                                        // Create regular link
+                                        const link = document.createElement('a');
+                                        link.href = url;
+                                        link.textContent = url;
+                                        link.target = '_blank';
+                                        link.rel = 'noopener noreferrer';
+                                        fragment.appendChild(link);
+                                    }
 
                                     lastIndex = match.index + match[0].length;
                                 }
