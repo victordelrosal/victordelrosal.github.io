@@ -1466,6 +1466,217 @@
             transform: none;
         }
 
+        /* ═══════════════════════════════════════════════════════════
+           READING STYLE - Reader Mode / Highlighter Aesthetic
+           Warm sepia tones with bright highlighter accents, focused reading vibes
+           For articles, PDFs, online content (not books)
+           ═══════════════════════════════════════════════════════════ */
+        .wave-entry--reading {
+            padding: 0;
+            background: linear-gradient(135deg, #FFFDF5 0%, #FFF9E6 40%, #FFF5D6 100%);
+            border: 3px solid #D97706;
+            border-radius: 4px 16px 16px 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Large highlighter stripe accent - the signature element */
+        .wave-entry--reading::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            right: 35px;
+            width: 140px;
+            height: 32px;
+            background: linear-gradient(90deg,
+                rgba(251, 191, 36, 0) 0%,
+                rgba(251, 191, 36, 0.55) 8%,
+                rgba(251, 191, 36, 0.7) 20%,
+                rgba(251, 191, 36, 0.7) 80%,
+                rgba(251, 191, 36, 0.55) 92%,
+                rgba(251, 191, 36, 0) 100%
+            );
+            transform: rotate(-2deg);
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .wave-entry--reading::before {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+            border-radius: 0 0 12px 0;
+        }
+
+        .wave-entry--reading:hover::before {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 50%, #92400E 100%);
+        }
+
+        /* Secondary highlighter mark for extra visual interest */
+        .wave-entry--reading .wave-highlight {
+            position: absolute;
+            bottom: 55px;
+            left: 90px;
+            width: 100px;
+            height: 24px;
+            background: linear-gradient(90deg,
+                rgba(254, 215, 170, 0) 0%,
+                rgba(254, 215, 170, 0.5) 10%,
+                rgba(254, 215, 170, 0.65) 50%,
+                rgba(254, 215, 170, 0.5) 90%,
+                rgba(254, 215, 170, 0) 100%
+            );
+            transform: rotate(1.5deg);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        /* Reading glasses icon container */
+        .wave-entry--reading .wave-glasses {
+            position: absolute;
+            top: 50%;
+            left: 1.25rem;
+            transform: translateY(-50%);
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%);
+            border: 2.5px solid #D97706;
+            border-radius: 50%;
+            box-shadow:
+                0 4px 12px rgba(217, 119, 6, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .wave-entry--reading .wave-glasses svg {
+            width: 28px;
+            height: 28px;
+            color: #92400E;
+        }
+
+        /* Reading progress bar at bottom - simulates reading progress */
+        .wave-entry--reading .wave-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: rgba(217, 119, 6, 0.12);
+        }
+
+        .wave-entry--reading .wave-progress::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 38%;
+            height: 100%;
+            background: linear-gradient(90deg, #FBBF24 0%, #F59E0B 40%, #D97706 100%);
+            animation: reading-progress 8s ease-in-out infinite;
+        }
+
+        @keyframes reading-progress {
+            0%, 100% { width: 38%; }
+            50% { width: 62%; }
+        }
+
+        /* Subtle page lines pattern suggesting text */
+        .wave-entry--reading .wave-lines {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 80px;
+            height: 60px;
+            background-image: repeating-linear-gradient(
+                180deg,
+                transparent 0px,
+                transparent 6px,
+                rgba(217, 119, 6, 0.08) 6px,
+                rgba(217, 119, 6, 0.08) 7px
+            );
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .wave-entry--reading .wave-type {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+            border-radius: 4px 14px 4px 14px;
+            padding: 0.35rem 0.9rem;
+            font-weight: 700;
+            box-shadow:
+                0 3px 12px rgba(217, 119, 6, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .wave-entry--reading .wave-content {
+            padding: 1.75rem 2rem 2.25rem 5.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wave-entry--reading .wave-title {
+            font-family: var(--font-body);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #78350F;
+            margin-bottom: 0.6rem;
+            line-height: 1.35;
+            position: relative;
+        }
+
+        /* Subtle underline decoration on title */
+        .wave-entry--reading .wave-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #F59E0B 0%, transparent 100%);
+        }
+
+        .wave-entry--reading .wave-body {
+            font-family: var(--font-body);
+            font-size: 1.08rem;
+            color: #92400E;
+            line-height: 1.7;
+        }
+
+        .wave-entry--reading .wave-meta {
+            margin-top: 1rem;
+            color: #B45309;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Reading source tag */
+        .wave-entry--reading .wave-source {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(217, 119, 6, 0.15) 100%);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-radius: 10px;
+            color: #B45309;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .wave-entry--reading .wave-arrow {
+            color: #D97706;
+        }
+
+        .wave-entry--reading:hover .wave-glasses {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow:
+                0 6px 16px rgba(217, 119, 6, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             nav {
@@ -1620,6 +1831,45 @@
                 border-left-width: 18px;
                 border-top-width: 11px;
                 border-bottom-width: 11px;
+            }
+
+            /* Reading responsive */
+            .wave-entry--reading {
+                border-radius: 4px 12px 12px 4px;
+            }
+
+            .wave-entry--reading::after {
+                top: 12px;
+                right: 15px;
+                width: 90px;
+                height: 24px;
+            }
+
+            .wave-entry--reading .wave-glasses {
+                left: 1rem;
+                width: 42px;
+                height: 42px;
+            }
+
+            .wave-entry--reading .wave-glasses svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .wave-entry--reading .wave-content {
+                padding: 1.5rem 1.5rem 2rem 4rem;
+            }
+
+            .wave-entry--reading .wave-highlight {
+                display: none;
+            }
+
+            .wave-entry--reading .wave-lines {
+                display: none;
+            }
+
+            .wave-entry--reading .wave-title {
+                font-size: 1.2rem;
             }
 
             .wave-arrow {
@@ -1798,6 +2048,34 @@
                        journalPatterns.some(p => p.test(combined));
             },
 
+            // Check for reading-style content (articles, PDFs, online content - not books)
+            isReadingContent(html, text, title) {
+                const combined = (title + ' ' + text).toLowerCase();
+
+                // Reading-related keywords and patterns
+                const readingPatterns = [
+                    /reading|read this|worth reading|must read|good read/i,
+                    /article|paper|piece|essay|post|write-up/i,
+                    /interesting (article|piece|read|paper)/i,
+                    /check out this|found this|came across/i,
+                    /recommended|fascinating|insightful/i,
+                    /\.pdf|pdf\b/i,
+                    /via\s+@|h\/t\s+|hat tip/i,  // Attribution patterns
+                ];
+
+                // Check for links to article-like sources
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const links = temp.querySelectorAll('a[href^="http"]');
+                const articleDomains = /medium\.com|substack\.com|arxiv\.org|news\.|blog\.|\.pdf|notion\.so|github\.com.*readme/i;
+                const hasArticleLink = Array.from(links).some(link => articleDomains.test(link.href));
+
+                // It's reading content if it matches patterns or has article links
+                const matchesPatterns = readingPatterns.some(p => p.test(combined));
+
+                return matchesPatterns || hasArticleLink;
+            },
+
             /**
              * MAIN CLASSIFICATION FUNCTION
              * Determines wave type based on content characteristics
@@ -1828,6 +2106,11 @@
                 // Link share - external link focused
                 if (this.hasProminentLink(content)) {
                     return { type: 'link', label: 'Link' };
+                }
+
+                // Reading style - articles, PDFs, online content recommendations
+                if (this.isReadingContent(content, plainText, post.title)) {
+                    return { type: 'reading', label: 'Reading' };
                 }
 
                 // Tweet style - very short, punchy (classic 140)
@@ -1871,6 +2154,15 @@
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                 <polyline points="15 3 21 3 21 9"/>
                 <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>`,
+
+            // Reading glasses icon for Reading wave type
+            glassesSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="15" r="4"/>
+                <circle cx="18" cy="15" r="4"/>
+                <path d="M10 15h4"/>
+                <path d="M2 15l.5-2A2 2 0 0 1 4.5 11h1"/>
+                <path d="M22 15l-.5-2a2 2 0 0 0-2-2h-1"/>
             </svg>`,
 
             render(post, classification) {
@@ -2081,6 +2373,47 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Reading style - Highlighter / Reader mode aesthetic
+            reading(post, { label }) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 180);
+
+                // Extract source domain if there's a link
+                let sourceDomain = '';
+                const temp = document.createElement('div');
+                temp.innerHTML = post.content;
+                const firstLink = temp.querySelector('a[href^="http"]');
+                if (firstLink) {
+                    try {
+                        const url = new URL(firstLink.href);
+                        sourceDomain = url.hostname.replace('www.', '');
+                    } catch (e) {}
+                }
+
+                const sourceTag = sourceDomain
+                    ? `<span class="wave-source">${sourceDomain}</span>`
+                    : '';
+
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--reading">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-highlight"></div>
+                        <div class="wave-lines"></div>
+                        <div class="wave-glasses">${this.glassesSvg}</div>
+                        <div class="wave-progress"></div>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">
+                                ${window.PostsAPI.formatDate(post.published_at)}
+                                ${sourceTag}
+                            </p>
                         </div>
                         ${this.arrowSvg}
                     </a>
