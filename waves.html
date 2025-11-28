@@ -453,187 +453,440 @@
         }
 
         /* =========================================
-           ADAPTIVE WAVE STYLES
-           Same wave, different internal treatment
+           ADAPTIVE WAVE STYLES - DISTINCTIVE EDITION
+           Each wave type has a unique, unmistakable identity
            ========================================= */
 
-        /* ----- TWEET STYLE (<=140 chars, classic Twitter) ----- */
+        /* ═══════════════════════════════════════════════════════════
+           TWEET STYLE - Speech Bubble / Quote Aesthetic
+           Iconic Twitter-blue with large quote marks
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--tweet {
-            padding: 1.5rem 2rem;
+            padding: 2.5rem 3rem 2rem;
+            background: linear-gradient(135deg, #E8F5FE 0%, #D4EDFC 50%, #BFE3FA 100%);
+            border-color: #1DA1F2;
+            position: relative;
+            overflow: visible;
         }
 
         .wave-entry--tweet::before {
-            background: #1DA1F2;
+            background: linear-gradient(135deg, #1DA1F2 0%, #0C7ABF 100%);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .wave-entry--tweet::after {
+            content: '"';
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            font-family: Georgia, serif;
+            font-size: 6rem;
+            line-height: 1;
+            color: #1DA1F2;
+            opacity: 0.2;
+            pointer-events: none;
         }
 
         .wave-entry--tweet:hover::before {
-            background: #0d8bd9;
+            background: linear-gradient(135deg, #0C7ABF 0%, #0A5C8F 100%);
         }
 
         .wave-entry--tweet .wave-type {
-            background: #1DA1F2;
+            background: linear-gradient(135deg, #1DA1F2 0%, #0C7ABF 100%);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3);
         }
 
         .wave-entry--tweet .wave-title {
-            font-size: clamp(1.4rem, 4vw, 2rem);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0C2233;
+            line-height: 1.3;
+            position: relative;
+            z-index: 1;
         }
 
         .wave-entry--tweet .wave-body {
-            display: none; /* Tweet is the title itself */
+            display: none;
         }
 
         .wave-entry--tweet .wave-meta {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             padding-top: 1rem;
-            border-top: 1px solid rgba(0,0,0,0.1);
+            border-top: 2px solid rgba(29, 161, 242, 0.2);
+            color: #1DA1F2;
+            font-weight: 600;
         }
 
-        /* ----- SKEET STYLE (141-280 chars, modern short post) ----- */
+        /* Bird silhouette decoration */
+        .wave-entry--tweet .wave-arrow {
+            color: #1DA1F2;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           SKEET STYLE - Modern Bluesky / Airy Cloud Aesthetic
+           Soft gradients with butterfly/sky motifs
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--skeet {
-            padding: 1.5rem 2rem;
+            padding: 2rem 2.5rem;
+            background: linear-gradient(180deg, #FFFFFF 0%, #E6F3FF 50%, #CCE7FF 100%);
+            border-color: #0085FF;
+            border-width: 3px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Floating clouds background pattern */
+        .wave-entry--skeet::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cellipse cx='25' cy='35' rx='20' ry='12' fill='%230085FF' fill-opacity='0.06'/%3E%3Cellipse cx='45' cy='30' rx='25' ry='15' fill='%230085FF' fill-opacity='0.04'/%3E%3Cellipse cx='70' cy='38' rx='18' ry='10' fill='%230085FF' fill-opacity='0.05'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: contain;
+            pointer-events: none;
+            opacity: 0.8;
         }
 
         .wave-entry--skeet::before {
-            background: #0085FF;
+            background: linear-gradient(135deg, #0085FF 0%, #00A3FF 50%, #33B5FF 100%);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .wave-entry--skeet:hover {
+            border-radius: 16px;
         }
 
         .wave-entry--skeet:hover::before {
-            background: #0066cc;
+            background: linear-gradient(135deg, #0066CC 0%, #0085FF 100%);
         }
 
         .wave-entry--skeet .wave-type {
-            background: #0085FF;
+            background: linear-gradient(135deg, #0085FF 0%, #00A3FF 100%);
+            border-radius: 12px;
+            padding: 0.35rem 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 3px 12px rgba(0, 133, 255, 0.25);
         }
 
         .wave-entry--skeet .wave-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 0.75rem;
+            color: #003366;
+            font-weight: 600;
         }
 
         .wave-entry--skeet .wave-body {
             font-size: 1.1rem;
+            color: #335577;
+            position: relative;
+            z-index: 1;
         }
 
         .wave-entry--skeet .wave-meta {
-            margin-top: 1rem;
+            margin-top: 1.25rem;
+            color: #0085FF;
+            font-weight: 500;
         }
 
-        /* ----- PHOTO/INSTAGRAM STYLE (has image, visual-first) ----- */
+        .wave-entry--skeet .wave-arrow {
+            color: #0085FF;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           PHOTO STYLE - Polaroid / Instagram Aesthetic
+           Film frame with gradient glow and glossy overlay
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--photo {
             padding: 0;
             overflow: hidden;
+            background: #FFFFFF;
+            border-width: 0;
+            box-shadow:
+                0 0 0 4px #1a1a1a,
+                0 8px 32px rgba(0, 0, 0, 0.15);
+            position: relative;
         }
 
+        /* Instagram-style gradient border glow */
         .wave-entry--photo::before {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            background: linear-gradient(45deg,
+                #f09433 0%,
+                #e6683c 15%,
+                #dc2743 30%,
+                #cc2366 45%,
+                #bc1888 60%,
+                #833ab4 75%,
+                #5851db 90%,
+                #405de6 100%);
+            top: 14px;
+            left: 14px;
+            right: -14px;
+            bottom: -14px;
+            border-radius: 4px;
         }
 
         .wave-entry--photo:hover::before {
-            background: linear-gradient(45deg, #bc1888 0%, #cc2366 25%, #dc2743 50%, #e6683c 75%, #f09433 100%);
+            background: linear-gradient(-45deg,
+                #f09433 0%,
+                #e6683c 15%,
+                #dc2743 30%,
+                #cc2366 45%,
+                #bc1888 60%,
+                #833ab4 75%,
+                #5851db 90%,
+                #405de6 100%);
         }
 
         .wave-entry--photo .wave-type {
-            background: linear-gradient(45deg, #e6683c, #dc2743);
+            background: linear-gradient(135deg, #e6683c 0%, #dc2743 50%, #bc1888 100%);
+            border-radius: 4px;
+            padding: 0.3rem 0.7rem;
+            font-weight: 700;
+            top: -10px;
+            right: 1rem;
+            box-shadow: 0 3px 12px rgba(220, 39, 67, 0.35);
         }
 
         .wave-entry--photo .wave-image {
             width: 100%;
-            max-height: 400px;
+            max-height: 420px;
             object-fit: cover;
             display: block;
-            border-bottom: 4px solid var(--color-black);
+            border-bottom: none;
+            position: relative;
+        }
+
+        /* Glossy overlay on image */
+        .wave-entry--photo .wave-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-entry--photo .wave-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                transparent 60%,
+                rgba(0,0,0,0.4) 100%
+            );
+            pointer-events: none;
         }
 
         .wave-entry--photo .wave-content {
-            padding: 1.5rem;
+            padding: 1.25rem 1.5rem 1.5rem;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
 
         .wave-entry--photo .wave-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #262626;
         }
 
         .wave-entry--photo .wave-body {
-            font-size: 1rem;
-            color: rgba(0,0,0,0.7);
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
         }
 
         .wave-entry--photo .wave-meta {
             margin-top: 0.75rem;
             font-size: 0.75rem;
+            color: #8e8e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        /* ----- LONGFORM/BLOG STYLE (>=500 chars, structured) ----- */
+        .wave-entry--photo .wave-arrow {
+            color: #dc2743;
+            bottom: 1.5rem;
+            top: auto;
+            transform: none;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           LONGFORM STYLE - Editorial / Newspaper Aesthetic
+           Scholarly design with drop cap feel and serif elegance
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--longform {
-            padding: 2rem;
+            padding: 0;
             display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
+            gap: 0;
+            align-items: stretch;
+            background: #FFFDF8;
+            border-color: var(--color-navy);
+            position: relative;
+            overflow: hidden;
         }
 
         .wave-entry--longform::before {
-            background: var(--color-coral);
+            background: linear-gradient(180deg, var(--color-navy) 0%, #001830 100%);
+        }
+
+        /* Newspaper-style decorative header line */
+        .wave-entry--longform::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--color-navy) 0px,
+                var(--color-navy) 4px,
+                transparent 4px,
+                transparent 8px
+            );
         }
 
         .wave-entry--longform .wave-type {
             background: var(--color-navy);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            padding: 0.35rem 1rem;
+            top: -10px;
         }
 
         .wave-entry--longform .wave-thumb {
-            width: 120px;
-            height: 120px;
-            min-width: 120px;
-            border: 3px solid var(--color-black);
+            width: 180px;
+            min-width: 180px;
+            height: auto;
+            min-height: 200px;
+            border: none;
+            border-right: 4px solid var(--color-navy);
             object-fit: cover;
-            background: var(--color-cream);
+            background: linear-gradient(135deg, #E8E4DC 0%, #D4CFC4 100%);
         }
 
         .wave-entry--longform .wave-content {
             flex: 1;
             min-width: 0;
+            padding: 2rem 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Section label above meta */
         .wave-entry--longform .wave-meta {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--color-navy);
+            letter-spacing: 0.15em;
+            border-bottom: 1px solid rgba(0, 33, 71, 0.2);
+            padding-bottom: 0.5rem;
         }
 
         .wave-entry--longform .wave-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-body);
+            font-weight: 600;
+            line-height: 1.25;
+            color: var(--color-navy);
         }
 
+        /* First letter drop cap effect simulation via first-line */
         .wave-entry--longform .wave-body {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            font-family: var(--font-body);
+            line-height: 1.7;
+            color: #333;
+            flex-grow: 1;
         }
 
-        /* ----- THOUGHT/WHISPER STYLE (informal, ephemeral feel) ----- */
+        .wave-entry--longform .wave-arrow {
+            color: var(--color-navy);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THOUGHT STYLE - Dreamy / Ephemeral Cloud Aesthetic
+           Soft lavender with floating thought bubble design
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--thought {
-            padding: 1.5rem 2rem;
-            background: #FFFEF5;
-            border-style: dashed;
+            padding: 2rem 2.5rem 2rem 3rem;
+            background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 50%, #EDE4FF 100%);
+            border-style: none;
+            border: 3px solid #D8B4FE;
+            border-radius: 24px 24px 24px 4px;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* Thought bubble tail */
+        .wave-entry--thought .wave-bubble-tail {
+            position: absolute;
+            bottom: -12px;
+            left: 30px;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #F3E8FF 0%, #EDE4FF 100%);
+            border: 3px solid #D8B4FE;
+            border-radius: 50%;
+            border-top-color: transparent;
+            border-right-color: transparent;
         }
 
         .wave-entry--thought::before {
-            background: var(--color-yellow);
-            opacity: 0.6;
+            background: linear-gradient(135deg, #A855F7 0%, #9333EA 50%, #7C3AED 100%);
+            border-radius: 0 0 20px 0;
+            opacity: 0.7;
+        }
+
+        /* Floating sparkle decorations */
+        .wave-entry--thought::after {
+            content: '✧';
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            font-size: 1.5rem;
+            color: #A855F7;
+            opacity: 0.4;
+            animation: sparkle-float 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translateY(-5px) rotate(10deg); opacity: 0.7; }
         }
 
         .wave-entry--thought:hover::before {
-            background: var(--color-lime);
-            opacity: 0.8;
+            opacity: 0.9;
+            background: linear-gradient(135deg, #9333EA 0%, #7C3AED 100%);
         }
 
         .wave-entry--thought .wave-type {
-            background: #B8860B;
+            background: linear-gradient(135deg, #A855F7 0%, #9333EA 100%);
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            box-shadow: 0 3px 12px rgba(168, 85, 247, 0.3);
+            font-style: italic;
         }
 
         .wave-entry--thought .wave-title {
             font-family: var(--font-body);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-style: italic;
             font-weight: 500;
+            color: #581C87;
+            line-height: 1.5;
         }
 
         .wave-entry--thought .wave-body {
@@ -641,187 +894,462 @@
         }
 
         .wave-entry--thought .wave-meta {
-            margin-top: 1rem;
+            margin-top: 1.25rem;
+            opacity: 0.7;
+            color: #7C3AED;
+            font-style: italic;
+        }
+
+        .wave-entry--thought .wave-arrow {
+            color: #A855F7;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           JOURNAL STYLE - Notebook Paper / Handwritten Aesthetic
+           Lined paper with margin, coffee-stained warmth
+           ═══════════════════════════════════════════════════════════ */
+        .wave-entry--journal {
+            padding: 0;
+            background: #FDF8F3;
+            border: none;
+            box-shadow:
+                0 0 0 1px #D4C4B0,
+                4px 4px 0 #C4B4A0,
+                inset 0 0 80px rgba(139, 115, 85, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Notebook lines */
+        .wave-entry--journal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                transparent 0px,
+                transparent 27px,
+                #E8DFD4 28px
+            );
+            pointer-events: none;
             opacity: 0.6;
         }
 
-        /* ----- JOURNAL STYLE (stream of consciousness) ----- */
-        .wave-entry--journal {
-            padding: 2rem 2.5rem;
-            background: linear-gradient(to bottom, #FFFEF8 0%, #FFF9E6 100%);
-            border-color: #D4C5A0;
-            border-width: 2px;
+        /* Red margin line */
+        .wave-entry--journal .wave-margin {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 70px;
+            width: 2px;
+            background: #FFAAAA;
+            opacity: 0.5;
         }
 
         .wave-entry--journal::before {
-            background: #D4C5A0;
-            opacity: 0.4;
+            background: linear-gradient(135deg, #A08060 0%, #8B7355 100%);
+            opacity: 0.5;
+            top: 14px;
+            left: 14px;
         }
 
         .wave-entry--journal:hover::before {
-            background: #C4B590;
-            opacity: 0.6;
+            background: linear-gradient(135deg, #8B7355 0%, #6B5B45 100%);
+            opacity: 0.7;
         }
 
         .wave-entry--journal .wave-type {
-            background: #8B7355;
+            background: linear-gradient(135deg, #8B7355 0%, #6B5B45 100%);
+            border-radius: 2px;
+            font-style: italic;
+            letter-spacing: 0.05em;
         }
 
         .wave-entry--journal .wave-content {
-            border-left: 3px solid rgba(139, 115, 85, 0.3);
-            padding-left: 1.5rem;
+            padding: 2rem 2rem 2rem 90px;
+            position: relative;
+            z-index: 1;
         }
 
         .wave-entry--journal .wave-title {
-            font-family: var(--font-body);
-            font-size: 1.1rem;
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 1.25rem;
             font-weight: 400;
-            margin-bottom: 0.5rem;
-            color: #5D4E37;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+            color: #4A3F35;
+            line-height: 1.5;
         }
 
         .wave-entry--journal .wave-body {
-            font-size: 1.05rem;
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 1.1rem;
             font-style: italic;
-            color: #6B5B45;
+            color: #5D4E3D;
+            line-height: 1.75;
         }
 
         .wave-entry--journal .wave-meta {
             margin-top: 1.5rem;
             color: #9B8B75;
+            font-style: italic;
         }
 
-        /* ----- TODO/LIST STYLE (actionable items) ----- */
+        /* Coffee ring stain decoration */
+        .wave-entry--journal .wave-stain {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(139, 115, 85, 0.15);
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+
+        .wave-entry--journal .wave-arrow {
+            color: #8B7355;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TODO STYLE - Productivity / Checklist Aesthetic
+           Clean with checkbox icons and progress bar vibes
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--todo {
-            padding: 1.5rem 2rem;
-            background: #F8FFF8;
-            border-left: 6px solid var(--color-lime);
+            padding: 0;
+            background: #F0FDF4;
+            border-color: #22C55E;
+            border-width: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Progress bar at top */
+        .wave-entry--todo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 65%;
+            height: 4px;
+            background: linear-gradient(90deg, #22C55E 0%, #4ADE80 50%, #86EFAC 100%);
+            z-index: 2;
         }
 
         .wave-entry--todo::before {
-            background: var(--color-lime);
-            opacity: 0.5;
+            background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
         }
 
         .wave-entry--todo:hover::before {
-            background: #90EE90;
-            opacity: 0.7;
+            background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
         }
 
         .wave-entry--todo .wave-type {
-            background: #228B22;
+            background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Checkbox icon area */
+        .wave-entry--todo .wave-checkbox {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border: 3px solid #22C55E;
+            border-radius: 6px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wave-entry--todo .wave-checkbox::after {
+            content: '';
+            width: 8px;
+            height: 14px;
+            border: solid #22C55E;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            margin-top: -3px;
+            opacity: 0.3;
+        }
+
+        .wave-entry--todo .wave-content {
+            padding: 1.75rem 2rem 1.75rem 4.5rem;
         }
 
         .wave-entry--todo .wave-title {
             font-family: var(--font-mono);
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 0.5rem;
         }
 
         .wave-entry--todo .wave-body {
             font-family: var(--font-mono);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            color: #4B5563;
+            line-height: 1.6;
         }
 
         .wave-entry--todo .wave-meta {
             margin-top: 1rem;
+            color: #22C55E;
+            font-weight: 500;
         }
 
-        /* ----- LINK/SHARE STYLE (external link prominent) ----- */
+        .wave-entry--todo .wave-arrow {
+            color: #22C55E;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           LINK STYLE - Portal / Discovery Aesthetic
+           Window to the web with globe icon and electric glow
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--link {
-            padding: 1.5rem 2rem;
-            background: #F5F8FF;
+            padding: 0;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #BFDBFE 100%);
+            border-color: var(--color-electric);
+            border-width: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Globe/portal decoration */
+        .wave-entry--link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 120px;
+            border: 3px solid rgba(0, 102, 255, 0.15);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 102, 255, 0.1) 0%, transparent 60%);
+        }
+
+        /* Grid pattern suggesting web/network */
+        .wave-entry--link .wave-grid {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 102, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 102, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
         }
 
         .wave-entry--link::before {
-            background: var(--color-electric);
+            background: linear-gradient(135deg, var(--color-electric) 0%, #0052CC 100%);
         }
 
         .wave-entry--link:hover::before {
-            background: #0044cc;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
         }
 
         .wave-entry--link .wave-type {
+            background: linear-gradient(135deg, var(--color-electric) 0%, #0052CC 100%);
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(0, 102, 255, 0.35);
+        }
+
+        /* External link icon area */
+        .wave-entry--link .wave-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
             background: var(--color-electric);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wave-entry--link .wave-icon svg {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .wave-entry--link .wave-content {
+            padding: 1.75rem 2rem 1.75rem 4.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .wave-entry--link .wave-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--color-electric);
             margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: rgba(0, 102, 255, 0.3);
+            text-underline-offset: 3px;
+        }
+
+        .wave-entry--link:hover .wave-title {
+            text-decoration-color: var(--color-electric);
         }
 
         .wave-entry--link .wave-body {
             font-size: 1rem;
+            color: #334155;
         }
 
         .wave-entry--link .wave-meta {
             margin-top: 0.75rem;
+            color: var(--color-electric);
+            font-weight: 500;
         }
 
-        /* ----- VIDEO STYLE (video content) ----- */
+        .wave-entry--link .wave-arrow {
+            color: var(--color-electric);
+            transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .wave-entry--link:hover .wave-arrow {
+            transform: translateY(-50%) rotate(-45deg) translate(3px, -3px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           VIDEO STYLE - Cinematic / Film Aesthetic
+           Letterboxing with dramatic red accent and play button
+           ═══════════════════════════════════════════════════════════ */
         .wave-entry--video {
             padding: 0;
             overflow: hidden;
+            background: #0A0A0A;
+            border-color: #1a1a1a;
+            position: relative;
         }
 
         .wave-entry--video::before {
-            background: #000;
+            background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
         }
 
         .wave-entry--video:hover::before {
-            background: #FF0050;
+            background: linear-gradient(135deg, #FF0050 0%, #E60045 50%, #CC003D 100%);
         }
 
         .wave-entry--video .wave-type {
-            background: #FF0050;
+            background: linear-gradient(135deg, #FF0050 0%, #E60045 100%);
+            border-radius: 4px;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(255, 0, 80, 0.4);
+            z-index: 10;
         }
 
         .wave-entry--video .wave-preview {
             position: relative;
-            background: #000;
-            min-height: 200px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%);
+            min-height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .wave-entry--video .wave-preview::after {
+        /* Letterbox bars */
+        .wave-entry--video .wave-preview::before,
+        .wave-entry--video .wave-letterbox {
             content: '';
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.9);
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: #000;
+            z-index: 1;
+        }
+
+        .wave-entry--video .wave-preview::before {
+            top: 0;
+        }
+
+        .wave-entry--video .wave-letterbox {
+            bottom: 0;
+        }
+
+        /* Play button */
+        .wave-entry--video .wave-play {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 0, 80, 0.9);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 30px rgba(255, 0, 80, 0.5);
+            transition: transform 150ms, box-shadow 150ms;
         }
 
-        .wave-entry--video .wave-preview::before {
+        .wave-entry--video:hover .wave-play {
+            transform: scale(1.1);
+            box-shadow: 0 6px 40px rgba(255, 0, 80, 0.7);
+        }
+
+        .wave-entry--video .wave-play::after {
             content: '';
-            position: absolute;
             width: 0;
             height: 0;
-            border-left: 20px solid #000;
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
-            z-index: 1;
+            border-left: 24px solid white;
+            border-top: 14px solid transparent;
+            border-bottom: 14px solid transparent;
+            margin-left: 6px;
+        }
+
+        /* Film grain overlay */
+        .wave-entry--video .wave-preview::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 3;
         }
 
         .wave-entry--video .wave-content {
-            padding: 1rem 1.5rem;
-            background: #000;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
             color: white;
+            border-top: 1px solid #333;
         }
 
         .wave-entry--video .wave-title {
-            font-size: 1rem;
-            color: white;
+            font-size: 1.1rem;
+            color: #FFFFFF;
+            font-weight: 600;
         }
 
         .wave-entry--video .wave-meta {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.5);
             margin-top: 0.5rem;
+        }
+
+        .wave-entry--video .wave-arrow {
+            color: #FF0050;
+            bottom: 1.25rem;
+            top: auto;
+            transform: none;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -839,23 +1367,122 @@
                 padding: 6rem 1.5rem 3rem;
             }
 
-            .wave-entry--longform {
+            /* Tweet responsive */
+            .wave-entry--tweet {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+
+            .wave-entry--tweet::after {
+                font-size: 4rem;
+                left: 1rem;
+            }
+
+            /* Skeet responsive */
+            .wave-entry--skeet {
                 padding: 1.5rem;
+                border-radius: 12px;
+            }
+
+            .wave-entry--skeet::after {
+                width: 100px;
+                opacity: 0.5;
+            }
+
+            /* Photo responsive */
+            .wave-entry--photo .wave-image {
+                max-height: 280px;
+            }
+
+            /* Longform responsive */
+            .wave-entry--longform {
                 flex-direction: column;
             }
 
             .wave-entry--longform .wave-thumb {
+                width: 100%;
+                min-width: 100%;
+                height: 150px;
+                min-height: 150px;
+                border-right: none;
+                border-bottom: 4px solid var(--color-navy);
+            }
+
+            .wave-entry--longform .wave-content {
+                padding: 1.5rem;
+            }
+
+            /* Thought responsive */
+            .wave-entry--thought {
+                padding: 1.5rem;
+                border-radius: 16px 16px 16px 4px;
+            }
+
+            .wave-entry--thought::after {
+                font-size: 1rem;
+                right: 1rem;
+            }
+
+            /* Journal responsive */
+            .wave-entry--journal .wave-content {
+                padding: 1.5rem 1.5rem 1.5rem 50px;
+            }
+
+            .wave-entry--journal .wave-margin {
+                left: 40px;
+            }
+
+            .wave-entry--journal .wave-stain {
+                width: 40px;
+                height: 40px;
+                right: 15px;
+            }
+
+            /* Todo responsive */
+            .wave-entry--todo .wave-checkbox {
+                left: 1rem;
+                width: 24px;
+                height: 24px;
+            }
+
+            .wave-entry--todo .wave-content {
+                padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+            }
+
+            /* Link responsive */
+            .wave-entry--link::after {
                 width: 80px;
                 height: 80px;
-                min-width: 80px;
+                right: -40px;
+            }
+
+            .wave-entry--link .wave-icon {
+                left: 1rem;
+                width: 30px;
+                height: 30px;
+            }
+
+            .wave-entry--link .wave-content {
+                padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+            }
+
+            /* Video responsive */
+            .wave-entry--video .wave-preview {
+                min-height: 180px;
+            }
+
+            .wave-entry--video .wave-play {
+                width: 56px;
+                height: 56px;
+            }
+
+            .wave-entry--video .wave-play::after {
+                border-left-width: 18px;
+                border-top-width: 11px;
+                border-bottom-width: 11px;
             }
 
             .wave-arrow {
                 display: none;
-            }
-
-            .wave-entry--photo .wave-image {
-                max-height: 300px;
             }
         }
 
@@ -1080,9 +1707,9 @@
         };
 
         /**
-         * WAVE RENDERER
-         * Generates HTML for each wave type
-         * All are waves - just with different internal layouts
+         * WAVE RENDERER - DISTINCTIVE EDITION
+         * Generates HTML for each wave type with unique decorative elements
+         * All are waves - just with dramatically different visual identities
          */
         const WaveRenderer = {
             // Arrow SVG used across wave types
@@ -1090,12 +1717,19 @@
                 <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>`,
 
+            // External link icon for Link wave type
+            linkIconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>`,
+
             render(post, classification) {
                 const renderer = this[classification.type] || this.longform;
                 return renderer.call(this, post, classification);
             },
 
-            // Tweet style (<=140 chars)
+            // Tweet style (<=140 chars) - Big quote aesthetic
             tweet(post, { label }) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
@@ -1107,7 +1741,7 @@
                 `;
             },
 
-            // Skeet style (141-300 chars)
+            // Skeet style (141-300 chars) - Airy cloud aesthetic
             skeet(post, { label }) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 280);
@@ -1122,7 +1756,7 @@
                 `;
             },
 
-            // Photo/Instagram style
+            // Photo/Instagram style - Polaroid frame aesthetic
             photo(post, { label }) {
                 const imageUrl = WaveAnalyzer.getFirstImage(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
@@ -1130,7 +1764,9 @@
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--photo">
                         <span class="wave-type">${label}</span>
-                        <img src="${imageUrl}" alt="" class="wave-image">
+                        <div class="wave-image-wrapper">
+                            <img src="${imageUrl}" alt="" class="wave-image">
+                        </div>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
@@ -1141,14 +1777,14 @@
                 `;
             },
 
-            // Longform/Blog style (default)
+            // Longform/Blog style (default) - Editorial newspaper aesthetic
             longform(post, { label }) {
                 const imageUrl = WaveAnalyzer.getFirstImage(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 200);
                 const thumbHtml = imageUrl
                     ? `<img src="${imageUrl}" alt="" class="wave-thumb">`
-                    : '';
+                    : `<div class="wave-thumb"></div>`;
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--longform">
                         <span class="wave-type">${label}</span>
@@ -1163,11 +1799,12 @@
                 `;
             },
 
-            // Thought/Whisper style
+            // Thought/Whisper style - Dreamy thought bubble aesthetic
             thought(post, { label }) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--thought">
                         <span class="wave-type">${label}</span>
+                        <div class="wave-bubble-tail"></div>
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
@@ -1175,13 +1812,15 @@
                 `;
             },
 
-            // Journal style
+            // Journal style - Notebook paper aesthetic
             journal(post, { label }) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 250);
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--journal">
                         <span class="wave-type">${label}</span>
+                        <div class="wave-margin"></div>
+                        <div class="wave-stain"></div>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
@@ -1192,46 +1831,57 @@
                 `;
             },
 
-            // Todo/List style
+            // Todo/List style - Productivity checklist aesthetic
             todo(post, { label }) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--todo">
                         <span class="wave-type">${label}</span>
-                        <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-body">${excerpt}</p>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <div class="wave-checkbox"></div>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            // Link/Share style
+            // Link/Share style - Portal/discovery aesthetic
             link(post, { label }) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--link">
                         <span class="wave-type">${label}</span>
-                        <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-body">${excerpt}</p>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <div class="wave-grid"></div>
+                        <div class="wave-icon">${this.linkIconSvg}</div>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            // Video style
+            // Video style - Cinematic letterbox aesthetic
             video(post, { label }) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
                         <span class="wave-type">${label}</span>
-                        <div class="wave-preview"></div>
+                        <div class="wave-preview">
+                            <div class="wave-letterbox"></div>
+                            <div class="wave-play"></div>
+                        </div>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.arrowSvg}
                     </a>
                 `;
             }
