@@ -2067,6 +2067,11 @@
                 const hasImage = this.getFirstImage(post.content) !== null;
                 const hasVideoContent = this.hasVideo(post.content);
 
+                // Reading style - #read hashtag takes highest priority, overrides all other types
+                if (this.isReadingContent(content, plainText, post.title)) {
+                    return { type: 'reading', label: 'Reading' };
+                }
+
                 // Video takes priority - visual content dominates
                 if (hasVideoContent) {
                     return { type: 'video', label: 'Video' };
@@ -2085,11 +2090,6 @@
                 // Link share - external link focused
                 if (this.hasProminentLink(content)) {
                     return { type: 'link', label: 'Link' };
-                }
-
-                // Reading style - articles, PDFs, online content recommendations
-                if (this.isReadingContent(content, plainText, post.title)) {
-                    return { type: 'reading', label: 'Reading' };
                 }
 
                 // Tweet style - very short, punchy (classic 140)
