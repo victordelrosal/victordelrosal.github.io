@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Signals - Thoughts on AI, technology, and innovation from Victor del Rosal">
-    <title>Signals | Victor del Rosal</title>
+    <meta name="description" content="Waves - Thoughts on AI, technology, and innovation from Victor del Rosal">
+    <title>Waves | Victor del Rosal</title>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -13,15 +13,15 @@
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://victordelrosal.com/signals.html">
-    <meta property="og:title" content="Signals | Victor del Rosal">
+    <meta property="og:url" content="https://victordelrosal.com/waves.html">
+    <meta property="og:title" content="Waves | Victor del Rosal">
     <meta property="og:description" content="Thoughts on AI, technology, innovation, and the future of work">
     <meta property="og:image" content="https://victordelrosal.com/img/og-image.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://victordelrosal.com/signals.html">
-    <meta name="twitter:title" content="Signals | Victor del Rosal">
+    <meta name="twitter:url" content="https://victordelrosal.com/waves.html">
+    <meta name="twitter:title" content="Waves | Victor del Rosal">
     <meta name="twitter:description" content="Thoughts on AI, technology, innovation, and the future of work">
     <meta name="twitter:image" content="https://victordelrosal.com/img/og-image.png">
 
@@ -250,6 +250,33 @@
             color: var(--color-yellow);
         }
 
+        /* Wavy underline for Waves nav link */
+        nav a.nav-waves-link {
+            position: relative;
+        }
+
+        nav a.nav-waves-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 6' preserveAspectRatio='none'%3E%3Cpath d='M0 3 Q5 0, 10 3 T20 3 T30 3 T40 3' stroke='%23FFD700' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 20px 100%;
+            animation: wave-underline 2s linear infinite;
+        }
+
+        @keyframes wave-underline {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 0;
+            }
+        }
+
         /* ===== MAIN CONTENT ===== */
         main {
             padding: 8rem 2rem 4rem;
@@ -282,15 +309,17 @@
             display: inline-block;
         }
 
+        /* Wavy underline for page title */
         .page-title::after {
             content: '';
             position: absolute;
             bottom: -10px;
             left: 0;
             width: 100%;
-            height: 6px;
-            background: var(--color-yellow);
-            transform: rotate(-1deg);
+            height: 8px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 8' preserveAspectRatio='none'%3E%3Cpath d='M0 4 Q5 1, 10 4 T20 4 T30 4 T40 4' stroke='%23FFD700' stroke-width='3' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 20px 100%;
         }
 
         .page-description {
@@ -338,15 +367,15 @@
             color: rgba(0, 0, 0, 0.6);
         }
 
-        /* ===== SIGNALS LIST ===== */
-        .signals-list {
+        /* ===== WAVES LIST ===== */
+        .waves-list {
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        /* ===== BASE SIGNAL (The constant container) ===== */
-        .signal {
+        /* ===== BASE WAVE ENTRY (The constant container) ===== */
+        .wave-entry {
             background: white;
             border: 4px solid var(--color-black);
             position: relative;
@@ -356,7 +385,7 @@
             display: block;
         }
 
-        .signal::before {
+        .wave-entry::before {
             content: '';
             position: absolute;
             top: 12px;
@@ -368,16 +397,16 @@
             transition: all 150ms;
         }
 
-        .signal:hover {
+        .wave-entry:hover {
             transform: translate(-4px, -4px);
         }
 
-        .signal:hover::before {
+        .wave-entry:hover::before {
             background: var(--color-electric);
         }
 
-        /* Signal type indicator badge */
-        .signal-type {
+        /* Wave type indicator badge */
+        .wave-type {
             position: absolute;
             top: -12px;
             right: 1rem;
@@ -391,25 +420,25 @@
             z-index: 2;
         }
 
-        .signal-meta {
+        .wave-meta {
             font-family: var(--font-mono);
             font-size: 0.8rem;
             color: var(--color-navy);
             text-transform: uppercase;
         }
 
-        .signal-title {
+        .wave-title {
             font-weight: 700;
             line-height: 1.2;
         }
 
-        .signal-body {
+        .wave-body {
             font-family: var(--font-body);
             color: rgba(0, 0, 0, 0.8);
             line-height: 1.6;
         }
 
-        .signal-arrow {
+        .wave-arrow {
             position: absolute;
             right: 1.5rem;
             top: 50%;
@@ -419,97 +448,97 @@
             transition: opacity 150ms;
         }
 
-        .signal:hover .signal-arrow {
+        .wave-entry:hover .wave-arrow {
             opacity: 1;
         }
 
         /* =========================================
-           ADAPTIVE SIGNAL STYLES
-           Same signal, different internal treatment
+           ADAPTIVE WAVE STYLES
+           Same wave, different internal treatment
            ========================================= */
 
-        /* ----- TWEET STYLE (≤140 chars, classic Twitter) ----- */
-        .signal--tweet {
+        /* ----- TWEET STYLE (<=140 chars, classic Twitter) ----- */
+        .wave-entry--tweet {
             padding: 1.5rem 2rem;
         }
 
-        .signal--tweet::before {
+        .wave-entry--tweet::before {
             background: #1DA1F2;
         }
 
-        .signal--tweet:hover::before {
+        .wave-entry--tweet:hover::before {
             background: #0d8bd9;
         }
 
-        .signal--tweet .signal-type {
+        .wave-entry--tweet .wave-type {
             background: #1DA1F2;
         }
 
-        .signal--tweet .signal-title {
+        .wave-entry--tweet .wave-title {
             font-size: clamp(1.4rem, 4vw, 2rem);
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
-        .signal--tweet .signal-body {
+        .wave-entry--tweet .wave-body {
             display: none; /* Tweet is the title itself */
         }
 
-        .signal--tweet .signal-meta {
+        .wave-entry--tweet .wave-meta {
             margin-top: 1rem;
             padding-top: 1rem;
             border-top: 1px solid rgba(0,0,0,0.1);
         }
 
         /* ----- SKEET STYLE (141-280 chars, modern short post) ----- */
-        .signal--skeet {
+        .wave-entry--skeet {
             padding: 1.5rem 2rem;
         }
 
-        .signal--skeet::before {
+        .wave-entry--skeet::before {
             background: #0085FF;
         }
 
-        .signal--skeet:hover::before {
+        .wave-entry--skeet:hover::before {
             background: #0066cc;
         }
 
-        .signal--skeet .signal-type {
+        .wave-entry--skeet .wave-type {
             background: #0085FF;
         }
 
-        .signal--skeet .signal-title {
+        .wave-entry--skeet .wave-title {
             font-size: 1.3rem;
             margin-bottom: 0.75rem;
         }
 
-        .signal--skeet .signal-body {
+        .wave-entry--skeet .wave-body {
             font-size: 1.1rem;
         }
 
-        .signal--skeet .signal-meta {
+        .wave-entry--skeet .wave-meta {
             margin-top: 1rem;
         }
 
         /* ----- PHOTO/INSTAGRAM STYLE (has image, visual-first) ----- */
-        .signal--photo {
+        .wave-entry--photo {
             padding: 0;
             overflow: hidden;
         }
 
-        .signal--photo::before {
+        .wave-entry--photo::before {
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
-        .signal--photo:hover::before {
+        .wave-entry--photo:hover::before {
             background: linear-gradient(45deg, #bc1888 0%, #cc2366 25%, #dc2743 50%, #e6683c 75%, #f09433 100%);
         }
 
-        .signal--photo .signal-type {
+        .wave-entry--photo .wave-type {
             background: linear-gradient(45deg, #e6683c, #dc2743);
         }
 
-        .signal--photo .signal-image {
+        .wave-entry--photo .wave-image {
             width: 100%;
             max-height: 400px;
             object-fit: cover;
@@ -517,42 +546,42 @@
             border-bottom: 4px solid var(--color-black);
         }
 
-        .signal--photo .signal-content {
+        .wave-entry--photo .wave-content {
             padding: 1.5rem;
         }
 
-        .signal--photo .signal-title {
+        .wave-entry--photo .wave-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
 
-        .signal--photo .signal-body {
+        .wave-entry--photo .wave-body {
             font-size: 1rem;
             color: rgba(0,0,0,0.7);
         }
 
-        .signal--photo .signal-meta {
+        .wave-entry--photo .wave-meta {
             margin-top: 0.75rem;
             font-size: 0.75rem;
         }
 
-        /* ----- LONGFORM/BLOG STYLE (≥500 chars, structured) ----- */
-        .signal--longform {
+        /* ----- LONGFORM/BLOG STYLE (>=500 chars, structured) ----- */
+        .wave-entry--longform {
             padding: 2rem;
             display: flex;
             gap: 1.5rem;
             align-items: flex-start;
         }
 
-        .signal--longform::before {
+        .wave-entry--longform::before {
             background: var(--color-coral);
         }
 
-        .signal--longform .signal-type {
+        .wave-entry--longform .wave-type {
             background: var(--color-navy);
         }
 
-        .signal--longform .signal-thumb {
+        .wave-entry--longform .wave-thumb {
             width: 120px;
             height: 120px;
             min-width: 120px;
@@ -561,89 +590,89 @@
             background: var(--color-cream);
         }
 
-        .signal--longform .signal-content {
+        .wave-entry--longform .wave-content {
             flex: 1;
             min-width: 0;
         }
 
-        .signal--longform .signal-meta {
+        .wave-entry--longform .wave-meta {
             margin-bottom: 0.75rem;
         }
 
-        .signal--longform .signal-title {
+        .wave-entry--longform .wave-title {
             font-size: 1.5rem;
             margin-bottom: 0.75rem;
         }
 
-        .signal--longform .signal-body {
+        .wave-entry--longform .wave-body {
             font-size: 1.1rem;
         }
 
         /* ----- THOUGHT/WHISPER STYLE (informal, ephemeral feel) ----- */
-        .signal--thought {
+        .wave-entry--thought {
             padding: 1.5rem 2rem;
             background: #FFFEF5;
             border-style: dashed;
         }
 
-        .signal--thought::before {
+        .wave-entry--thought::before {
             background: var(--color-yellow);
             opacity: 0.6;
         }
 
-        .signal--thought:hover::before {
+        .wave-entry--thought:hover::before {
             background: var(--color-lime);
             opacity: 0.8;
         }
 
-        .signal--thought .signal-type {
+        .wave-entry--thought .wave-type {
             background: #B8860B;
         }
 
-        .signal--thought .signal-title {
+        .wave-entry--thought .wave-title {
             font-family: var(--font-body);
             font-size: 1.3rem;
             font-style: italic;
             font-weight: 500;
         }
 
-        .signal--thought .signal-body {
+        .wave-entry--thought .wave-body {
             display: none;
         }
 
-        .signal--thought .signal-meta {
+        .wave-entry--thought .wave-meta {
             margin-top: 1rem;
             opacity: 0.6;
         }
 
         /* ----- JOURNAL STYLE (stream of consciousness) ----- */
-        .signal--journal {
+        .wave-entry--journal {
             padding: 2rem 2.5rem;
             background: linear-gradient(to bottom, #FFFEF8 0%, #FFF9E6 100%);
             border-color: #D4C5A0;
             border-width: 2px;
         }
 
-        .signal--journal::before {
+        .wave-entry--journal::before {
             background: #D4C5A0;
             opacity: 0.4;
         }
 
-        .signal--journal:hover::before {
+        .wave-entry--journal:hover::before {
             background: #C4B590;
             opacity: 0.6;
         }
 
-        .signal--journal .signal-type {
+        .wave-entry--journal .wave-type {
             background: #8B7355;
         }
 
-        .signal--journal .signal-content {
+        .wave-entry--journal .wave-content {
             border-left: 3px solid rgba(139, 115, 85, 0.3);
             padding-left: 1.5rem;
         }
 
-        .signal--journal .signal-title {
+        .wave-entry--journal .wave-title {
             font-family: var(--font-body);
             font-size: 1.1rem;
             font-weight: 400;
@@ -651,104 +680,104 @@
             color: #5D4E37;
         }
 
-        .signal--journal .signal-body {
+        .wave-entry--journal .wave-body {
             font-size: 1.05rem;
             font-style: italic;
             color: #6B5B45;
         }
 
-        .signal--journal .signal-meta {
+        .wave-entry--journal .wave-meta {
             margin-top: 1.5rem;
             color: #9B8B75;
         }
 
         /* ----- TODO/LIST STYLE (actionable items) ----- */
-        .signal--todo {
+        .wave-entry--todo {
             padding: 1.5rem 2rem;
             background: #F8FFF8;
             border-left: 6px solid var(--color-lime);
         }
 
-        .signal--todo::before {
+        .wave-entry--todo::before {
             background: var(--color-lime);
             opacity: 0.5;
         }
 
-        .signal--todo:hover::before {
+        .wave-entry--todo:hover::before {
             background: #90EE90;
             opacity: 0.7;
         }
 
-        .signal--todo .signal-type {
+        .wave-entry--todo .wave-type {
             background: #228B22;
         }
 
-        .signal--todo .signal-title {
+        .wave-entry--todo .wave-title {
             font-family: var(--font-mono);
             font-size: 1rem;
             font-weight: 500;
         }
 
-        .signal--todo .signal-body {
+        .wave-entry--todo .wave-body {
             font-family: var(--font-mono);
             font-size: 0.95rem;
         }
 
-        .signal--todo .signal-meta {
+        .wave-entry--todo .wave-meta {
             margin-top: 1rem;
         }
 
         /* ----- LINK/SHARE STYLE (external link prominent) ----- */
-        .signal--link {
+        .wave-entry--link {
             padding: 1.5rem 2rem;
             background: #F5F8FF;
         }
 
-        .signal--link::before {
+        .wave-entry--link::before {
             background: var(--color-electric);
         }
 
-        .signal--link:hover::before {
+        .wave-entry--link:hover::before {
             background: #0044cc;
         }
 
-        .signal--link .signal-type {
+        .wave-entry--link .wave-type {
             background: var(--color-electric);
         }
 
-        .signal--link .signal-title {
+        .wave-entry--link .wave-title {
             font-size: 1.2rem;
             color: var(--color-electric);
             margin-bottom: 0.5rem;
         }
 
-        .signal--link .signal-body {
+        .wave-entry--link .wave-body {
             font-size: 1rem;
         }
 
-        .signal--link .signal-meta {
+        .wave-entry--link .wave-meta {
             margin-top: 0.75rem;
         }
 
         /* ----- VIDEO STYLE (video content) ----- */
-        .signal--video {
+        .wave-entry--video {
             padding: 0;
             overflow: hidden;
         }
 
-        .signal--video::before {
+        .wave-entry--video::before {
             background: #000;
         }
 
-        .signal--video:hover::before {
+        .wave-entry--video:hover::before {
             background: #FF0050;
         }
 
-        .signal--video .signal-type {
+        .wave-entry--video .wave-type {
             background: #FF0050;
         }
 
-        .signal--video .signal-preview {
+        .wave-entry--video .wave-preview {
             position: relative;
             background: #000;
             min-height: 200px;
@@ -757,7 +786,7 @@
             justify-content: center;
         }
 
-        .signal--video .signal-preview::after {
+        .wave-entry--video .wave-preview::after {
             content: '';
             width: 60px;
             height: 60px;
@@ -768,7 +797,7 @@
             justify-content: center;
         }
 
-        .signal--video .signal-preview::before {
+        .wave-entry--video .wave-preview::before {
             content: '';
             position: absolute;
             width: 0;
@@ -779,18 +808,18 @@
             z-index: 1;
         }
 
-        .signal--video .signal-content {
+        .wave-entry--video .wave-content {
             padding: 1rem 1.5rem;
             background: #000;
             color: white;
         }
 
-        .signal--video .signal-title {
+        .wave-entry--video .wave-title {
             font-size: 1rem;
             color: white;
         }
 
-        .signal--video .signal-meta {
+        .wave-entry--video .wave-meta {
             color: rgba(255,255,255,0.6);
             margin-top: 0.5rem;
         }
@@ -810,22 +839,22 @@
                 padding: 6rem 1.5rem 3rem;
             }
 
-            .signal--longform {
+            .wave-entry--longform {
                 padding: 1.5rem;
                 flex-direction: column;
             }
 
-            .signal--longform .signal-thumb {
+            .wave-entry--longform .wave-thumb {
                 width: 80px;
                 height: 80px;
                 min-width: 80px;
             }
 
-            .signal-arrow {
+            .wave-arrow {
                 display: none;
             }
 
-            .signal--photo .signal-image {
+            .wave-entry--photo .wave-image {
                 max-height: 300px;
             }
         }
@@ -860,7 +889,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="/#profile">About</a></li>
             <li><a href="/#output">Work</a></li>
-            <li><a href="/signals.html" class="active">Signals</a></li>
+            <li><a href="/waves.html" class="active nav-waves-link">Waves</a></li>
             <li><a href="/#contact">Contact</a></li>
         </ul>
     </nav>
@@ -869,7 +898,7 @@
         <!-- Header -->
         <header class="page-header">
             <span class="section-label">// Blog</span>
-            <h1 class="page-title">Signals</h1>
+            <h1 class="page-title">Waves</h1>
             <p class="page-description">
                 Thoughts on AI, technology, innovation, and the future of work.
                 Raw ideas from the lab, polished insights from teaching.
@@ -882,12 +911,12 @@
             <p>Loading posts...</p>
         </div>
 
-        <!-- Signals Container -->
-        <div id="signals-container" class="signals-list" style="display: none;"></div>
+        <!-- Waves Container -->
+        <div id="waves-container" class="waves-list" style="display: none;"></div>
 
         <!-- Empty State -->
         <div id="empty-state" class="empty-state" style="display: none;">
-            <h2>No signals yet</h2>
+            <h2>No waves yet</h2>
             <p>Check back soon for new posts.</p>
         </div>
     </main>
@@ -897,13 +926,13 @@
 
     <script>
         /**
-         * SIGNAL ADAPTATION ENGINE
-         * Analyzes content and determines the appropriate signal type
-         * The signal remains a signal - only the internal presentation adapts
+         * WAVE ADAPTATION ENGINE
+         * Analyzes content and determines the appropriate wave type
+         * The wave remains a wave - only the internal presentation adapts
          */
 
-        // Configuration thresholds (tune these to adjust signal classification)
-        const SIGNAL_THRESHOLDS = {
+        // Configuration thresholds (tune these to adjust wave classification)
+        const WAVE_THRESHOLDS = {
             TWEET_MAX_CHARS: 140,      // Classic Twitter limit
             SKEET_MAX_CHARS: 300,      // Modern short post (Bluesky-ish)
             THOUGHT_MAX_CHARS: 200,    // Quick informal thought
@@ -912,7 +941,7 @@
         };
 
         // Content analysis utilities
-        const SignalAnalyzer = {
+        const WaveAnalyzer = {
             // Get plain text from HTML
             getPlainText(html) {
                 const temp = document.createElement('div');
@@ -976,7 +1005,7 @@
                     /\.\.\./,                      // Ellipsis indicates trailing thought
                     /^[a-z]/,                      // Starts lowercase (informal)
                 ];
-                return text.length < SIGNAL_THRESHOLDS.THOUGHT_MAX_CHARS &&
+                return text.length < WAVE_THRESHOLDS.THOUGHT_MAX_CHARS &&
                        informalPatterns.some(p => p.test(combined));
             },
 
@@ -988,17 +1017,17 @@
                     /i (felt|thought|realized|noticed|wondered)/i,
                     /stream of|consciousness|rambling/i
                 ];
-                return text.length >= SIGNAL_THRESHOLDS.JOURNAL_MIN_CHARS &&
-                       text.length < SIGNAL_THRESHOLDS.LONGFORM_MIN_CHARS &&
+                return text.length >= WAVE_THRESHOLDS.JOURNAL_MIN_CHARS &&
+                       text.length < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS &&
                        journalPatterns.some(p => p.test(combined));
             },
 
             /**
              * MAIN CLASSIFICATION FUNCTION
-             * Determines signal type based on content characteristics
+             * Determines wave type based on content characteristics
              * Priority order matters - more specific types checked first
              */
-            classifySignal(post) {
+            classifyWave(post) {
                 const content = this.stripFirstLine(post.content);
                 const plainText = this.getPlainText(content);
                 const charCount = plainText.length;
@@ -1011,7 +1040,7 @@
                 }
 
                 // Photo/Instagram style - image with short caption
-                if (hasImage && charCount < SIGNAL_THRESHOLDS.LONGFORM_MIN_CHARS) {
+                if (hasImage && charCount < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS) {
                     return { type: 'photo', label: 'Photo' };
                 }
 
@@ -1026,7 +1055,7 @@
                 }
 
                 // Tweet style - very short, punchy (classic 140)
-                if (charCount <= SIGNAL_THRESHOLDS.TWEET_MAX_CHARS && !hasImage) {
+                if (charCount <= WAVE_THRESHOLDS.TWEET_MAX_CHARS && !hasImage) {
                     return { type: 'tweet', label: '140' };
                 }
 
@@ -1036,7 +1065,7 @@
                 }
 
                 // Skeet style - modern short post (141-300)
-                if (charCount <= SIGNAL_THRESHOLDS.SKEET_MAX_CHARS && !hasImage) {
+                if (charCount <= WAVE_THRESHOLDS.SKEET_MAX_CHARS && !hasImage) {
                     return { type: 'skeet', label: 'Short' };
                 }
 
@@ -1051,13 +1080,13 @@
         };
 
         /**
-         * SIGNAL RENDERER
-         * Generates HTML for each signal type
-         * All are signals - just with different internal layouts
+         * WAVE RENDERER
+         * Generates HTML for each wave type
+         * All are waves - just with different internal layouts
          */
-        const SignalRenderer = {
-            // Arrow SVG used across signal types
-            arrowSvg: `<svg class="signal-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        const WaveRenderer = {
+            // Arrow SVG used across wave types
+            arrowSvg: `<svg class="wave-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>`,
 
@@ -1066,13 +1095,13 @@
                 return renderer.call(this, post, classification);
             },
 
-            // Tweet style (≤140 chars)
+            // Tweet style (<=140 chars)
             tweet(post, { label }) {
                 return `
-                    <a href="/${post.slug}" class="signal signal--tweet">
-                        <span class="signal-type">${label}</span>
-                        <h2 class="signal-title">${post.title}</h2>
-                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -1080,14 +1109,14 @@
 
             // Skeet style (141-300 chars)
             skeet(post, { label }) {
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 280);
                 return `
-                    <a href="/${post.slug}" class="signal signal--skeet">
-                        <span class="signal-type">${label}</span>
-                        <h2 class="signal-title">${post.title}</h2>
-                        <p class="signal-body">${excerpt}</p>
-                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--skeet">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-body">${excerpt}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -1095,17 +1124,17 @@
 
             // Photo/Instagram style
             photo(post, { label }) {
-                const imageUrl = SignalAnalyzer.getFirstImage(post.content);
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
-                    <a href="/${post.slug}" class="signal signal--photo">
-                        <span class="signal-type">${label}</span>
-                        <img src="${imageUrl}" alt="" class="signal-image">
-                        <div class="signal-content">
-                            <h2 class="signal-title">${post.title}</h2>
-                            <p class="signal-body">${excerpt}</p>
-                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--photo">
+                        <span class="wave-type">${label}</span>
+                        <img src="${imageUrl}" alt="" class="wave-image">
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
@@ -1114,20 +1143,20 @@
 
             // Longform/Blog style (default)
             longform(post, { label }) {
-                const imageUrl = SignalAnalyzer.getFirstImage(post.content);
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 200);
                 const thumbHtml = imageUrl
-                    ? `<img src="${imageUrl}" alt="" class="signal-thumb">`
+                    ? `<img src="${imageUrl}" alt="" class="wave-thumb">`
                     : '';
                 return `
-                    <a href="/${post.slug}" class="signal signal--longform">
-                        <span class="signal-type">${label}</span>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--longform">
+                        <span class="wave-type">${label}</span>
                         ${thumbHtml}
-                        <div class="signal-content">
-                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                            <h2 class="signal-title">${post.title}</h2>
-                            <p class="signal-body">${excerpt}</p>
+                        <div class="wave-content">
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
@@ -1137,10 +1166,10 @@
             // Thought/Whisper style
             thought(post, { label }) {
                 return `
-                    <a href="/${post.slug}" class="signal signal--thought">
-                        <span class="signal-type">${label}</span>
-                        <h2 class="signal-title">${post.title}</h2>
-                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--thought">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -1148,15 +1177,15 @@
 
             // Journal style
             journal(post, { label }) {
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 250);
                 return `
-                    <a href="/${post.slug}" class="signal signal--journal">
-                        <span class="signal-type">${label}</span>
-                        <div class="signal-content">
-                            <h2 class="signal-title">${post.title}</h2>
-                            <p class="signal-body">${excerpt}</p>
-                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--journal">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
@@ -1165,14 +1194,14 @@
 
             // Todo/List style
             todo(post, { label }) {
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
-                    <a href="/${post.slug}" class="signal signal--todo">
-                        <span class="signal-type">${label}</span>
-                        <h2 class="signal-title">${post.title}</h2>
-                        <p class="signal-body">${excerpt}</p>
-                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--todo">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-body">${excerpt}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -1180,14 +1209,14 @@
 
             // Link/Share style
             link(post, { label }) {
-                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
-                    <a href="/${post.slug}" class="signal signal--link">
-                        <span class="signal-type">${label}</span>
-                        <h2 class="signal-title">${post.title}</h2>
-                        <p class="signal-body">${excerpt}</p>
-                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--link">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-body">${excerpt}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -1196,23 +1225,23 @@
             // Video style
             video(post, { label }) {
                 return `
-                    <a href="/${post.slug}" class="signal signal--video">
-                        <span class="signal-type">${label}</span>
-                        <div class="signal-preview"></div>
-                        <div class="signal-content">
-                            <h2 class="signal-title">${post.title}</h2>
-                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    <a href="/${post.slug}" class="wave-entry wave-entry--video">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-preview"></div>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                     </a>
                 `;
             }
         };
 
-        // Fetch and render signals
+        // Fetch and render waves
         (async function() {
             try {
                 const posts = await window.PostsAPI.fetchPosts();
-                const container = document.getElementById('signals-container');
+                const container = document.getElementById('waves-container');
                 const loading = document.getElementById('loading');
                 const emptyState = document.getElementById('empty-state');
 
@@ -1223,15 +1252,15 @@
                     return;
                 }
 
-                // Classify and render each signal
+                // Classify and render each wave
                 container.innerHTML = posts.map(post => {
-                    const classification = SignalAnalyzer.classifySignal(post);
-                    return SignalRenderer.render(post, classification);
+                    const classification = WaveAnalyzer.classifyWave(post);
+                    return WaveRenderer.render(post, classification);
                 }).join('');
 
                 container.style.display = 'flex';
             } catch (error) {
-                console.error('Error loading signals:', error);
+                console.error('Error loading waves:', error);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
             }

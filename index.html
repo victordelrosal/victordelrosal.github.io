@@ -246,6 +246,33 @@
             color: var(--color-yellow);
         }
 
+        /* Wavy underline for Waves nav link */
+        nav a.nav-waves-link {
+            position: relative;
+        }
+
+        nav a.nav-waves-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 6' preserveAspectRatio='none'%3E%3Cpath d='M0 3 Q5 0, 10 3 T20 3 T30 3 T40 3' stroke='%23FFD700' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 20px 100%;
+            animation: wave-underline 2s linear infinite;
+        }
+
+        @keyframes wave-underline {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 0;
+            }
+        }
+
         /* ===== HERO (HUGE & ASYMMETRIC) ===== */
         #hero {
             min-height: 100vh;
@@ -635,7 +662,7 @@
             <li><a href="#hero">Home</a></li>
             <li><a href="#profile">About</a></li>
             <li><a href="#output">Work</a></li>
-            <li><a href="/signals.html">Signals</a></li>
+            <li><a href="/waves.html" class="nav-waves-link">Waves</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
