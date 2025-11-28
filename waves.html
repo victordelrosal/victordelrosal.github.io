@@ -721,6 +721,120 @@
             transform: none;
         }
 
+        /* Photo Gallery - Scrollable multi-image support */
+        .wave-entry--photo-gallery {
+            cursor: pointer;
+        }
+
+        .wave-entry--photo .wave-gallery {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-entry--photo .wave-gallery-track {
+            display: flex;
+            transition: transform 0.3s ease-out;
+        }
+
+        .wave-entry--photo .wave-gallery-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .wave-entry--photo .wave-gallery-slide img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Gallery chevron navigation */
+        .wave-gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s, background 0.15s, opacity 0.15s;
+            opacity: 0;
+        }
+
+        .wave-entry--photo:hover .wave-gallery-nav {
+            opacity: 1;
+        }
+
+        .wave-gallery-nav:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .wave-gallery-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .wave-gallery-nav--prev {
+            left: 12px;
+        }
+
+        .wave-gallery-nav--next {
+            right: 12px;
+        }
+
+        .wave-gallery-nav svg {
+            width: 20px;
+            height: 20px;
+            color: #262626;
+        }
+
+        .wave-gallery-nav:disabled {
+            opacity: 0.3 !important;
+            cursor: not-allowed;
+        }
+
+        .wave-gallery-nav:disabled:hover {
+            transform: translateY(-50%);
+        }
+
+        /* Gallery dots indicator */
+        .wave-gallery-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .wave-gallery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .wave-gallery-dot:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .wave-gallery-dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+
         /* ═══════════════════════════════════════════════════════════
            LONGFORM STYLE - Editorial / Newspaper Aesthetic
            Scholarly design with drop cap feel and serif elegance
@@ -1393,6 +1507,33 @@
                 max-height: 280px;
             }
 
+            .wave-entry--photo .wave-gallery-slide img {
+                max-height: 280px;
+            }
+
+            .wave-gallery-nav {
+                width: 32px;
+                height: 32px;
+                opacity: 0.8;
+            }
+
+            .wave-entry--photo:hover .wave-gallery-nav {
+                opacity: 0.9;
+            }
+
+            .wave-gallery-nav--prev {
+                left: 8px;
+            }
+
+            .wave-gallery-nav--next {
+                right: 8px;
+            }
+
+            .wave-gallery-nav svg {
+                width: 16px;
+                height: 16px;
+            }
+
             /* Longform responsive */
             .wave-entry--longform {
                 flex-direction: column;
@@ -1594,6 +1735,14 @@
                 return img ? img.src : null;
             },
 
+            // Extract ALL image URLs from HTML content
+            getAllImages(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const imgs = temp.querySelectorAll('img');
+                return Array.from(imgs).map(img => img.src);
+            },
+
             // Check if content has video
             hasVideo(html) {
                 const temp = document.createElement('div');
@@ -1756,25 +1905,77 @@
                 `;
             },
 
-            // Photo/Instagram style - Polaroid frame aesthetic
+            // Chevron SVGs for gallery navigation
+            chevronLeftSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>`,
+
+            chevronRightSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>`,
+
+            // Photo/Instagram style - Polaroid frame aesthetic (with gallery support)
             photo(post, { label }) {
-                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+                const images = WaveAnalyzer.getAllImages(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
-                return `
-                    <a href="/${post.slug}" class="wave-entry wave-entry--photo">
-                        <span class="wave-type">${label}</span>
-                        <div class="wave-image-wrapper">
-                            <img src="${imageUrl}" alt="" class="wave-image">
+                const isGallery = images.length > 1;
+
+                if (isGallery) {
+                    // Gallery mode - multiple images with chevron navigation
+                    const slidesHtml = images.map((url, index) => `
+                        <div class="wave-gallery-slide">
+                            <img src="${url}" alt="" loading="${index === 0 ? 'eager' : 'lazy'}">
                         </div>
-                        <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
-                            <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                    `).join('');
+
+                    const dotsHtml = images.map((_, index) => `
+                        <button class="wave-gallery-dot${index === 0 ? ' active' : ''}" data-index="${index}" aria-label="Go to image ${index + 1}"></button>
+                    `).join('');
+
+                    return `
+                        <div class="wave-entry wave-entry--photo wave-entry--photo-gallery" data-slug="${post.slug}">
+                            <span class="wave-type">${label}</span>
+                            <div class="wave-image-wrapper wave-gallery">
+                                <div class="wave-gallery-track">
+                                    ${slidesHtml}
+                                </div>
+                                <button class="wave-gallery-nav wave-gallery-nav--prev" disabled aria-label="Previous image">
+                                    ${this.chevronLeftSvg}
+                                </button>
+                                <button class="wave-gallery-nav wave-gallery-nav--next" aria-label="Next image">
+                                    ${this.chevronRightSvg}
+                                </button>
+                                <div class="wave-gallery-dots">
+                                    ${dotsHtml}
+                                </div>
+                            </div>
+                            <a href="/${post.slug}" class="wave-content">
+                                <h2 class="wave-title">${post.title}</h2>
+                                <p class="wave-body">${excerpt}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            </a>
+                            ${this.arrowSvg}
                         </div>
-                        ${this.arrowSvg}
-                    </a>
-                `;
+                    `;
+                } else {
+                    // Single image mode - original behavior
+                    const imageUrl = images[0];
+                    return `
+                        <a href="/${post.slug}" class="wave-entry wave-entry--photo">
+                            <span class="wave-type">${label}</span>
+                            <div class="wave-image-wrapper">
+                                <img src="${imageUrl}" alt="" class="wave-image">
+                            </div>
+                            <div class="wave-content">
+                                <h2 class="wave-title">${post.title}</h2>
+                                <p class="wave-body">${excerpt}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            </div>
+                            ${this.arrowSvg}
+                        </a>
+                    `;
+                }
             },
 
             // Longform/Blog style (default) - Editorial newspaper aesthetic
@@ -1887,6 +2088,110 @@
             }
         };
 
+        /**
+         * GALLERY CONTROLLER
+         * Handles scrollable photo gallery navigation
+         */
+        const GalleryController = {
+            init() {
+                const galleries = document.querySelectorAll('.wave-entry--photo-gallery');
+                galleries.forEach(gallery => this.setupGallery(gallery));
+            },
+
+            setupGallery(gallery) {
+                const track = gallery.querySelector('.wave-gallery-track');
+                const slides = gallery.querySelectorAll('.wave-gallery-slide');
+                const prevBtn = gallery.querySelector('.wave-gallery-nav--prev');
+                const nextBtn = gallery.querySelector('.wave-gallery-nav--next');
+                const dots = gallery.querySelectorAll('.wave-gallery-dot');
+
+                let currentIndex = 0;
+                const totalSlides = slides.length;
+
+                const updateGallery = () => {
+                    // Update track position
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                    // Update button states
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex === totalSlides - 1;
+
+                    // Update dots
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                };
+
+                // Previous button
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateGallery();
+                    }
+                });
+
+                // Next button
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (currentIndex < totalSlides - 1) {
+                        currentIndex++;
+                        updateGallery();
+                    }
+                });
+
+                // Dot navigation
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        currentIndex = index;
+                        updateGallery();
+                    });
+                });
+
+                // Touch/swipe support
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                track.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                track.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const swipeThreshold = 50;
+                    const diff = touchStartX - touchEndX;
+
+                    if (Math.abs(diff) > swipeThreshold) {
+                        if (diff > 0 && currentIndex < totalSlides - 1) {
+                            // Swipe left - go next
+                            currentIndex++;
+                            updateGallery();
+                        } else if (diff < 0 && currentIndex > 0) {
+                            // Swipe right - go previous
+                            currentIndex--;
+                            updateGallery();
+                        }
+                    }
+                }, { passive: true });
+
+                // Click on gallery area navigates to post (but not on buttons)
+                gallery.addEventListener('click', (e) => {
+                    // Only navigate if clicking outside navigation elements
+                    if (!e.target.closest('.wave-gallery-nav') &&
+                        !e.target.closest('.wave-gallery-dot')) {
+                        const slug = gallery.dataset.slug;
+                        if (slug) {
+                            window.location.href = '/' + slug;
+                        }
+                    }
+                });
+            }
+        };
+
         // Fetch and render waves
         (async function() {
             try {
@@ -1909,6 +2214,9 @@
                 }).join('');
 
                 container.style.display = 'flex';
+
+                // Initialize photo galleries after rendering
+                GalleryController.init();
             } catch (error) {
                 console.error('Error loading waves:', error);
                 document.getElementById('loading').style.display = 'none';
