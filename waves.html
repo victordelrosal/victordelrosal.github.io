@@ -2048,32 +2048,11 @@
                        journalPatterns.some(p => p.test(combined));
             },
 
-            // Check for reading-style content (articles, PDFs, online content - not books)
+            // Check for reading-style content - only triggered by #read hashtag
             isReadingContent(html, text, title) {
-                const combined = (title + ' ' + text).toLowerCase();
-
-                // Reading-related keywords and patterns
-                const readingPatterns = [
-                    /reading|read this|worth reading|must read|good read/i,
-                    /article|paper|piece|essay|post|write-up/i,
-                    /interesting (article|piece|read|paper)/i,
-                    /check out this|found this|came across/i,
-                    /recommended|fascinating|insightful/i,
-                    /\.pdf|pdf\b/i,
-                    /via\s+@|h\/t\s+|hat tip/i,  // Attribution patterns
-                ];
-
-                // Check for links to article-like sources
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                const links = temp.querySelectorAll('a[href^="http"]');
-                const articleDomains = /medium\.com|substack\.com|arxiv\.org|news\.|blog\.|\.pdf|notion\.so|github\.com.*readme/i;
-                const hasArticleLink = Array.from(links).some(link => articleDomains.test(link.href));
-
-                // It's reading content if it matches patterns or has article links
-                const matchesPatterns = readingPatterns.some(p => p.test(combined));
-
-                return matchesPatterns || hasArticleLink;
+                const combined = (title + ' ' + text);
+                // Only trigger on #read hashtag (case-insensitive)
+                return /#read\b/i.test(combined);
             },
 
             /**
