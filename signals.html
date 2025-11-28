@@ -338,27 +338,25 @@
             color: rgba(0, 0, 0, 0.6);
         }
 
-        /* ===== POST LIST ===== */
-        .posts-list {
+        /* ===== SIGNALS LIST ===== */
+        .signals-list {
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        .post-card {
+        /* ===== BASE SIGNAL (The constant container) ===== */
+        .signal {
             background: white;
             border: 4px solid var(--color-black);
-            padding: 2rem;
             position: relative;
             transition: transform 150ms;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
+            display: block;
         }
 
-        .post-card::before {
+        .signal::before {
             content: '';
             position: absolute;
             top: 12px;
@@ -370,54 +368,50 @@
             transition: all 150ms;
         }
 
-        .post-card:hover {
+        .signal:hover {
             transform: translate(-4px, -4px);
         }
 
-        /* Post thumbnail */
-        .post-card-thumb {
-            width: 100px;
-            height: 100px;
-            min-width: 100px;
-            border: 3px solid var(--color-black);
-            object-fit: cover;
-            background: var(--color-cream);
-        }
-
-        .post-card-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .post-card:hover::before {
+        .signal:hover::before {
             background: var(--color-electric);
         }
 
-        .post-card-meta {
+        /* Signal type indicator badge */
+        .signal-type {
+            position: absolute;
+            top: -12px;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.5rem;
+            background: var(--color-navy);
+            color: white;
+            z-index: 2;
+        }
+
+        .signal-meta {
             font-family: var(--font-mono);
             font-size: 0.8rem;
             color: var(--color-navy);
             text-transform: uppercase;
-            margin-bottom: 0.75rem;
         }
 
-        .post-card-title {
-            font-size: 1.5rem;
+        .signal-title {
             font-weight: 700;
-            margin-bottom: 0.75rem;
             line-height: 1.2;
         }
 
-        .post-card-excerpt {
+        .signal-body {
             font-family: var(--font-body);
-            font-size: 1.1rem;
-            color: rgba(0, 0, 0, 0.7);
+            color: rgba(0, 0, 0, 0.8);
             line-height: 1.6;
         }
 
-        .post-card-arrow {
+        .signal-arrow {
             position: absolute;
-            right: 2rem;
+            right: 1.5rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--color-navy);
@@ -425,8 +419,380 @@
             transition: opacity 150ms;
         }
 
-        .post-card:hover .post-card-arrow {
+        .signal:hover .signal-arrow {
             opacity: 1;
+        }
+
+        /* =========================================
+           ADAPTIVE SIGNAL STYLES
+           Same signal, different internal treatment
+           ========================================= */
+
+        /* ----- TWEET STYLE (≤140 chars, classic Twitter) ----- */
+        .signal--tweet {
+            padding: 1.5rem 2rem;
+        }
+
+        .signal--tweet::before {
+            background: #1DA1F2;
+        }
+
+        .signal--tweet:hover::before {
+            background: #0d8bd9;
+        }
+
+        .signal--tweet .signal-type {
+            background: #1DA1F2;
+        }
+
+        .signal--tweet .signal-title {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .signal--tweet .signal-body {
+            display: none; /* Tweet is the title itself */
+        }
+
+        .signal--tweet .signal-meta {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* ----- SKEET STYLE (141-280 chars, modern short post) ----- */
+        .signal--skeet {
+            padding: 1.5rem 2rem;
+        }
+
+        .signal--skeet::before {
+            background: #0085FF;
+        }
+
+        .signal--skeet:hover::before {
+            background: #0066cc;
+        }
+
+        .signal--skeet .signal-type {
+            background: #0085FF;
+        }
+
+        .signal--skeet .signal-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .signal--skeet .signal-body {
+            font-size: 1.1rem;
+        }
+
+        .signal--skeet .signal-meta {
+            margin-top: 1rem;
+        }
+
+        /* ----- PHOTO/INSTAGRAM STYLE (has image, visual-first) ----- */
+        .signal--photo {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .signal--photo::before {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .signal--photo:hover::before {
+            background: linear-gradient(45deg, #bc1888 0%, #cc2366 25%, #dc2743 50%, #e6683c 75%, #f09433 100%);
+        }
+
+        .signal--photo .signal-type {
+            background: linear-gradient(45deg, #e6683c, #dc2743);
+        }
+
+        .signal--photo .signal-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 4px solid var(--color-black);
+        }
+
+        .signal--photo .signal-content {
+            padding: 1.5rem;
+        }
+
+        .signal--photo .signal-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signal--photo .signal-body {
+            font-size: 1rem;
+            color: rgba(0,0,0,0.7);
+        }
+
+        .signal--photo .signal-meta {
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* ----- LONGFORM/BLOG STYLE (≥500 chars, structured) ----- */
+        .signal--longform {
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .signal--longform::before {
+            background: var(--color-coral);
+        }
+
+        .signal--longform .signal-type {
+            background: var(--color-navy);
+        }
+
+        .signal--longform .signal-thumb {
+            width: 120px;
+            height: 120px;
+            min-width: 120px;
+            border: 3px solid var(--color-black);
+            object-fit: cover;
+            background: var(--color-cream);
+        }
+
+        .signal--longform .signal-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .signal--longform .signal-meta {
+            margin-bottom: 0.75rem;
+        }
+
+        .signal--longform .signal-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .signal--longform .signal-body {
+            font-size: 1.1rem;
+        }
+
+        /* ----- THOUGHT/WHISPER STYLE (informal, ephemeral feel) ----- */
+        .signal--thought {
+            padding: 1.5rem 2rem;
+            background: #FFFEF5;
+            border-style: dashed;
+        }
+
+        .signal--thought::before {
+            background: var(--color-yellow);
+            opacity: 0.6;
+        }
+
+        .signal--thought:hover::before {
+            background: var(--color-lime);
+            opacity: 0.8;
+        }
+
+        .signal--thought .signal-type {
+            background: #B8860B;
+        }
+
+        .signal--thought .signal-title {
+            font-family: var(--font-body);
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .signal--thought .signal-body {
+            display: none;
+        }
+
+        .signal--thought .signal-meta {
+            margin-top: 1rem;
+            opacity: 0.6;
+        }
+
+        /* ----- JOURNAL STYLE (stream of consciousness) ----- */
+        .signal--journal {
+            padding: 2rem 2.5rem;
+            background: linear-gradient(to bottom, #FFFEF8 0%, #FFF9E6 100%);
+            border-color: #D4C5A0;
+            border-width: 2px;
+        }
+
+        .signal--journal::before {
+            background: #D4C5A0;
+            opacity: 0.4;
+        }
+
+        .signal--journal:hover::before {
+            background: #C4B590;
+            opacity: 0.6;
+        }
+
+        .signal--journal .signal-type {
+            background: #8B7355;
+        }
+
+        .signal--journal .signal-content {
+            border-left: 3px solid rgba(139, 115, 85, 0.3);
+            padding-left: 1.5rem;
+        }
+
+        .signal--journal .signal-title {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: #5D4E37;
+        }
+
+        .signal--journal .signal-body {
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #6B5B45;
+        }
+
+        .signal--journal .signal-meta {
+            margin-top: 1.5rem;
+            color: #9B8B75;
+        }
+
+        /* ----- TODO/LIST STYLE (actionable items) ----- */
+        .signal--todo {
+            padding: 1.5rem 2rem;
+            background: #F8FFF8;
+            border-left: 6px solid var(--color-lime);
+        }
+
+        .signal--todo::before {
+            background: var(--color-lime);
+            opacity: 0.5;
+        }
+
+        .signal--todo:hover::before {
+            background: #90EE90;
+            opacity: 0.7;
+        }
+
+        .signal--todo .signal-type {
+            background: #228B22;
+        }
+
+        .signal--todo .signal-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .signal--todo .signal-body {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+        }
+
+        .signal--todo .signal-meta {
+            margin-top: 1rem;
+        }
+
+        /* ----- LINK/SHARE STYLE (external link prominent) ----- */
+        .signal--link {
+            padding: 1.5rem 2rem;
+            background: #F5F8FF;
+        }
+
+        .signal--link::before {
+            background: var(--color-electric);
+        }
+
+        .signal--link:hover::before {
+            background: #0044cc;
+        }
+
+        .signal--link .signal-type {
+            background: var(--color-electric);
+        }
+
+        .signal--link .signal-title {
+            font-size: 1.2rem;
+            color: var(--color-electric);
+            margin-bottom: 0.5rem;
+        }
+
+        .signal--link .signal-body {
+            font-size: 1rem;
+        }
+
+        .signal--link .signal-meta {
+            margin-top: 0.75rem;
+        }
+
+        /* ----- VIDEO STYLE (video content) ----- */
+        .signal--video {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .signal--video::before {
+            background: #000;
+        }
+
+        .signal--video:hover::before {
+            background: #FF0050;
+        }
+
+        .signal--video .signal-type {
+            background: #FF0050;
+        }
+
+        .signal--video .signal-preview {
+            position: relative;
+            background: #000;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signal--video .signal-preview::after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signal--video .signal-preview::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid #000;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            z-index: 1;
+        }
+
+        .signal--video .signal-content {
+            padding: 1rem 1.5rem;
+            background: #000;
+            color: white;
+        }
+
+        .signal--video .signal-title {
+            font-size: 1rem;
+            color: white;
+        }
+
+        .signal--video .signal-meta {
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.5rem;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -444,19 +810,23 @@
                 padding: 6rem 1.5rem 3rem;
             }
 
-            .post-card {
+            .signal--longform {
                 padding: 1.5rem;
                 flex-direction: column;
             }
 
-            .post-card-thumb {
+            .signal--longform .signal-thumb {
                 width: 80px;
                 height: 80px;
                 min-width: 80px;
             }
 
-            .post-card-arrow {
+            .signal-arrow {
                 display: none;
+            }
+
+            .signal--photo .signal-image {
+                max-height: 300px;
             }
         }
 
@@ -512,8 +882,8 @@
             <p>Loading posts...</p>
         </div>
 
-        <!-- Posts Container -->
-        <div id="posts-container" class="posts-list" style="display: none;"></div>
+        <!-- Signals Container -->
+        <div id="signals-container" class="signals-list" style="display: none;"></div>
 
         <!-- Empty State -->
         <div id="empty-state" class="empty-state" style="display: none;">
@@ -526,29 +896,323 @@
     <script src="/posts.js"></script>
 
     <script>
-        // Strip the first line (title) from content to avoid showing title in excerpt
-        function stripFirstLine(html) {
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-            if (temp.firstElementChild) {
-                temp.removeChild(temp.firstElementChild);
+        /**
+         * SIGNAL ADAPTATION ENGINE
+         * Analyzes content and determines the appropriate signal type
+         * The signal remains a signal - only the internal presentation adapts
+         */
+
+        // Configuration thresholds (tune these to adjust signal classification)
+        const SIGNAL_THRESHOLDS = {
+            TWEET_MAX_CHARS: 140,      // Classic Twitter limit
+            SKEET_MAX_CHARS: 300,      // Modern short post (Bluesky-ish)
+            THOUGHT_MAX_CHARS: 200,    // Quick informal thought
+            LONGFORM_MIN_CHARS: 500,   // Blog-style long content
+            JOURNAL_MIN_CHARS: 300,    // Journal entries (mid-length, informal)
+        };
+
+        // Content analysis utilities
+        const SignalAnalyzer = {
+            // Get plain text from HTML
+            getPlainText(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.textContent || temp.innerText || '';
+            },
+
+            // Strip the first line (title) from content
+            stripFirstLine(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                if (temp.firstElementChild) {
+                    temp.removeChild(temp.firstElementChild);
+                }
+                return temp.innerHTML.trim();
+            },
+
+            // Extract the first image URL from HTML content
+            getFirstImage(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const img = temp.querySelector('img');
+                return img ? img.src : null;
+            },
+
+            // Check if content has video
+            hasVideo(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.querySelector('video, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="tiktok"]') !== null;
+            },
+
+            // Check if content has external links prominently
+            hasProminentLink(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const links = temp.querySelectorAll('a[href^="http"]');
+                // If >50% of content is a link, it's link-focused
+                const text = this.getPlainText(html);
+                return links.length > 0 && text.length < 300;
+            },
+
+            // Check for todo/list patterns
+            hasTodoPattern(html, title) {
+                const text = this.getPlainText(html).toLowerCase();
+                const titleLower = title.toLowerCase();
+                const todoPatterns = [
+                    /\[\s*[x ]?\s*\]/i,           // Checkbox patterns
+                    /^[-*]\s+/m,                   // Bullet lists
+                    /^\d+\.\s+/m,                  // Numbered lists
+                    /todo|task|checklist|to-do/i   // Keywords
+                ];
+                return todoPatterns.some(p => p.test(text) || p.test(titleLower));
+            },
+
+            // Check for informal/thought patterns
+            isInformalThought(text, title) {
+                const combined = (title + ' ' + text).toLowerCase();
+                const informalPatterns = [
+                    /^(just|hmm|thinking|wondering|maybe|quick thought|note to self)/i,
+                    /\.\.\./,                      // Ellipsis indicates trailing thought
+                    /^[a-z]/,                      // Starts lowercase (informal)
+                ];
+                return text.length < SIGNAL_THRESHOLDS.THOUGHT_MAX_CHARS &&
+                       informalPatterns.some(p => p.test(combined));
+            },
+
+            // Check for journal-style content
+            isJournalStyle(text, title) {
+                const combined = (title + ' ' + text).toLowerCase();
+                const journalPatterns = [
+                    /today|yesterday|this morning|tonight|journal|diary|reflection/i,
+                    /i (felt|thought|realized|noticed|wondered)/i,
+                    /stream of|consciousness|rambling/i
+                ];
+                return text.length >= SIGNAL_THRESHOLDS.JOURNAL_MIN_CHARS &&
+                       text.length < SIGNAL_THRESHOLDS.LONGFORM_MIN_CHARS &&
+                       journalPatterns.some(p => p.test(combined));
+            },
+
+            /**
+             * MAIN CLASSIFICATION FUNCTION
+             * Determines signal type based on content characteristics
+             * Priority order matters - more specific types checked first
+             */
+            classifySignal(post) {
+                const content = this.stripFirstLine(post.content);
+                const plainText = this.getPlainText(content);
+                const charCount = plainText.length;
+                const hasImage = this.getFirstImage(post.content) !== null;
+                const hasVideoContent = this.hasVideo(post.content);
+
+                // Video takes priority - visual content dominates
+                if (hasVideoContent) {
+                    return { type: 'video', label: 'Video' };
+                }
+
+                // Photo/Instagram style - image with short caption
+                if (hasImage && charCount < SIGNAL_THRESHOLDS.LONGFORM_MIN_CHARS) {
+                    return { type: 'photo', label: 'Photo' };
+                }
+
+                // Todo/List style - actionable content
+                if (this.hasTodoPattern(content, post.title)) {
+                    return { type: 'todo', label: 'List' };
+                }
+
+                // Link share - external link focused
+                if (this.hasProminentLink(content)) {
+                    return { type: 'link', label: 'Link' };
+                }
+
+                // Tweet style - very short, punchy (classic 140)
+                if (charCount <= SIGNAL_THRESHOLDS.TWEET_MAX_CHARS && !hasImage) {
+                    return { type: 'tweet', label: '140' };
+                }
+
+                // Thought/Whisper - informal short content
+                if (this.isInformalThought(plainText, post.title)) {
+                    return { type: 'thought', label: 'Thought' };
+                }
+
+                // Skeet style - modern short post (141-300)
+                if (charCount <= SIGNAL_THRESHOLDS.SKEET_MAX_CHARS && !hasImage) {
+                    return { type: 'skeet', label: 'Short' };
+                }
+
+                // Journal style - personal, reflective, mid-length
+                if (this.isJournalStyle(plainText, post.title)) {
+                    return { type: 'journal', label: 'Journal' };
+                }
+
+                // Longform/Blog - everything else (default, the original style)
+                return { type: 'longform', label: 'Article' };
             }
-            return temp.innerHTML.trim();
-        }
+        };
 
-        // Extract the first image URL from HTML content
-        function getFirstImage(html) {
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-            const img = temp.querySelector('img');
-            return img ? img.src : null;
-        }
+        /**
+         * SIGNAL RENDERER
+         * Generates HTML for each signal type
+         * All are signals - just with different internal layouts
+         */
+        const SignalRenderer = {
+            // Arrow SVG used across signal types
+            arrowSvg: `<svg class="signal-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>`,
 
-        // Fetch and render posts
+            render(post, classification) {
+                const renderer = this[classification.type] || this.longform;
+                return renderer.call(this, post, classification);
+            },
+
+            // Tweet style (≤140 chars)
+            tweet(post, { label }) {
+                return `
+                    <a href="/${post.slug}" class="signal signal--tweet">
+                        <span class="signal-type">${label}</span>
+                        <h2 class="signal-title">${post.title}</h2>
+                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Skeet style (141-300 chars)
+            skeet(post, { label }) {
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 280);
+                return `
+                    <a href="/${post.slug}" class="signal signal--skeet">
+                        <span class="signal-type">${label}</span>
+                        <h2 class="signal-title">${post.title}</h2>
+                        <p class="signal-body">${excerpt}</p>
+                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Photo/Instagram style
+            photo(post, { label }) {
+                const imageUrl = SignalAnalyzer.getFirstImage(post.content);
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                return `
+                    <a href="/${post.slug}" class="signal signal--photo">
+                        <span class="signal-type">${label}</span>
+                        <img src="${imageUrl}" alt="" class="signal-image">
+                        <div class="signal-content">
+                            <h2 class="signal-title">${post.title}</h2>
+                            <p class="signal-body">${excerpt}</p>
+                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Longform/Blog style (default)
+            longform(post, { label }) {
+                const imageUrl = SignalAnalyzer.getFirstImage(post.content);
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 200);
+                const thumbHtml = imageUrl
+                    ? `<img src="${imageUrl}" alt="" class="signal-thumb">`
+                    : '';
+                return `
+                    <a href="/${post.slug}" class="signal signal--longform">
+                        <span class="signal-type">${label}</span>
+                        ${thumbHtml}
+                        <div class="signal-content">
+                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <h2 class="signal-title">${post.title}</h2>
+                            <p class="signal-body">${excerpt}</p>
+                        </div>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Thought/Whisper style
+            thought(post, { label }) {
+                return `
+                    <a href="/${post.slug}" class="signal signal--thought">
+                        <span class="signal-type">${label}</span>
+                        <h2 class="signal-title">${post.title}</h2>
+                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Journal style
+            journal(post, { label }) {
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 250);
+                return `
+                    <a href="/${post.slug}" class="signal signal--journal">
+                        <span class="signal-type">${label}</span>
+                        <div class="signal-content">
+                            <h2 class="signal-title">${post.title}</h2>
+                            <p class="signal-body">${excerpt}</p>
+                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Todo/List style
+            todo(post, { label }) {
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                return `
+                    <a href="/${post.slug}" class="signal signal--todo">
+                        <span class="signal-type">${label}</span>
+                        <h2 class="signal-title">${post.title}</h2>
+                        <p class="signal-body">${excerpt}</p>
+                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Link/Share style
+            link(post, { label }) {
+                const content = SignalAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                return `
+                    <a href="/${post.slug}" class="signal signal--link">
+                        <span class="signal-type">${label}</span>
+                        <h2 class="signal-title">${post.title}</h2>
+                        <p class="signal-body">${excerpt}</p>
+                        <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            // Video style
+            video(post, { label }) {
+                return `
+                    <a href="/${post.slug}" class="signal signal--video">
+                        <span class="signal-type">${label}</span>
+                        <div class="signal-preview"></div>
+                        <div class="signal-content">
+                            <h2 class="signal-title">${post.title}</h2>
+                            <p class="signal-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                    </a>
+                `;
+            }
+        };
+
+        // Fetch and render signals
         (async function() {
             try {
                 const posts = await window.PostsAPI.fetchPosts();
-                const container = document.getElementById('posts-container');
+                const container = document.getElementById('signals-container');
                 const loading = document.getElementById('loading');
                 const emptyState = document.getElementById('empty-state');
 
@@ -559,31 +1223,15 @@
                     return;
                 }
 
-                // Render posts (with thumbnail if image exists)
+                // Classify and render each signal
                 container.innerHTML = posts.map(post => {
-                    const imageUrl = getFirstImage(post.content);
-                    const thumbnailHtml = imageUrl
-                        ? `<img src="${imageUrl}" alt="" class="post-card-thumb">`
-                        : '';
-
-                    return `
-                        <a href="/${post.slug}" class="post-card">
-                            ${thumbnailHtml}
-                            <div class="post-card-content">
-                                <p class="post-card-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                                <h2 class="post-card-title">${post.title}</h2>
-                                <p class="post-card-excerpt">${window.PostsAPI.createExcerpt(stripFirstLine(post.content), 200)}</p>
-                            </div>
-                            <svg class="post-card-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
-                        </a>
-                    `;
+                    const classification = SignalAnalyzer.classifySignal(post);
+                    return SignalRenderer.render(post, classification);
                 }).join('');
 
                 container.style.display = 'flex';
             } catch (error) {
-                console.error('Error loading posts:', error);
+                console.error('Error loading signals:', error);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
             }
