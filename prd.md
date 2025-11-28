@@ -137,7 +137,7 @@ Text-only, no icons. Visible on desktop, no hamburger menus.
 | Profile | Bio/About — treated as an academic CV |
 | Output | Unified catalogue: Research + Publications + Ventures + Systems |
 | Syllabus | Teaching, Lectures, Speaking, Office Hours |
-| Signals | Essays, Notes, Lab Logs |
+| Waves | Essays, Notes, Lab Logs |
 | Contact | Minimal, footer-emphasised |
 
 ### Site Structure
@@ -153,7 +153,7 @@ Text-only, no icons. Visible on desktop, no hamburger menus.
 ├── syllabus/
 │   ├── courses/
 │   └── talks/
-├── signals/
+├── waves/
 └── contact/
 ```
 
@@ -176,7 +176,7 @@ Thinking, teaching, and building at the intersection of AI and society.
 **Below the Fold**
 - Short summary paragraph (max 4 lines)
 - Three key entry points: Academic work, Systems/ventures, Notes/essays
-- Recent signals feed
+- Recent waves feed
 
 **Constraint:** No "Helping X do Y" formulas. Use statement-of-fact definitions.
 
@@ -221,7 +221,7 @@ Thinking, teaching, and building at the intersection of AI and society.
 - Workshop materials
 - Office hours widget (subtle modern touch, optional Calendly integration)
 
-### 7.5 Signals
+### 7.5 Waves
 
 The blog, styled as a lab notebook.
 
@@ -270,7 +270,7 @@ Hover: translateY(-2px) lift, tooltip preview
 ### Navigation Bar
 ```
 Position: Fixed or static top
-Items: Index | Profile | Output | Syllabus | Signals | Contact
+Items: Index | Profile | Output | Syllabus | Waves | Contact
 Style:
   - No hamburger menu on desktop
   - No icons
