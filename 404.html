@@ -692,11 +692,77 @@
                             return temp.innerHTML.trim();
                         }
 
+                        // Convert plain text URLs to clickable links
+                        function linkifyUrls(html) {
+                            const temp = document.createElement('div');
+                            temp.innerHTML = html;
+
+                            // Walk through all text nodes
+                            const walker = document.createTreeWalker(
+                                temp,
+                                NodeFilter.SHOW_TEXT,
+                                null,
+                                false
+                            );
+
+                            const textNodes = [];
+                            let node;
+                            while (node = walker.nextNode()) {
+                                // Skip text inside anchor tags
+                                if (node.parentElement.tagName !== 'A') {
+                                    textNodes.push(node);
+                                }
+                            }
+
+                            // URL regex pattern
+                            const urlPattern = /(https?:\/\/[^\s<>"']+)/g;
+
+                            textNodes.forEach(textNode => {
+                                const text = textNode.textContent;
+                                if (urlPattern.test(text)) {
+                                    const fragment = document.createDocumentFragment();
+                                    let lastIndex = 0;
+                                    let match;
+
+                                    urlPattern.lastIndex = 0; // Reset regex
+                                    while ((match = urlPattern.exec(text)) !== null) {
+                                        // Add text before the URL
+                                        if (match.index > lastIndex) {
+                                            fragment.appendChild(
+                                                document.createTextNode(text.slice(lastIndex, match.index))
+                                            );
+                                        }
+
+                                        // Create the link
+                                        const link = document.createElement('a');
+                                        link.href = match[0];
+                                        link.textContent = match[0];
+                                        link.target = '_blank';
+                                        link.rel = 'noopener noreferrer';
+                                        fragment.appendChild(link);
+
+                                        lastIndex = match.index + match[0].length;
+                                    }
+
+                                    // Add remaining text
+                                    if (lastIndex < text.length) {
+                                        fragment.appendChild(
+                                            document.createTextNode(text.slice(lastIndex))
+                                        );
+                                    }
+
+                                    textNode.parentNode.replaceChild(fragment, textNode);
+                                }
+                            });
+
+                            return temp.innerHTML;
+                        }
+
                         // Populate post content
                         document.getElementById('post-date').textContent =
                             window.PostsAPI.formatDate(post.published_at);
                         document.getElementById('post-title').textContent = post.title;
-                        document.getElementById('post-content').innerHTML = stripFirstLine(post.content);
+                        document.getElementById('post-content').innerHTML = linkifyUrls(stripFirstLine(post.content));
 
                         // Show the post
                         document.getElementById('loading').style.display = 'none';
