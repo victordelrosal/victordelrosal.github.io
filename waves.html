@@ -207,6 +207,15 @@
                 return /#featured\b/i.test(combined);
             },
 
+            isFeaturedActive(publishedAt) {
+                // Featured posts expire after 30 days
+                const FEATURED_DURATION_DAYS = 30;
+                const publishDate = new Date(publishedAt);
+                const now = new Date();
+                const daysSincePublish = (now - publishDate) / (1000 * 60 * 60 * 24);
+                return daysSincePublish <= FEATURED_DURATION_DAYS;
+            },
+
             classifyWave(post) {
                 const content = this.stripFirstLine(post.content);
                 const plainText = this.getPlainText(content);
@@ -214,9 +223,10 @@
                 const hasImage = this.getFirstImage(post.content) !== null;
                 const hasVideoContent = this.hasVideo(post.content);
 
-                // Featured check first - overrides all other types
-                if (this.isFeaturedContent(content, plainText, post.title)) {
-                    return { type: 'featured', label: 'Featured' };
+                // Featured check - only active if within 30 days of publish date
+                const hasFeaturedTag = this.isFeaturedContent(content, plainText, post.title);
+                if (hasFeaturedTag && this.isFeaturedActive(post.published_at)) {
+                    return { type: 'featured', label: 'Featured', isActiveFeatured: true };
                 }
 
                 if (this.isReadingContent(content, plainText, post.title)) {
@@ -304,7 +314,8 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -318,7 +329,8 @@
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-body">${excerpt}</p>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -361,8 +373,9 @@
                             <a href="/${post.slug}" class="wave-content">
                                 <h2 class="wave-title">${post.title}</h2>
                                 <p class="wave-body">${excerpt}</p>
-                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </a>
+                            ${this.statsBadge(viewCount, waveCount)}
                             ${this.arrowSvg}
                         </div>
                     `;
@@ -377,8 +390,9 @@
                             <div class="wave-content">
                                 <h2 class="wave-title">${post.title}</h2>
                                 <p class="wave-body">${excerpt}</p>
-                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </div>
+                            ${this.statsBadge(viewCount, waveCount)}
                             ${this.arrowSvg}
                         </a>
                     `;
@@ -397,10 +411,11 @@
                         <span class="wave-type">${label}</span>
                         ${thumbHtml}
                         <div class="wave-content">
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -411,7 +426,8 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--thought">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -426,8 +442,9 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -442,8 +459,9 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -458,8 +476,9 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -471,8 +490,9 @@
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -506,9 +526,9 @@
                             <p class="wave-meta">
                                 ${window.PostsAPI.formatDate(post.published_at)}
                                 ${sourceTag}
-                                ${this.statsBadge(viewCount, waveCount)}
                             </p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -535,8 +555,9 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
+                        ${this.statsBadge(viewCount, waveCount)}
                         ${this.arrowSvg}
                     </a>
                 `;

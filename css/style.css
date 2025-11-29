@@ -1245,31 +1245,65 @@ section {
    GOLD WAVE CARDS - Featured Style
    ======================================== */
 .wave-entry[data-wave-style="gold"] {
-    background: linear-gradient(
-        135deg,
-        #F4A020 0%,
-        #FFD700 25%,
-        #FFF8DC 50%,
-        #FFD700 75%,
-        #D4A020 100%
-    );
-    background-size: 200% 200%;
-    animation: goldShift 8s ease-in-out infinite;
+    background:
+        linear-gradient(
+            125deg,
+            #C9A227 0%,
+            #E8C547 15%,
+            #D4A830 25%,
+            #F0D860 35%,
+            #C9982A 45%,
+            #E8D065 55%,
+            #D4AC35 65%,
+            #F5E070 75%,
+            #C9A227 85%,
+            #E0C040 100%
+        );
+    background-size: 400% 400%;
+    animation: goldShift 12s ease-in-out infinite;
     border: none;
     position: relative;
     overflow: hidden;
     color: #5D4E37;
     box-shadow:
-        0 0 0 3px rgba(255, 215, 0, 0.4),
-        0 0 30px rgba(255, 215, 0, 0.3),
-        0 8px 32px rgba(180, 140, 20, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        0 0 0 3px rgba(201, 162, 39, 0.5),
+        0 0 40px rgba(212, 168, 48, 0.35),
+        0 8px 32px rgba(160, 120, 20, 0.35),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 0 rgba(160, 120, 20, 0.2);
     border-radius: 20px;
 }
 
+/* Brushed texture overlay */
+.wave-entry[data-wave-style="gold"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.03) 2px,
+            rgba(255, 255, 255, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.02) 2px,
+            rgba(0, 0, 0, 0.02) 4px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
 @keyframes goldShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0% { background-position: 0% 0%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 50% 100%; }
+    75% { background-position: 0% 50%; }
+    100% { background-position: 0% 0%; }
 }
 
 /* Shimmer sweep effect */
@@ -2340,27 +2374,31 @@ footer {
 
 /* Wave Stats (for cards listing) */
 .wave-stats {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    margin-left: 8px;
+    opacity: 0.5;
+    z-index: 5;
 }
 
 .wave-stat {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-size: 12px;
+    gap: 5px;
+    font-size: 16px;
     color: inherit;
-    opacity: 0.6;
 }
 
 .wave-stat svg {
-    opacity: 0.7;
+    width: 18px;
+    height: 18px;
 }
 
 .wave-stat-emoji {
-    font-size: 11px;
+    font-size: 15px;
     line-height: 1;
 }
 
