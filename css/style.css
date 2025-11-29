@@ -1240,6 +1240,180 @@ section {
     font-size: 10px;
 }
 
+
+/* ========================================
+   GOLD WAVE CARDS - Featured Style
+   ======================================== */
+.wave-entry[data-wave-style="gold"] {
+    background: linear-gradient(
+        135deg,
+        #F4A020 0%,
+        #FFD700 25%,
+        #FFF8DC 50%,
+        #FFD700 75%,
+        #D4A020 100%
+    );
+    background-size: 200% 200%;
+    animation: goldShift 8s ease-in-out infinite;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color: #5D4E37;
+    box-shadow:
+        0 0 0 3px rgba(255, 215, 0, 0.4),
+        0 0 30px rgba(255, 215, 0, 0.3),
+        0 8px 32px rgba(180, 140, 20, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+}
+
+@keyframes goldShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Shimmer sweep effect */
+.wave-entry[data-wave-style="gold"] .featured-shimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    animation: shimmerSweep 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes shimmerSweep {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Sparkle decorations */
+.wave-entry[data-wave-style="gold"] .featured-sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.wave-entry[data-wave-style="gold"] .sparkle {
+    position: absolute;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    animation: sparklePulse 2s ease-in-out infinite;
+}
+
+.wave-entry[data-wave-style="gold"] .sparkle-1 {
+    top: 15px;
+    right: 20px;
+    animation-delay: 0s;
+}
+
+.wave-entry[data-wave-style="gold"] .sparkle-2 {
+    bottom: 20px;
+    left: 15px;
+    font-size: 10px;
+    animation-delay: 0.7s;
+}
+
+.wave-entry[data-wave-style="gold"] .sparkle-3 {
+    top: 50%;
+    right: 60px;
+    font-size: 8px;
+    animation-delay: 1.4s;
+}
+
+@keyframes sparklePulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Optional background image with gold overlay */
+.wave-entry[data-wave-style="gold"][style*="--featured-bg-image"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--featured-bg-image);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+/* Content positioning */
+.wave-entry[data-wave-style="gold"] .wave-content,
+.wave-entry[data-wave-style="gold"] .wave-title,
+.wave-entry[data-wave-style="gold"] .wave-body,
+.wave-entry[data-wave-style="gold"] .wave-meta,
+.wave-entry[data-wave-style="gold"] .wave-type {
+    position: relative;
+    z-index: 3;
+}
+
+/* Gold card text colors */
+.wave-entry[data-wave-style="gold"] .wave-title {
+    color: #4A3C2A;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.wave-entry[data-wave-style="gold"] .wave-body {
+    color: #5D4E37;
+}
+
+.wave-entry[data-wave-style="gold"] .wave-meta {
+    color: #7A6B55;
+}
+
+/* Gold type badge - trophy style */
+.wave-entry[data-wave-style="gold"] .wave-type {
+    background: linear-gradient(135deg, #8B6914 0%, #D4A020 50%, #8B6914 100%);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 0 15px rgba(255, 215, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 2px 8px rgba(139, 105, 20, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+}
+
+/* Hover state - more dramatic */
+.wave-entry[data-wave-style="gold"]:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow:
+        0 0 0 4px rgba(255, 215, 0, 0.6),
+        0 0 50px rgba(255, 215, 0, 0.4),
+        0 20px 60px rgba(180, 140, 20, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.wave-entry[data-wave-style="gold"]:hover .featured-shimmer {
+    animation-duration: 2s;
+}
+
+.wave-entry[data-wave-style="gold"]:hover .wave-arrow {
+    color: #8B6914;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+/* Arrow styling */
+.wave-entry[data-wave-style="gold"] .wave-arrow {
+    color: #A08050;
+    z-index: 3;
+    position: relative;
+}
+
+
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
 
 /* Photo entry */

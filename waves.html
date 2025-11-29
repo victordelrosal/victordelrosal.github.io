@@ -202,12 +202,22 @@
                 return /#read\b/i.test(combined);
             },
 
+            isFeaturedContent(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#featured\b/i.test(combined);
+            },
+
             classifyWave(post) {
                 const content = this.stripFirstLine(post.content);
                 const plainText = this.getPlainText(content);
                 const charCount = plainText.length;
                 const hasImage = this.getFirstImage(post.content) !== null;
                 const hasVideoContent = this.hasVideo(post.content);
+
+                // Featured check first - overrides all other types
+                if (this.isFeaturedContent(content, plainText, post.title)) {
+                    return { type: 'featured', label: 'Featured' };
+                }
 
                 if (this.isReadingContent(content, plainText, post.title)) {
                     return { type: 'reading', label: 'Reading' };
@@ -262,11 +272,13 @@
                 <polyline points="9 18 15 12 9 6"/>
             </svg>`,
 
-            // Wave duality: Ocean for creative, Light for technical
+            // Wave duality: Ocean for creative, Light for technical, Gold for featured
             oceanTypes: ['photo', 'video', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
             lightTypes: ['reading', 'link', 'todo'],
+            goldTypes: ['featured'],
 
             getWaveStyle(type) {
+                if (this.goldTypes.includes(type)) return 'gold';
                 if (this.oceanTypes.includes(type)) return 'ocean';
                 if (this.lightTypes.includes(type)) return 'light';
                 return 'ocean'; // default
@@ -496,6 +508,34 @@
                                 ${sourceTag}
                                 ${this.statsBadge(viewCount, waveCount)}
                             </p>
+                        </div>
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            featured(post, { label }, viewCount, waveCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 200);
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+
+                const backgroundStyle = imageUrl
+                    ? `style="--featured-bg-image: url('${imageUrl}')"`
+                    : '';
+
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--featured" ${backgroundStyle}>
+                        <div class="featured-shimmer"></div>
+                        <div class="featured-sparkles">
+                            <span class="sparkle sparkle-1">✦</span>
+                            <span class="sparkle sparkle-2">✦</span>
+                            <span class="sparkle sparkle-3">✦</span>
+                        </div>
+                        <span class="wave-type">⭐ ${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.statsBadge(viewCount, waveCount)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
