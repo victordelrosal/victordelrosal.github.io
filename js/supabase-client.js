@@ -21,18 +21,14 @@ if (!window.SupabaseClient) {
      * Call this after the supabase-js script has loaded
      */
     function initSupabase() {
-      console.log('[SupabaseClient] initSupabase called');
-
       // Check for both the namespaced version and direct createClient
       const createClientFn = window.supabase?.createClient || window.createClient;
-      console.log('[SupabaseClient] createClientFn:', typeof createClientFn);
 
       if (createClientFn) {
         supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('[SupabaseClient] Client created successfully');
         return true;
       }
-      console.error('Supabase JS library not loaded. Check if CDN script loaded correctly.');
+      console.error('Supabase JS library not loaded.');
       return false;
     }
 
@@ -196,6 +192,5 @@ if (!window.SupabaseClient) {
       SUPABASE_ANON_KEY
     };
 
-    console.log('[SupabaseClient] Module loaded successfully');
   })();
 }

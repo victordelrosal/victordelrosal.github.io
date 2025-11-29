@@ -10,18 +10,14 @@ const PageViews = {
    * @returns {Promise<number|null>} The new view count or null on error
    */
   async trackView(slug) {
-    console.log('[PageViews] trackView called for:', slug);
     const supabase = window.SupabaseClient?.getClient();
-    console.log('[PageViews] Got supabase client:', !!supabase);
     if (!supabase) {
       console.error('Supabase client not available');
       return null;
     }
 
     try {
-      console.log('[PageViews] Calling RPC increment_page_view...');
       const { data, error } = await supabase.rpc('increment_page_view', { slug });
-      console.log('[PageViews] RPC result:', { data, error });
 
       if (error) {
         console.error('Failed to track view:', error);
