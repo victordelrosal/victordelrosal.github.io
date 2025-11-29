@@ -788,7 +788,7 @@ section {
     top: 0;
     left: 0;
     right: 0;
-    height: 56px;
+    height: 72px;
     z-index: 1000;
     overflow: hidden;
 }
@@ -928,7 +928,7 @@ section {
 
 /* Waves page body adjustment */
 .waves-page .waves-section--with-navbar {
-    padding-top: 88px;
+    padding-top: 104px;
 }
 
 /* Waves tagline */
@@ -944,7 +944,7 @@ section {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .wave-navbar {
-        height: 52px;
+        height: 64px;
     }
 
     .wave-navbar-content {
@@ -965,7 +965,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 84px;
+        padding-top: 96px;
     }
 
     .waves-tagline {
@@ -976,7 +976,7 @@ section {
 
 @media (max-width: 480px) {
     .wave-navbar {
-        height: 48px;
+        height: 56px;
     }
 
     .wave-navbar-title {
@@ -989,7 +989,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 80px;
+        padding-top: 88px;
     }
 }
 
