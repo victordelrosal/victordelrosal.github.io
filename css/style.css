@@ -2380,7 +2380,7 @@ footer {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    opacity: 0.5;
+    opacity: 0.75;
     z-index: 5;
 }
 
@@ -2896,29 +2896,29 @@ footer {
 /* Size 5 - Extra Large */
 .font-size-btn[data-size="5"] { font-size: 28px; }
 
-/* Post content font sizes */
+/* Post content font sizes (each 11.5% larger, default is level 3) */
 .post-content.font-size-1 {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.7;
 }
 
 .post-content.font-size-2 {
-    font-size: 19px;
+    font-size: 21px;
     line-height: 1.7;
 }
 
 .post-content.font-size-3 {
-    font-size: 22px;
+    font-size: 25px;
     line-height: 1.8;
 }
 
 .post-content.font-size-4 {
-    font-size: 26px;
+    font-size: 29px;
     line-height: 1.8;
 }
 
 .post-content.font-size-5 {
-    font-size: 30px;
+    font-size: 33px;
     line-height: 1.9;
 }
 
