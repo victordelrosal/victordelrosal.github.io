@@ -126,6 +126,18 @@
         </article>
     </main>
 
+    <!-- Wave Navigation Chevrons -->
+    <a href="#" id="nav-prev" class="wave-nav wave-nav--prev" style="display: none;" aria-label="Previous wave">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
+    <a href="#" id="nav-next" class="wave-nav wave-nav--next" style="display: none;" aria-label="Next wave">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </a>
+
     <!-- Footer -->
     <footer>
         <p class="footer-copyright">© 2024 Victor del Rosal</p>
@@ -302,6 +314,32 @@
                                 setTimeout(() => btn.classList.remove('copied'), 2000);
                             }
                         });
+
+                        // Set up wave navigation (prev/next)
+                        (async function() {
+                            try {
+                                const allPosts = await window.PostsAPI.fetchPosts();
+                                const currentIndex = allPosts.findIndex(p => p.slug === slug);
+
+                                if (currentIndex > 0) {
+                                    const prevPost = allPosts[currentIndex - 1];
+                                    const prevNav = document.getElementById('nav-prev');
+                                    prevNav.href = '/' + prevPost.slug;
+                                    prevNav.title = prevPost.title;
+                                    prevNav.style.display = 'flex';
+                                }
+
+                                if (currentIndex < allPosts.length - 1) {
+                                    const nextPost = allPosts[currentIndex + 1];
+                                    const nextNav = document.getElementById('nav-next');
+                                    nextNav.href = '/' + nextPost.slug;
+                                    nextNav.title = nextPost.title;
+                                    nextNav.style.display = 'flex';
+                                }
+                            } catch (e) {
+                                console.error('Failed to set up wave navigation:', e);
+                            }
+                        })();
                     } else {
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('not-found').style.display = 'block';

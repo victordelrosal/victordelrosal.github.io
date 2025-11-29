@@ -2547,3 +2547,62 @@ footer {
         gap: 8px;
     }
 }
+
+/* ==========================================================================
+   26. Wave Navigation Chevrons
+   ========================================================================== */
+
+.wave-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 25vh;
+    color: var(--text-primary);
+    opacity: 0.15;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.wave-nav svg {
+    width: 48px;
+    height: 48px;
+    stroke-width: 1.5;
+}
+
+.wave-nav:hover {
+    opacity: 0.5;
+}
+
+.wave-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.wave-nav--prev {
+    left: 8px;
+}
+
+.wave-nav--next {
+    right: 8px;
+}
+
+/* Hover effect - slight movement */
+.wave-nav--prev:hover {
+    transform: translateY(-50%) translateX(-4px);
+}
+
+.wave-nav--next:hover {
+    transform: translateY(-50%) translateX(4px);
+}
+
+/* Hide on smaller screens where they would overlap content */
+@media (max-width: 1100px) {
+    .wave-nav {
+        display: none;
+    }
+}
