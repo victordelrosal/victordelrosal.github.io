@@ -892,9 +892,8 @@ section {
 
 /* Waves Search Box - Google-like */
 .waves-search-container {
-    max-width: 680px;
-    margin: -40px auto 40px;
-    padding: 0 24px;
+    width: 100%;
+    margin-bottom: 32px;
     position: relative;
     z-index: 10;
 }
@@ -2382,8 +2381,7 @@ footer {
     }
 
     .waves-search-container {
-        margin: -30px auto 30px;
-        padding: 0 16px;
+        margin-bottom: 24px;
     }
 
     .waves-search-input {
