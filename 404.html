@@ -225,6 +225,18 @@
                         function linkifyUrls(html) {
                             const temp = document.createElement('div');
                             temp.innerHTML = html;
+
+                            // First, convert YouTube links that are already in <a> tags to embeds
+                            const youtubeLinks = temp.querySelectorAll('a[href*="youtube.com"], a[href*="youtu.be"]');
+                            youtubeLinks.forEach(link => {
+                                const youtubeId = getYouTubeVideoId(link.href);
+                                if (youtubeId) {
+                                    const embed = createYouTubeEmbed(youtubeId);
+                                    link.parentNode.replaceChild(embed, link);
+                                }
+                            });
+
+                            // Then, handle plain text URLs
                             const walker = document.createTreeWalker(temp, NodeFilter.SHOW_TEXT, null, false);
                             const textNodes = [];
                             let node;
