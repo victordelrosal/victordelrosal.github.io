@@ -43,6 +43,31 @@
         </ul>
     </nav>
 
+    <!-- Sticky Wave Header -->
+    <header class="sticky-wave-header" id="sticky-wave-header">
+        <div class="sticky-wave-bg">
+            <svg class="sticky-wave wave-deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z"></path>
+            </svg>
+            <svg class="sticky-wave wave-mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200 L1440,320 L0,320 Z"></path>
+            </svg>
+            <svg class="sticky-wave wave-surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,240 C180,200 360,280 540,240 C720,200 900,280 1080,240 C1260,200 1350,280 1440,240 L1440,320 L0,320 Z"></path>
+            </svg>
+        </div>
+        <div class="sticky-wave-content">
+            <a href="/" class="sticky-logo"><img src="/favicon.png" alt="Victor del Rosal"></a>
+            <ul class="sticky-nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#work">Work</a></li>
+                <li><a href="/waves.html" class="sticky-waves-link active">Waves</a></li>
+                <li><a href="/#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
     <main id="main-content">
         <!-- Header -->
         <header class="page-header">
@@ -870,6 +895,46 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
             }
+        })();
+
+        // Sticky Wave Header - Show on scroll up
+        (function() {
+            const stickyHeader = document.getElementById('sticky-wave-header');
+            const pageHeader = document.querySelector('.page-header');
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+            let headerBottom = 0;
+
+            function updateHeaderBottom() {
+                if (pageHeader) {
+                    headerBottom = pageHeader.offsetTop + pageHeader.offsetHeight;
+                }
+            }
+
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+                const scrollingUp = currentScrollY < lastScrollY;
+                const pastHeader = currentScrollY > headerBottom;
+
+                if (pastHeader && scrollingUp) {
+                    stickyHeader.classList.add('visible');
+                } else {
+                    stickyHeader.classList.remove('visible');
+                }
+
+                lastScrollY = currentScrollY;
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(handleScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            window.addEventListener('resize', updateHeaderBottom, { passive: true });
+            updateHeaderBottom();
         })();
     </script>
 </body>
