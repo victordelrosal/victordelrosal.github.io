@@ -214,6 +214,40 @@ const Comments = {
       console.error('Failed to get comment count:', error);
       return 0;
     }
+  },
+
+  /**
+   * Get comment counts for multiple posts
+   * @param {Array<string>} slugs - Array of post slugs
+   * @returns {Promise<Object>} Object mapping slug to count
+   */
+  async getCommentCounts(slugs) {
+    const supabase = window.SupabaseClient?.getClient();
+    if (!supabase || !slugs.length) return {};
+
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .select('post_slug')
+        .in('post_slug', slugs)
+        .eq('is_deleted', false);
+
+      if (error) {
+        console.error('Failed to get comment counts:', error);
+        return {};
+      }
+
+      // Count comments per slug
+      const counts = {};
+      (data || []).forEach(item => {
+        counts[item.post_slug] = (counts[item.post_slug] || 0) + 1;
+      });
+
+      return counts;
+    } catch (error) {
+      console.error('Failed to get comment counts:', error);
+      return {};
+    }
   }
 };
 

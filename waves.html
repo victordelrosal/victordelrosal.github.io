@@ -110,6 +110,7 @@
     <script src="/posts.js"></script>
     <script src="/js/supabase-client.js"></script>
     <script src="/js/page-views.js"></script>
+    <script src="/js/comments.js"></script>
 
     <script>
         /**
@@ -307,34 +308,35 @@
                 return 'ocean'; // default
             },
 
-            render(post, classification, viewCount = 0, waveCount = 0) {
+            render(post, classification, viewCount = 0, waveCount = 0, commentCount = 0) {
                 const renderer = this[classification.type] || this.longform;
-                const html = renderer.call(this, post, classification, viewCount, waveCount);
+                const html = renderer.call(this, post, classification, viewCount, waveCount, commentCount);
                 const waveStyle = this.getWaveStyle(classification.type);
                 // Inject data-wave-style attribute into the first element
                 return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
             },
 
-            statsBadge(viewCount, waveCount) {
+            statsBadge(viewCount, waveCount, commentCount) {
                 const viewHtml = viewCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>${viewCount}</span>` : '';
                 const waveHtml = waveCount ? `<span class="wave-stat"><span class="wave-stat-emoji">👋</span>${waveCount}</span>` : '';
-                if (!viewHtml && !waveHtml) return '';
-                return `<span class="wave-stats">${viewHtml}${waveHtml}</span>`;
+                const commentHtml = commentCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${commentCount}</span>` : '';
+                if (!viewHtml && !waveHtml && !commentHtml) return '';
+                return `<span class="wave-stats">${viewHtml}${waveHtml}${commentHtml}</span>`;
             },
 
-            tweet(post, { label }, viewCount, waveCount) {
+            tweet(post, { label }, viewCount, waveCount, commentCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            skeet(post, { label }, viewCount, waveCount) {
+            skeet(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 280);
                 return `
@@ -343,13 +345,13 @@
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-body">${excerpt}</p>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            photo(post, { label }, viewCount, waveCount) {
+            photo(post, { label }, viewCount, waveCount, commentCount) {
                 const images = WaveAnalyzer.getAllImages(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
@@ -388,7 +390,7 @@
                                 <p class="wave-body">${excerpt}</p>
                                 <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </a>
-                            ${this.statsBadge(viewCount, waveCount)}
+                            ${this.statsBadge(viewCount, waveCount, commentCount)}
                             ${this.arrowSvg}
                         </div>
                     `;
@@ -405,14 +407,14 @@
                                 <p class="wave-body">${excerpt}</p>
                                 <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </div>
-                            ${this.statsBadge(viewCount, waveCount)}
+                            ${this.statsBadge(viewCount, waveCount, commentCount)}
                             ${this.arrowSvg}
                         </a>
                     `;
                 }
             },
 
-            longform(post, { label }, viewCount, waveCount) {
+            longform(post, { label }, viewCount, waveCount, commentCount) {
                 const imageUrl = WaveAnalyzer.getFirstImage(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 200);
@@ -428,25 +430,25 @@
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            thought(post, { label }, viewCount, waveCount) {
+            thought(post, { label }, viewCount, waveCount, commentCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--thought">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            journal(post, { label }, viewCount, waveCount) {
+            journal(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 250);
                 return `
@@ -457,13 +459,13 @@
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            todo(post, { label }, viewCount, waveCount) {
+            todo(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
@@ -474,13 +476,13 @@
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            link(post, { label }, viewCount, waveCount) {
+            link(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
@@ -491,13 +493,13 @@
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            video(post, { label }, viewCount, waveCount) {
+            video(post, { label }, viewCount, waveCount, commentCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
                         <span class="wave-type">${label}</span>
@@ -505,13 +507,13 @@
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            reading(post, { label }, viewCount, waveCount) {
+            reading(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 180);
 
@@ -541,13 +543,13 @@
                                 ${sourceTag}
                             </p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            featured(post, { label }, viewCount, waveCount) {
+            featured(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 200);
                 const imageUrl = WaveAnalyzer.getFirstImage(post.content);
@@ -570,7 +572,7 @@
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
-                        ${this.statsBadge(viewCount, waveCount)}
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
                     </a>
                 `;
@@ -668,6 +670,7 @@
         let allPostsData = [];
         let viewCountsData = {};
         let waveCountsData = {};
+        let commentCountsData = {};
 
         // Search controller
         const WaveSearch = {
@@ -788,7 +791,7 @@
                     return;
                 }
 
-                // Fetch view counts and wave counts for all posts
+                // Fetch view counts, wave counts, and comment counts for all posts
                 const slugs = posts.map(p => p.slug);
                 viewCountsData = window.PageViews ? await window.PageViews.getViewCounts(slugs) : {};
 
@@ -810,6 +813,9 @@
                         console.error('Failed to fetch wave counts:', e);
                     }
                 }
+
+                // Fetch comment counts
+                commentCountsData = window.Comments ? await window.Comments.getCommentCounts(slugs) : {};
 
                 // Classify all posts and check for active featured
                 const postsWithClassification = posts.map(post => ({
@@ -834,7 +840,8 @@
                 container.innerHTML = postsWithClassification.map(({ post, classification }) => {
                     const viewCount = viewCountsData[post.slug] || 0;
                     const waveCount = waveCountsData[post.slug] || 0;
-                    return WaveRenderer.render(post, classification, viewCount, waveCount);
+                    const commentCount = commentCountsData[post.slug] || 0;
+                    return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
                 }).join('');
 
                 container.style.display = 'flex';
