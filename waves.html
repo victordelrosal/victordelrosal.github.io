@@ -694,8 +694,24 @@
                     }
                 }
 
-                container.innerHTML = posts.map(post => {
-                    const classification = WaveAnalyzer.classifyWave(post);
+                // Classify all posts and check for active featured
+                const postsWithClassification = posts.map(post => ({
+                    post,
+                    classification: WaveAnalyzer.classifyWave(post)
+                }));
+
+                // Sort: active featured posts first, then by date
+                postsWithClassification.sort((a, b) => {
+                    const aFeatured = a.classification.isActiveFeatured ? 1 : 0;
+                    const bFeatured = b.classification.isActiveFeatured ? 1 : 0;
+                    if (aFeatured !== bFeatured) {
+                        return bFeatured - aFeatured; // Featured first
+                    }
+                    // Both featured or both not: sort by date (newest first)
+                    return new Date(b.post.published_at) - new Date(a.post.published_at);
+                });
+
+                container.innerHTML = postsWithClassification.map(({ post, classification }) => {
                     const viewCount = viewCounts[post.slug] || 0;
                     const waveCount = waveCounts[post.slug] || 0;
                     return WaveRenderer.render(post, classification, viewCount, waveCount);
