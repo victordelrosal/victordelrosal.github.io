@@ -2172,6 +2172,32 @@ footer {
     opacity: 0.7;
 }
 
+/* Wave Stats (for cards listing) */
+.wave-stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 8px;
+}
+
+.wave-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: inherit;
+    opacity: 0.6;
+}
+
+.wave-stat svg {
+    opacity: 0.7;
+}
+
+.wave-stat-emoji {
+    font-size: 11px;
+    line-height: 1;
+}
+
 /* ===== 25. COMMENTS SECTION ===== */
 .comments-section {
     margin-top: 80px;
