@@ -89,6 +89,16 @@
                 <p class="post-meta"><span id="post-date"></span></p>
                 <h1 id="post-title" class="post-title"></h1>
             </header>
+
+            <!-- Font Size Control -->
+            <div class="font-size-control" id="font-size-control">
+                <button class="font-size-btn" data-size="1" title="Tiny">A</button>
+                <button class="font-size-btn" data-size="2" title="Small">A</button>
+                <button class="font-size-btn active" data-size="3" title="Medium">A</button>
+                <button class="font-size-btn" data-size="4" title="Large">A</button>
+                <button class="font-size-btn" data-size="5" title="Extra Large">A</button>
+            </div>
+
             <div id="post-content" class="post-content"></div>
 
             <!-- View Count & Share Buttons -->
@@ -254,6 +264,37 @@
                         document.getElementById('post-content').innerHTML = linkifyUrls(stripFirstLine(post.content));
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('post').classList.add('visible');
+
+                        // Font size control
+                        (function() {
+                            const postContent = document.getElementById('post-content');
+                            const fontSizeButtons = document.querySelectorAll('.font-size-btn');
+                            const storageKey = 'wave-font-size';
+
+                            function setFontSize(size) {
+                                // Remove all font size classes
+                                postContent.classList.remove('font-size-1', 'font-size-2', 'font-size-3', 'font-size-4', 'font-size-5');
+                                // Add the selected size class
+                                postContent.classList.add('font-size-' + size);
+                                // Update button states
+                                fontSizeButtons.forEach(btn => {
+                                    btn.classList.toggle('active', btn.dataset.size === String(size));
+                                });
+                                // Save preference
+                                localStorage.setItem(storageKey, size);
+                            }
+
+                            // Load saved preference or default to 3 (medium)
+                            const savedSize = localStorage.getItem(storageKey) || '3';
+                            setFontSize(savedSize);
+
+                            // Add click handlers
+                            fontSizeButtons.forEach(btn => {
+                                btn.addEventListener('click', () => {
+                                    setFontSize(btn.dataset.size);
+                                });
+                            });
+                        })();
 
                         // Track page view and display count
                         if (window.PageViews && window.SupabaseClient) {
