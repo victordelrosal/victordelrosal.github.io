@@ -788,7 +788,7 @@ section {
     top: 0;
     left: 0;
     right: 0;
-    height: 120px;
+    height: 56px;
     z-index: 1000;
     overflow: hidden;
 }
@@ -857,16 +857,17 @@ section {
     position: relative;
     z-index: 10;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 12px 24px 20px;
+    padding: 0 24px;
     text-align: center;
 }
 
 /* Centered Waves title with shimmer */
 .wave-navbar-title {
+    display: none;
     font-size: clamp(28px, 5vw, 36px);
     font-weight: 700;
     letter-spacing: -0.03em;
@@ -927,7 +928,7 @@ section {
 
 /* Waves page body adjustment */
 .waves-page .waves-section--with-navbar {
-    padding-top: 150px;
+    padding-top: 88px;
 }
 
 /* Waves tagline */
@@ -943,16 +944,15 @@ section {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .wave-navbar {
-        height: 100px;
+        height: 52px;
     }
 
     .wave-navbar-content {
-        padding: 10px 16px 16px;
+        padding: 0 16px;
     }
 
     .wave-navbar-title {
-        font-size: 26px;
-        margin-bottom: 6px;
+        display: none;
     }
 
     .wave-navbar-links {
@@ -965,7 +965,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 130px;
+        padding-top: 84px;
     }
 
     .waves-tagline {
@@ -976,11 +976,11 @@ section {
 
 @media (max-width: 480px) {
     .wave-navbar {
-        height: 90px;
+        height: 48px;
     }
 
     .wave-navbar-title {
-        font-size: 22px;
+        display: none;
     }
 
     .wave-navbar-links li a {
@@ -989,7 +989,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 115px;
+        padding-top: 80px;
     }
 }
 
