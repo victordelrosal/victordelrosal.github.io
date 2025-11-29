@@ -72,6 +72,23 @@
             </div>
         </header>
 
+        <!-- Search Box -->
+        <div class="waves-search-container">
+            <div class="waves-search-box">
+                <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..." autocomplete="off">
+                <button id="waves-search-clear" class="waves-search-clear" style="display: none;" aria-label="Clear search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="waves-search-results" class="waves-search-results" style="display: none;"></div>
+        </div>
+
         <!-- Waves Section -->
         <section class="waves-section">
             <!-- Loading State -->
@@ -657,6 +674,110 @@
             }
         };
 
+        // Global state for search
+        let allPostsData = [];
+        let viewCountsData = {};
+        let waveCountsData = {};
+
+        // Search controller
+        const WaveSearch = {
+            init() {
+                const searchInput = document.getElementById('waves-search');
+                const clearBtn = document.getElementById('waves-search-clear');
+                const resultsInfo = document.getElementById('waves-search-results');
+
+                if (!searchInput) return;
+
+                // Debounce search
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    clearBtn.style.display = query ? 'flex' : 'none';
+
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.filterWaves(query);
+                    }, 150);
+                });
+
+                // Clear button
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    this.filterWaves('');
+                    searchInput.focus();
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Focus search on "/" key
+                    if (e.key === '/' && document.activeElement !== searchInput) {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                    // Clear on Escape
+                    if (e.key === 'Escape' && document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        clearBtn.style.display = 'none';
+                        this.filterWaves('');
+                        searchInput.blur();
+                    }
+                });
+            },
+
+            filterWaves(query) {
+                const container = document.getElementById('waves-container');
+                const resultsInfo = document.getElementById('waves-search-results');
+                const entries = container.querySelectorAll('.wave-entry');
+
+                if (!query) {
+                    // Show all
+                    entries.forEach(el => {
+                        el.style.display = '';
+                        el.classList.add('revealed');
+                    });
+                    resultsInfo.style.display = 'none';
+                    return;
+                }
+
+                const queryLower = query.toLowerCase();
+                let visibleCount = 0;
+
+                entries.forEach((el, index) => {
+                    const postData = allPostsData[index];
+                    if (!postData) return;
+
+                    const { post, classification } = postData;
+                    const plainText = WaveAnalyzer.getPlainText(post.content);
+
+                    // Search in title, content, and type
+                    const searchText = `${post.title} ${plainText} ${classification.label}`.toLowerCase();
+
+                    if (searchText.includes(queryLower)) {
+                        el.style.display = '';
+                        el.classList.add('revealed');
+                        visibleCount++;
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+
+                // Show results count
+                resultsInfo.style.display = 'block';
+                if (visibleCount === 0) {
+                    resultsInfo.innerHTML = `No waves found for "<strong>${this.escapeHtml(query)}</strong>"`;
+                } else {
+                    resultsInfo.innerHTML = `Found <strong>${visibleCount}</strong> wave${visibleCount !== 1 ? 's' : ''} matching "<strong>${this.escapeHtml(query)}</strong>"`;
+                }
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
         // Fetch and render waves
         (async function() {
             try {
@@ -679,10 +800,10 @@
 
                 // Fetch view counts and wave counts for all posts
                 const slugs = posts.map(p => p.slug);
-                const viewCounts = window.PageViews ? await window.PageViews.getViewCounts(slugs) : {};
+                viewCountsData = window.PageViews ? await window.PageViews.getViewCounts(slugs) : {};
 
                 // Fetch wave reaction counts
-                let waveCounts = {};
+                waveCountsData = {};
                 const supabase = window.SupabaseClient?.getClient();
                 if (supabase) {
                     try {
@@ -692,7 +813,7 @@
                             .in('post_slug', slugs);
                         if (!error && data) {
                             data.forEach(item => {
-                                waveCounts[item.post_slug] = item.wave_count;
+                                waveCountsData[item.post_slug] = item.wave_count;
                             });
                         }
                     } catch (e) {
@@ -717,15 +838,21 @@
                     return new Date(b.post.published_at) - new Date(a.post.published_at);
                 });
 
+                // Store for search
+                allPostsData = postsWithClassification;
+
                 container.innerHTML = postsWithClassification.map(({ post, classification }) => {
-                    const viewCount = viewCounts[post.slug] || 0;
-                    const waveCount = waveCounts[post.slug] || 0;
+                    const viewCount = viewCountsData[post.slug] || 0;
+                    const waveCount = waveCountsData[post.slug] || 0;
                     return WaveRenderer.render(post, classification, viewCount, waveCount);
                 }).join('');
 
                 container.style.display = 'flex';
 
                 GalleryController.init();
+
+                // Initialize search
+                WaveSearch.init();
 
                 const revealObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
