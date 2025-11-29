@@ -2560,9 +2560,11 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 120px;
-    height: 25vh;
-    color: var(--text-primary);
+    width: 200px;
+    height: 200px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    color: var(--bg-primary);
     opacity: 0.12;
     transition: opacity 0.3s ease, transform 0.3s ease;
     cursor: pointer;
@@ -2570,9 +2572,9 @@ footer {
 }
 
 .wave-nav svg {
-    width: 240px;
-    height: 240px;
-    stroke-width: 1;
+    width: 100px;
+    height: 100px;
+    stroke-width: 2.5;
 }
 
 .wave-nav:hover {
@@ -2584,11 +2586,11 @@ footer {
 }
 
 .wave-nav--prev {
-    left: 8px;
+    left: 20px;
 }
 
 .wave-nav--next {
-    right: 8px;
+    right: 20px;
 }
 
 /* Hover effect - slight movement */
