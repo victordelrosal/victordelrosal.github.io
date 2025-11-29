@@ -3006,25 +3006,30 @@ footer {
     text-decoration: underline;
 }
 
-/* Comment content font sizes (matches user preference) */
+/* Comment content font sizes (matches post content) */
 .comment-content.font-size-1 {
-    font-size: 13px;
+    font-size: 18px;
+    line-height: 1.7;
 }
 
 .comment-content.font-size-2 {
-    font-size: 14px;
+    font-size: 21px;
+    line-height: 1.7;
 }
 
 .comment-content.font-size-3 {
-    font-size: 15px;
+    font-size: 25px;
+    line-height: 1.8;
 }
 
 .comment-content.font-size-4 {
-    font-size: 17px;
+    font-size: 29px;
+    line-height: 1.8;
 }
 
 .comment-content.font-size-5 {
-    font-size: 19px;
+    font-size: 33px;
+    line-height: 1.9;
 }
 
 .comment-actions {
