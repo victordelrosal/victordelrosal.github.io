@@ -51,7 +51,18 @@
         </ul>
     </nav>
 
-    <main id="main-content" style="padding: 120px 24px 100px; max-width: 720px; margin: 0 auto; min-height: 100vh;">
+    <main id="main-content" class="wave-watermark" style="padding: 120px 24px 100px; max-width: 720px; margin: 0 auto; min-height: 100vh;">
+        <!-- Wave Signature Background Elements -->
+        <div class="wave-signature"></div>
+        <div class="wave-signature-right"></div>
+        <div class="wave-icon-float">
+            <svg viewBox="0 0 100 100">
+                <path d="M10,50 Q30,30 50,50 T90,50" stroke-linecap="round"/>
+                <path d="M10,60 Q30,40 50,60 T90,60" stroke-linecap="round"/>
+                <path d="M10,70 Q30,50 50,70 T90,70" stroke-linecap="round"/>
+            </svg>
+        </div>
+
         <!-- Breadcrumb -->
         <nav class="breadcrumb" id="breadcrumb" style="display: none;">
             <a href="/">Home</a> / <a href="/waves.html">Waves</a> / <span id="breadcrumb-title"></span>
