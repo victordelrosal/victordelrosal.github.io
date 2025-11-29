@@ -96,8 +96,13 @@
         <p class="footer-copyright">© 2024 Victor del Rosal</p>
     </footer>
 
-    <!-- Load Posts API -->
+    <!-- Load Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Load Posts API and Page Views -->
     <script src="/posts.js"></script>
+    <script src="/js/supabase-client.js"></script>
+    <script src="/js/page-views.js"></script>
 
     <script>
         /**
@@ -267,26 +272,31 @@
                 return 'ocean'; // default
             },
 
-            render(post, classification) {
+            render(post, classification, viewCount = 0) {
                 const renderer = this[classification.type] || this.longform;
-                const html = renderer.call(this, post, classification);
+                const html = renderer.call(this, post, classification, viewCount);
                 const waveStyle = this.getWaveStyle(classification.type);
                 // Inject data-wave-style attribute into the first element
                 return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
             },
 
-            tweet(post, { label }) {
+            viewBadge(count) {
+                if (!count || count === 0) return '';
+                return window.PageViews ? window.PageViews.createViewBadgeHTML(count) : '';
+            },
+
+            tweet(post, { label }, viewCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            skeet(post, { label }) {
+            skeet(post, { label }, viewCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 280);
                 return `
@@ -294,13 +304,13 @@
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
                         <p class="wave-body">${excerpt}</p>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            photo(post, { label }) {
+            photo(post, { label }, viewCount) {
                 const images = WaveAnalyzer.getAllImages(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
@@ -337,7 +347,7 @@
                             <a href="/${post.slug}" class="wave-content">
                                 <h2 class="wave-title">${post.title}</h2>
                                 <p class="wave-body">${excerpt}</p>
-                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                             </a>
                             ${this.arrowSvg}
                         </div>
@@ -353,7 +363,7 @@
                             <div class="wave-content">
                                 <h2 class="wave-title">${post.title}</h2>
                                 <p class="wave-body">${excerpt}</p>
-                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                             </div>
                             ${this.arrowSvg}
                         </a>
@@ -361,7 +371,7 @@
                 }
             },
 
-            longform(post, { label }) {
+            longform(post, { label }, viewCount) {
                 const imageUrl = WaveAnalyzer.getFirstImage(post.content);
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 200);
@@ -373,7 +383,7 @@
                         <span class="wave-type">${label}</span>
                         ${thumbHtml}
                         <div class="wave-content">
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
                         </div>
@@ -382,18 +392,18 @@
                 `;
             },
 
-            thought(post, { label }) {
+            thought(post, { label }, viewCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--thought">
                         <span class="wave-type">${label}</span>
                         <h2 class="wave-title">${post.title}</h2>
-                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            journal(post, { label }) {
+            journal(post, { label }, viewCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 250);
                 return `
@@ -402,14 +412,14 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            todo(post, { label }) {
+            todo(post, { label }, viewCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
@@ -418,14 +428,14 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            link(post, { label }) {
+            link(post, { label }, viewCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
                 return `
@@ -434,27 +444,27 @@
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-body">${excerpt}</p>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            video(post, { label }) {
+            video(post, { label }, viewCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
-                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)} ${this.viewBadge(viewCount)}</p>
                         </div>
                         ${this.arrowSvg}
                     </a>
                 `;
             },
 
-            reading(post, { label }) {
+            reading(post, { label }, viewCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 180);
 
@@ -482,6 +492,7 @@
                             <p class="wave-meta">
                                 ${window.PostsAPI.formatDate(post.published_at)}
                                 ${sourceTag}
+                                ${this.viewBadge(viewCount)}
                             </p>
                         </div>
                         ${this.arrowSvg}
@@ -580,6 +591,11 @@
         // Fetch and render waves
         (async function() {
             try {
+                // Initialize Supabase for view counts
+                if (window.SupabaseClient) {
+                    window.SupabaseClient.initSupabase();
+                }
+
                 const posts = await window.PostsAPI.fetchPosts();
                 const container = document.getElementById('waves-container');
                 const loading = document.getElementById('loading');
@@ -592,9 +608,14 @@
                     return;
                 }
 
+                // Fetch view counts for all posts
+                const slugs = posts.map(p => p.slug);
+                const viewCounts = window.PageViews ? await window.PageViews.getViewCounts(slugs) : {};
+
                 container.innerHTML = posts.map(post => {
                     const classification = WaveAnalyzer.classifyWave(post);
-                    return WaveRenderer.render(post, classification);
+                    const viewCount = viewCounts[post.slug] || 0;
+                    return WaveRenderer.render(post, classification, viewCount);
                 }).join('');
 
                 container.style.display = 'flex';
