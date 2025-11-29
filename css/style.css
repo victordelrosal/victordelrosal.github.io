@@ -1773,14 +1773,14 @@ section {
     display: block;
     aspect-ratio: 16/10;
     object-fit: cover;
-    animation: slowZoomIn 20s ease-in-out infinite alternate;
+    animation: breathingZoom 15s ease-in-out infinite;
 }
 
-@keyframes slowZoomIn {
-    0% {
+@keyframes breathingZoom {
+    0%, 100% {
         transform: scale(1);
     }
-    100% {
+    50% {
         transform: scale(1.08);
     }
 }
