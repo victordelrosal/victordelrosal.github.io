@@ -1246,48 +1246,18 @@ section {
    ======================================== */
 .wave-entry[data-wave-style="gold"] {
     background:
-        radial-gradient(
-            ellipse at 30% 20%,
-            #E8D068 0%,
-            #D4B84A 25%,
-            #C9A633 50%,
-            #B8942A 75%,
-            #A68520 100%
-        ),
-        linear-gradient(
-            145deg,
-            #A07818 0%,
-            #C9A633 20%,
-            #E0C850 40%,
-            #D4B440 60%,
-            #B89828 80%,
-            #9A7A15 100%
-        );
-    background-blend-mode: overlay;
+        radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+        radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
     border: none;
     position: relative;
     overflow: hidden;
-    color: #4A3C20;
+    color: #3d3215;
     box-shadow:
-        0 0 0 3px rgba(184, 148, 42, 0.4),
-        0 0 30px rgba(201, 166, 51, 0.25),
-        0 8px 32px rgba(140, 110, 20, 0.3),
+        0 0 0 3px rgba(253, 185, 49, 0.3),
+        0 0 30px rgba(254, 219, 55, 0.2),
+        0 8px 32px rgba(93, 74, 31, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     border-radius: 20px;
-}
-
-/* Subtle sheen overlay */
-.wave-entry[data-wave-style="gold"]::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        ellipse at 70% 80%,
-        rgba(255, 255, 255, 0.15) 0%,
-        transparent 50%
-    );
-    pointer-events: none;
-    z-index: 1;
 }
 
 /* Shimmer sweep effect */
