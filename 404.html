@@ -101,10 +101,14 @@
 
             <div id="post-content" class="post-content"></div>
 
-            <!-- View Count & Share Buttons -->
+            <!-- Wave Reaction & View Count -->
             <div class="share-section">
                 <div class="engagement-row">
                     <div id="view-count-container"></div>
+                    <button class="wave-reaction-btn" id="wave-reaction-btn" title="Wave at this post">
+                        <span class="wave-emoji">👋</span>
+                        <span class="wave-count" id="wave-count">0</span>
+                    </button>
                     <p class="share-label">Share this wave</p>
                 </div>
                 <div class="share-buttons">
@@ -315,6 +319,68 @@
                                     window.CommentsUI.init(slug, 'comments-section');
                                 }
                             }).catch(e => console.error('Failed to init auth:', e));
+
+                            // Wave reaction
+                            (async function() {
+                                const waveBtn = document.getElementById('wave-reaction-btn');
+                                const waveEmoji = waveBtn.querySelector('.wave-emoji');
+                                const waveCountEl = document.getElementById('wave-count');
+                                const storageKey = 'wave-reacted-' + slug;
+                                const visitorKey = 'wave-visitor-id';
+
+                                // Get or create visitor ID
+                                let visitorId = localStorage.getItem(visitorKey);
+                                if (!visitorId) {
+                                    visitorId = 'v_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                                    localStorage.setItem(visitorKey, visitorId);
+                                }
+
+                                // Check if already waved
+                                const hasWaved = localStorage.getItem(storageKey) === 'true';
+                                if (hasWaved) {
+                                    waveBtn.classList.add('waved');
+                                }
+
+                                // Load current wave count
+                                try {
+                                    const supabase = window.SupabaseClient.getClient();
+                                    const { data } = await supabase.rpc('get_wave_count', { p_slug: slug });
+                                    waveCountEl.textContent = data || 0;
+                                } catch (e) {
+                                    console.error('Failed to load wave count:', e);
+                                }
+
+                                // Wave animation function
+                                function triggerWaveAnimation() {
+                                    waveEmoji.classList.remove('waving');
+                                    void waveEmoji.offsetWidth; // Trigger reflow
+                                    waveEmoji.classList.add('waving');
+                                }
+
+                                // Handle click
+                                waveBtn.addEventListener('click', async () => {
+                                    triggerWaveAnimation();
+
+                                    // If already waved, just animate
+                                    if (localStorage.getItem(storageKey) === 'true') {
+                                        return;
+                                    }
+
+                                    // Record the wave
+                                    try {
+                                        const supabase = window.SupabaseClient.getClient();
+                                        const { data } = await supabase.rpc('add_wave_reaction', {
+                                            p_slug: slug,
+                                            p_visitor_id: visitorId
+                                        });
+                                        waveCountEl.textContent = data || 0;
+                                        localStorage.setItem(storageKey, 'true');
+                                        waveBtn.classList.add('waved');
+                                    } catch (e) {
+                                        console.error('Failed to add wave:', e);
+                                    }
+                                });
+                            })();
                         }
 
                         const shareText = `${post.title} by Victor del Rosal`;

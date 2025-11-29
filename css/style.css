@@ -2710,3 +2710,61 @@ footer {
         padding: 4px 6px;
     }
 }
+
+/* ==========================================================================
+   28. Wave Reaction Button
+   ========================================================================== */
+
+.wave-reaction-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.06) 100%);
+    border: none;
+    border-radius: 24px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.wave-reaction-btn:hover {
+    background: linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.10) 100%);
+    transform: scale(1.05);
+}
+
+.wave-reaction-btn.waved {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.15) 100%);
+}
+
+.wave-emoji {
+    font-size: 24px;
+    display: inline-block;
+    transform-origin: 70% 70%;
+}
+
+.wave-emoji.waving {
+    animation: wave-hand 0.5s ease-in-out;
+}
+
+@keyframes wave-hand {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.wave-count {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 20px;
+}
+
+.wave-reaction-btn.waved .wave-count {
+    color: #3b82f6;
+}
