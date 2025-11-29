@@ -1086,6 +1086,8 @@ section {
         0 2px 8px rgba(139, 90, 43, 0.3);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     font-weight: 700;
+    position: relative;
+    z-index: 10;
 }
 
 .wave-entry[data-wave-style="ocean"]:hover .wave-arrow {
@@ -1241,6 +1243,12 @@ section {
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
 
 /* Photo entry */
+/* Photo card type badge - ensure visible above image */
+.wave-entry--photo .wave-type {
+    position: relative;
+    z-index: 10;
+}
+
 .wave-entry--photo .wave-image-wrapper {
     margin: -28px -28px 20px -28px;
     border-radius: 24px 24px 0 0;
