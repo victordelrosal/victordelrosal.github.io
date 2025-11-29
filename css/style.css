@@ -3006,6 +3006,27 @@ footer {
     text-decoration: underline;
 }
 
+/* Comment content font sizes (matches user preference) */
+.comment-content.font-size-1 {
+    font-size: 13px;
+}
+
+.comment-content.font-size-2 {
+    font-size: 14px;
+}
+
+.comment-content.font-size-3 {
+    font-size: 15px;
+}
+
+.comment-content.font-size-4 {
+    font-size: 17px;
+}
+
+.comment-content.font-size-5 {
+    font-size: 19px;
+}
+
 .comment-actions {
     display: flex;
     gap: 16px;

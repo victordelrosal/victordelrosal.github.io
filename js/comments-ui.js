@@ -298,7 +298,7 @@ const CommentsUI = {
             <span class="comment-time">${window.Comments.timeAgo(comment.created_at)}</span>
           </div>
         </div>
-        <div class="comment-content">${window.Comments.linkify(comment.content)}</div>
+        <div class="comment-content font-size-${localStorage.getItem('wave-font-size') || '3'}">${window.Comments.linkify(comment.content)}</div>
         <div class="comment-actions">
           ${replyBtn}
           ${deleteBtn}
