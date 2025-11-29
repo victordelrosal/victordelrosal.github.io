@@ -207,6 +207,11 @@
                 return /#featured\b/i.test(combined);
             },
 
+            isVideoTagged(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#video\b/i.test(combined) || /\[video\]/i.test(combined);
+            },
+
             isFeaturedActive(publishedAt) {
                 // Featured posts expire after 30 days
                 const FEATURED_DURATION_DAYS = 30;
@@ -233,7 +238,8 @@
                     return { type: 'reading', label: 'Reading' };
                 }
 
-                if (hasVideoContent) {
+                // Video check - either #video hashtag or embedded video content
+                if (this.isVideoTagged(content, plainText, post.title) || hasVideoContent) {
                     return { type: 'video', label: 'Video' };
                 }
 
