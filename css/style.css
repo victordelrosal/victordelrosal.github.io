@@ -788,10 +788,9 @@ section {
     top: 0;
     left: 0;
     right: 0;
-    height: 70px;
+    height: 120px;
     z-index: 1000;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 20, 60, 0.3);
 }
 
 .wave-navbar-bg {
@@ -801,104 +800,85 @@ section {
     z-index: 0;
 }
 
+/* Ambient glow effect like original header */
+.wave-navbar-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 30% 70%, rgba(0,0,179,0.4) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(0,102,255,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(0,40,80,0.2) 0%, transparent 60%);
+    animation: rotateGlow 20s linear infinite;
+    z-index: 1;
+}
+
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Aquarium waves at bottom */
 .wave-navbar-bg .wave-navbar-wave {
     position: absolute;
-    bottom: -5px;
     left: 0;
     width: 200%;
-    height: 50px;
+    height: 40px;
+    z-index: 2;
 }
 
 .wave-navbar-bg .wave-deep {
-    fill: rgba(0, 60, 140, 0.6);
-    animation: waveNavbarFlow 12s linear infinite;
-    bottom: 0;
+    fill: rgba(0, 20, 60, 0.6);
+    bottom: -8px;
+    animation: waveNavbarFlow 15s ease-in-out infinite;
 }
 
 .wave-navbar-bg .wave-mid {
-    fill: rgba(0, 120, 220, 0.5);
-    animation: waveNavbarFlow 8s linear infinite reverse;
-    bottom: 5px;
+    fill: rgba(0, 60, 120, 0.5);
+    bottom: -4px;
+    animation: waveNavbarFlow 12s ease-in-out infinite reverse;
 }
 
 .wave-navbar-bg .wave-surface {
-    fill: rgba(80, 180, 255, 0.4);
-    animation: waveNavbarFlow 6s linear infinite;
-    bottom: 10px;
+    fill: rgba(0, 100, 180, 0.4);
+    bottom: 0;
+    animation: waveNavbarFlow 8s ease-in-out infinite;
 }
 
 @keyframes waveNavbarFlow {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-25%); }
 }
 
 .wave-navbar-content {
     position: relative;
-    z-index: 1;
+    z-index: 10;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     height: 100%;
-    padding: 0 32px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 12px 24px 20px;
+    text-align: center;
 }
 
-.wave-navbar-logo {
-    display: flex;
-    align-items: center;
-}
-
-.wave-navbar-logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-}
-
-.wave-navbar-logo:hover img {
-    transform: scale(1.1);
-}
-
-.wave-navbar-links {
-    display: flex;
-    list-style: none;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-}
-
-.wave-navbar-links li a {
-    display: block;
-    padding: 10px 16px;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.wave-navbar-links li a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.wave-navbar-links li a.active {
-    color: white;
-}
-
-/* Waves link with shimmer animation - 15% larger */
-.wave-navbar-waves-link {
-    font-size: 17.25px !important;
-    font-weight: 700 !important;
+/* Centered Waves title with shimmer */
+.wave-navbar-title {
+    font-size: clamp(28px, 5vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
     background: linear-gradient(
         90deg,
         #fff 0%,
-        #fff 40%,
-        #7dd3fc 50%,
-        #38bdf8 55%,
-        #fff 60%,
+        #fff 35%,
+        #7dd3fc 45%,
+        #38bdf8 50%,
+        #7dd3fc 55%,
+        #fff 65%,
         #fff 100%
     );
     background-size: 200% 100%;
@@ -908,30 +888,46 @@ section {
     animation: waveNavbarShimmer 3s ease-in-out infinite;
 }
 
-.wave-navbar-waves-link:hover {
-    background: linear-gradient(
-        90deg,
-        #fff 0%,
-        #fff 40%,
-        #7dd3fc 50%,
-        #38bdf8 55%,
-        #fff 60%,
-        #fff 100%
-    ) !important;
-    background-size: 200% 100% !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
-
 @keyframes waveNavbarShimmer {
     0%, 100% { background-position: 200% center; }
     50% { background-position: 0% center; }
 }
 
+/* Centered navigation */
+.wave-navbar-links {
+    display: flex;
+    list-style: none;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.wave-navbar-links li a {
+    display: block;
+    padding: 6px 14px;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.wave-navbar-links li a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.wave-navbar-links li a.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+}
+
 /* Waves page body adjustment */
 .waves-page .waves-section--with-navbar {
-    padding-top: 110px;
+    padding-top: 150px;
 }
 
 /* Waves tagline */
@@ -947,16 +943,16 @@ section {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .wave-navbar {
-        height: 60px;
+        height: 100px;
     }
 
     .wave-navbar-content {
-        padding: 0 16px;
+        padding: 10px 16px 16px;
     }
 
-    .wave-navbar-logo img {
-        width: 32px;
-        height: 32px;
+    .wave-navbar-title {
+        font-size: 26px;
+        margin-bottom: 6px;
     }
 
     .wave-navbar-links {
@@ -964,16 +960,12 @@ section {
     }
 
     .wave-navbar-links li a {
-        padding: 8px 10px;
-        font-size: 13px;
-    }
-
-    .wave-navbar-waves-link {
-        font-size: 15px !important;
+        padding: 5px 10px;
+        font-size: 12px;
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 90px;
+        padding-top: 130px;
     }
 
     .waves-tagline {
@@ -983,13 +975,21 @@ section {
 }
 
 @media (max-width: 480px) {
-    .wave-navbar-links li a {
-        padding: 8px 6px;
-        font-size: 12px;
+    .wave-navbar {
+        height: 90px;
     }
 
-    .wave-navbar-waves-link {
-        font-size: 14px !important;
+    .wave-navbar-title {
+        font-size: 22px;
+    }
+
+    .wave-navbar-links li a {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .waves-page .waves-section--with-navbar {
+        padding-top: 115px;
     }
 }
 
