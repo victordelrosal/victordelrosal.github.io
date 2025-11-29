@@ -1486,6 +1486,15 @@ section {
     min-height: 100vh;
 }
 
+/* Ensure post content stays above watermark */
+.wave-watermark .post,
+.wave-watermark .breadcrumb,
+.wave-watermark .loading,
+.wave-watermark .not-found {
+    position: relative;
+    z-index: 2;
+}
+
 /* Large decorative wave in background */
 .wave-watermark::before {
     content: '';
@@ -1495,12 +1504,12 @@ section {
     right: 0;
     bottom: 0;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
     background:
         /* Gentle radial glow from top */
-        radial-gradient(ellipse 120% 60% at 50% -10%, rgba(0, 150, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 120% 60% at 50% -10%, rgba(0, 150, 255, 0.08) 0%, transparent 60%),
         /* Subtle ambient gradient */
-        linear-gradient(180deg, rgba(240, 248, 255, 0.8) 0%, rgba(255, 255, 255, 0) 30%);
+        linear-gradient(180deg, rgba(230, 244, 255, 0.9) 0%, rgba(255, 255, 255, 0) 40%);
 }
 
 /* Animated wave SVG watermark */
@@ -1512,8 +1521,8 @@ section {
     width: 200%;
     height: 400px;
     pointer-events: none;
-    z-index: -1;
-    opacity: 0.04;
+    z-index: 0;
+    opacity: 0.06;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230066cc' d='M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z'/%3E%3C/svg%3E");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -1534,7 +1543,7 @@ section {
     width: 120px;
     height: 60vh;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     opacity: 0;
     animation: fadeInSignature 1s ease-out 0.5s forwards;
 }
@@ -1543,7 +1552,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 400'%3E%3Cpath fill='none' stroke='%230088cc' stroke-width='1.5' stroke-opacity='0.08' d='M50,0 Q80,50 50,100 T50,200 T50,300 T50,400'/%3E%3Cpath fill='none' stroke='%2300aadd' stroke-width='1' stroke-opacity='0.05' d='M30,0 Q60,50 30,100 T30,200 T30,300 T30,400'/%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 400'%3E%3Cpath fill='none' stroke='%230088cc' stroke-width='2' stroke-opacity='0.15' d='M50,0 Q80,50 50,100 T50,200 T50,300 T50,400'/%3E%3Cpath fill='none' stroke='%2300aadd' stroke-width='1.5' stroke-opacity='0.1' d='M30,0 Q60,50 30,100 T30,200 T30,300 T30,400'/%3E%3C/svg%3E");
     background-size: 100% 100%;
 }
 
@@ -1556,7 +1565,7 @@ section {
     width: 120px;
     height: 60vh;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
     opacity: 0;
     animation: fadeInSignature 1s ease-out 0.7s forwards;
 }
@@ -1565,7 +1574,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 400'%3E%3Cpath fill='none' stroke='%230088cc' stroke-width='1.5' stroke-opacity='0.08' d='M50,0 Q80,50 50,100 T50,200 T50,300 T50,400'/%3E%3Cpath fill='none' stroke='%2300aadd' stroke-width='1' stroke-opacity='0.05' d='M30,0 Q60,50 30,100 T30,200 T30,300 T30,400'/%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 400'%3E%3Cpath fill='none' stroke='%230088cc' stroke-width='2' stroke-opacity='0.15' d='M50,0 Q80,50 50,100 T50,200 T50,300 T50,400'/%3E%3Cpath fill='none' stroke='%2300aadd' stroke-width='1.5' stroke-opacity='0.1' d='M30,0 Q60,50 30,100 T30,200 T30,300 T30,400'/%3E%3C/svg%3E");
     background-size: 100% 100%;
 }
 
@@ -1581,7 +1590,7 @@ section {
     width: 60px;
     height: 60px;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     opacity: 0;
     animation: floatIn 1s ease-out 0.3s forwards, gentleFloat 6s ease-in-out infinite 1.3s;
 }
@@ -1591,9 +1600,9 @@ section {
     height: 100%;
     fill: none;
     stroke: var(--blue-7);
-    stroke-width: 1.5;
-    opacity: 0.12;
-    filter: drop-shadow(0 2px 8px rgba(0, 100, 200, 0.1));
+    stroke-width: 2;
+    opacity: 0.15;
+    filter: drop-shadow(0 2px 8px rgba(0, 100, 200, 0.15));
 }
 
 @keyframes floatIn {
@@ -1611,7 +1620,6 @@ section {
     .wave-signature,
     .wave-signature-right {
         width: 80px;
-        opacity: 0.5;
     }
 
     .wave-icon-float {
@@ -1629,7 +1637,7 @@ section {
     }
 
     .wave-watermark::after {
-        opacity: 0.03;
+        opacity: 0.04;
         height: 300px;
     }
 }
