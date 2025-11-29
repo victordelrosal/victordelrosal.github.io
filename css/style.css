@@ -1757,12 +1757,23 @@ section {
     display: block;
     aspect-ratio: 16/10;
     object-fit: cover;
-    transition: transform 0.6s var(--ease-out);
+    animation: slowZoomIn 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoomIn {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.08);
+    }
 }
 
 .wave-entry--photo:hover .wave-image,
 .wave-entry--photo:hover .wave-gallery-slide img {
-    transform: scale(1.03);
+    animation-play-state: paused;
+    transform: scale(1.1);
+    transition: transform 0.6s var(--ease-out);
 }
 
 /* Gallery */
