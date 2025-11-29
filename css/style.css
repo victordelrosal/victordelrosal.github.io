@@ -1246,64 +1246,48 @@ section {
    ======================================== */
 .wave-entry[data-wave-style="gold"] {
     background:
+        radial-gradient(
+            ellipse at 30% 20%,
+            #E8D068 0%,
+            #D4B84A 25%,
+            #C9A633 50%,
+            #B8942A 75%,
+            #A68520 100%
+        ),
         linear-gradient(
-            125deg,
-            #C9A227 0%,
-            #E8C547 15%,
-            #D4A830 25%,
-            #F0D860 35%,
-            #C9982A 45%,
-            #E8D065 55%,
-            #D4AC35 65%,
-            #F5E070 75%,
-            #C9A227 85%,
-            #E0C040 100%
+            145deg,
+            #A07818 0%,
+            #C9A633 20%,
+            #E0C850 40%,
+            #D4B440 60%,
+            #B89828 80%,
+            #9A7A15 100%
         );
-    background-size: 400% 400%;
-    animation: goldShift 12s ease-in-out infinite;
+    background-blend-mode: overlay;
     border: none;
     position: relative;
     overflow: hidden;
-    color: #5D4E37;
+    color: #4A3C20;
     box-shadow:
-        0 0 0 3px rgba(201, 162, 39, 0.5),
-        0 0 40px rgba(212, 168, 48, 0.35),
-        0 8px 32px rgba(160, 120, 20, 0.35),
-        inset 0 2px 0 rgba(255, 255, 255, 0.4),
-        inset 0 -2px 0 rgba(160, 120, 20, 0.2);
+        0 0 0 3px rgba(184, 148, 42, 0.4),
+        0 0 30px rgba(201, 166, 51, 0.25),
+        0 8px 32px rgba(140, 110, 20, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     border-radius: 20px;
 }
 
-/* Brushed texture overlay */
+/* Subtle sheen overlay */
 .wave-entry[data-wave-style="gold"]::before {
     content: '';
     position: absolute;
     inset: 0;
-    background:
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 2px,
-            rgba(255, 255, 255, 0.03) 2px,
-            rgba(255, 255, 255, 0.03) 4px
-        ),
-        repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.02) 2px,
-            rgba(0, 0, 0, 0.02) 4px
-        );
+    background: radial-gradient(
+        ellipse at 70% 80%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%
+    );
     pointer-events: none;
     z-index: 1;
-}
-
-@keyframes goldShift {
-    0% { background-position: 0% 0%; }
-    25% { background-position: 100% 50%; }
-    50% { background-position: 50% 100%; }
-    75% { background-position: 0% 50%; }
-    100% { background-position: 0% 0%; }
 }
 
 /* Shimmer sweep effect */
