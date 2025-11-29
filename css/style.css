@@ -2653,39 +2653,39 @@ footer {
 }
 
 /* Size 1 - Tiny */
-.font-size-btn[data-size="1"] { font-size: 10px; }
+.font-size-btn[data-size="1"] { font-size: 14px; }
 /* Size 2 - Small */
-.font-size-btn[data-size="2"] { font-size: 12px; }
+.font-size-btn[data-size="2"] { font-size: 17px; }
 /* Size 3 - Medium (default) */
-.font-size-btn[data-size="3"] { font-size: 14px; }
+.font-size-btn[data-size="3"] { font-size: 20px; }
 /* Size 4 - Large */
-.font-size-btn[data-size="4"] { font-size: 16px; }
+.font-size-btn[data-size="4"] { font-size: 24px; }
 /* Size 5 - Extra Large */
-.font-size-btn[data-size="5"] { font-size: 18px; }
+.font-size-btn[data-size="5"] { font-size: 28px; }
 
 /* Post content font sizes */
 .post-content.font-size-1 {
-    font-size: 10px;
+    font-size: 16px;
     line-height: 1.7;
 }
 
 .post-content.font-size-2 {
-    font-size: 12px;
+    font-size: 19px;
     line-height: 1.7;
 }
 
 .post-content.font-size-3 {
-    font-size: 14px;
+    font-size: 22px;
     line-height: 1.8;
 }
 
 .post-content.font-size-4 {
-    font-size: 16px;
+    font-size: 26px;
     line-height: 1.8;
 }
 
 .post-content.font-size-5 {
-    font-size: 18px;
+    font-size: 30px;
     line-height: 1.9;
 }
 
