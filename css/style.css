@@ -2331,6 +2331,7 @@ footer {
 .engagement-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -2777,7 +2778,7 @@ footer {
 
     .engagement-row .share-buttons {
         width: 100%;
-        justify-content: flex-start;
+        justify-content: center;
     }
 }
 
@@ -2977,18 +2978,18 @@ footer {
 }
 
 .wave-emoji.waving {
-    animation: wave-hand 0.5s ease-in-out;
+    animation: wave-hand 0.6s ease-in-out;
 }
 
 @keyframes wave-hand {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-    60% { transform: rotate(0deg); }
-    100% { transform: rotate(0deg); }
+    0% { transform: rotate(0deg) scale(1); }
+    10% { transform: rotate(14deg) scale(2); }
+    20% { transform: rotate(-8deg) scale(3); }
+    30% { transform: rotate(14deg) scale(3); }
+    40% { transform: rotate(-4deg) scale(3); }
+    50% { transform: rotate(10deg) scale(2.5); }
+    60% { transform: rotate(0deg) scale(2); }
+    100% { transform: rotate(0deg) scale(1); }
 }
 
 .wave-count {
