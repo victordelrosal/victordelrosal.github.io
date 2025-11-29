@@ -18,11 +18,14 @@ let authStateListeners = [];
  * Call this after the supabase-js script has loaded
  */
 function initSupabase() {
-  if (window.supabase && window.supabase.createClient) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Check for both the namespaced version and direct createClient
+  const createClientFn = window.supabase?.createClient || window.createClient;
+
+  if (createClientFn) {
+    supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY);
     return true;
   }
-  console.error('Supabase JS library not loaded');
+  console.error('Supabase JS library not loaded. Check if CDN script loaded correctly.');
   return false;
 }
 

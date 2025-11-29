@@ -249,18 +249,28 @@
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('post').classList.add('visible');
 
-                        // Track page view and display count
-                        (async function() {
-                            const viewCount = await window.PageViews.trackView(slug);
-                            if (viewCount !== null) {
-                                document.getElementById('view-count-container').innerHTML = window.PageViews.createViewCountHTML(viewCount);
-                            }
-                        })();
+                        // Track page view and display count (wrapped to prevent errors from breaking page)
+                        if (window.PageViews && window.SupabaseClient) {
+                            (async function() {
+                                try {
+                                    const viewCount = await window.PageViews.trackView(slug);
+                                    if (viewCount !== null) {
+                                        document.getElementById('view-count-container').innerHTML = window.PageViews.createViewCountHTML(viewCount);
+                                    }
+                                } catch (e) {
+                                    console.error('Failed to track view:', e);
+                                }
+                            })();
 
-                        // Initialize Supabase auth and comments
-                        window.SupabaseClient.initAuth().then(() => {
-                            window.CommentsUI.init(slug, 'comments-section');
-                        });
+                            // Initialize Supabase auth and comments
+                            window.SupabaseClient.initAuth().then(() => {
+                                if (window.CommentsUI) {
+                                    window.CommentsUI.init(slug, 'comments-section');
+                                }
+                            }).catch(e => console.error('Failed to init auth:', e));
+                        } else {
+                            console.warn('PageViews or SupabaseClient not loaded');
+                        }
 
                         const shareText = `${post.title} by Victor del Rosal`;
 
