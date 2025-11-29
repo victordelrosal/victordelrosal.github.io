@@ -63,10 +63,6 @@
             </svg>
         </div>
 
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb" id="breadcrumb" style="display: none;">
-            <a href="/">Home</a> / <a href="/waves.html">Waves</a> / <span id="breadcrumb-title"></span>
-        </nav>
 
         <!-- Loading State -->
         <div id="loading" class="loading">
@@ -256,8 +252,6 @@
                         document.getElementById('post-date').textContent = window.PostsAPI.formatDate(post.published_at);
                         document.getElementById('post-title').textContent = post.title;
                         document.getElementById('post-content').innerHTML = linkifyUrls(stripFirstLine(post.content));
-                        document.getElementById('breadcrumb-title').textContent = post.title;
-                        document.getElementById('breadcrumb').style.display = 'block';
                         document.getElementById('loading').style.display = 'none';
                         document.getElementById('post').classList.add('visible');
 
