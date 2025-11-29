@@ -241,348 +241,8 @@ nav {
     75% { transform: translate(20px, 10px) scale(1.02); }
 }
 
-/* ===== WAVE DUALITY SYSTEM ===== */
-/* Two distinct wave styles: Ocean (Hokusai) and Light (Sine) */
-
-/* ===== OCEAN WAVES - HOKUSAI STYLE ===== */
-/* Inspired by "The Great Wave off Kanagawa" - dramatic curling waves */
-
-.wave-container-ocean {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    border-radius: 16px;
-    box-shadow:
-        inset 0 0 40px rgba(0, 50, 100, 0.4),
-        inset 0 -20px 40px rgba(0, 30, 80, 0.3),
-        0 4px 30px rgba(0, 0, 0, 0.4);
-}
-
-/* Brass aquarium frame effect */
-.wave-container-ocean::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border: 8px solid transparent;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #b87333, #d4a574, #8b5a2b, #d4a574, #b87333) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: 10;
-}
-
-/* Glass reflection overlay */
-.wave-container-ocean::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 35%;
-    background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        rgba(255, 255, 255, 0.02) 50%,
-        transparent 100%);
-    pointer-events: none;
-    z-index: 5;
-}
-
-/* Hokusai wave base styling */
-.wave-ocean {
-    position: absolute;
-    width: 200%;
-    left: -50%;
-    bottom: 0;
-    height: 100%;
-}
-
-/* Deep ocean wave - slow, massive, darkest */
-.wave-ocean-deep {
-    opacity: 0.25;
-    animation: oceanDeep 20s ease-in-out infinite;
-    transform-origin: center bottom;
-}
-
-.wave-ocean-deep path {
-    fill: #003366;
-}
-
-/* Mid ocean wave - curling form */
-.wave-ocean-mid {
-    opacity: 0.35;
-    animation: oceanMid 14s ease-in-out infinite;
-    animation-delay: -4s;
-    transform-origin: center bottom;
-}
-
-.wave-ocean-mid path {
-    fill: #005588;
-}
-
-/* Surface wave - dramatic Hokusai curl with foam */
-.wave-ocean-surface {
-    opacity: 0.5;
-    animation: oceanSurface 10s ease-in-out infinite;
-    animation-delay: -2s;
-    transform-origin: center bottom;
-}
-
-.wave-ocean-surface path {
-    fill: #0088bb;
-}
-
-/* Foam crest overlay */
-.wave-ocean-foam {
-    position: absolute;
-    width: 200%;
-    left: -50%;
-    bottom: 0;
-    height: 100%;
-    opacity: 0.6;
-    animation: oceanFoam 10s ease-in-out infinite;
-    animation-delay: -2s;
-}
-
-.wave-ocean-foam path {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.7);
-    stroke-width: 3;
-    stroke-linecap: round;
-    filter: blur(1px);
-}
-
-/* Ocean wave animations */
-@keyframes oceanDeep {
-    0%, 100% { transform: translateX(0%) scaleY(1); }
-    50% { transform: translateX(3%) scaleY(1.05); }
-}
-
-@keyframes oceanMid {
-    0%, 100% { transform: translateX(0%) translateY(0); }
-    25% { transform: translateX(-3%) translateY(-2%); }
-    50% { transform: translateX(2%) translateY(1%); }
-    75% { transform: translateX(-2%) translateY(-1%); }
-}
-
-@keyframes oceanSurface {
-    0%, 100% { transform: translateX(0%) translateY(0) rotate(0deg); }
-    25% { transform: translateX(-4%) translateY(-3%) rotate(-0.5deg); }
-    50% { transform: translateX(3%) translateY(1%) rotate(0.3deg); }
-    75% { transform: translateX(-2%) translateY(-2%) rotate(-0.2deg); }
-}
-
-@keyframes oceanFoam {
-    0%, 100% { transform: translateX(0%) translateY(0); opacity: 0.6; }
-    25% { transform: translateX(-4%) translateY(-3%); opacity: 0.8; }
-    50% { transform: translateX(3%) translateY(1%); opacity: 0.5; }
-    75% { transform: translateX(-2%) translateY(-2%); opacity: 0.7; }
-}
-
-/* Bubbles rising effect */
-.ocean-bubbles {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.ocean-bubble {
-    position: absolute;
-    bottom: -20px;
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-    border-radius: 50%;
-    animation: bubbleRise 8s ease-in infinite;
-}
-
-.ocean-bubble:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 7s; }
-.ocean-bubble:nth-child(2) { left: 30%; animation-delay: 2s; animation-duration: 9s; width: 6px; height: 6px; }
-.ocean-bubble:nth-child(3) { left: 50%; animation-delay: 4s; animation-duration: 8s; }
-.ocean-bubble:nth-child(4) { left: 70%; animation-delay: 1s; animation-duration: 10s; width: 5px; height: 5px; }
-.ocean-bubble:nth-child(5) { left: 85%; animation-delay: 3s; animation-duration: 7.5s; width: 7px; height: 7px; }
-
-@keyframes bubbleRise {
-    0% { transform: translateY(0) scale(1); opacity: 0; }
-    10% { opacity: 0.6; }
-    90% { opacity: 0.4; }
-    100% { transform: translateY(-400px) scale(0.5); opacity: 0; }
-}
-
-/* Caustic light effect for ocean */
-.ocean-caustics {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 80% 50% at 20% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 70% 60%, rgba(0, 150, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 90% 60% at 40% 80%, rgba(0, 180, 255, 0.06) 0%, transparent 50%);
-    animation: causticsShift 20s ease-in-out infinite;
-    mix-blend-mode: screen;
-}
-
-@keyframes causticsShift {
-    0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.8; }
-    50% { transform: scale(1.05) translate(2%, -2%); opacity: 0.6; }
-}
-
-
-/* ===== LIGHT WAVES - ELECTROMAGNETIC SINE ===== */
-/* Clean mathematical sine oscillations - physics textbook aesthetic */
-
-.wave-container-light {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    background:
-        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(180deg, #050a10 0%, #0a1520 100%);
-    background-size: 30px 30px, 30px 30px, 100% 100%;
-    border: 2px solid #1a3a5c;
-    box-shadow:
-        inset 0 0 30px rgba(0, 180, 255, 0.1),
-        0 0 20px rgba(0, 212, 255, 0.15);
-}
-
-/* Chrome lab instrument frame */
-.wave-container-light::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border: 3px solid transparent;
-    background: linear-gradient(135deg, #2a4a6c, #4a6a8c, #2a4a6c) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-/* Tick marks along edges */
-.wave-container-light::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        repeating-linear-gradient(90deg,
-            transparent 0px, transparent 28px,
-            rgba(0, 212, 255, 0.2) 28px, rgba(0, 212, 255, 0.2) 30px),
-        repeating-linear-gradient(180deg,
-            transparent 0px, transparent 28px,
-            rgba(0, 212, 255, 0.2) 28px, rgba(0, 212, 255, 0.2) 30px);
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-/* LED corner indicators */
-.light-led {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #00d4ff;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #00d4ff, 0 0 20px rgba(0, 212, 255, 0.5);
-    animation: ledPulse 2s ease-in-out infinite;
-    z-index: 10;
-}
-
-.light-led-tl { top: 8px; left: 8px; }
-.light-led-tr { top: 8px; right: 8px; animation-delay: 0.5s; }
-.light-led-bl { bottom: 8px; left: 8px; animation-delay: 1s; }
-.light-led-br { bottom: 8px; right: 8px; animation-delay: 1.5s; }
-
-@keyframes ledPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-}
-
-/* Wavelength label */
-.light-label {
-    position: absolute;
-    bottom: 8px;
-    right: 30px;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: rgba(0, 212, 255, 0.5);
-    letter-spacing: 1px;
-    z-index: 10;
-}
-
-/* Sine wave base styling */
-.wave-light {
-    position: absolute;
-    width: 200%;
-    left: -50%;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 60%;
-}
-
-/* Primary sine wave */
-.wave-light-primary {
-    opacity: 0.8;
-    animation: sineWave 8s linear infinite;
-}
-
-.wave-light-primary path {
-    fill: none;
-    stroke: url(#lightGradient);
-    stroke-width: 3;
-    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
-}
-
-/* Secondary phase-shifted wave */
-.wave-light-secondary {
-    opacity: 0.4;
-    animation: sineWave 8s linear infinite;
-    animation-delay: -2s;
-}
-
-.wave-light-secondary path {
-    fill: none;
-    stroke: #0088cc;
-    stroke-width: 2;
-    filter: drop-shadow(0 0 4px rgba(0, 136, 204, 0.4));
-}
-
-/* Tertiary wave - subtle background */
-.wave-light-tertiary {
-    opacity: 0.2;
-    animation: sineWave 8s linear infinite;
-    animation-delay: -4s;
-}
-
-.wave-light-tertiary path {
-    fill: none;
-    stroke: #006699;
-    stroke-width: 1.5;
-}
-
-/* Sine wave animation - smooth horizontal propagation */
-@keyframes sineWave {
-    0% { transform: translateY(-50%) translateX(0%); }
-    100% { transform: translateY(-50%) translateX(-25%); }
-}
-
-/* Amplitude breathing effect */
-.wave-light-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 100% 40% at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-    animation: amplitudeBreath 4s ease-in-out infinite;
-}
-
-@keyframes amplitudeBreath {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 0.6; transform: scaleY(1.2); }
-}
-
-
-/* ===== LEGACY SUPPORT - Aquarium waves (maps to ocean) ===== */
+/* ===== AQUARIUM WAVE EFFECT ===== */
+/* Recreates the mesmerizing motion of watching through aquarium glass */
 .aquarium-waves {
     position: absolute;
     inset: 0;
@@ -623,6 +283,38 @@ nav {
     inset: 0;
     background: linear-gradient(180deg, transparent 0%, rgba(0, 40, 120, 0.04) 60%, rgba(0, 60, 180, 0.06) 100%);
     pointer-events: none;
+}
+
+/* Wave animations */
+@keyframes oceanDeep {
+    0%, 100% { transform: translateX(0%) scaleY(1); }
+    25% { transform: translateX(5%) scaleY(1.02); }
+    50% { transform: translateX(2%) scaleY(0.98); }
+    75% { transform: translateX(-3%) scaleY(1.01); }
+}
+
+@keyframes oceanMid {
+    0%, 100% { transform: translateX(0%) scaleY(1) translateY(0); }
+    20% { transform: translateX(-4%) scaleY(1.03) translateY(-2%); }
+    40% { transform: translateX(3%) scaleY(0.97) translateY(1%); }
+    60% { transform: translateX(-2%) scaleY(1.02) translateY(-1%); }
+    80% { transform: translateX(4%) scaleY(0.98) translateY(2%); }
+}
+
+@keyframes oceanSurface {
+    0%, 100% { transform: translateX(0%) scaleY(1) translateY(0); }
+    16.67% { transform: translateX(-3%) scaleY(1.04) translateY(-3%); }
+    33.33% { transform: translateX(4%) scaleY(0.96) translateY(2%); }
+    50% { transform: translateX(-2%) scaleY(1.03) translateY(-2%); }
+    66.67% { transform: translateX(3%) scaleY(0.97) translateY(3%); }
+    83.33% { transform: translateX(-4%) scaleY(1.02) translateY(-1%); }
+}
+
+@keyframes causticsShift {
+    0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+    25% { transform: scale(1.05) translate(2%, -2%); opacity: 0.6; }
+    50% { transform: scale(0.98) translate(-1%, 1%); opacity: 0.9; }
+    75% { transform: scale(1.02) translate(1%, -1%); opacity: 0.7; }
 }
 
 /* Grid overlay */
@@ -1309,126 +1001,241 @@ section {
 }
 
 /* ===== WAVE DUALITY CARD STYLES ===== */
-/* Ocean cards: Creative content - warm brass accent, aquarium feel */
-/* Light cards: Technical content - cool cyan accent, oscilloscope feel */
+/* Ocean cards: Creative content - animated waves, aquarium glass, bubbles */
+/* Light cards: Technical content - oscilloscope, sine waves, digital aesthetic */
 
-/* Ocean Wave Cards - Aquarium aesthetic */
+/* ========================================
+   OCEAN WAVE CARDS - Aquarium Style
+   ======================================== */
 .wave-entry[data-wave-style="ocean"] {
-    background: linear-gradient(135deg,
-        rgba(255, 252, 248, 1) 0%,
-        rgba(248, 250, 255, 1) 100%);
-    border: 1px solid rgba(184, 115, 51, 0.15);
+    background: linear-gradient(180deg,
+        rgba(240, 248, 255, 1) 0%,
+        rgba(220, 240, 255, 1) 100%);
+    border: none;
     position: relative;
+    overflow: hidden;
+    /* Aquarium glass frame */
+    box-shadow:
+        inset 0 0 0 4px rgba(184, 115, 51, 0.4),
+        inset 0 0 0 6px rgba(212, 165, 116, 0.3),
+        inset 0 0 30px rgba(0, 100, 180, 0.1),
+        0 8px 32px rgba(0, 50, 100, 0.15);
+    border-radius: 20px;
 }
 
+/* Animated ocean wave at bottom of card */
 .wave-entry[data-wave-style="ocean"]::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #b87333, #d4a574, #8b5a2b);
-    border-radius: 24px 24px 0 0;
-    opacity: 0.6;
+    bottom: 0;
+    left: -100%;
+    width: 300%;
+    height: 50px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%230088bb' fill-opacity='0.15' d='M0,60 C150,90 350,30 600,60 C850,90 1050,30 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E");
+    background-size: 400px 50px;
+    animation: oceanCardWave 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
 }
 
+/* Second wave layer - offset */
 .wave-entry[data-wave-style="ocean"]::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(0, 100, 180, 0.03) 100%);
+    left: -100%;
+    width: 300%;
+    height: 40px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%2300a4d4' fill-opacity='0.12' d='M0,60 C200,20 400,100 600,60 C800,20 1000,100 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E");
+    background-size: 350px 40px;
+    animation: oceanCardWave 6s linear infinite reverse;
     pointer-events: none;
-    border-radius: 0 0 24px 24px;
+    z-index: 0;
+}
+
+@keyframes oceanCardWave {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(33.33%); }
+}
+
+/* Glass reflection effect */
+.wave-entry[data-wave-style="ocean"] .wave-content,
+.wave-entry[data-wave-style="ocean"] .wave-title,
+.wave-entry[data-wave-style="ocean"] .wave-body,
+.wave-entry[data-wave-style="ocean"] .wave-meta {
+    position: relative;
+    z-index: 1;
 }
 
 .wave-entry[data-wave-style="ocean"]:hover {
+    transform: translateY(-8px);
     box-shadow:
-        var(--shadow-card-hover),
-        0 0 30px rgba(184, 115, 51, 0.15),
-        inset 0 -40px 60px rgba(0, 100, 180, 0.05);
-    border-color: rgba(184, 115, 51, 0.3);
+        inset 0 0 0 4px rgba(184, 115, 51, 0.5),
+        inset 0 0 0 6px rgba(212, 165, 116, 0.4),
+        inset 0 0 40px rgba(0, 100, 180, 0.15),
+        0 16px 48px rgba(0, 50, 100, 0.25);
 }
 
+/* Ocean type badge - like a porthole */
 .wave-entry[data-wave-style="ocean"] .wave-type {
-    background: linear-gradient(135deg, rgba(184, 115, 51, 0.15), rgba(212, 165, 116, 0.1));
-    color: #8b5a2b;
-    border: 1px solid rgba(184, 115, 51, 0.2);
+    background: linear-gradient(135deg, #b87333 0%, #d4a574 50%, #8b5a2b 100%);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 2px 8px rgba(139, 90, 43, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
 }
 
 .wave-entry[data-wave-style="ocean"]:hover .wave-arrow {
     color: #b87333;
 }
 
-/* Light Wave Cards - Lab instrument aesthetic */
-.wave-entry[data-wave-style="light"] {
-    background: linear-gradient(135deg,
-        rgba(245, 250, 255, 1) 0%,
-        rgba(240, 248, 255, 1) 100%);
-    border: 1px solid rgba(0, 212, 255, 0.15);
-    position: relative;
+/* Bubble decoration for ocean cards */
+.wave-entry[data-wave-style="ocean"] .wave-title::after {
+    content: '○ ◦ ·';
+    position: absolute;
+    right: -40px;
+    top: 0;
+    font-size: 10px;
+    color: rgba(0, 150, 200, 0.3);
+    letter-spacing: 4px;
+    animation: bubbleFloat 3s ease-in-out infinite;
 }
 
+@keyframes bubbleFloat {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-8px); opacity: 0.6; }
+}
+
+
+/* ========================================
+   LIGHT WAVE CARDS - Oscilloscope Style
+   ======================================== */
+.wave-entry[data-wave-style="light"] {
+    background: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%);
+    border: 2px solid #1a3a5c;
+    position: relative;
+    overflow: hidden;
+    color: #e0f0ff;
+    box-shadow:
+        0 0 0 1px rgba(0, 212, 255, 0.1),
+        0 8px 32px rgba(0, 20, 50, 0.4),
+        inset 0 1px 0 rgba(0, 212, 255, 0.1);
+}
+
+/* Oscilloscope grid */
 .wave-entry[data-wave-style="light"]::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        #00d4ff 20%,
-        #0088cc 50%,
-        #00d4ff 80%,
-        transparent 100%);
-    opacity: 0.6;
-    border-radius: 24px 24px 0 0;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
 }
 
+/* Animated sine wave across the card */
 .wave-entry[data-wave-style="light"]::after {
     content: '';
     position: absolute;
-    bottom: 8px;
-    right: 60px;
-    font-family: 'Courier New', monospace;
-    font-size: 9px;
-    color: rgba(0, 212, 255, 0.4);
-    letter-spacing: 1px;
+    top: 50%;
+    left: -100%;
+    width: 300%;
+    height: 60px;
+    transform: translateY(-50%);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60'%3E%3Cpath fill='none' stroke='%2300d4ff' stroke-width='2' stroke-opacity='0.3' d='M0,30 Q25,10 50,30 T100,30 T150,30 T200,30 T250,30 T300,30 T350,30 T400,30'/%3E%3C/svg%3E");
+    background-size: 200px 60px;
+    animation: sineWaveCard 4s linear infinite;
     pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
 }
 
-/* Grid pattern overlay for light cards */
-.wave-entry[data-wave-style="light"] {
-    background-image:
-        linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(135deg, rgba(245, 250, 255, 1) 0%, rgba(240, 248, 255, 1) 100%);
-    background-size: 20px 20px, 20px 20px, 100% 100%;
+@keyframes sineWaveCard {
+    0% { transform: translateY(-50%) translateX(0); }
+    100% { transform: translateY(-50%) translateX(33.33%); }
+}
+
+/* Content needs to be above the wave */
+.wave-entry[data-wave-style="light"] .wave-content,
+.wave-entry[data-wave-style="light"] .wave-title,
+.wave-entry[data-wave-style="light"] .wave-body,
+.wave-entry[data-wave-style="light"] .wave-meta,
+.wave-entry[data-wave-style="light"] .wave-type {
+    position: relative;
+    z-index: 1;
+}
+
+/* Light card text colors */
+.wave-entry[data-wave-style="light"] .wave-title {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.wave-entry[data-wave-style="light"] .wave-body {
+    color: rgba(200, 220, 255, 0.8);
+}
+
+.wave-entry[data-wave-style="light"] .wave-meta {
+    color: rgba(0, 212, 255, 0.6);
+    font-family: var(--font-mono);
+    font-size: 12px;
 }
 
 .wave-entry[data-wave-style="light"]:hover {
+    transform: translateY(-8px);
+    border-color: #00d4ff;
     box-shadow:
-        var(--shadow-card-hover),
-        0 0 30px rgba(0, 212, 255, 0.15),
-        0 0 60px rgba(0, 180, 255, 0.1);
-    border-color: rgba(0, 212, 255, 0.35);
+        0 0 0 1px rgba(0, 212, 255, 0.3),
+        0 0 30px rgba(0, 212, 255, 0.2),
+        0 16px 48px rgba(0, 20, 50, 0.5),
+        inset 0 0 60px rgba(0, 212, 255, 0.05);
 }
 
+/* Oscilloscope-style type badge */
 .wave-entry[data-wave-style="light"] .wave-type {
-    background: rgba(0, 212, 255, 0.1);
-    color: #0088cc;
-    border: 1px solid rgba(0, 212, 255, 0.25);
+    background: transparent;
+    color: #00d4ff;
+    border: 1px solid #00d4ff;
+    box-shadow:
+        0 0 10px rgba(0, 212, 255, 0.3),
+        inset 0 0 10px rgba(0, 212, 255, 0.1);
     font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* LED indicators in corners */
+.wave-entry[data-wave-style="light"] .wave-title::before {
+    content: '●';
+    position: absolute;
+    left: -20px;
+    top: 4px;
+    font-size: 6px;
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff88;
+    animation: ledBlink 2s ease-in-out infinite;
+}
+
+@keyframes ledBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 .wave-entry[data-wave-style="light"]:hover .wave-arrow {
     color: #00d4ff;
+    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
+}
+
+/* Wavelength indicator */
+.wave-entry[data-wave-style="light"] .wave-meta::after {
+    content: ' λ';
+    color: rgba(0, 212, 255, 0.4);
+    font-size: 10px;
 }
 
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
