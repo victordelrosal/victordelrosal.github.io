@@ -49,18 +49,39 @@
             <div class="header-orb header-orb-1"></div>
             <div class="header-orb header-orb-2"></div>
 
-            <!-- Aquarium Wave Effect -->
-            <div class="aquarium-waves">
-                <svg class="wave wave-deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
-                    <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z"></path>
+            <!-- Light Wave Effect - Electromagnetic Sine -->
+            <div class="wave-container-light">
+                <!-- SVG gradient definition -->
+                <svg width="0" height="0">
+                    <defs>
+                        <linearGradient id="lightGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#0088cc;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0088cc;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
                 </svg>
-                <svg class="wave wave-mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
-                    <path d="M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200 L1440,320 L0,320 Z"></path>
+                <!-- Primary sine wave -->
+                <svg class="wave-light wave-light-primary" viewBox="0 0 1440 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q90,50 180,100 T360,100 T540,100 T720,100 T900,100 T1080,100 T1260,100 T1440,100"></path>
                 </svg>
-                <svg class="wave wave-surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
-                    <path d="M0,240 C180,200 360,280 540,240 C720,200 900,280 1080,240 C1260,200 1350,280 1440,240 L1440,320 L0,320 Z"></path>
+                <!-- Secondary phase-shifted wave -->
+                <svg class="wave-light wave-light-secondary" viewBox="0 0 1440 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q90,150 180,100 T360,100 T540,100 T720,100 T900,100 T1080,100 T1260,100 T1440,100"></path>
                 </svg>
-                <div class="caustics"></div>
+                <!-- Tertiary subtle wave -->
+                <svg class="wave-light wave-light-tertiary" viewBox="0 0 1440 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q45,75 90,100 T180,100 T270,100 T360,100 T450,100 T540,100 T630,100 T720,100 T810,100 T900,100 T990,100 T1080,100 T1170,100 T1260,100 T1350,100 T1440,100"></path>
+                </svg>
+                <!-- Amplitude glow -->
+                <div class="wave-light-glow"></div>
+                <!-- LED corner indicators -->
+                <div class="light-led light-led-tl"></div>
+                <div class="light-led light-led-tr"></div>
+                <div class="light-led light-led-bl"></div>
+                <div class="light-led light-led-br"></div>
+                <!-- Wavelength label -->
+                <span class="light-label">λ = ∞</span>
             </div>
 
             <div class="page-header-content">
@@ -257,9 +278,22 @@
                 <polyline points="9 18 15 12 9 6"/>
             </svg>`,
 
+            // Wave duality: Ocean for creative, Light for technical
+            oceanTypes: ['photo', 'video', 'thought', 'journal', 'tweet', 'skeet'],
+            lightTypes: ['reading', 'longform', 'link', 'todo'],
+
+            getWaveStyle(type) {
+                if (this.oceanTypes.includes(type)) return 'ocean';
+                if (this.lightTypes.includes(type)) return 'light';
+                return 'ocean'; // default
+            },
+
             render(post, classification) {
                 const renderer = this[classification.type] || this.longform;
-                return renderer.call(this, post, classification);
+                const html = renderer.call(this, post, classification);
+                const waveStyle = this.getWaveStyle(classification.type);
+                // Inject data-wave-style attribute into the first element
+                return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
             },
 
             tweet(post, { label }) {
