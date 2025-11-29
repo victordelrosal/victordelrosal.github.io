@@ -782,34 +782,26 @@ section {
     transform: translateY(-2px);
 }
 
-/* ===== 9.5 STICKY WAVE HEADER (waves.html) ===== */
-.sticky-wave-header {
+/* ===== 9.5 WAVE NAVBAR (waves.html) ===== */
+.wave-navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 70px;
     z-index: 1000;
-    transform: translateY(-100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.35s ease;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0);
-}
-
-.sticky-wave-header.visible {
-    transform: translateY(0);
     box-shadow: 0 4px 20px rgba(0, 20, 60, 0.3);
 }
 
-.sticky-wave-bg {
+.wave-navbar-bg {
     position: absolute;
     inset: 0;
     background: var(--gradient-hero);
     z-index: 0;
 }
 
-.sticky-wave-bg .sticky-wave {
+.wave-navbar-bg .wave-navbar-wave {
     position: absolute;
     bottom: -5px;
     left: 0;
@@ -817,30 +809,30 @@ section {
     height: 50px;
 }
 
-.sticky-wave-bg .wave-deep {
+.wave-navbar-bg .wave-deep {
     fill: rgba(0, 60, 140, 0.6);
-    animation: stickyWaveFlow 12s linear infinite;
+    animation: waveNavbarFlow 12s linear infinite;
     bottom: 0;
 }
 
-.sticky-wave-bg .wave-mid {
+.wave-navbar-bg .wave-mid {
     fill: rgba(0, 120, 220, 0.5);
-    animation: stickyWaveFlow 8s linear infinite reverse;
+    animation: waveNavbarFlow 8s linear infinite reverse;
     bottom: 5px;
 }
 
-.sticky-wave-bg .wave-surface {
+.wave-navbar-bg .wave-surface {
     fill: rgba(80, 180, 255, 0.4);
-    animation: stickyWaveFlow 6s linear infinite;
+    animation: waveNavbarFlow 6s linear infinite;
     bottom: 10px;
 }
 
-@keyframes stickyWaveFlow {
+@keyframes waveNavbarFlow {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-.sticky-wave-content {
+.wave-navbar-content {
     position: relative;
     z-index: 1;
     display: flex;
@@ -852,23 +844,23 @@ section {
     margin: 0 auto;
 }
 
-.sticky-logo {
+.wave-navbar-logo {
     display: flex;
     align-items: center;
 }
 
-.sticky-logo img {
+.wave-navbar-logo img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     transition: transform 0.3s ease;
 }
 
-.sticky-logo:hover img {
+.wave-navbar-logo:hover img {
     transform: scale(1.1);
 }
 
-.sticky-nav-links {
+.wave-navbar-links {
     display: flex;
     list-style: none;
     gap: 8px;
@@ -876,7 +868,7 @@ section {
     padding: 0;
 }
 
-.sticky-nav-links li a {
+.wave-navbar-links li a {
     display: block;
     padding: 10px 16px;
     color: rgba(255, 255, 255, 0.8);
@@ -887,17 +879,17 @@ section {
     transition: all 0.2s ease;
 }
 
-.sticky-nav-links li a:hover {
+.wave-navbar-links li a:hover {
     color: white;
     background: rgba(255, 255, 255, 0.1);
 }
 
-.sticky-nav-links li a.active {
+.wave-navbar-links li a.active {
     color: white;
 }
 
 /* Waves link with shimmer animation - 15% larger */
-.sticky-waves-link {
+.wave-navbar-waves-link {
     font-size: 17.25px !important;
     font-weight: 700 !important;
     background: linear-gradient(
@@ -913,10 +905,10 @@ section {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: stickyWavesShimmer 3s ease-in-out infinite;
+    animation: waveNavbarShimmer 3s ease-in-out infinite;
 }
 
-.sticky-waves-link:hover {
+.wave-navbar-waves-link:hover {
     background: linear-gradient(
         90deg,
         #fff 0%,
@@ -932,47 +924,71 @@ section {
     -webkit-text-fill-color: transparent !important;
 }
 
-@keyframes stickyWavesShimmer {
+@keyframes waveNavbarShimmer {
     0%, 100% { background-position: 200% center; }
     50% { background-position: 0% center; }
 }
 
+/* Waves page body adjustment */
+.waves-page .waves-section--with-navbar {
+    padding-top: 110px;
+}
+
+/* Waves tagline */
+.waves-tagline {
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-light-secondary);
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 0 20px;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .sticky-wave-header {
+    .wave-navbar {
         height: 60px;
     }
 
-    .sticky-wave-content {
+    .wave-navbar-content {
         padding: 0 16px;
     }
 
-    .sticky-logo img {
+    .wave-navbar-logo img {
         width: 32px;
         height: 32px;
     }
 
-    .sticky-nav-links {
+    .wave-navbar-links {
         gap: 4px;
     }
 
-    .sticky-nav-links li a {
+    .wave-navbar-links li a {
         padding: 8px 10px;
         font-size: 13px;
     }
 
-    .sticky-waves-link {
+    .wave-navbar-waves-link {
         font-size: 15px !important;
+    }
+
+    .waves-page .waves-section--with-navbar {
+        padding-top: 90px;
+    }
+
+    .waves-tagline {
+        font-size: 16px;
+        margin-bottom: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .sticky-nav-links li a {
+    .wave-navbar-links li a {
         padding: 8px 6px;
         font-size: 12px;
     }
 
-    .sticky-waves-link {
+    .wave-navbar-waves-link {
         font-size: 14px !important;
     }
 }
