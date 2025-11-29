@@ -2002,14 +2002,7 @@ section {
     border-top: 1px solid rgba(0,0,0,0.06);
 }
 
-.share-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dark-secondary);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
+/* .share-label deprecated - removed from HTML */
 
 .share-buttons {
     display: flex;
@@ -2304,9 +2297,8 @@ footer {
 .engagement-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 16px;
-    margin-bottom: 16px;
 }
 
 .view-count-display {
@@ -2742,9 +2734,12 @@ footer {
     }
 
     .engagement-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+        gap: 12px;
+    }
+
+    .engagement-row .share-buttons {
+        width: 100%;
+        justify-content: flex-start;
     }
 }
 
