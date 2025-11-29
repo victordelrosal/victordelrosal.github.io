@@ -901,25 +901,35 @@
         (function() {
             const stickyHeader = document.getElementById('sticky-wave-header');
             const pageHeader = document.querySelector('.page-header');
+            const mainNav = document.querySelector('nav');
             let lastScrollY = window.scrollY;
             let ticking = false;
-            let headerBottom = 0;
+            let scrollThreshold = 200; // Minimum scroll before showing sticky
 
-            function updateHeaderBottom() {
+            function getHeaderBottom() {
                 if (pageHeader) {
-                    headerBottom = pageHeader.offsetTop + pageHeader.offsetHeight;
+                    const rect = pageHeader.getBoundingClientRect();
+                    return window.scrollY + rect.bottom;
                 }
+                return scrollThreshold;
             }
 
             function handleScroll() {
                 const currentScrollY = window.scrollY;
                 const scrollingUp = currentScrollY < lastScrollY;
-                const pastHeader = currentScrollY > headerBottom;
+                const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+                const headerBottom = getHeaderBottom();
+                const pastHeader = currentScrollY > headerBottom - 100;
 
-                if (pastHeader && scrollingUp) {
-                    stickyHeader.classList.add('visible');
-                } else {
-                    stickyHeader.classList.remove('visible');
+                // Only react to meaningful scroll movements
+                if (scrollDelta > 5) {
+                    if (pastHeader && scrollingUp) {
+                        stickyHeader.classList.add('visible');
+                        if (mainNav) mainNav.style.opacity = '0';
+                    } else if (!scrollingUp || currentScrollY < 100) {
+                        stickyHeader.classList.remove('visible');
+                        if (mainNav) mainNav.style.opacity = '1';
+                    }
                 }
 
                 lastScrollY = currentScrollY;
@@ -933,8 +943,10 @@
                 }
             }, { passive: true });
 
-            window.addEventListener('resize', updateHeaderBottom, { passive: true });
-            updateHeaderBottom();
+            // Initial state
+            if (mainNav) {
+                mainNav.style.transition = 'opacity 0.3s ease';
+            }
         })();
     </script>
 </body>
