@@ -2560,19 +2560,19 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
+    width: 120px;
     height: 25vh;
     color: var(--text-primary);
-    opacity: 0.15;
+    opacity: 0.12;
     transition: opacity 0.3s ease, transform 0.3s ease;
     cursor: pointer;
     text-decoration: none;
 }
 
 .wave-nav svg {
-    width: 48px;
-    height: 48px;
-    stroke-width: 1.5;
+    width: 240px;
+    height: 240px;
+    stroke-width: 1;
 }
 
 .wave-nav:hover {
