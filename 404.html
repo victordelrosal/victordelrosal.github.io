@@ -250,12 +250,22 @@
                         document.getElementById('post').classList.add('visible');
 
                         // Track page view and display count (wrapped to prevent errors from breaking page)
+                        console.log('[Views] Checking modules:', {
+                            PageViews: !!window.PageViews,
+                            SupabaseClient: !!window.SupabaseClient,
+                            supabase: !!window.supabase,
+                            supabaseCreateClient: !!(window.supabase && window.supabase.createClient)
+                        });
+
                         if (window.PageViews && window.SupabaseClient) {
                             (async function() {
                                 try {
+                                    console.log('[Views] Calling trackView for:', slug);
                                     const viewCount = await window.PageViews.trackView(slug);
+                                    console.log('[Views] Got view count:', viewCount);
                                     if (viewCount !== null) {
                                         document.getElementById('view-count-container').innerHTML = window.PageViews.createViewCountHTML(viewCount);
+                                        console.log('[Views] Rendered view count');
                                     }
                                 } catch (e) {
                                     console.error('Failed to track view:', e);
@@ -263,13 +273,18 @@
                             })();
 
                             // Initialize Supabase auth and comments
+                            console.log('[Comments] Initializing auth...');
                             window.SupabaseClient.initAuth().then(() => {
+                                console.log('[Comments] Auth initialized, CommentsUI:', !!window.CommentsUI);
                                 if (window.CommentsUI) {
                                     window.CommentsUI.init(slug, 'comments-section');
                                 }
                             }).catch(e => console.error('Failed to init auth:', e));
                         } else {
-                            console.warn('PageViews or SupabaseClient not loaded');
+                            console.warn('PageViews or SupabaseClient not loaded', {
+                                PageViews: typeof window.PageViews,
+                                SupabaseClient: typeof window.SupabaseClient
+                            });
                         }
 
                         const shareText = `${post.title} by Victor del Rosal`;
