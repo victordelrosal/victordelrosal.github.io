@@ -21,6 +21,9 @@ if (!window.SupabaseClient) {
      * Call this after the supabase-js script has loaded
      */
     function initSupabase() {
+      // Don't recreate if client already exists - prevents auth state issues
+      if (supabase) return true;
+
       // Check for both the namespaced version and direct createClient
       const createClientFn = window.supabase?.createClient || window.createClient;
 

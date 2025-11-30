@@ -771,15 +771,38 @@
             }
         };
 
+        // Helper function to add timeout to async operations
+        // Prevents indefinite hangs if Supabase client is in bad state
+        async function withTimeout(promise, ms, fallback) {
+            let timeoutId;
+            const timeout = new Promise(resolve => {
+                timeoutId = setTimeout(() => resolve(fallback), ms);
+            });
+            try {
+                const result = await Promise.race([promise, timeout]);
+                clearTimeout(timeoutId);
+                return result;
+            } catch {
+                clearTimeout(timeoutId);
+                return fallback;
+            }
+        }
+
         // Fetch and render waves
         (async function() {
             try {
-                // Initialize Supabase for view counts
+                console.log('[waves] Starting initialization...');
+
+                // Initialize Supabase with auth - ensures consistent state after visiting post pages
                 if (window.SupabaseClient) {
                     window.SupabaseClient.initSupabase();
+                    await window.SupabaseClient.initAuth();
+                    console.log('[waves] Supabase auth initialized');
                 }
 
+                console.log('[waves] Fetching posts...');
                 const posts = await window.PostsAPI.fetchPosts();
+                console.log('[waves] Posts fetched:', posts.length);
                 const container = document.getElementById('waves-container');
                 const loading = document.getElementById('loading');
                 const emptyState = document.getElementById('empty-state');
@@ -792,30 +815,56 @@
                 }
 
                 // Fetch view counts, wave counts, and comment counts for all posts
+                // Using timeouts to prevent indefinite hangs if Supabase client is in bad state
                 const slugs = posts.map(p => p.slug);
-                viewCountsData = window.PageViews ? await window.PageViews.getViewCounts(slugs) : {};
+                const FETCH_TIMEOUT = 5000; // 5 seconds max per fetch
+
+                console.log('[waves] Fetching view counts...');
+                viewCountsData = await withTimeout(
+                    window.PageViews?.getViewCounts(slugs) || Promise.resolve({}),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+                console.log('[waves] View counts done');
 
                 // Fetch wave reaction counts
-                waveCountsData = {};
-                const supabase = window.SupabaseClient?.getClient();
-                if (supabase) {
-                    try {
-                        const { data, error } = await supabase
-                            .from('wave_reaction_counts')
-                            .select('post_slug, wave_count')
-                            .in('post_slug', slugs);
-                        if (!error && data) {
-                            data.forEach(item => {
-                                waveCountsData[item.post_slug] = item.wave_count;
-                            });
+                console.log('[waves] Fetching wave counts...');
+                waveCountsData = await withTimeout(
+                    (async () => {
+                        const supabase = window.SupabaseClient?.getClient();
+                        if (!supabase) return {};
+                        try {
+                            const { data, error } = await supabase
+                                .from('wave_reaction_counts')
+                                .select('post_slug, wave_count')
+                                .in('post_slug', slugs);
+                            if (!error && data) {
+                                const counts = {};
+                                data.forEach(item => {
+                                    counts[item.post_slug] = item.wave_count;
+                                });
+                                return counts;
+                            }
+                            return {};
+                        } catch (e) {
+                            console.error('Failed to fetch wave counts:', e);
+                            return {};
                         }
-                    } catch (e) {
-                        console.error('Failed to fetch wave counts:', e);
-                    }
-                }
+                    })(),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+
+                console.log('[waves] Wave counts done');
 
                 // Fetch comment counts
-                commentCountsData = window.Comments ? await window.Comments.getCommentCounts(slugs) : {};
+                console.log('[waves] Fetching comment counts...');
+                commentCountsData = await withTimeout(
+                    window.Comments?.getCommentCounts(slugs) || Promise.resolve({}),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+                console.log('[waves] Comment counts done');
 
                 // Classify all posts and check for active featured
                 const postsWithClassification = posts.map(post => ({
@@ -837,6 +886,7 @@
                 // Store for search
                 allPostsData = postsWithClassification;
 
+                console.log('[waves] Rendering waves...');
                 container.innerHTML = postsWithClassification.map(({ post, classification }) => {
                     const viewCount = viewCountsData[post.slug] || 0;
                     const waveCount = waveCountsData[post.slug] || 0;
@@ -845,6 +895,7 @@
                 }).join('');
 
                 container.style.display = 'flex';
+                console.log('[waves] Render complete - waves visible');
 
                 GalleryController.init();
 
