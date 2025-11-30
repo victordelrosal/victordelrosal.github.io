@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Waves - Thoughts on AI, technology, and innovation from Victor del Rosal">
+    <title>Waves | Victor del Rosal</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://victordelrosal.com/waves">
+    <meta property="og:title" content="Waves | Victor del Rosal">
+    <meta property="og:description" content="Thoughts on AI, technology, innovation, and the future of work">
+    <meta property="og:image" content="https://victordelrosal.com/img/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://victordelrosal.com/waves">
+    <meta name="twitter:title" content="Waves | Victor del Rosal">
+    <meta name="twitter:description" content="Thoughts on AI, technology, innovation, and the future of work">
+    <meta name="twitter:image" content="https://victordelrosal.com/img/og-image.png">
+
+    <!-- Shared Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light waves-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Wave Navbar -->
+    <header class="wave-navbar" id="wave-navbar">
+        <div class="wave-navbar-bg">
+            <svg class="wave-navbar-wave wave-deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z"></path>
+            </svg>
+            <svg class="wave-navbar-wave wave-mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200 L1440,320 L0,320 Z"></path>
+            </svg>
+            <svg class="wave-navbar-wave wave-surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path d="M0,240 C180,200 360,280 540,240 C720,200 900,280 1080,240 C1260,200 1350,280 1440,240 L1440,320 L0,320 Z"></path>
+            </svg>
+        </div>
+        <div class="wave-navbar-content">
+            <h1 class="wave-navbar-title">Waves</h1>
+            <nav>
+                <ul class="wave-navbar-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#about">About</a></li>
+                    <li><a href="/#work">Work</a></li>
+                    <li><a href="/waves" class="active">Waves</a></li>
+                    <li><a href="/#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Waves Section -->
+        <section class="waves-section waves-section--with-navbar">
+            <!-- Tagline -->
+            <p class="waves-tagline">Thoughts on AI, technology, innovation, and the future of work.</p>
+
+            <!-- Search Box -->
+            <div class="waves-search-container">
+                <div class="waves-search-box">
+                    <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..." autocomplete="off">
+                    <button id="waves-search-clear" class="waves-search-clear" style="display: none;" aria-label="Clear search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="waves-search-results" class="waves-search-results" style="display: none;"></div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading posts...</p>
+            </div>
+
+            <!-- Waves Container -->
+            <div id="waves-container" class="waves-list" style="display: none;"></div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <h2>No waves yet</h2>
+                <p>Check back soon for new posts.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-copyright">© 2024 Victor del Rosal</p>
+    </footer>
+
+    <!-- Load Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Load Posts API and Page Views -->
+    <script src="/posts.js"></script>
+    <script src="/js/supabase-client.js"></script>
+    <script src="/js/page-views.js"></script>
+    <script src="/js/comments.js"></script>
+
+    <script>
+        /**
+         * WAVE ADAPTATION ENGINE
+         * Analyzes content and determines the appropriate wave type
+         */
+
+        const WAVE_THRESHOLDS = {
+            TWEET_MAX_CHARS: 140,
+            SKEET_MAX_CHARS: 300,
+            THOUGHT_MAX_CHARS: 200,
+            LONGFORM_MIN_CHARS: 500,
+            JOURNAL_MIN_CHARS: 300,
+        };
+
+        const WaveAnalyzer = {
+            getPlainText(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.textContent || temp.innerText || '';
+            },
+
+            stripFirstLine(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                if (temp.firstElementChild) {
+                    temp.removeChild(temp.firstElementChild);
+                }
+                return temp.innerHTML.trim();
+            },
+
+            getFirstImage(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const img = temp.querySelector('img');
+                return img ? img.src : null;
+            },
+
+            getAllImages(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const imgs = temp.querySelectorAll('img');
+                return Array.from(imgs).map(img => img.src);
+            },
+
+            hasVideo(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.querySelector('video, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="tiktok"]') !== null;
+            },
+
+            hasProminentLink(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const links = temp.querySelectorAll('a[href^="http"]');
+                const text = this.getPlainText(html);
+                return links.length > 0 && text.length < 300;
+            },
+
+            hasTodoPattern(html, title) {
+                const text = this.getPlainText(html).toLowerCase();
+                const titleLower = title.toLowerCase();
+                const todoPatterns = [
+                    /\[\s*[x ]?\s*\]/i,
+                    /^[-*]\s+/m,
+                    /^\d+\.\s+/m,
+                    /todo|task|checklist|to-do/i
+                ];
+                return todoPatterns.some(p => p.test(text) || p.test(titleLower));
+            },
+
+            isInformalThought(text, title) {
+                const combined = (title + ' ' + text).toLowerCase();
+                const informalPatterns = [
+                    /^(just|hmm|thinking|wondering|maybe|quick thought|note to self)/i,
+                    /\.\.\./,
+                    /^[a-z]/,
+                ];
+                return text.length < WAVE_THRESHOLDS.THOUGHT_MAX_CHARS &&
+                       informalPatterns.some(p => p.test(combined));
+            },
+
+            isJournalStyle(text, title) {
+                const combined = (title + ' ' + text).toLowerCase();
+                const journalPatterns = [
+                    /today|yesterday|this morning|tonight|journal|diary|reflection/i,
+                    /i (felt|thought|realized|noticed|wondered)/i,
+                    /stream of|consciousness|rambling/i
+                ];
+                return text.length >= WAVE_THRESHOLDS.JOURNAL_MIN_CHARS &&
+                       text.length < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS &&
+                       journalPatterns.some(p => p.test(combined));
+            },
+
+            isReadingContent(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#read\b/i.test(combined);
+            },
+
+            isFeaturedContent(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#featured\b/i.test(combined);
+            },
+
+            isVideoTagged(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#video\b/i.test(combined) || /\[video\]/i.test(combined);
+            },
+
+            isFeaturedActive(publishedAt) {
+                // Featured posts expire after 30 days
+                const FEATURED_DURATION_DAYS = 30;
+                const publishDate = new Date(publishedAt);
+                const now = new Date();
+                const daysSincePublish = (now - publishDate) / (1000 * 60 * 60 * 24);
+                return daysSincePublish <= FEATURED_DURATION_DAYS;
+            },
+
+            classifyWave(post) {
+                const content = this.stripFirstLine(post.content);
+                const plainText = this.getPlainText(content);
+                const charCount = plainText.length;
+                const hasImage = this.getFirstImage(post.content) !== null;
+                const hasVideoContent = this.hasVideo(post.content);
+
+                // Featured check - only active if within 30 days of publish date
+                const hasFeaturedTag = this.isFeaturedContent(content, plainText, post.title);
+                if (hasFeaturedTag && this.isFeaturedActive(post.published_at)) {
+                    return { type: 'featured', label: 'Featured', isActiveFeatured: true };
+                }
+
+                if (this.isReadingContent(content, plainText, post.title)) {
+                    return { type: 'reading', label: 'Reading' };
+                }
+
+                // Video check - either #video hashtag or embedded video content
+                if (this.isVideoTagged(content, plainText, post.title) || hasVideoContent) {
+                    return { type: 'video', label: 'Video' };
+                }
+
+                if (hasImage && charCount < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS) {
+                    return { type: 'photo', label: 'Image' };
+                }
+
+                if (this.hasTodoPattern(content, post.title)) {
+                    return { type: 'todo', label: 'List' };
+                }
+
+                if (this.hasProminentLink(content)) {
+                    return { type: 'link', label: 'Link' };
+                }
+
+                if (charCount <= WAVE_THRESHOLDS.TWEET_MAX_CHARS && !hasImage) {
+                    return { type: 'tweet', label: 'Quick' };
+                }
+
+                if (this.isInformalThought(plainText, post.title)) {
+                    return { type: 'thought', label: 'Thought' };
+                }
+
+                if (charCount <= WAVE_THRESHOLDS.SKEET_MAX_CHARS && !hasImage) {
+                    return { type: 'skeet', label: 'Short' };
+                }
+
+                if (this.isJournalStyle(plainText, post.title)) {
+                    return { type: 'journal', label: 'Journal' };
+                }
+
+                return { type: 'longform', label: 'Article' };
+            }
+        };
+
+        const WaveRenderer = {
+            arrowSvg: `<svg class="wave-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>`,
+
+            chevronLeftSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>`,
+
+            chevronRightSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>`,
+
+            // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video
+            oceanTypes: ['photo', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
+            lightTypes: ['reading', 'link', 'todo'],
+            goldTypes: ['featured'],
+            cinemaTypes: ['video'],
+
+            getWaveStyle(type) {
+                if (this.goldTypes.includes(type)) return 'gold';
+                if (this.cinemaTypes.includes(type)) return 'cinema';
+                if (this.oceanTypes.includes(type)) return 'ocean';
+                if (this.lightTypes.includes(type)) return 'light';
+                return 'ocean'; // default
+            },
+
+            render(post, classification, viewCount = 0, waveCount = 0, commentCount = 0) {
+                const renderer = this[classification.type] || this.longform;
+                const html = renderer.call(this, post, classification, viewCount, waveCount, commentCount);
+                const waveStyle = this.getWaveStyle(classification.type);
+                // Inject data-wave-style attribute into the first element
+                return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
+            },
+
+            statsBadge(viewCount, waveCount, commentCount) {
+                const viewHtml = viewCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>${viewCount}</span>` : '';
+                const waveHtml = waveCount ? `<span class="wave-stat"><span class="wave-stat-emoji">👋</span>${waveCount}</span>` : '';
+                const commentHtml = commentCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${commentCount}</span>` : '';
+                if (!viewHtml && !waveHtml && !commentHtml) return '';
+                return `<span class="wave-stats">${viewHtml}${waveHtml}${commentHtml}</span>`;
+            },
+
+            tweet(post, { label }, viewCount, waveCount, commentCount) {
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            skeet(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 280);
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--skeet">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-body">${excerpt}</p>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            photo(post, { label }, viewCount, waveCount, commentCount) {
+                const images = WaveAnalyzer.getAllImages(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                const isGallery = images.length > 1;
+
+                if (isGallery) {
+                    const slidesHtml = images.map((url, index) => `
+                        <div class="wave-gallery-slide">
+                            <img src="${url}" alt="" loading="${index === 0 ? 'eager' : 'lazy'}">
+                        </div>
+                    `).join('');
+
+                    const dotsHtml = images.map((_, index) => `
+                        <button class="wave-gallery-dot${index === 0 ? ' active' : ''}" data-index="${index}" aria-label="Go to image ${index + 1}"></button>
+                    `).join('');
+
+                    return `
+                        <div class="wave-entry wave-entry--photo wave-entry--photo-gallery" data-slug="${post.slug}">
+                            <div class="photo-frame-corner photo-frame-corner--tl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--tr"></div>
+                            <div class="photo-frame-corner photo-frame-corner--bl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--br"></div>
+                            <span class="wave-type"><span class="type-icon">🖼️</span> ${label}</span>
+                            <div class="wave-image-wrapper wave-gallery">
+                                <div class="wave-gallery-track">
+                                    ${slidesHtml}
+                                </div>
+                                <button class="wave-gallery-nav wave-gallery-nav--prev" disabled aria-label="Previous image">
+                                    ${this.chevronLeftSvg}
+                                </button>
+                                <button class="wave-gallery-nav wave-gallery-nav--next" aria-label="Next image">
+                                    ${this.chevronRightSvg}
+                                </button>
+                                <div class="wave-gallery-dots">
+                                    ${dotsHtml}
+                                </div>
+                            </div>
+                            <a href="/${post.slug}" class="wave-content">
+                                <h2 class="wave-title">${post.title}</h2>
+                                <p class="wave-body">${excerpt}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            </a>
+                            ${this.statsBadge(viewCount, waveCount, commentCount)}
+                            ${this.arrowSvg}
+                        </div>
+                    `;
+                } else {
+                    const imageUrl = images[0];
+                    return `
+                        <a href="/${post.slug}" class="wave-entry wave-entry--photo">
+                            <div class="photo-frame-corner photo-frame-corner--tl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--tr"></div>
+                            <div class="photo-frame-corner photo-frame-corner--bl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--br"></div>
+                            <span class="wave-type"><span class="type-icon">🖼️</span> ${label}</span>
+                            <div class="wave-image-wrapper">
+                                <img src="${imageUrl}" alt="" class="wave-image">
+                            </div>
+                            <div class="wave-content">
+                                <h2 class="wave-title">${post.title}</h2>
+                                <p class="wave-body">${excerpt}</p>
+                                <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            </div>
+                            ${this.statsBadge(viewCount, waveCount, commentCount)}
+                            ${this.arrowSvg}
+                        </a>
+                    `;
+                }
+            },
+
+            longform(post, { label }, viewCount, waveCount, commentCount) {
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 200);
+                const thumbHtml = imageUrl
+                    ? `<img src="${imageUrl}" alt="" class="wave-thumb">`
+                    : `<div class="wave-thumb"></div>`;
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--longform">
+                        <span class="wave-type">${label}</span>
+                        ${thumbHtml}
+                        <div class="wave-content">
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            thought(post, { label }, viewCount, waveCount, commentCount) {
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--thought">
+                        <span class="wave-type">${label}</span>
+                        <h2 class="wave-title">${post.title}</h2>
+                        <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            journal(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 250);
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--journal">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            todo(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--todo">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            link(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--link">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            video(post, { label }, viewCount, waveCount, commentCount) {
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--video">
+                        <div class="video-play-icon">▶️</div>
+                        <div class="video-letterbox video-letterbox--top"></div>
+                        <div class="video-letterbox video-letterbox--bottom"></div>
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            reading(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 180);
+
+                let sourceDomain = '';
+                const temp = document.createElement('div');
+                temp.innerHTML = post.content;
+                const firstLink = temp.querySelector('a[href^="http"]');
+                if (firstLink) {
+                    try {
+                        const url = new URL(firstLink.href);
+                        sourceDomain = url.hostname.replace('www.', '');
+                    } catch (e) {}
+                }
+
+                const sourceTag = sourceDomain
+                    ? `<span class="wave-source">${sourceDomain}</span>`
+                    : '';
+
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--reading">
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">
+                                ${window.PostsAPI.formatDate(post.published_at)}
+                                ${sourceTag}
+                            </p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            },
+
+            featured(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 200);
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+
+                const backgroundStyle = imageUrl
+                    ? `style="--featured-bg-image: url('${imageUrl}')"`
+                    : '';
+
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--featured" ${backgroundStyle}>
+                        <div class="featured-shimmer"></div>
+                        <div class="featured-sparkles">
+                            <span class="sparkle sparkle-1">✦</span>
+                            <span class="sparkle sparkle-2">✦</span>
+                            <span class="sparkle sparkle-3">✦</span>
+                        </div>
+                        <span class="wave-type">⭐ ${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        ${this.arrowSvg}
+                    </a>
+                `;
+            }
+        };
+
+        const GalleryController = {
+            init() {
+                const galleries = document.querySelectorAll('.wave-entry--photo-gallery');
+                galleries.forEach(gallery => this.setupGallery(gallery));
+            },
+
+            setupGallery(gallery) {
+                const track = gallery.querySelector('.wave-gallery-track');
+                const slides = gallery.querySelectorAll('.wave-gallery-slide');
+                const prevBtn = gallery.querySelector('.wave-gallery-nav--prev');
+                const nextBtn = gallery.querySelector('.wave-gallery-nav--next');
+                const dots = gallery.querySelectorAll('.wave-gallery-dot');
+
+                let currentIndex = 0;
+                const totalSlides = slides.length;
+
+                const updateGallery = () => {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex === totalSlides - 1;
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                };
+
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateGallery();
+                    }
+                });
+
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (currentIndex < totalSlides - 1) {
+                        currentIndex++;
+                        updateGallery();
+                    }
+                });
+
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        currentIndex = index;
+                        updateGallery();
+                    });
+                });
+
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                track.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                track.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const swipeThreshold = 50;
+                    const diff = touchStartX - touchEndX;
+
+                    if (Math.abs(diff) > swipeThreshold) {
+                        if (diff > 0 && currentIndex < totalSlides - 1) {
+                            currentIndex++;
+                            updateGallery();
+                        } else if (diff < 0 && currentIndex > 0) {
+                            currentIndex--;
+                            updateGallery();
+                        }
+                    }
+                }, { passive: true });
+
+                gallery.addEventListener('click', (e) => {
+                    if (!e.target.closest('.wave-gallery-nav') &&
+                        !e.target.closest('.wave-gallery-dot')) {
+                        const slug = gallery.dataset.slug;
+                        if (slug) {
+                            window.location.href = '/' + slug;
+                        }
+                    }
+                });
+            }
+        };
+
+        // Global state for search
+        let allPostsData = [];
+        let viewCountsData = {};
+        let waveCountsData = {};
+        let commentCountsData = {};
+
+        // Search controller
+        const WaveSearch = {
+            init() {
+                const searchInput = document.getElementById('waves-search');
+                const clearBtn = document.getElementById('waves-search-clear');
+                const resultsInfo = document.getElementById('waves-search-results');
+
+                if (!searchInput) return;
+
+                // Debounce search
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    clearBtn.style.display = query ? 'flex' : 'none';
+
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.filterWaves(query);
+                    }, 150);
+                });
+
+                // Clear button
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    this.filterWaves('');
+                    searchInput.focus();
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Focus search on "/" key
+                    if (e.key === '/' && document.activeElement !== searchInput) {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                    // Clear on Escape
+                    if (e.key === 'Escape' && document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        clearBtn.style.display = 'none';
+                        this.filterWaves('');
+                        searchInput.blur();
+                    }
+                });
+            },
+
+            filterWaves(query) {
+                const container = document.getElementById('waves-container');
+                const resultsInfo = document.getElementById('waves-search-results');
+                const entries = container.querySelectorAll('.wave-entry');
+
+                if (!query) {
+                    // Show all
+                    entries.forEach(el => {
+                        el.style.display = '';
+                        el.classList.add('revealed');
+                    });
+                    resultsInfo.style.display = 'none';
+                    return;
+                }
+
+                const queryLower = query.toLowerCase();
+                let visibleCount = 0;
+
+                entries.forEach((el, index) => {
+                    const postData = allPostsData[index];
+                    if (!postData) return;
+
+                    const { post, classification } = postData;
+                    const plainText = WaveAnalyzer.getPlainText(post.content);
+
+                    // Search in title, content, and type
+                    const searchText = `${post.title} ${plainText} ${classification.label}`.toLowerCase();
+
+                    if (searchText.includes(queryLower)) {
+                        el.style.display = '';
+                        el.classList.add('revealed');
+                        visibleCount++;
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+
+                // Show results count
+                resultsInfo.style.display = 'block';
+                if (visibleCount === 0) {
+                    resultsInfo.innerHTML = `No waves found for "<strong>${this.escapeHtml(query)}</strong>"`;
+                } else {
+                    resultsInfo.innerHTML = `Found <strong>${visibleCount}</strong> wave${visibleCount !== 1 ? 's' : ''} matching "<strong>${this.escapeHtml(query)}</strong>"`;
+                }
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        // Helper function to add timeout to async operations
+        // Prevents indefinite hangs if Supabase client is in bad state
+        async function withTimeout(promise, ms, fallback) {
+            let timeoutId;
+            const timeout = new Promise(resolve => {
+                timeoutId = setTimeout(() => resolve(fallback), ms);
+            });
+            try {
+                const result = await Promise.race([promise, timeout]);
+                clearTimeout(timeoutId);
+                return result;
+            } catch {
+                clearTimeout(timeoutId);
+                return fallback;
+            }
+        }
+
+        // Fetch and render waves
+        (async function() {
+            try {
+                console.log('[waves] Starting initialization...');
+
+                // Initialize Supabase - auth is optional for waves display
+                if (window.SupabaseClient) {
+                    window.SupabaseClient.initSupabase();
+                    // Don't await initAuth - let it run in background, don't block page load
+                    window.SupabaseClient.initAuth().catch(e => console.warn('[waves] Auth init failed:', e));
+                    console.log('[waves] Supabase initialized (auth loading in background)');
+                }
+
+                console.log('[waves] Fetching posts...');
+                const posts = await window.PostsAPI.fetchPosts();
+                console.log('[waves] Posts fetched:', posts.length);
+                const container = document.getElementById('waves-container');
+                const loading = document.getElementById('loading');
+                const emptyState = document.getElementById('empty-state');
+
+                loading.style.display = 'none';
+
+                if (posts.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // Fetch view counts, wave counts, and comment counts for all posts
+                // Using timeouts to prevent indefinite hangs if Supabase client is in bad state
+                const slugs = posts.map(p => p.slug);
+                const FETCH_TIMEOUT = 5000; // 5 seconds max per fetch
+
+                console.log('[waves] Fetching view counts...');
+                viewCountsData = await withTimeout(
+                    window.PageViews?.getViewCounts(slugs) || Promise.resolve({}),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+                console.log('[waves] View counts done');
+
+                // Fetch wave reaction counts
+                console.log('[waves] Fetching wave counts...');
+                waveCountsData = await withTimeout(
+                    (async () => {
+                        const supabase = window.SupabaseClient?.getClient();
+                        if (!supabase) return {};
+                        try {
+                            const { data, error } = await supabase
+                                .from('wave_reaction_counts')
+                                .select('post_slug, wave_count')
+                                .in('post_slug', slugs);
+                            if (!error && data) {
+                                const counts = {};
+                                data.forEach(item => {
+                                    counts[item.post_slug] = item.wave_count;
+                                });
+                                return counts;
+                            }
+                            return {};
+                        } catch (e) {
+                            console.error('Failed to fetch wave counts:', e);
+                            return {};
+                        }
+                    })(),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+
+                console.log('[waves] Wave counts done');
+
+                // Fetch comment counts
+                console.log('[waves] Fetching comment counts...');
+                commentCountsData = await withTimeout(
+                    window.Comments?.getCommentCounts(slugs) || Promise.resolve({}),
+                    FETCH_TIMEOUT,
+                    {}
+                );
+                console.log('[waves] Comment counts done');
+
+                // Classify all posts and check for active featured
+                const postsWithClassification = posts.map(post => ({
+                    post,
+                    classification: WaveAnalyzer.classifyWave(post)
+                }));
+
+                // Sort: active featured posts first, then by date
+                postsWithClassification.sort((a, b) => {
+                    const aFeatured = a.classification.isActiveFeatured ? 1 : 0;
+                    const bFeatured = b.classification.isActiveFeatured ? 1 : 0;
+                    if (aFeatured !== bFeatured) {
+                        return bFeatured - aFeatured; // Featured first
+                    }
+                    // Both featured or both not: sort by date (newest first)
+                    return new Date(b.post.published_at) - new Date(a.post.published_at);
+                });
+
+                // Store for search
+                allPostsData = postsWithClassification;
+
+                console.log('[waves] Rendering waves...');
+                container.innerHTML = postsWithClassification.map(({ post, classification }) => {
+                    const viewCount = viewCountsData[post.slug] || 0;
+                    const waveCount = waveCountsData[post.slug] || 0;
+                    const commentCount = commentCountsData[post.slug] || 0;
+                    return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
+                }).join('');
+
+                container.style.display = 'flex';
+                console.log('[waves] Render complete - waves visible');
+
+                GalleryController.init();
+
+                // Initialize search
+                WaveSearch.init();
+
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                document.querySelectorAll('.wave-entry')
+                    .forEach(el => revealObserver.observe(el));
+            } catch (error) {
+                console.error('Error loading waves:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+            }
+        })();
+
+    </script>
+</body>
+</html>
