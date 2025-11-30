@@ -1687,7 +1687,7 @@ section {
 
 /* ========================================
    CINEMA WAVE CARDS - Video Style
-   Clear wave-like background with play button
+   Arrow/Pentagon shape - the card IS the play button!
    ======================================== */
 .wave-entry[data-wave-style="cinema"] {
     background: linear-gradient(135deg,
@@ -1696,31 +1696,27 @@ section {
         #c5e3f5 50%,
         #d4eaf7 75%,
         #e8f4fc 100%);
-    border: 1px solid rgba(100, 180, 220, 0.3);
+    border: none;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     color: #2d3748;
     box-shadow:
-        0 4px 20px rgba(100, 180, 220, 0.2),
+        0 4px 20px rgba(100, 180, 220, 0.25),
         0 8px 32px rgba(0, 0, 0, 0.1);
-    border-radius: 16px;
+    /* Arrow/Pentagon clip-path - the card IS the play button */
+    clip-path: polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%);
+    padding-right: 22%;
+    transition: clip-path 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hide letterbox bars on light theme */
+/* Hide letterbox bars */
 .wave-entry[data-wave-style="cinema"] .video-letterbox {
     display: none;
 }
 
-/* Play button - emoji icon */
+/* Hide the play icon - the card shape IS the play button now */
 .wave-entry[data-wave-style="cinema"] .video-play-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 28px;
-    z-index: 10;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    transition: all 0.3s ease;
+    display: none;
 }
 
 /* Subtle wave pattern overlay */
@@ -1733,25 +1729,11 @@ section {
         radial-gradient(ellipse at 80% 20%, rgba(150, 200, 230, 0.15) 0%, transparent 50%);
     z-index: 1;
     pointer-events: none;
-    border-radius: 16px;
 }
 
-/* Accent stripe at left edge */
+/* No left accent stripe - doesn't fit arrow shape */
 .wave-entry[data-wave-style="cinema"]::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 4px;
-    background: linear-gradient(
-        to bottom,
-        #64b4dc 0%,
-        #4a9cc4 50%,
-        #64b4dc 100%
-    );
-    z-index: 6;
-    border-radius: 16px 0 0 16px;
+    display: none;
 }
 
 /* Content positioning */
@@ -1767,7 +1749,6 @@ section {
 /* Cinema card text colors - dark text on light background */
 .wave-entry[data-wave-style="cinema"] .wave-title {
     color: #1a365d;
-    padding-right: 80px; /* Space for play button */
 }
 
 .wave-entry[data-wave-style="cinema"] .wave-body {
@@ -1796,17 +1777,14 @@ section {
     color: #718096;
 }
 
-/* Hover state - gentle wave glow */
+/* Hover state - arrow extends forward */
 .wave-entry[data-wave-style="cinema"]:hover {
     transform: translateY(-8px);
+    /* Arrow tip extends further on hover */
+    clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%);
     box-shadow:
-        0 8px 30px rgba(100, 180, 220, 0.3),
-        0 12px 40px rgba(0, 0, 0, 0.15);
-}
-
-.wave-entry[data-wave-style="cinema"]:hover .video-play-icon {
-    transform: translateY(-50%) scale(1.15);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        0 8px 30px rgba(100, 180, 220, 0.4),
+        0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .wave-entry[data-wave-style="cinema"]:hover .wave-arrow {

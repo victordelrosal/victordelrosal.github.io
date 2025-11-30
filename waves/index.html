@@ -510,11 +510,9 @@
             },
 
             video(post, { label }, viewCount, waveCount, commentCount) {
+                // Card shape IS the play button (arrow/pentagon via CSS clip-path)
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
-                        <div class="video-play-icon">▶️</div>
-                        <div class="video-letterbox video-letterbox--top"></div>
-                        <div class="video-letterbox video-letterbox--bottom"></div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
