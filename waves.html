@@ -86,19 +86,39 @@
             <!-- Tagline -->
             <p class="waves-tagline">Thoughts on AI, technology, innovation, and the future of work.</p>
 
-            <!-- Search Box -->
+            <!-- Search Box & Filter -->
             <div class="waves-search-container">
-                <div class="waves-search-box">
-                    <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="M21 21l-4.35-4.35"></path>
-                    </svg>
-                    <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..." autocomplete="off">
-                    <button id="waves-search-clear" class="waves-search-clear" style="display: none;" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"></path>
+                <div class="waves-search-row">
+                    <div class="waves-search-box">
+                        <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="M21 21l-4.35-4.35"></path>
                         </svg>
-                    </button>
+                        <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..." autocomplete="off">
+                        <button id="waves-search-clear" class="waves-search-clear" style="display: none;" aria-label="Clear search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="waves-filter-wrapper">
+                        <button id="waves-filter-btn" class="waves-filter-btn" aria-label="Filter by type">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            <span>Filter</span>
+                        </button>
+                        <div id="waves-filter-dropdown" class="waves-filter-dropdown" style="display: none;">
+                            <button class="waves-filter-option" data-filter="all">All Waves</button>
+                            <button class="waves-filter-option" data-filter="article">Article</button>
+                            <button class="waves-filter-option" data-filter="brainwave">Brain Wave</button>
+                            <button class="waves-filter-option" data-filter="video">Video</button>
+                            <button class="waves-filter-option" data-filter="photo">Image</button>
+                            <button class="waves-filter-option" data-filter="reading">Reading</button>
+                            <button class="waves-filter-option" data-filter="longform">Longform</button>
+                            <button class="waves-filter-option" data-filter="link">Link</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="waves-search-results" class="waves-search-results" style="display: none;"></div>
             </div>
@@ -833,34 +853,99 @@
             },
 
             filterWaves(query) {
-                const container = document.getElementById('waves-container');
-                const resultsInfo = document.getElementById('waves-search-results');
-                const entries = container.querySelectorAll('.wave-entry');
+                // Use WaveFilter to handle combined search + filter
+                WaveFilter.applyFilter();
+            },
 
-                if (!query) {
-                    // Show all
-                    entries.forEach(el => {
-                        el.style.display = '';
-                        el.classList.add('revealed');
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        // Wave Filter - Filter by type
+        const WaveFilter = {
+            currentFilter: 'all',
+
+            init() {
+                const filterBtn = document.getElementById('waves-filter-btn');
+                const dropdown = document.getElementById('waves-filter-dropdown');
+                const options = document.querySelectorAll('.waves-filter-option');
+
+                if (!filterBtn || !dropdown) return;
+
+                // Toggle dropdown
+                filterBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = dropdown.style.display === 'block';
+                    dropdown.style.display = isOpen ? 'none' : 'block';
+                });
+
+                // Filter options
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const filter = option.dataset.filter;
+                        this.setFilter(filter);
+                        dropdown.style.display = 'none';
+
+                        // Update active state
+                        options.forEach(o => o.classList.remove('active'));
+                        option.classList.add('active');
+
+                        // Update button state
+                        if (filter === 'all') {
+                            filterBtn.classList.remove('active');
+                        } else {
+                            filterBtn.classList.add('active');
+                        }
                     });
-                    resultsInfo.style.display = 'none';
-                    return;
-                }
+                });
 
-                const queryLower = query.toLowerCase();
+                // Close dropdown on outside click
+                document.addEventListener('click', () => {
+                    dropdown.style.display = 'none';
+                });
+
+                // Set initial active state
+                options[0].classList.add('active');
+            },
+
+            setFilter(filterType) {
+                this.currentFilter = filterType;
+                this.applyFilter();
+            },
+
+            applyFilter() {
+                const container = document.getElementById('waves-container');
+                const entries = container.querySelectorAll('.wave-entry');
+                const resultsInfo = document.getElementById('waves-search-results');
+
                 let visibleCount = 0;
 
                 entries.forEach((el, index) => {
                     const postData = allPostsData[index];
                     if (!postData) return;
 
-                    const { post, classification } = postData;
-                    const plainText = WaveAnalyzer.getPlainText(post.content);
+                    const { classification } = postData;
+                    const type = classification.type;
 
-                    // Search in title, content, and type
-                    const searchText = `${post.title} ${plainText} ${classification.label}`.toLowerCase();
+                    // Check if matches filter
+                    const matchesFilter = this.currentFilter === 'all' || type === this.currentFilter;
 
-                    if (searchText.includes(queryLower)) {
+                    // Also check search query
+                    const searchInput = document.getElementById('waves-search');
+                    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+                    let matchesSearch = true;
+                    if (query) {
+                        const { post } = postData;
+                        const plainText = WaveAnalyzer.getPlainText(post.content);
+                        const searchText = `${post.title} ${plainText} ${classification.label}`.toLowerCase();
+                        matchesSearch = searchText.includes(query);
+                    }
+
+                    if (matchesFilter && matchesSearch) {
                         el.style.display = '';
                         el.classList.add('revealed');
                         visibleCount++;
@@ -869,19 +954,33 @@
                     }
                 });
 
-                // Show results count
-                resultsInfo.style.display = 'block';
-                if (visibleCount === 0) {
-                    resultsInfo.innerHTML = `No waves found for "<strong>${this.escapeHtml(query)}</strong>"`;
+                // Update results info
+                const filterLabel = this.currentFilter === 'all' ? '' : this.getFilterLabel(this.currentFilter);
+                const searchInput = document.getElementById('waves-search');
+                const query = searchInput ? searchInput.value.trim() : '';
+
+                if (this.currentFilter !== 'all' || query) {
+                    resultsInfo.style.display = 'block';
+                    let msg = `Showing <strong>${visibleCount}</strong> wave${visibleCount !== 1 ? 's' : ''}`;
+                    if (filterLabel) msg += ` of type <strong>${filterLabel}</strong>`;
+                    if (query) msg += ` matching "<strong>${WaveSearch.escapeHtml(query)}</strong>"`;
+                    resultsInfo.innerHTML = msg;
                 } else {
-                    resultsInfo.innerHTML = `Found <strong>${visibleCount}</strong> wave${visibleCount !== 1 ? 's' : ''} matching "<strong>${this.escapeHtml(query)}</strong>"`;
+                    resultsInfo.style.display = 'none';
                 }
             },
 
-            escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
+            getFilterLabel(type) {
+                const labels = {
+                    article: 'Article',
+                    brainwave: 'Brain Wave',
+                    video: 'Video',
+                    photo: 'Image',
+                    reading: 'Reading',
+                    longform: 'Longform',
+                    link: 'Link'
+                };
+                return labels[type] || type;
             }
         };
 
@@ -1014,8 +1113,9 @@
 
                 GalleryController.init();
 
-                // Initialize search
+                // Initialize search and filter
                 WaveSearch.init();
+                WaveFilter.init();
 
                 const revealObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {

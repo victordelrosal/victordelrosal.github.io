@@ -1109,10 +1109,19 @@ section {
     z-index: 10;
 }
 
+.waves-search-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .waves-search-box {
     position: relative;
     display: flex;
     align-items: center;
+    flex: 1;
     background: var(--bg-light-card);
     border-radius: 28px;
     box-shadow:
@@ -1120,6 +1129,86 @@ section {
         0 4px 24px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
     overflow: hidden;
+}
+
+/* Filter Button & Dropdown */
+.waves-filter-wrapper {
+    position: relative;
+}
+
+.waves-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    background: var(--bg-light-card);
+    border: none;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-light-secondary);
+    cursor: pointer;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 4px 24px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.waves-filter-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.waves-filter-btn:hover {
+    background: var(--bg-light-hover);
+    transform: translateY(-1px);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.12),
+        0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.waves-filter-btn.active {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.waves-filter-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: var(--bg-light-card);
+    border-radius: 16px;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.15),
+        0 8px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.waves-filter-option {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light-secondary);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.waves-filter-option:hover {
+    background: var(--bg-light-hover);
+    color: var(--text-light-primary);
+}
+
+.waves-filter-option.active {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--accent-blue);
 }
 
 .waves-search-box:hover {
@@ -1137,9 +1226,9 @@ section {
 
 .waves-search-icon {
     position: absolute;
-    left: 20px;
-    width: 24px;
-    height: 24px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
     color: var(--text-light-tertiary);
     pointer-events: none;
     transition: color 0.2s ease;
@@ -1151,8 +1240,8 @@ section {
 
 .waves-search-input {
     width: 100%;
-    padding: 22px 56px;
-    font-size: 21px;
+    padding: 16px 48px;
+    font-size: 16px;
     font-family: inherit;
     border: none;
     background: transparent;
@@ -2931,21 +3020,43 @@ footer {
         margin-bottom: 24px;
     }
 
+    .waves-search-row {
+        max-width: 100%;
+    }
+
     .waves-search-input {
-        padding: 19px 50px;
-        font-size: 19px;
+        padding: 14px 44px;
+        font-size: 15px;
     }
 
     .waves-search-icon {
-        left: 16px;
-        width: 20px;
-        height: 20px;
+        left: 14px;
+        width: 18px;
+        height: 18px;
     }
 
     .waves-search-clear {
-        right: 12px;
-        width: 32px;
-        height: 32px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .waves-filter-btn {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .waves-filter-btn span {
+        display: none;
+    }
+
+    .waves-filter-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .waves-filter-dropdown {
+        min-width: 140px;
     }
 
     .waves-section {
