@@ -554,9 +554,17 @@
             brainwave(post, { label }, viewCount, waveCount, commentCount) {
                 const content = WaveAnalyzer.stripFirstLine(post.content);
                 const excerpt = window.PostsAPI.createExcerpt(content, 150);
-                // Wave-shaped card for random thoughts and ideas
+                // Aquarium-style wave card with layered animated waves
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--brainwave">
+                        <!-- Top wave edge - 3 layers like aquarium -->
+                        <div class="brainwave-waves-top">
+                            <div class="brainwave-wave brainwave-wave--deep"></div>
+                            <div class="brainwave-wave brainwave-wave--mid"></div>
+                            <div class="brainwave-wave brainwave-wave--surface"></div>
+                        </div>
+                        <!-- Caustic light effect -->
+                        <div class="brainwave-caustics"></div>
                         <div class="brainwave-icon">🌊</div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
@@ -565,6 +573,12 @@
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        <!-- Bottom wave edge - 3 layers like aquarium -->
+                        <div class="brainwave-waves-bottom">
+                            <div class="brainwave-wave brainwave-wave--deep"></div>
+                            <div class="brainwave-wave brainwave-wave--mid"></div>
+                            <div class="brainwave-wave brainwave-wave--surface"></div>
+                        </div>
                     </a>
                 `;
             },
