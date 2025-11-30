@@ -1874,6 +1874,90 @@ section {
     transition: transform 0.6s var(--ease-out);
 }
 
+/* Photo frame corner decorations */
+.photo-frame-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.photo-frame-corner::before,
+.photo-frame-corner::after {
+    content: '';
+    position: absolute;
+    background: linear-gradient(135deg, #c9a227 0%, #f4d675 50%, #c9a227 100%);
+    border-radius: 1px;
+}
+
+/* Horizontal bar */
+.photo-frame-corner::before {
+    width: 24px;
+    height: 3px;
+}
+
+/* Vertical bar */
+.photo-frame-corner::after {
+    width: 3px;
+    height: 24px;
+}
+
+/* Top-left corner */
+.photo-frame-corner--tl {
+    top: 0;
+    left: 0;
+}
+.photo-frame-corner--tl::before { top: 0; left: 0; }
+.photo-frame-corner--tl::after { top: 0; left: 0; }
+
+/* Top-right corner */
+.photo-frame-corner--tr {
+    top: 0;
+    right: 0;
+}
+.photo-frame-corner--tr::before { top: 0; right: 0; }
+.photo-frame-corner--tr::after { top: 0; right: 0; }
+
+/* Bottom-left corner */
+.photo-frame-corner--bl {
+    bottom: 0;
+    left: 0;
+}
+.photo-frame-corner--bl::before { bottom: 0; left: 0; }
+.photo-frame-corner--bl::after { bottom: 0; left: 0; }
+
+/* Bottom-right corner */
+.photo-frame-corner--br {
+    bottom: 0;
+    right: 0;
+}
+.photo-frame-corner--br::before { bottom: 0; right: 0; }
+.photo-frame-corner--br::after { bottom: 0; right: 0; }
+
+/* Hover effect - corners become more visible */
+.wave-entry--photo:hover .photo-frame-corner {
+    opacity: 1;
+}
+
+/* Photo type badge styling - golden to match frame */
+.wave-entry--photo .wave-type {
+    background: linear-gradient(135deg, #1a3a2e 0%, #2d5a4a 50%, #1a3a2e 100%);
+    color: #f4d675;
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(244, 214, 117, 0.1);
+}
+
+/* Type icon styling */
+.wave-entry--photo .wave-type .type-icon {
+    margin-right: 4px;
+    font-size: 0.9em;
+}
+
 /* Gallery */
 .wave-gallery {
     position: relative;
