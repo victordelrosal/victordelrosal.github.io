@@ -1820,9 +1820,8 @@ section {
 
 
 /* ========================================
-   BRAINWAVE CARDS - Aquarium Wave Effect 〰
-   Seamless wave edges that blend with page background
-   Inspired by hero section aquarium waves
+   BRAINWAVE CARDS - Wavy Shape + Aquarium Effect 〰
+   Card has smooth wave-shaped borders AND aquarium ondulating inside
    ======================================== */
 
 /* Wave animation keyframes */
@@ -1867,68 +1866,68 @@ section {
     overflow: hidden;
     color: #ffffff;
     box-shadow:
-        0 4px 20px rgba(14, 165, 233, 0.25),
-        0 8px 32px rgba(0, 0, 0, 0.1);
+        0 8px 32px rgba(14, 165, 233, 0.35),
+        0 4px 16px rgba(0, 0, 0, 0.15);
+    /* Smooth wavy card shape using SVG clip-path */
+    clip-path: url(#brainwave-clip);
     border-radius: 0;
-    padding: 50px 28px 50px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    padding: 45px 28px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Aquarium wave container for top edge */
+/* Aquarium wave layers inside the card */
 .wave-entry[data-wave-style="brainwave"] .brainwave-waves-top,
 .wave-entry[data-wave-style="brainwave"] .brainwave-waves-bottom {
     position: absolute;
-    left: 0;
-    right: 0;
-    height: 40px;
-    overflow: hidden;
+    left: -10%;
+    right: -10%;
+    height: 60px;
+    overflow: visible;
     pointer-events: none;
+    z-index: 2;
 }
 
 .wave-entry[data-wave-style="brainwave"] .brainwave-waves-top {
-    top: 0;
+    top: -5px;
 }
 
 .wave-entry[data-wave-style="brainwave"] .brainwave-waves-bottom {
-    bottom: 0;
-    transform: rotate(180deg);
+    bottom: -5px;
+    transform: scaleY(-1);
 }
 
-/* Three-layer wave system - page background color cutting into card */
+/* Three-layer wave system - lighter blues ondulating inside */
 .wave-entry[data-wave-style="brainwave"] .brainwave-wave {
     position: absolute;
-    left: -10%;
-    width: 120%;
+    left: 0;
+    width: 200%;
     height: 100%;
 }
 
 /* Deep wave - slowest, most prominent */
 .wave-entry[data-wave-style="brainwave"] .brainwave-wave--deep {
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath d='M0,40 L0,25 C180,35 360,15 540,25 C720,35 900,15 1080,25 C1260,35 1350,15 1440,25 L1440,40 Z' fill='%23fafafa'/%3E%3C/svg%3E") repeat-x;
+    top: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C180,40 360,10 540,30 C720,50 900,20 1080,40 C1260,60 1350,30 1440,45 L1440,60 L0,60 Z' fill='rgba(56,189,248,0.25)'/%3E%3C/svg%3E") repeat-x;
     background-size: 720px 100%;
-    opacity: 0.4;
     animation: brainwave-deep 12s ease-in-out infinite;
 }
 
 /* Mid wave - medium speed */
 .wave-entry[data-wave-style="brainwave"] .brainwave-wave--mid {
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath d='M0,40 L0,20 C240,30 480,10 720,20 C960,30 1200,10 1440,20 L1440,40 Z' fill='%23fafafa'/%3E%3C/svg%3E") repeat-x;
+    top: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C240,50 480,20 720,40 C960,60 1200,25 1440,50 L1440,60 L0,60 Z' fill='rgba(125,211,252,0.3)'/%3E%3C/svg%3E") repeat-x;
     background-size: 480px 100%;
-    opacity: 0.6;
     animation: brainwave-mid 8s ease-in-out infinite;
     animation-delay: -2s;
 }
 
 /* Surface wave - fastest, sharpest */
 .wave-entry[data-wave-style="brainwave"] .brainwave-wave--surface {
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath d='M0,40 L0,15 C120,25 240,5 360,15 C480,25 600,5 720,15 C840,25 960,5 1080,15 C1200,25 1320,5 1440,15 L1440,40 Z' fill='%23fafafa'/%3E%3C/svg%3E") repeat-x;
+    top: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0,20 C120,45 240,25 360,40 C480,55 600,30 720,45 C840,60 960,35 1080,50 C1200,65 1320,40 1440,55 L1440,60 L0,60 Z' fill='rgba(186,230,253,0.35)'/%3E%3C/svg%3E") repeat-x;
     background-size: 360px 100%;
-    opacity: 1;
     animation: brainwave-surface 5s ease-in-out infinite;
     animation-delay: -1s;
 }
@@ -1938,9 +1937,9 @@ section {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 50% at 20% 30%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 75% 65%, rgba(14, 165, 233, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(125, 211, 252, 0.1) 0%, transparent 40%);
+        radial-gradient(ellipse 80% 50% at 20% 30%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 75% 65%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(125, 211, 252, 0.12) 0%, transparent 40%);
     animation: brainwave-caustics 6s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
