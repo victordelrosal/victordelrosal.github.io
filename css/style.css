@@ -1820,95 +1820,92 @@ section {
 
 
 /* ========================================
-   BRAINWAVE CARDS - Wave-Shaped!
-   The card itself is shaped like a smooth wave
+   BRAINWAVE CARDS - Smooth Wave Shape 〰
+   Using SVG-based wave borders for perfectly smooth curves
    ======================================== */
+
+/* Wave animation keyframes */
+@keyframes brainwave-flow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes wave-undulate {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-2%);
+    }
+}
+
 .wave-entry[data-wave-style="brainwave"] {
+    /* Ocean blue gradient - animating */
     background: linear-gradient(135deg,
-        #f0e6ff 0%,
-        #e6d9ff 25%,
-        #dbc9ff 50%,
-        #e6d9ff 75%,
-        #f0e6ff 100%);
+        #0c4a6e 0%,
+        #0369a1 20%,
+        #0ea5e9 40%,
+        #38bdf8 60%,
+        #0ea5e9 80%,
+        #0369a1 100%);
+    background-size: 200% 200%;
+    animation: brainwave-flow 6s ease-in-out infinite;
     border: none;
     position: relative;
     overflow: visible;
-    color: #4a3660;
+    color: #ffffff;
     box-shadow:
-        0 4px 20px rgba(150, 100, 200, 0.2),
-        0 8px 32px rgba(0, 0, 0, 0.1);
-    /* Smooth ondulating wave - gentle curves, no sharp edges */
-    clip-path: polygon(
-        /* Top wave - smooth sine-like curve */
-        0% 12%,
-        5% 10%,
-        10% 7%,
-        15% 5%,
-        20% 4%,
-        25% 5%,
-        30% 7%,
-        35% 10%,
-        40% 12%,
-        45% 10%,
-        50% 7%,
-        55% 5%,
-        60% 4%,
-        65% 5%,
-        70% 7%,
-        75% 10%,
-        80% 12%,
-        85% 10%,
-        90% 7%,
-        95% 5%,
-        100% 6%,
-        /* Bottom wave - smooth sine-like curve */
-        100% 94%,
-        95% 95%,
-        90% 93%,
-        85% 90%,
-        80% 88%,
-        75% 90%,
-        70% 93%,
-        65% 95%,
-        60% 96%,
-        55% 95%,
-        50% 93%,
-        45% 90%,
-        40% 88%,
-        35% 90%,
-        30% 93%,
-        25% 95%,
-        20% 96%,
-        15% 95%,
-        10% 93%,
-        5% 90%,
-        0% 88%
-    );
-    padding: 30px 28px;
-    transition: clip-path 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        0 4px 20px rgba(14, 165, 233, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 45px 28px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Brainwave icon - lightbulb emoji in corner */
-.wave-entry[data-wave-style="brainwave"] .brainwave-icon {
-    position: absolute;
-    right: 20px;
-    top: 30px;
-    font-size: 28px;
-    opacity: 0.7;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-/* Subtle sparkle overlay */
+/* Top wave edge - smooth SVG curves */
 .wave-entry[data-wave-style="brainwave"]::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 40%);
-    z-index: 1;
-    pointer-events: none;
+    top: -18px;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C100,30 100,5 200,5 C300,5 300,30 400,30 C500,30 500,5 600,5 C700,5 700,30 800,30 C900,30 900,5 1000,5 C1100,5 1100,30 1200,30 L1200,30 L0,30 Z' fill='%230369a1'/%3E%3C/svg%3E") repeat-x;
+    background-size: 400px 100%;
+    animation: wave-undulate 4s ease-in-out infinite;
+    z-index: 5;
+}
+
+/* Bottom wave edge - smooth SVG curves */
+.wave-entry[data-wave-style="brainwave"]::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C100,0 100,25 200,25 C300,25 300,0 400,0 C500,0 500,25 600,25 C700,25 700,0 800,0 C900,0 900,25 1000,25 C1100,25 1100,0 1200,0 L1200,0 L0,0 Z' fill='%230369a1'/%3E%3C/svg%3E") repeat-x;
+    background-size: 400px 100%;
+    animation: wave-undulate 4s ease-in-out infinite reverse;
+    z-index: 5;
+}
+
+/* Brainwave icon - wave emoji in corner */
+.wave-entry[data-wave-style="brainwave"] .brainwave-icon {
+    position: absolute;
+    right: 20px;
+    top: 35px;
+    font-size: 32px;
+    opacity: 0.9;
+    z-index: 10;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 /* Content positioning */
@@ -1921,36 +1918,37 @@ section {
     z-index: 3;
 }
 
-/* Brainwave text colors */
+/* Brainwave text colors - light for dark ocean background */
 .wave-entry[data-wave-style="brainwave"] .wave-title {
-    color: #4a3660;
+    color: #ffffff;
     padding-right: 50px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .wave-entry[data-wave-style="brainwave"] .wave-body {
-    color: #6b5280;
+    color: #e0f2fe;
 }
 
 .wave-entry[data-wave-style="brainwave"] .wave-meta {
-    color: #8b7aa0;
+    color: #bae6fd;
 }
 
-/* Brainwave type badge - purple gradient */
+/* Brainwave type badge - ocean themed */
 .wave-entry[data-wave-style="brainwave"] .wave-type {
-    background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #7c3aed 100%);
+    background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #0284c7 100%);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
     font-weight: 700;
 }
 
 /* Stats styling */
 .wave-entry[data-wave-style="brainwave"] .wave-stats {
-    color: #8b7aa0;
+    color: #bae6fd;
 }
 
 .wave-entry[data-wave-style="brainwave"] .wave-stat {
-    color: #8b7aa0;
+    color: #bae6fd;
 }
 
 /* Hide default arrow on brainwave cards */
@@ -1962,14 +1960,14 @@ section {
 .wave-entry[data-wave-style="brainwave"]:hover {
     transform: translateY(-8px);
     box-shadow:
-        0 8px 30px rgba(150, 100, 200, 0.35),
-        0 12px 40px rgba(0, 0, 0, 0.15);
+        0 8px 30px rgba(14, 165, 233, 0.5),
+        0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .wave-entry[data-wave-style="brainwave"]:hover .brainwave-icon {
     opacity: 1;
-    color: #7c3aed;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
 }
 
 
@@ -2288,23 +2286,6 @@ section {
     transition: width 50ms linear;
 }
 
-/* ===== 16. BREADCRUMB (article pages) ===== */
-.breadcrumb {
-    font-size: 13px;
-    margin-bottom: 32px;
-    color: var(--text-dark-secondary);
-}
-
-.breadcrumb a {
-    color: var(--text-dark-secondary);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.breadcrumb a:hover {
-    color: var(--blue-7);
-}
-
 /* ===== 17. POST/ARTICLE CONTENT ===== */
 /* ===== WAVE WATERMARK - Individual Post Background ===== */
 /* Iconic, subtle wave signature for all wave content */
@@ -2316,7 +2297,6 @@ section {
 
 /* Ensure post content stays above watermark */
 .wave-watermark .post,
-.wave-watermark .breadcrumb,
 .wave-watermark .loading,
 .wave-watermark .not-found {
     position: relative;
