@@ -1560,131 +1560,66 @@ section {
 
 /* ========================================
    GOLD WAVE CARDS - Featured Style
+   Elegant dark card with gold accent border
    ======================================== */
 .wave-entry[data-wave-style="gold"] {
-    background:
-        radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
-        radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
-    border: 3px solid transparent;
+    background: #1a1a1a;
+    border: none;
     position: relative;
     overflow: hidden;
-    color: #3d3215;
+    color: #e5e5e5;
     box-shadow:
-        0 2px 4px rgba(255, 255, 200, 0.4) inset,
-        0 1px 2px rgba(255, 255, 255, 0.5) inset,
-        0 -1px 2px rgba(255, 165, 0, 0.2) inset,
-        0 8px 32px rgba(255, 215, 0, 0.5),
-        0 16px 48px rgba(255, 215, 0, 0.3),
-        0 0 60px rgba(255, 215, 0, 0.2);
-    border-radius: 20px;
+        0 0 20px rgba(212, 160, 32, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    padding-top: 34px; /* Extra padding for the gold bar */
 }
 
-/* Gold shimmer border effect */
+/* Gold glow accent at top */
 .wave-entry[data-wave-style="gold"]::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    display: block;
-    height: 200%;
-    width: 200%;
-    z-index: 0;
-    background: linear-gradient(
-        to right,
-        #fff 20%,
-        #fff 40%,
-        #ecd08c 50%,
-        #ecd08c 55%,
-        #fff 70%,
-        #fff 100%
-    );
-    background-size: 200% auto;
-    animation: goldShine 3s linear infinite;
-    transform: rotate(-45deg);
-    border-radius: 20px;
-    opacity: 0.1;
-}
-
-/* Shimmer sweep effect */
-.wave-entry[data-wave-style="gold"] .featured-shimmer {
-    position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
+    height: 6px;
     background: linear-gradient(
-        120deg,
-        transparent 0%,
-        transparent 40%,
-        rgba(255, 255, 255, 0.4) 50%,
-        transparent 60%,
-        transparent 100%
+        90deg,
+        #8B6914 0%,
+        #D4A020 20%,
+        #F5D76E 50%,
+        #D4A020 80%,
+        #8B6914 100%
     );
-    animation: shimmerSweep 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 2;
+    z-index: 10;
+    border-radius: 16px 16px 0 0;
 }
 
-@keyframes shimmerSweep {
-    0% { left: -100%; }
-    100% { left: 200%; }
-}
-
-@keyframes goldShine {
-    to { background-position: 200% center; }
-}
-
-/* Sparkle decorations */
-.wave-entry[data-wave-style="gold"] .featured-sparkles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.wave-entry[data-wave-style="gold"] .sparkle {
-    position: absolute;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-    animation: sparklePulse 2s ease-in-out infinite;
-}
-
-.wave-entry[data-wave-style="gold"] .sparkle-1 {
-    top: 15px;
-    right: 20px;
-    animation-delay: 0s;
-}
-
-.wave-entry[data-wave-style="gold"] .sparkle-2 {
-    bottom: 20px;
-    left: 15px;
-    font-size: 10px;
-    animation-delay: 0.7s;
-}
-
-.wave-entry[data-wave-style="gold"] .sparkle-3 {
-    top: 50%;
-    right: 60px;
-    font-size: 8px;
-    animation-delay: 1.4s;
-}
-
-@keyframes sparklePulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-}
-
-/* Optional background image with gold overlay */
-.wave-entry[data-wave-style="gold"][style*="--featured-bg-image"]::before {
+/* Subtle gold glow beneath the border */
+.wave-entry[data-wave-style="gold"]::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image: var(--featured-bg-image);
-    background-size: cover;
-    background-position: center;
-    opacity: 0.15;
-    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(
+        to bottom,
+        rgba(212, 160, 32, 0.15) 0%,
+        transparent 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Hide the shimmer element - not needed for this design */
+.wave-entry[data-wave-style="gold"] .featured-shimmer {
+    display: none;
+}
+
+/* Hide sparkles - cleaner look */
+.wave-entry[data-wave-style="gold"] .featured-sparkles {
+    display: none;
 }
 
 /* Content positioning */
@@ -1697,55 +1632,54 @@ section {
     z-index: 3;
 }
 
-/* Gold card text colors */
+/* Gold card text colors - light for dark background */
 .wave-entry[data-wave-style="gold"] .wave-title {
-    color: #4A3C2A;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    text-shadow: none;
 }
 
 .wave-entry[data-wave-style="gold"] .wave-body {
-    color: #5D4E37;
+    color: #b0b0b0;
 }
 
 .wave-entry[data-wave-style="gold"] .wave-meta {
-    color: #7A6B55;
+    color: #888888;
 }
 
-/* Gold type badge - trophy style */
+/* Gold type badge - refined */
 .wave-entry[data-wave-style="gold"] .wave-type {
     background: linear-gradient(135deg, #8B6914 0%, #D4A020 50%, #8B6914 100%);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    box-shadow:
-        0 0 15px rgba(255, 215, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        0 2px 8px rgba(139, 105, 20, 0.4);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     font-weight: 700;
 }
 
-/* Hover state - more dramatic */
-.wave-entry[data-wave-style="gold"]:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow:
-        0 0 0 4px rgba(255, 215, 0, 0.6),
-        0 0 50px rgba(255, 215, 0, 0.4),
-        0 20px 60px rgba(180, 140, 20, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+/* Stats badge styling for dark background */
+.wave-entry[data-wave-style="gold"] .wave-stats {
+    color: #888888;
 }
 
-.wave-entry[data-wave-style="gold"]:hover .featured-shimmer {
-    animation-duration: 2s;
+.wave-entry[data-wave-style="gold"] .wave-stat {
+    color: #888888;
+}
+
+/* Hover state - subtle gold glow */
+.wave-entry[data-wave-style="gold"]:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 0 30px rgba(212, 160, 32, 0.25),
+        0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
 .wave-entry[data-wave-style="gold"]:hover .wave-arrow {
-    color: #8B6914;
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+    color: #D4A020;
 }
 
 /* Arrow styling */
 .wave-entry[data-wave-style="gold"] .wave-arrow {
-    color: #A08050;
+    color: #888888;
     z-index: 3;
     position: relative;
 }
