@@ -788,7 +788,7 @@ section {
     top: 0;
     left: 0;
     right: 0;
-    height: 72px;
+    height: 90px;
     z-index: 1000;
     overflow: hidden;
 }
@@ -928,7 +928,7 @@ section {
 
 /* Waves page body adjustment */
 .waves-page .waves-section--with-navbar {
-    padding-top: 104px;
+    padding-top: 122px;
 }
 
 /* Waves tagline */
@@ -944,7 +944,7 @@ section {
 /* Mobile responsive */
 @media (max-width: 768px) {
     .wave-navbar {
-        height: 64px;
+        height: 80px;
     }
 
     .wave-navbar-content {
@@ -965,7 +965,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 96px;
+        padding-top: 112px;
     }
 
     .waves-tagline {
@@ -976,7 +976,7 @@ section {
 
 @media (max-width: 480px) {
     .wave-navbar {
-        height: 56px;
+        height: 70px;
     }
 
     .wave-navbar-title {
@@ -989,7 +989,7 @@ section {
     }
 
     .waves-page .waves-section--with-navbar {
-        padding-top: 88px;
+        padding-top: 102px;
     }
 }
 
@@ -1721,31 +1721,16 @@ section {
     border-radius: 0 0 16px 16px;
 }
 
-/* Play button - centered prominent icon */
+/* Play button - emoji icon */
 .wave-entry[data-wave-style="cinema"] .video-play-icon {
     position: absolute;
-    right: 24px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    width: 56px;
-    height: 56px;
-    background: rgba(220, 38, 38, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 28px;
     z-index: 10;
-    box-shadow:
-        0 0 20px rgba(220, 38, 38, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.4);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     transition: all 0.3s ease;
-}
-
-.wave-entry[data-wave-style="cinema"] .video-play-icon svg {
-    width: 24px;
-    height: 24px;
-    color: white;
-    margin-left: 3px; /* Optical centering for play icon */
 }
 
 /* Film grain texture overlay */
@@ -1832,11 +1817,8 @@ section {
 }
 
 .wave-entry[data-wave-style="cinema"]:hover .video-play-icon {
-    background: rgba(220, 38, 38, 1);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow:
-        0 0 30px rgba(220, 38, 38, 0.6),
-        0 6px 16px rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%) scale(1.15);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
 }
 
 .wave-entry[data-wave-style="cinema"]:hover .wave-arrow {
