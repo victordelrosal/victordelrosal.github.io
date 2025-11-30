@@ -511,15 +511,20 @@
 
             video(post, { label }, viewCount, waveCount, commentCount) {
                 // Card shape IS the play button (arrow/pentagon via CSS clip-path)
+                // Play icon SVG sits in the arrow tip area
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
+                        <div class="video-play-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
-                        ${this.arrowSvg}
                     </a>
                 `;
             },
