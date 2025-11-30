@@ -1685,6 +1685,172 @@ section {
 }
 
 
+/* ========================================
+   CINEMA WAVE CARDS - Video Style
+   Dark cinematic look with play button
+   ======================================== */
+.wave-entry[data-wave-style="cinema"] {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color: #e5e5e5;
+    box-shadow:
+        0 0 30px rgba(220, 38, 38, 0.1),
+        0 8px 32px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+}
+
+/* Letterbox bars - cinematic widescreen effect */
+.wave-entry[data-wave-style="cinema"] .video-letterbox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: #000;
+    z-index: 5;
+}
+
+.wave-entry[data-wave-style="cinema"] .video-letterbox--top {
+    top: 0;
+    border-radius: 16px 16px 0 0;
+}
+
+.wave-entry[data-wave-style="cinema"] .video-letterbox--bottom {
+    bottom: 0;
+    border-radius: 0 0 16px 16px;
+}
+
+/* Play button - centered prominent icon */
+.wave-entry[data-wave-style="cinema"] .video-play-icon {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    background: rgba(220, 38, 38, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow:
+        0 0 20px rgba(220, 38, 38, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.wave-entry[data-wave-style="cinema"] .video-play-icon svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+    margin-left: 3px; /* Optical centering for play icon */
+}
+
+/* Film grain texture overlay */
+.wave-entry[data-wave-style="cinema"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 16px;
+}
+
+/* Red accent glow at edges */
+.wave-entry[data-wave-style="cinema"]::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 0;
+    width: 3px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(220, 38, 38, 0.6) 30%,
+        rgba(220, 38, 38, 0.8) 50%,
+        rgba(220, 38, 38, 0.6) 70%,
+        transparent 100%
+    );
+    z-index: 6;
+}
+
+/* Content positioning */
+.wave-entry[data-wave-style="cinema"] .wave-content,
+.wave-entry[data-wave-style="cinema"] .wave-title,
+.wave-entry[data-wave-style="cinema"] .wave-body,
+.wave-entry[data-wave-style="cinema"] .wave-meta,
+.wave-entry[data-wave-style="cinema"] .wave-type {
+    position: relative;
+    z-index: 3;
+}
+
+/* Cinema card text colors */
+.wave-entry[data-wave-style="cinema"] .wave-title {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding-right: 80px; /* Space for play button */
+}
+
+.wave-entry[data-wave-style="cinema"] .wave-body {
+    color: #a0a0a0;
+}
+
+.wave-entry[data-wave-style="cinema"] .wave-meta {
+    color: #707070;
+}
+
+/* Video type badge - red cinema style */
+.wave-entry[data-wave-style="cinema"] .wave-type {
+    background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #7f1d1d 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+}
+
+/* Stats badge styling for dark background */
+.wave-entry[data-wave-style="cinema"] .wave-stats {
+    color: #707070;
+}
+
+.wave-entry[data-wave-style="cinema"] .wave-stat {
+    color: #707070;
+}
+
+/* Hover state - dramatic red glow */
+.wave-entry[data-wave-style="cinema"]:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 0 40px rgba(220, 38, 38, 0.2),
+        0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.wave-entry[data-wave-style="cinema"]:hover .video-play-icon {
+    background: rgba(220, 38, 38, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow:
+        0 0 30px rgba(220, 38, 38, 0.6),
+        0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.wave-entry[data-wave-style="cinema"]:hover .wave-arrow {
+    color: #dc2626;
+}
+
+/* Arrow styling */
+.wave-entry[data-wave-style="cinema"] .wave-arrow {
+    color: #505050;
+    z-index: 3;
+    position: relative;
+}
+
+
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
 
 /* Photo entry */

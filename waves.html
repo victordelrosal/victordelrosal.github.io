@@ -296,13 +296,15 @@
                 <polyline points="9 18 15 12 9 6"/>
             </svg>`,
 
-            // Wave duality: Ocean for creative, Light for technical, Gold for featured
-            oceanTypes: ['photo', 'video', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
+            // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video
+            oceanTypes: ['photo', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
             lightTypes: ['reading', 'link', 'todo'],
             goldTypes: ['featured'],
+            cinemaTypes: ['video'],
 
             getWaveStyle(type) {
                 if (this.goldTypes.includes(type)) return 'gold';
+                if (this.cinemaTypes.includes(type)) return 'cinema';
                 if (this.oceanTypes.includes(type)) return 'ocean';
                 if (this.lightTypes.includes(type)) return 'light';
                 return 'ocean'; // default
@@ -502,6 +504,13 @@
             video(post, { label }, viewCount, waveCount, commentCount) {
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--video">
+                        <div class="video-play-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <div class="video-letterbox video-letterbox--top"></div>
+                        <div class="video-letterbox video-letterbox--bottom"></div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
