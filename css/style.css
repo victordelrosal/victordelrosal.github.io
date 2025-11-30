@@ -1703,9 +1703,9 @@ section {
     box-shadow:
         0 4px 20px rgba(100, 180, 220, 0.25),
         0 8px 32px rgba(0, 0, 0, 0.1);
-    /* Arrow/Pentagon clip-path - less pointy tip (88% instead of 80%) */
-    clip-path: polygon(0 0, 88% 0, 100% 50%, 88% 100%, 0 100%);
-    padding-right: 15%;
+    /* Arrow/Pentagon clip-path - very rounded/gentle tip (94%) */
+    clip-path: polygon(0 0, 94% 0, 100% 50%, 94% 100%, 0 100%);
+    padding-right: 18%;
     transition: clip-path 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1714,17 +1714,17 @@ section {
     display: none;
 }
 
-/* Play icon in the arrow tip area */
+/* Play icon - 4X larger, positioned with breathing room */
 .wave-entry[data-wave-style="cinema"] .video-play-icon {
     position: absolute;
-    right: 3%;
+    right: 5%;
     top: 50%;
     transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
+    width: 112px;
+    height: 112px;
     color: #2c5282;
     z-index: 10;
-    opacity: 0.7;
+    opacity: 0.5;
     transition: all 0.3s ease;
 }
 
@@ -1735,6 +1735,11 @@ section {
 
 /* Hide the default arrow on video cards */
 .wave-entry[data-wave-style="cinema"] .wave-arrow {
+    display: none;
+}
+
+/* Hide stats/counters on video cards */
+.wave-entry[data-wave-style="cinema"] .wave-stats {
     display: none;
 }
 
@@ -1799,8 +1804,8 @@ section {
 /* Hover state - arrow extends forward slightly */
 .wave-entry[data-wave-style="cinema"]:hover {
     transform: translateY(-8px);
-    /* Arrow tip extends slightly on hover (86% vs 88%) */
-    clip-path: polygon(0 0, 86% 0, 100% 50%, 86% 100%, 0 100%);
+    /* Arrow tip extends slightly on hover (92% vs 94%) */
+    clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%);
     box-shadow:
         0 8px 30px rgba(100, 180, 220, 0.4),
         0 12px 40px rgba(0, 0, 0, 0.2);
@@ -1808,9 +1813,9 @@ section {
 
 /* Play icon brightens on hover */
 .wave-entry[data-wave-style="cinema"]:hover .video-play-icon {
-    opacity: 1;
+    opacity: 0.8;
     color: #4299e1;
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-50%) scale(1.05);
 }
 
 
