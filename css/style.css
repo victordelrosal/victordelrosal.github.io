@@ -1687,38 +1687,28 @@ section {
 
 /* ========================================
    CINEMA WAVE CARDS - Video Style
-   Dark cinematic look with play button
+   Clear wave-like background with play button
    ======================================== */
 .wave-entry[data-wave-style="cinema"] {
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
-    border: none;
+    background: linear-gradient(135deg,
+        #e8f4fc 0%,
+        #d4eaf7 25%,
+        #c5e3f5 50%,
+        #d4eaf7 75%,
+        #e8f4fc 100%);
+    border: 1px solid rgba(100, 180, 220, 0.3);
     position: relative;
     overflow: hidden;
-    color: #e5e5e5;
+    color: #2d3748;
     box-shadow:
-        0 0 30px rgba(220, 38, 38, 0.1),
-        0 8px 32px rgba(0, 0, 0, 0.5);
+        0 4px 20px rgba(100, 180, 220, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
 }
 
-/* Letterbox bars - cinematic widescreen effect */
+/* Hide letterbox bars on light theme */
 .wave-entry[data-wave-style="cinema"] .video-letterbox {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: #000;
-    z-index: 5;
-}
-
-.wave-entry[data-wave-style="cinema"] .video-letterbox--top {
-    top: 0;
-    border-radius: 16px 16px 0 0;
-}
-
-.wave-entry[data-wave-style="cinema"] .video-letterbox--bottom {
-    bottom: 0;
-    border-radius: 0 0 16px 16px;
+    display: none;
 }
 
 /* Play button - emoji icon */
@@ -1729,39 +1719,39 @@ section {
     transform: translateY(-50%);
     font-size: 28px;
     z-index: 10;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     transition: all 0.3s ease;
 }
 
-/* Film grain texture overlay */
+/* Subtle wave pattern overlay */
 .wave-entry[data-wave-style="cinema"]::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(100, 180, 220, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(150, 200, 230, 0.15) 0%, transparent 50%);
     z-index: 1;
     pointer-events: none;
     border-radius: 16px;
 }
 
-/* Red accent glow at edges */
+/* Accent stripe at left edge */
 .wave-entry[data-wave-style="cinema"]::after {
     content: '';
     position: absolute;
-    top: 8px;
-    bottom: 8px;
+    top: 0;
+    bottom: 0;
     left: 0;
-    width: 3px;
+    width: 4px;
     background: linear-gradient(
         to bottom,
-        transparent 0%,
-        rgba(220, 38, 38, 0.6) 30%,
-        rgba(220, 38, 38, 0.8) 50%,
-        rgba(220, 38, 38, 0.6) 70%,
-        transparent 100%
+        #64b4dc 0%,
+        #4a9cc4 50%,
+        #64b4dc 100%
     );
     z-index: 6;
+    border-radius: 16px 0 0 16px;
 }
 
 /* Content positioning */
@@ -1774,60 +1764,58 @@ section {
     z-index: 3;
 }
 
-/* Cinema card text colors */
+/* Cinema card text colors - dark text on light background */
 .wave-entry[data-wave-style="cinema"] .wave-title {
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: #1a365d;
     padding-right: 80px; /* Space for play button */
 }
 
 .wave-entry[data-wave-style="cinema"] .wave-body {
-    color: #a0a0a0;
+    color: #4a5568;
 }
 
 .wave-entry[data-wave-style="cinema"] .wave-meta {
-    color: #707070;
+    color: #718096;
 }
 
-/* Video type badge - red cinema style */
+/* Video type badge - ocean blue style */
 .wave-entry[data-wave-style="cinema"] .wave-type {
-    background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #7f1d1d 100%);
+    background: linear-gradient(135deg, #2c5282 0%, #4299e1 50%, #2c5282 100%);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.3);
     font-weight: 700;
 }
 
-/* Stats badge styling for dark background */
+/* Stats styling for light background */
 .wave-entry[data-wave-style="cinema"] .wave-stats {
-    color: #707070;
+    color: #718096;
 }
 
 .wave-entry[data-wave-style="cinema"] .wave-stat {
-    color: #707070;
+    color: #718096;
 }
 
-/* Hover state - dramatic red glow */
+/* Hover state - gentle wave glow */
 .wave-entry[data-wave-style="cinema"]:hover {
     transform: translateY(-8px);
     box-shadow:
-        0 0 40px rgba(220, 38, 38, 0.2),
-        0 12px 40px rgba(0, 0, 0, 0.6);
+        0 8px 30px rgba(100, 180, 220, 0.3),
+        0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .wave-entry[data-wave-style="cinema"]:hover .video-play-icon {
     transform: translateY(-50%) scale(1.15);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .wave-entry[data-wave-style="cinema"]:hover .wave-arrow {
-    color: #dc2626;
+    color: #4299e1;
 }
 
 /* Arrow styling */
 .wave-entry[data-wave-style="cinema"] .wave-arrow {
-    color: #505050;
+    color: #a0aec0;
     z-index: 3;
     position: relative;
 }
