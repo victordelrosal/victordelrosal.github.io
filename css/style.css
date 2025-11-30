@@ -1111,10 +1111,9 @@ section {
 
 .waves-search-row {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
-    max-width: 600px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .waves-search-box {
@@ -1139,25 +1138,25 @@ section {
 .waves-filter-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 20px;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
     background: var(--bg-light-card);
     border: none;
-    border-radius: 24px;
-    font-size: 15px;
-    font-weight: 500;
+    border-radius: 50%;
     color: var(--text-light-secondary);
     cursor: pointer;
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.08),
         0 4px 24px rgba(0, 0, 0, 0.06);
     transition: all 0.2s ease;
-    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .waves-filter-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
 }
 
 .waves-filter-btn:hover {
@@ -1240,7 +1239,7 @@ section {
 
 .waves-search-input {
     width: 100%;
-    padding: 16px 48px;
+    padding: 20px 48px;
     font-size: 16px;
     font-family: inherit;
     border: none;
@@ -3042,21 +3041,21 @@ footer {
     }
 
     .waves-filter-btn {
-        padding: 12px 14px;
-        font-size: 14px;
-    }
-
-    .waves-filter-btn span {
-        display: none;
+        width: 48px;
+        height: 48px;
     }
 
     .waves-filter-btn svg {
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
     }
 
     .waves-filter-dropdown {
         min-width: 140px;
+    }
+
+    .waves-search-input {
+        padding: 16px 44px;
     }
 
     .waves-section {
