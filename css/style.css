@@ -2196,6 +2196,20 @@ section {
     background: linear-gradient(135deg, rgba(0,0,0,0.03), rgba(0,0,0,0.05));
 }
 
+/* Article placeholder when no image */
+.wave-thumb--article {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+}
+
+.wave-thumb--article .article-icon {
+    font-size: 40px;
+    opacity: 0.8;
+}
+
 .wave-entry--longform .wave-content {
     min-width: 0;
 }

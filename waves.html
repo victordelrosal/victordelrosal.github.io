@@ -225,6 +225,11 @@
                 return /#brainwave\b/i.test(combined);
             },
 
+            isArticle(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#article\b/i.test(combined);
+            },
+
             isFeaturedActive(publishedAt) {
                 // Featured posts expire after 30 days
                 const FEATURED_DURATION_DAYS = 30;
@@ -259,6 +264,11 @@
                 // Brainwave check - #brainwave hashtag for random thoughts/ideas
                 if (this.isBrainwave(content, plainText, post.title)) {
                     return { type: 'brainwave', label: 'Brain Wave' };
+                }
+
+                // Article check - #article hashtag for formal articles
+                if (this.isArticle(content, plainText, post.title)) {
+                    return { type: 'article', label: 'Article' };
                 }
 
                 if (hasImage && charCount < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS) {
@@ -308,7 +318,7 @@
 
             // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video, Brainwave for ideas
             oceanTypes: ['photo', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
-            lightTypes: ['reading', 'link', 'todo'],
+            lightTypes: ['reading', 'link', 'todo', 'article'],
             goldTypes: ['featured'],
             cinemaTypes: ['video'],
             brainwaveTypes: ['brainwave'],
@@ -555,6 +565,28 @@
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
+                    </a>
+                `;
+            },
+
+            article(post, { label }, viewCount, waveCount, commentCount) {
+                const imageUrl = WaveAnalyzer.getFirstImage(post.content);
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 200);
+                const thumbHtml = imageUrl
+                    ? `<img src="${imageUrl}" alt="" class="wave-thumb">`
+                    : `<div class="wave-thumb wave-thumb--article"><span class="article-icon">📄</span></div>`;
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--article">
+                        <span class="wave-type">${label}</span>
+                        ${thumbHtml}
+                        <div class="wave-content">
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                        <span class="wave-arrow">${this.chevronRightSvg}</span>
                     </a>
                 `;
             },
