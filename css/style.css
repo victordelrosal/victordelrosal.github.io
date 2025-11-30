@@ -1393,22 +1393,22 @@ section {
         0 16px 48px rgba(0, 50, 100, 0.25);
 }
 
-/* Ocean type badge - like a porthole */
+/* Ocean type badge - deep blue wave style */
 .wave-entry[data-wave-style="ocean"] .wave-type {
-    background: linear-gradient(135deg, #b87333 0%, #d4a574 50%, #8b5a2b 100%);
+    background: linear-gradient(135deg, #1a4a6e 0%, #2d6a94 50%, #1a4a6e 100%);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        0 2px 8px rgba(139, 90, 43, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 2px 8px rgba(26, 74, 110, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     font-weight: 700;
     position: relative;
     z-index: 10;
 }
 
 .wave-entry[data-wave-style="ocean"]:hover .wave-arrow {
-    color: #b87333;
+    color: #2d6a94;
 }
 
 /* Bubble decoration for ocean cards */

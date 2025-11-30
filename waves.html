@@ -793,11 +793,12 @@
             try {
                 console.log('[waves] Starting initialization...');
 
-                // Initialize Supabase with auth - ensures consistent state after visiting post pages
+                // Initialize Supabase - auth is optional for waves display
                 if (window.SupabaseClient) {
                     window.SupabaseClient.initSupabase();
-                    await window.SupabaseClient.initAuth();
-                    console.log('[waves] Supabase auth initialized');
+                    // Don't await initAuth - let it run in background, don't block page load
+                    window.SupabaseClient.initAuth().catch(e => console.warn('[waves] Auth init failed:', e));
+                    console.log('[waves] Supabase initialized (auth loading in background)');
                 }
 
                 console.log('[waves] Fetching posts...');
