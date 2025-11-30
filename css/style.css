@@ -1821,7 +1821,7 @@ section {
 
 /* ========================================
    BRAINWAVE CARDS - Wave-Shaped!
-   The card itself is shaped like a wave
+   The card itself is shaped like a smooth wave
    ======================================== */
 .wave-entry[data-wave-style="brainwave"] {
     background: linear-gradient(135deg,
@@ -1837,32 +1837,54 @@ section {
     box-shadow:
         0 4px 20px rgba(150, 100, 200, 0.2),
         0 8px 32px rgba(0, 0, 0, 0.1);
-    /* Wave shape using clip-path - curves like ocean waves */
+    /* Smooth ondulating wave - gentle curves, no sharp edges */
     clip-path: polygon(
-        0% 20%,
+        /* Top wave - smooth sine-like curve */
+        0% 12%,
         5% 10%,
-        15% 15%,
+        10% 7%,
+        15% 5%,
+        20% 4%,
         25% 5%,
-        35% 12%,
-        50% 0%,
-        65% 12%,
-        75% 5%,
-        85% 15%,
-        95% 10%,
-        100% 20%,
-        100% 80%,
-        95% 90%,
-        85% 85%,
-        75% 95%,
-        65% 88%,
-        50% 100%,
-        35% 88%,
+        30% 7%,
+        35% 10%,
+        40% 12%,
+        45% 10%,
+        50% 7%,
+        55% 5%,
+        60% 4%,
+        65% 5%,
+        70% 7%,
+        75% 10%,
+        80% 12%,
+        85% 10%,
+        90% 7%,
+        95% 5%,
+        100% 6%,
+        /* Bottom wave - smooth sine-like curve */
+        100% 94%,
+        95% 95%,
+        90% 93%,
+        85% 90%,
+        80% 88%,
+        75% 90%,
+        70% 93%,
+        65% 95%,
+        60% 96%,
+        55% 95%,
+        50% 93%,
+        45% 90%,
+        40% 88%,
+        35% 90%,
+        30% 93%,
         25% 95%,
-        15% 85%,
+        20% 96%,
+        15% 95%,
+        10% 93%,
         5% 90%,
-        0% 80%
+        0% 88%
     );
-    padding: 35px 28px;
+    padding: 30px 28px;
     transition: clip-path 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
