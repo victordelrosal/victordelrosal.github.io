@@ -252,7 +252,7 @@
                 }
 
                 if (hasImage && charCount < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS) {
-                    return { type: 'photo', label: 'Photo' };
+                    return { type: 'photo', label: 'Image' };
                 }
 
                 if (this.hasTodoPattern(content, post.title)) {
@@ -372,7 +372,11 @@
 
                     return `
                         <div class="wave-entry wave-entry--photo wave-entry--photo-gallery" data-slug="${post.slug}">
-                            <span class="wave-type">${label}</span>
+                            <div class="photo-frame-corner photo-frame-corner--tl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--tr"></div>
+                            <div class="photo-frame-corner photo-frame-corner--bl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--br"></div>
+                            <span class="wave-type"><span class="type-icon">🖼️</span> ${label}</span>
                             <div class="wave-image-wrapper wave-gallery">
                                 <div class="wave-gallery-track">
                                     ${slidesHtml}
@@ -400,7 +404,11 @@
                     const imageUrl = images[0];
                     return `
                         <a href="/${post.slug}" class="wave-entry wave-entry--photo">
-                            <span class="wave-type">${label}</span>
+                            <div class="photo-frame-corner photo-frame-corner--tl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--tr"></div>
+                            <div class="photo-frame-corner photo-frame-corner--bl"></div>
+                            <div class="photo-frame-corner photo-frame-corner--br"></div>
+                            <span class="wave-type"><span class="type-icon">🖼️</span> ${label}</span>
                             <div class="wave-image-wrapper">
                                 <img src="${imageUrl}" alt="" class="wave-image">
                             </div>
