@@ -220,6 +220,11 @@
                 return /#video\b/i.test(combined) || /\[video\]/i.test(combined);
             },
 
+            isBrainwave(html, text, title) {
+                const combined = (title + ' ' + text);
+                return /#brainwave\b/i.test(combined);
+            },
+
             isFeaturedActive(publishedAt) {
                 // Featured posts expire after 30 days
                 const FEATURED_DURATION_DAYS = 30;
@@ -249,6 +254,11 @@
                 // Video check - either #video hashtag or embedded video content
                 if (this.isVideoTagged(content, plainText, post.title) || hasVideoContent) {
                     return { type: 'video', label: 'Video' };
+                }
+
+                // Brainwave check - #brainwave hashtag for random thoughts/ideas
+                if (this.isBrainwave(content, plainText, post.title)) {
+                    return { type: 'brainwave', label: 'Brain Wave' };
                 }
 
                 if (hasImage && charCount < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS) {
@@ -296,15 +306,17 @@
                 <polyline points="9 18 15 12 9 6"/>
             </svg>`,
 
-            // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video
+            // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video, Brainwave for ideas
             oceanTypes: ['photo', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
             lightTypes: ['reading', 'link', 'todo'],
             goldTypes: ['featured'],
             cinemaTypes: ['video'],
+            brainwaveTypes: ['brainwave'],
 
             getWaveStyle(type) {
                 if (this.goldTypes.includes(type)) return 'gold';
                 if (this.cinemaTypes.includes(type)) return 'cinema';
+                if (this.brainwaveTypes.includes(type)) return 'brainwave';
                 if (this.oceanTypes.includes(type)) return 'ocean';
                 if (this.lightTypes.includes(type)) return 'light';
                 return 'ocean'; // default
@@ -522,6 +534,24 @@
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
                             <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
+                        </div>
+                        ${this.statsBadge(viewCount, waveCount, commentCount)}
+                    </a>
+                `;
+            },
+
+            brainwave(post, { label }, viewCount, waveCount, commentCount) {
+                const content = WaveAnalyzer.stripFirstLine(post.content);
+                const excerpt = window.PostsAPI.createExcerpt(content, 150);
+                // Wave-shaped card for random thoughts and ideas
+                return `
+                    <a href="/${post.slug}" class="wave-entry wave-entry--brainwave">
+                        <div class="brainwave-icon">💡</div>
+                        <span class="wave-type">${label}</span>
+                        <div class="wave-content">
+                            <h2 class="wave-title">${post.title}</h2>
+                            <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}

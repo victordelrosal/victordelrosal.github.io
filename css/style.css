@@ -1814,6 +1814,138 @@ section {
 }
 
 
+/* ========================================
+   BRAINWAVE CARDS - Wave-Shaped!
+   The card itself is shaped like a wave
+   ======================================== */
+.wave-entry[data-wave-style="brainwave"] {
+    background: linear-gradient(135deg,
+        #f0e6ff 0%,
+        #e6d9ff 25%,
+        #dbc9ff 50%,
+        #e6d9ff 75%,
+        #f0e6ff 100%);
+    border: none;
+    position: relative;
+    overflow: visible;
+    color: #4a3660;
+    box-shadow:
+        0 4px 20px rgba(150, 100, 200, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Wave shape using clip-path - curves like ocean waves */
+    clip-path: polygon(
+        0% 20%,
+        5% 10%,
+        15% 15%,
+        25% 5%,
+        35% 12%,
+        50% 0%,
+        65% 12%,
+        75% 5%,
+        85% 15%,
+        95% 10%,
+        100% 20%,
+        100% 80%,
+        95% 90%,
+        85% 85%,
+        75% 95%,
+        65% 88%,
+        50% 100%,
+        35% 88%,
+        25% 95%,
+        15% 85%,
+        5% 90%,
+        0% 80%
+    );
+    padding: 35px 28px;
+    transition: clip-path 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Brainwave icon - lightbulb emoji in corner */
+.wave-entry[data-wave-style="brainwave"] .brainwave-icon {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    font-size: 28px;
+    opacity: 0.7;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* Subtle sparkle overlay */
+.wave-entry[data-wave-style="brainwave"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 40%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Content positioning */
+.wave-entry[data-wave-style="brainwave"] .wave-content,
+.wave-entry[data-wave-style="brainwave"] .wave-title,
+.wave-entry[data-wave-style="brainwave"] .wave-body,
+.wave-entry[data-wave-style="brainwave"] .wave-meta,
+.wave-entry[data-wave-style="brainwave"] .wave-type {
+    position: relative;
+    z-index: 3;
+}
+
+/* Brainwave text colors */
+.wave-entry[data-wave-style="brainwave"] .wave-title {
+    color: #4a3660;
+    padding-right: 50px;
+}
+
+.wave-entry[data-wave-style="brainwave"] .wave-body {
+    color: #6b5280;
+}
+
+.wave-entry[data-wave-style="brainwave"] .wave-meta {
+    color: #8b7aa0;
+}
+
+/* Brainwave type badge - purple gradient */
+.wave-entry[data-wave-style="brainwave"] .wave-type {
+    background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #7c3aed 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    font-weight: 700;
+}
+
+/* Stats styling */
+.wave-entry[data-wave-style="brainwave"] .wave-stats {
+    color: #8b7aa0;
+}
+
+.wave-entry[data-wave-style="brainwave"] .wave-stat {
+    color: #8b7aa0;
+}
+
+/* Hide default arrow on brainwave cards */
+.wave-entry[data-wave-style="brainwave"] .wave-arrow {
+    display: none;
+}
+
+/* Hover state - wave intensifies */
+.wave-entry[data-wave-style="brainwave"]:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 8px 30px rgba(150, 100, 200, 0.35),
+        0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.wave-entry[data-wave-style="brainwave"]:hover .brainwave-icon {
+    opacity: 1;
+    color: #7c3aed;
+    transform: scale(1.1);
+}
+
+
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
 
 /* Photo entry */
