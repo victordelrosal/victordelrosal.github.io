@@ -316,10 +316,6 @@
                     return { type: 'photo', label: 'Image' };
                 }
 
-                if (this.hasTodoPattern(content, post.title)) {
-                    return { type: 'todo', label: 'List' };
-                }
-
                 if (this.hasProminentLink(content)) {
                     return { type: 'link', label: 'Link' };
                 }
@@ -359,7 +355,7 @@
 
             // Wave duality: Ocean for creative, Light for technical, Gold for featured, Cinema for video, Brainwave for ideas
             oceanTypes: ['photo', 'thought', 'journal', 'tweet', 'skeet', 'longform'],
-            lightTypes: ['reading', 'link', 'todo', 'article'],
+            lightTypes: ['reading', 'link', 'article'],
             goldTypes: ['featured'],
             cinemaTypes: ['video'],
             brainwaveTypes: ['brainwave'],
