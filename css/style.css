@@ -4067,10 +4067,23 @@ footer {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Hovered thumbnail: bigger and raise 2/3 up */
 .wave-thumb-item:hover .thumb-img {
-    transform: scale(1.3);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transform: scale(1.35) translateY(-20px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
     z-index: 10;
+}
+
+/* Next sibling: raise 1/3 up */
+.wave-thumb-item:hover + .wave-thumb-item .thumb-img {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Previous sibling: raise 1/3 up (using :has selector) */
+.wave-thumb-item:has(+ .wave-thumb-item:hover) .thumb-img {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .wave-thumb-item .thumb-img img {
