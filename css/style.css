@@ -4050,8 +4050,8 @@ footer {
 
 .wave-thumb-item {
     position: relative;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 8px;
     overflow: visible;
     cursor: pointer;
@@ -4059,8 +4059,8 @@ footer {
 }
 
 .wave-thumb-item .thumb-img {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
