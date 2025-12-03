@@ -491,6 +491,12 @@
                                     return img ? img.src : null;
                                 }
 
+                                // Helper to format date
+                                function formatThumbDate(dateStr) {
+                                    const date = new Date(dateStr);
+                                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                                }
+
                                 // Filter to only posts with images, exclude current, take up to 8
                                 const postsWithImages = allPosts
                                     .filter(p => p.slug !== slug && getFirstImage(p.content))
@@ -502,8 +508,16 @@
                                     thumb.className = 'wave-thumb-item';
                                     const imageUrl = getFirstImage(p.content);
                                     thumb.innerHTML = `
-                                        <img src="${imageUrl}" alt="" loading="lazy">
-                                        <span class="thumb-tooltip">${p.title}</span>
+                                        <div class="thumb-img">
+                                            <img src="${imageUrl}" alt="" loading="lazy">
+                                        </div>
+                                        <div class="thumb-preview">
+                                            <div class="thumb-preview-img">
+                                                <img src="${imageUrl}" alt="">
+                                            </div>
+                                            <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
+                                            <div class="thumb-preview-title">${p.title}</div>
+                                        </div>
                                     `;
                                     thumbnailsContainer.appendChild(thumb);
                                 });

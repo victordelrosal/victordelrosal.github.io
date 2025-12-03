@@ -4046,7 +4046,6 @@ footer {
     gap: 10px;
     margin-bottom: 24px;
     flex-wrap: wrap;
-    padding-right: 20px;
 }
 
 .wave-thumb-item {
@@ -4054,94 +4053,115 @@ footer {
     width: 48px;
     height: 48px;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.wave-thumb-item:hover {
-    transform: scale(1.4);
+.wave-thumb-item .thumb-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wave-thumb-item:hover .thumb-img {
+    transform: scale(1.3);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
 
-.wave-thumb-item img {
+.wave-thumb-item .thumb-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.2s ease;
 }
 
-.wave-thumb-item:hover img {
-    transform: scale(1.1);
-}
-
-/* Placeholder for posts without images */
-.wave-thumb-item .thumb-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--blue-5) 0%, var(--blue-7) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-/* Tooltip on hover */
-.wave-thumb-item .thumb-tooltip {
+/* Preview card on hover */
+.wave-thumb-item .thumb-preview {
     position: absolute;
-    bottom: calc(100% + 8px);
+    bottom: calc(100% + 12px);
     left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background: var(--bg-dark);
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 500;
-    white-space: nowrap;
-    max-width: 180px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    transform: translateX(-50%) translateY(10px) scale(0.95);
+    width: 280px;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 20;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
-.wave-thumb-item .thumb-tooltip::after {
+.wave-thumb-item .thumb-preview::after {
     content: '';
     position: absolute;
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: var(--bg-dark);
+    border: 8px solid transparent;
+    border-top-color: white;
 }
 
-.wave-thumb-item:hover .thumb-tooltip {
+.wave-thumb-item:hover .thumb-preview {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.thumb-preview-img {
+    width: 100%;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.thumb-preview-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb-preview-date {
+    font-size: 11px;
+    color: var(--text-dark-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.thumb-preview-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 @media (max-width: 600px) {
     .wave-thumbnails {
         gap: 6px;
         margin-bottom: 20px;
-        padding-right: 10px;
     }
 
     .wave-thumb-item {
         width: 38px;
         height: 38px;
+    }
+
+    .wave-thumb-item .thumb-img {
+        width: 38px;
+        height: 38px;
         border-radius: 6px;
     }
 
-    .wave-thumb-item .thumb-tooltip {
-        font-size: 10px;
-        padding: 4px 8px;
-        max-width: 140px;
+    .wave-thumb-item .thumb-preview {
+        display: none;
     }
 }
