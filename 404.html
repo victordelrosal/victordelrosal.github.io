@@ -78,7 +78,19 @@
                 Back to Waves
             </a>
             <!-- Wave Thumbnails Row -->
-            <div class="wave-thumbnails" id="wave-thumbnails"></div>
+            <div class="wave-thumbnails-wrapper">
+                <button class="thumb-nav thumb-nav--prev" id="thumb-nav-prev" aria-label="Previous thumbnails">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <div class="wave-thumbnails" id="wave-thumbnails"></div>
+                <button class="thumb-nav thumb-nav--next" id="thumb-nav-next" aria-label="Next thumbnails">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
 
             <header class="post-header">
                 <p class="post-meta"><span id="post-date"></span></p>
@@ -521,6 +533,47 @@
                                     `;
                                     thumbnailsContainer.appendChild(thumb);
                                 });
+
+                                // Thumbnail navigation
+                                const thumbPrev = document.getElementById('thumb-nav-prev');
+                                const thumbNext = document.getElementById('thumb-nav-next');
+                                const thumbItems = thumbnailsContainer.querySelectorAll('.wave-thumb-item');
+                                const thumbWidth = 46 + 10; // width + gap
+                                const visibleCount = 6; // Show 6 at a time
+                                let thumbOffset = 0;
+                                const maxOffset = Math.max(0, thumbItems.length - visibleCount);
+
+                                function updateThumbNav() {
+                                    thumbPrev.disabled = thumbOffset <= 0;
+                                    thumbNext.disabled = thumbOffset >= maxOffset;
+
+                                    // Slide the thumbnails
+                                    thumbItems.forEach((item, i) => {
+                                        if (i >= thumbOffset && i < thumbOffset + visibleCount) {
+                                            item.style.display = 'block';
+                                        } else {
+                                            item.style.display = 'none';
+                                        }
+                                    });
+                                }
+
+                                thumbPrev.addEventListener('click', () => {
+                                    if (thumbOffset > 0) {
+                                        thumbOffset--;
+                                        updateThumbNav();
+                                    }
+                                });
+
+                                thumbNext.addEventListener('click', () => {
+                                    if (thumbOffset < maxOffset) {
+                                        thumbOffset++;
+                                        updateThumbNav();
+                                    }
+                                });
+
+                                // Initialize - show last 6 (most recent), offset to end
+                                thumbOffset = maxOffset;
+                                updateThumbNav();
                             } catch (e) {
                                 console.error('Failed to set up wave navigation:', e);
                             }

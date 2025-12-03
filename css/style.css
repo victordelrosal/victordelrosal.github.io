@@ -4040,12 +4040,62 @@ footer {
    30. Wave Thumbnails Row (Other Waves)
    ========================================================================== */
 
+.wave-thumbnails-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
 .wave-thumbnails {
     display: flex;
-    justify-content: flex-end;
     gap: 10px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    scroll-behavior: smooth;
+}
+
+/* Thumbnail navigation chevrons */
+.thumb-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--text-primary);
+    border: none;
+    border-radius: 50%;
+    color: var(--bg-primary);
+    opacity: 0.15;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.thumb-nav svg {
+    width: 14px;
+    height: 14px;
+}
+
+.thumb-nav:hover {
+    opacity: 0.5;
+    transform: scale(1.1);
+}
+
+.thumb-nav:active {
+    transform: scale(0.95);
+}
+
+.thumb-nav:disabled {
+    opacity: 0.08;
+    cursor: default;
+    transform: none;
+}
+
+.thumb-nav:disabled:hover {
+    opacity: 0.08;
+    transform: none;
 }
 
 .wave-thumb-item {
@@ -4208,9 +4258,23 @@ footer {
 }
 
 @media (max-width: 600px) {
-    .wave-thumbnails {
+    .wave-thumbnails-wrapper {
         gap: 6px;
         margin-bottom: 20px;
+    }
+
+    .wave-thumbnails {
+        gap: 6px;
+    }
+
+    .thumb-nav {
+        width: 24px;
+        height: 24px;
+    }
+
+    .thumb-nav svg {
+        width: 12px;
+        height: 12px;
     }
 
     .wave-thumb-item {
