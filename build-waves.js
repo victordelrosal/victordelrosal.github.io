@@ -1,10 +1,87 @@
-<!DOCTYPE html>
+#!/usr/bin/env node
+/**
+ * Build script to generate static HTML files for each wave
+ * This enables proper Open Graph meta tags for social sharing
+ *
+ * Run with: node build-waves.js
+ */
+
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+// Supabase Configuration
+const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
+const SITE_URL = 'https://victordelrosal.com';
+
+/**
+ * Fetch all published posts from Supabase
+ */
+async function fetchPosts() {
+    return new Promise((resolve, reject) => {
+        const url = new URL(`${SUPABASE_URL}/rest/v1/published_posts?select=*&order=published_at.desc`);
+
+        const options = {
+            hostname: url.hostname,
+            path: url.pathname + url.search,
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                try {
+                    resolve(JSON.parse(data));
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.end();
+    });
+}
+
+/**
+ * Extract first image URL from HTML content
+ */
+function extractFirstImage(html) {
+    const imgMatch = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return imgMatch ? imgMatch[1] : null;
+}
+
+/**
+ * Create excerpt from HTML content
+ */
+function createExcerpt(html, maxLength = 160) {
+    // Remove HTML tags
+    const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+}
+
+/**
+ * Generate HTML for a wave page
+ */
+function generateWaveHTML(post) {
+    const imageUrl = extractFirstImage(post.content) || `${SITE_URL}/img/og-image.png`;
+    const excerpt = createExcerpt(post.content);
+    const postUrl = `${SITE_URL}/${post.slug}`;
+
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Remember Minority Report? It turns out you can create your own version. I used Google Gemini and Claude. https://www.youtube.com/watch?v=-DRpM1zK4jM Try it here...">
-    <title>Remember Minority Report? | Victor del Rosal</title>
+    <meta name="description" content="${excerpt.replace(/"/g, '&quot;')}">
+    <title>${post.title} | Victor del Rosal</title>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -14,19 +91,19 @@
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Victor del Rosal">
-    <meta property="og:url" content="https://victordelrosal.com/remember-minority-report">
-    <meta property="og:title" content="Remember Minority Report? | Victor del Rosal">
-    <meta property="og:description" content="Remember Minority Report? It turns out you can create your own version. I used Google Gemini and Claude. https://www.youtube.com/watch?v=-DRpM1zK4jM Try it here...">
-    <meta property="og:image" content="https://miro.medium.com/1*6EL4Mcv22wLxck3NMfMcBA.jpeg">
+    <meta property="og:url" content="${postUrl}">
+    <meta property="og:title" content="${post.title} | Victor del Rosal">
+    <meta property="og:description" content="${excerpt.replace(/"/g, '&quot;')}">
+    <meta property="og:image" content="${imageUrl}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://victordelrosal.com/remember-minority-report">
-    <meta name="twitter:title" content="Remember Minority Report? | Victor del Rosal">
-    <meta name="twitter:description" content="Remember Minority Report? It turns out you can create your own version. I used Google Gemini and Claude. https://www.youtube.com/watch?v=-DRpM1zK4jM Try it here...">
-    <meta name="twitter:image" content="https://miro.medium.com/1*6EL4Mcv22wLxck3NMfMcBA.jpeg">
+    <meta name="twitter:url" content="${postUrl}">
+    <meta name="twitter:title" content="${post.title} | Victor del Rosal">
+    <meta name="twitter:description" content="${excerpt.replace(/"/g, '&quot;')}">
+    <meta name="twitter:image" content="${imageUrl}">
 
     <!-- Shared Stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
@@ -188,7 +265,7 @@
     <script>
         // This page exists for SEO/social sharing meta tags
         // The actual content loading happens via wave-loader.js
-        window.waveSlug = 'remember-minority-report';
+        window.waveSlug = '${post.slug}';
     </script>
     <script src="/js/wave-loader.js"></script>
 
@@ -205,4 +282,69 @@
         }
     </script>
 </body>
-</html>
+</html>`;
+}
+
+/**
+ * Main build function
+ */
+async function build() {
+    console.log('🌊 Building wave pages for social sharing...\n');
+
+    try {
+        const posts = await fetchPosts();
+        console.log(`Found ${posts.length} published posts\n`);
+
+        let created = 0;
+        let updated = 0;
+        let skipped = 0;
+
+        for (const post of posts) {
+            const dirPath = path.join(__dirname, post.slug);
+            const filePath = path.join(dirPath, 'index.html');
+
+            // Check if directory exists
+            const dirExists = fs.existsSync(dirPath);
+            const fileExists = fs.existsSync(filePath);
+
+            // Generate HTML
+            const html = generateWaveHTML(post);
+
+            // Create directory if needed
+            if (!dirExists) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+
+            // Write file
+            fs.writeFileSync(filePath, html, 'utf8');
+
+            const imageUrl = extractFirstImage(post.content) || 'default';
+
+            if (!fileExists) {
+                console.log(`✅ Created: /${post.slug}/`);
+                console.log(`   og:image: ${imageUrl.substring(0, 60)}...`);
+                created++;
+            } else {
+                console.log(`🔄 Updated: /${post.slug}/`);
+                updated++;
+            }
+        }
+
+        console.log(`\n========================================`);
+        console.log(`✅ Created: ${created} new pages`);
+        console.log(`🔄 Updated: ${updated} existing pages`);
+        console.log(`📊 Total: ${posts.length} wave pages`);
+        console.log(`========================================\n`);
+
+        console.log('📝 Next steps:');
+        console.log('   1. git add . && git commit -m "Regenerate wave pages"');
+        console.log('   2. git push');
+        console.log('\n💡 Run this script whenever you publish a new wave!\n');
+
+    } catch (error) {
+        console.error('❌ Build failed:', error);
+        process.exit(1);
+    }
+}
+
+build();
