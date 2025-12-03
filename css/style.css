@@ -4082,9 +4082,9 @@ footer {
 /* Preview card on hover */
 .wave-thumb-item .thumb-preview {
     position: absolute;
-    bottom: calc(100% + 12px);
+    top: calc(100% + 12px);
     left: 50%;
-    transform: translateX(-50%) translateY(10px) scale(0.95);
+    transform: translateX(-50%) translateY(-10px) scale(0.95);
     width: 280px;
     background: white;
     border-radius: 16px;
@@ -4099,11 +4099,11 @@ footer {
 .wave-thumb-item .thumb-preview::after {
     content: '';
     position: absolute;
-    top: 100%;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
     border: 8px solid transparent;
-    border-top-color: white;
+    border-bottom-color: white;
 }
 
 .wave-thumb-item:hover .thumb-preview {
