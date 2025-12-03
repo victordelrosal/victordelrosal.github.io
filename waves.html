@@ -248,6 +248,27 @@
                 return /#article\b/i.test(combined);
             },
 
+            // Extract hashtag from content to use as display name
+            // Looks for hashtags (usually at end of content), excluding system tags
+            extractHashtag(html) {
+                const text = this.getPlainText(html);
+                // System tags that should NOT be used as display names
+                const systemTags = ['featured', 'read', 'video', 'brainwave', 'article'];
+                // Match hashtags - looking for #word pattern
+                const hashtagMatches = text.match(/#[a-zA-Z0-9_.\-!?]+/g);
+                if (hashtagMatches) {
+                    // Find first non-system hashtag
+                    for (const tag of hashtagMatches) {
+                        const tagName = tag.slice(1).toLowerCase().replace(/[.\-!?]+$/, '');
+                        if (!systemTags.includes(tagName)) {
+                            // Return the hashtag text without the # symbol
+                            return tag.slice(1);
+                        }
+                    }
+                }
+                return null;
+            },
+
             isFeaturedActive(publishedAt) {
                 // Featured posts expire after 30 days
                 const FEATURED_DURATION_DAYS = 30;
@@ -346,6 +367,12 @@
                 return 'ocean'; // default
             },
 
+            // Get display title - use hashtag from content if available, otherwise post.title
+            getDisplayTitle(post) {
+                const hashtag = WaveAnalyzer.extractHashtag(post.content);
+                return hashtag || post.title;
+            },
+
             render(post, classification, viewCount = 0, waveCount = 0, commentCount = 0) {
                 const renderer = this[classification.type] || this.longform;
                 const html = renderer.call(this, post, classification, viewCount, waveCount, commentCount);
@@ -366,7 +393,7 @@
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--tweet">
                         <span class="wave-type">${label}</span>
-                        <h2 class="wave-title">${post.title}</h2>
+                        <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
@@ -380,7 +407,7 @@
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--skeet">
                         <span class="wave-type">${label}</span>
-                        <h2 class="wave-title">${post.title}</h2>
+                        <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                         <p class="wave-body">${excerpt}</p>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
@@ -428,7 +455,7 @@
                                 </div>
                             </div>
                             <a href="/${post.slug}" class="wave-content">
-                                <h2 class="wave-title">${post.title}</h2>
+                                <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                                 <p class="wave-body">${excerpt}</p>
                                 <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </a>
@@ -449,7 +476,7 @@
                                 <img src="${imageUrl}" alt="" class="wave-image">
                             </div>
                             <div class="wave-content">
-                                <h2 class="wave-title">${post.title}</h2>
+                                <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                                 <p class="wave-body">${excerpt}</p>
                                 <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                             </div>
@@ -473,7 +500,7 @@
                         ${thumbHtml}
                         <div class="wave-content">
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
@@ -486,7 +513,7 @@
                 return `
                     <a href="/${post.slug}" class="wave-entry wave-entry--thought">
                         <span class="wave-type">${label}</span>
-                        <h2 class="wave-title">${post.title}</h2>
+                        <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                         <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
                         ${this.arrowSvg}
@@ -501,7 +528,7 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--journal">
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
@@ -518,7 +545,7 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--todo">
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
@@ -535,7 +562,7 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--link">
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
@@ -557,7 +584,7 @@
                         </div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
@@ -582,7 +609,7 @@
                         <div class="brainwave-icon">🌊</div>
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
@@ -610,7 +637,7 @@
                         ${thumbHtml}
                         <div class="wave-content">
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                         </div>
                         ${this.statsBadge(viewCount, waveCount, commentCount)}
@@ -642,7 +669,7 @@
                     <a href="/${post.slug}" class="wave-entry wave-entry--reading">
                         <span class="wave-type">${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">
                                 ${window.PostsAPI.formatDate(post.published_at)}
@@ -674,7 +701,7 @@
                         </div>
                         <span class="wave-type">⭐ ${label}</span>
                         <div class="wave-content">
-                            <h2 class="wave-title">${post.title}</h2>
+                            <h2 class="wave-title">${this.getDisplayTitle(post)}</h2>
                             <p class="wave-body">${excerpt}</p>
                             <p class="wave-meta">${window.PostsAPI.formatDate(post.published_at)}</p>
                         </div>
