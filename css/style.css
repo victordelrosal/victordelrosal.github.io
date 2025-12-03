@@ -4042,16 +4042,17 @@ footer {
 
 .wave-thumbnails {
     display: flex;
-    justify-content: center;
-    gap: 8px;
+    justify-content: flex-end;
+    gap: 10px;
     margin-bottom: 24px;
     flex-wrap: wrap;
+    padding-right: 20px;
 }
 
 .wave-thumb-item {
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
@@ -4129,11 +4130,12 @@ footer {
     .wave-thumbnails {
         gap: 6px;
         margin-bottom: 20px;
+        padding-right: 10px;
     }
 
     .wave-thumb-item {
-        width: 32px;
-        height: 32px;
+        width: 38px;
+        height: 38px;
         border-radius: 6px;
     }
 

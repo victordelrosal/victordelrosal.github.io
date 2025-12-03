@@ -480,9 +480,8 @@
                                     nextNav.style.display = 'flex';
                                 }
 
-                                // Populate wave thumbnails (8 other waves)
+                                // Populate wave thumbnails (only waves with images)
                                 const thumbnailsContainer = document.getElementById('wave-thumbnails');
-                                const otherPosts = allPosts.filter(p => p.slug !== slug).slice(0, 8);
 
                                 // Helper to extract first image from content
                                 function getFirstImage(html) {
@@ -492,34 +491,20 @@
                                     return img ? img.src : null;
                                 }
 
-                                // Helper to get wave emoji based on content type
-                                function getWaveEmoji(post) {
-                                    const content = post.content.toLowerCase();
-                                    if (content.includes('#video') || content.includes('youtube.com') || content.includes('youtu.be')) return '🎬';
-                                    if (content.includes('#brainwave')) return '🧠';
-                                    if (content.includes('#article')) return '📄';
-                                    if (content.includes('#read')) return '📖';
-                                    return '🌊';
-                                }
+                                // Filter to only posts with images, exclude current, take up to 8
+                                const postsWithImages = allPosts
+                                    .filter(p => p.slug !== slug && getFirstImage(p.content))
+                                    .slice(0, 8);
 
-                                otherPosts.forEach(p => {
+                                postsWithImages.forEach(p => {
                                     const thumb = document.createElement('a');
                                     thumb.href = '/' + p.slug;
                                     thumb.className = 'wave-thumb-item';
-
                                     const imageUrl = getFirstImage(p.content);
-                                    if (imageUrl) {
-                                        thumb.innerHTML = `
-                                            <img src="${imageUrl}" alt="" loading="lazy">
-                                            <span class="thumb-tooltip">${p.title}</span>
-                                        `;
-                                    } else {
-                                        thumb.innerHTML = `
-                                            <div class="thumb-placeholder">${getWaveEmoji(p)}</div>
-                                            <span class="thumb-tooltip">${p.title}</span>
-                                        `;
-                                    }
-
+                                    thumb.innerHTML = `
+                                        <img src="${imageUrl}" alt="" loading="lazy">
+                                        <span class="thumb-tooltip">${p.title}</span>
+                                    `;
                                     thumbnailsContainer.appendChild(thumb);
                                 });
                             } catch (e) {
