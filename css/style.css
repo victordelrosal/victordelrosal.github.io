@@ -4046,25 +4046,13 @@ footer {
     justify-content: flex-end;
     gap: 12px;
     margin-bottom: 24px;
-    padding-top: 16px; /* Room for spring animation */
 }
 
 .wave-thumbnails {
     display: flex;
     gap: 10px;
     flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    padding-top: 16px;
-    margin-top: -16px;
-    scroll-behavior: smooth;
-    /* Hide scrollbar but keep functionality */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-}
-
-.wave-thumbnails::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Thumbnail navigation chevrons */

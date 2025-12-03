@@ -534,37 +534,34 @@
                                     thumbnailsContainer.appendChild(thumb);
                                 });
 
-                                // Thumbnail carousel - smooth horizontal scroll
+                                // Thumbnail carousel - transform-based sliding
                                 const thumbPrev = document.getElementById('thumb-nav-prev');
                                 const thumbNext = document.getElementById('thumb-nav-next');
                                 const thumbWidth = 46 + 10; // thumbnail width + gap
-                                const scrollAmount = thumbWidth * 3; // Scroll 3 thumbnails at a time
+                                const slideAmount = thumbWidth * 3; // Slide 3 thumbnails at a time
+                                let currentOffset = 0;
+                                const totalWidth = postsWithImages.length * thumbWidth - 10; // Total content width
+                                const maxOffset = Math.max(0, totalWidth - 400); // Approximate visible area
 
                                 function updateCarouselButtons() {
-                                    const maxScroll = thumbnailsContainer.scrollWidth - thumbnailsContainer.clientWidth;
-                                    thumbPrev.disabled = thumbnailsContainer.scrollLeft <= 0;
-                                    thumbNext.disabled = thumbnailsContainer.scrollLeft >= maxScroll - 1;
+                                    thumbPrev.disabled = currentOffset <= 0;
+                                    thumbNext.disabled = currentOffset >= maxOffset;
                                 }
 
                                 thumbPrev.addEventListener('click', () => {
-                                    thumbnailsContainer.scrollBy({
-                                        left: -scrollAmount,
-                                        behavior: 'smooth'
-                                    });
-                                    setTimeout(updateCarouselButtons, 350);
+                                    currentOffset = Math.max(0, currentOffset - slideAmount);
+                                    thumbnailsContainer.style.transform = `translateX(-${currentOffset}px)`;
+                                    updateCarouselButtons();
                                 });
 
                                 thumbNext.addEventListener('click', () => {
-                                    thumbnailsContainer.scrollBy({
-                                        left: scrollAmount,
-                                        behavior: 'smooth'
-                                    });
-                                    setTimeout(updateCarouselButtons, 350);
+                                    currentOffset = Math.min(maxOffset, currentOffset + slideAmount);
+                                    thumbnailsContainer.style.transform = `translateX(-${currentOffset}px)`;
+                                    updateCarouselButtons();
                                 });
 
-                                // Initialize button states
+                                // Initialize
                                 updateCarouselButtons();
-                                thumbnailsContainer.addEventListener('scroll', updateCarouselButtons);
                             } catch (e) {
                                 console.error('Failed to set up wave navigation:', e);
                             }
