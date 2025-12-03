@@ -4070,89 +4070,70 @@ footer {
 }
 
 /*
- * Realistic Damped Harmonic Spring Physics
- * =========================================
- * Models: x(t) = A * e^(-ζωt) * cos(ωd*t + φ)
+ * Subtle Damped Spring Physics
+ * ============================
+ * A gentle, dignified bounce with quick settle
  *
- * Parameters used:
- * - Damping ratio (ζ): 0.25 (underdamped - allows oscillation)
- * - Decay per cycle: ~65% amplitude retention
- * - Natural period: ~180ms
- * - Total settle time: ~700ms (4-5 oscillations)
+ * Parameters:
+ * - Damping ratio (ζ): 0.5 (moderately damped)
+ * - Decay per cycle: ~40% amplitude retention
+ * - Total settle time: ~400ms (2 oscillations)
  */
 @keyframes thumb-spring {
-    /* t=0: Rest state */
+    /* Rest state */
     0% {
         transform: scale(1) translateY(0);
     }
-    /* t=90ms: First peak - maximum displacement */
-    12% {
-        transform: scale(1.48) translateY(-26px);
+    /* First peak - gentle lift */
+    18% {
+        transform: scale(1.18) translateY(-10px);
     }
-    /* t=180ms: First zero-crossing - overshoots equilibrium */
-    24% {
-        transform: scale(1.26) translateY(-14px);
+    /* First undershoot */
+    38% {
+        transform: scale(1.08) translateY(-5px);
     }
-    /* t=270ms: Second peak - 65% of first amplitude */
-    36% {
-        transform: scale(1.44) translateY(-24px);
-    }
-    /* t=360ms: Second zero-crossing */
-    48% {
-        transform: scale(1.30) translateY(-17px);
-    }
-    /* t=450ms: Third peak - 65% of second */
+    /* Second peak - subtle */
     58% {
-        transform: scale(1.40) translateY(-22px);
+        transform: scale(1.14) translateY(-8px);
     }
-    /* t=540ms: Third zero-crossing */
-    70% {
-        transform: scale(1.33) translateY(-19px);
-    }
-    /* t=630ms: Fourth peak - nearly settled */
-    82% {
-        transform: scale(1.37) translateY(-20.5px);
-    }
-    /* t=700ms: Final micro-settle */
-    92% {
-        transform: scale(1.34) translateY(-19.5px);
+    /* Settling */
+    78% {
+        transform: scale(1.11) translateY(-7px);
     }
     /* Equilibrium */
     100% {
-        transform: scale(1.35) translateY(-20px);
+        transform: scale(1.12) translateY(-7px);
     }
 }
 
-/* Neighbor spring - coupled oscillator with phase lag */
+/* Neighbor spring - gentle sympathetic motion */
 @keyframes thumb-spring-neighbor {
     0% { transform: scale(1) translateY(0); }
-    20% { transform: scale(1.09) translateY(-14px); }
-    40% { transform: scale(1.02) translateY(-9px); }
-    55% { transform: scale(1.07) translateY(-13px); }
-    70% { transform: scale(1.04) translateY(-11px); }
-    85% { transform: scale(1.06) translateY(-12.5px); }
-    100% { transform: scale(1.05) translateY(-12px); }
+    25% { transform: scale(1.05) translateY(-5px); }
+    50% { transform: scale(1.02) translateY(-3px); }
+    75% { transform: scale(1.04) translateY(-4.5px); }
+    100% { transform: scale(1.03) translateY(-4px); }
 }
 
 /* Hovered thumbnail: damped spring animation */
 .wave-thumb-item:hover .thumb-img {
-    animation: thumb-spring 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+    animation: thumb-spring 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
 
 /* Next sibling: sympathetic oscillation with slight delay */
 .wave-thumb-item:hover + .wave-thumb-item .thumb-img {
-    animation: thumb-spring-neighbor 0.6s cubic-bezier(0.33, 1.2, 0.68, 1) forwards;
-    animation-delay: 0.025s;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    animation: thumb-spring-neighbor 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+    animation-delay: 0.02s;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Previous sibling: sympathetic oscillation */
 .wave-thumb-item:has(+ .wave-thumb-item:hover) .thumb-img {
-    animation: thumb-spring-neighbor 0.6s cubic-bezier(0.33, 1.2, 0.68, 1) forwards;
-    animation-delay: 0.025s;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    animation: thumb-spring-neighbor 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+    animation-delay: 0.02s;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
 
 .wave-thumb-item .thumb-img img {
