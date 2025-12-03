@@ -534,30 +534,37 @@
                                     thumbnailsContainer.appendChild(thumb);
                                 });
 
-                                // Thumbnail navigation - navigate to prev/next wave
+                                // Thumbnail carousel - smooth horizontal scroll
                                 const thumbPrev = document.getElementById('thumb-nav-prev');
                                 const thumbNext = document.getElementById('thumb-nav-next');
+                                const thumbWidth = 46 + 10; // thumbnail width + gap
+                                const scrollAmount = thumbWidth * 3; // Scroll 3 thumbnails at a time
 
-                                // Find current post index in the full list
-                                const currentIdx = allPosts.findIndex(p => p.slug === slug);
+                                function updateCarouselButtons() {
+                                    const maxScroll = thumbnailsContainer.scrollWidth - thumbnailsContainer.clientWidth;
+                                    thumbPrev.disabled = thumbnailsContainer.scrollLeft <= 0;
+                                    thumbNext.disabled = thumbnailsContainer.scrollLeft >= maxScroll - 1;
+                                }
 
                                 thumbPrev.addEventListener('click', () => {
-                                    // Go to previous (older) post
-                                    if (currentIdx < allPosts.length - 1) {
-                                        window.location.href = '/' + allPosts[currentIdx + 1].slug;
-                                    }
+                                    thumbnailsContainer.scrollBy({
+                                        left: -scrollAmount,
+                                        behavior: 'smooth'
+                                    });
+                                    setTimeout(updateCarouselButtons, 350);
                                 });
 
                                 thumbNext.addEventListener('click', () => {
-                                    // Go to next (newer) post
-                                    if (currentIdx > 0) {
-                                        window.location.href = '/' + allPosts[currentIdx - 1].slug;
-                                    }
+                                    thumbnailsContainer.scrollBy({
+                                        left: scrollAmount,
+                                        behavior: 'smooth'
+                                    });
+                                    setTimeout(updateCarouselButtons, 350);
                                 });
 
-                                // Disable if at boundaries
-                                thumbPrev.disabled = currentIdx >= allPosts.length - 1;
-                                thumbNext.disabled = currentIdx <= 0;
+                                // Initialize button states
+                                updateCarouselButtons();
+                                thumbnailsContainer.addEventListener('scroll', updateCarouselButtons);
                             } catch (e) {
                                 console.error('Failed to set up wave navigation:', e);
                             }

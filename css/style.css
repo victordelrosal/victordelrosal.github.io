@@ -4047,14 +4047,24 @@ footer {
     gap: 12px;
     margin-bottom: 24px;
     padding-top: 16px; /* Room for spring animation */
-    overflow: visible;
 }
 
 .wave-thumbnails {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
-    overflow: visible;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-top: 16px;
+    margin-top: -16px;
+    scroll-behavior: smooth;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.wave-thumbnails::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 
 /* Thumbnail navigation chevrons */
