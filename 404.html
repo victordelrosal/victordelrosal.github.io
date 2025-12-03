@@ -40,7 +40,7 @@
     </div>
 
     <!-- Universal Navigation -->
-    <div id="navbar-container" data-active-link="/waves.html"></div>
+    <div id="navbar-container" data-active-link="/waves/"></div>
     <script src="/js/navbar.js"></script>
 
     <main id="main-content" class="wave-watermark" style="padding: 120px 24px 100px; max-width: 720px; margin: 0 auto; min-height: 100vh;">
@@ -71,7 +71,7 @@
 
         <!-- Post Content -->
         <article id="post" class="post">
-            <a href="/waves.html" class="back-link">
+            <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
@@ -191,7 +191,7 @@
         const slug = path.replace(/^\//, '').replace(/\/$/, '');
 
         // Skip if we're on the homepage or waves page
-        if (!slug || slug === 'index.html' || slug === 'waves.html' || slug.includes('.')) {
+        if (!slug || slug === 'index.html' || slug === 'waves' || slug.includes('.')) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('not-found').style.display = 'block';
         } else {

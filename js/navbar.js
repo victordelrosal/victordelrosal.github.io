@@ -9,7 +9,7 @@ const Navbar = {
         { href: '/', label: 'Home', isHome: true },
         { href: '/#about', label: 'About' },
         { href: '/#work', label: 'Work' },
-        { href: '/waves.html', label: 'Waves' },
+        { href: '/waves/', label: 'Waves' },
         { href: '/#contact', label: 'Contact' }
     ],
 
@@ -48,12 +48,12 @@ const Navbar = {
         if (path === '/' || path === '/index.html') {
             return '/';
         }
-        if (path === '/waves.html') {
-            return '/waves.html';
+        if (path === '/waves/' || path === '/waves') {
+            return '/waves/';
         }
         // Wave detail pages should highlight "Waves"
         if (path.length > 1 && !path.includes('.html')) {
-            return '/waves.html';
+            return '/waves/';
         }
         return '/';
     },
