@@ -4064,25 +4064,34 @@ footer {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease-out;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.6), box-shadow 0.3s ease-out;
 }
 
-/* Hovered thumbnail: bigger and raise 2/3 up */
+/* Springy bounce keyframes for thumbnail hover */
+@keyframes thumb-bounce {
+    0% { transform: scale(1) translateY(0); }
+    30% { transform: scale(1.45) translateY(-26px); }
+    50% { transform: scale(1.30) translateY(-18px); }
+    70% { transform: scale(1.38) translateY(-22px); }
+    100% { transform: scale(1.35) translateY(-20px); }
+}
+
+/* Hovered thumbnail: bigger and raise with bounce */
 .wave-thumb-item:hover .thumb-img {
-    transform: scale(1.35) translateY(-20px);
+    animation: thumb-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
     z-index: 10;
 }
 
-/* Next sibling: raise 1/3 up */
+/* Next sibling: raise 1/3 up with spring */
 .wave-thumb-item:hover + .wave-thumb-item .thumb-img {
-    transform: translateY(-10px);
+    transform: translateY(-12px) scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Previous sibling: raise 1/3 up (using :has selector) */
+/* Previous sibling: raise 1/3 up with spring (using :has selector) */
 .wave-thumb-item:has(+ .wave-thumb-item:hover) .thumb-img {
-    transform: translateY(-10px);
+    transform: translateY(-12px) scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
