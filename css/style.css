@@ -4044,16 +4044,17 @@ footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 12px;
     margin-bottom: 24px;
+    padding-top: 16px; /* Room for spring animation */
+    overflow: visible;
 }
 
 .wave-thumbnails {
     display: flex;
     gap: 10px;
-    overflow: hidden;
-    flex-wrap: nowrap;
-    scroll-behavior: smooth;
+    flex-wrap: wrap;
+    overflow: visible;
 }
 
 /* Thumbnail navigation chevrons */

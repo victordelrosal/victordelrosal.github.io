@@ -534,46 +534,30 @@
                                     thumbnailsContainer.appendChild(thumb);
                                 });
 
-                                // Thumbnail navigation
+                                // Thumbnail navigation - navigate to prev/next wave
                                 const thumbPrev = document.getElementById('thumb-nav-prev');
                                 const thumbNext = document.getElementById('thumb-nav-next');
-                                const thumbItems = thumbnailsContainer.querySelectorAll('.wave-thumb-item');
-                                const thumbWidth = 46 + 10; // width + gap
-                                const visibleCount = 6; // Show 6 at a time
-                                let thumbOffset = 0;
-                                const maxOffset = Math.max(0, thumbItems.length - visibleCount);
 
-                                function updateThumbNav() {
-                                    thumbPrev.disabled = thumbOffset <= 0;
-                                    thumbNext.disabled = thumbOffset >= maxOffset;
-
-                                    // Slide the thumbnails
-                                    thumbItems.forEach((item, i) => {
-                                        if (i >= thumbOffset && i < thumbOffset + visibleCount) {
-                                            item.style.display = 'block';
-                                        } else {
-                                            item.style.display = 'none';
-                                        }
-                                    });
-                                }
+                                // Find current post index in the full list
+                                const currentIdx = allPosts.findIndex(p => p.slug === slug);
 
                                 thumbPrev.addEventListener('click', () => {
-                                    if (thumbOffset > 0) {
-                                        thumbOffset--;
-                                        updateThumbNav();
+                                    // Go to previous (older) post
+                                    if (currentIdx < allPosts.length - 1) {
+                                        window.location.href = '/' + allPosts[currentIdx + 1].slug;
                                     }
                                 });
 
                                 thumbNext.addEventListener('click', () => {
-                                    if (thumbOffset < maxOffset) {
-                                        thumbOffset++;
-                                        updateThumbNav();
+                                    // Go to next (newer) post
+                                    if (currentIdx > 0) {
+                                        window.location.href = '/' + allPosts[currentIdx - 1].slug;
                                     }
                                 });
 
-                                // Initialize - show last 6 (most recent), offset to end
-                                thumbOffset = maxOffset;
-                                updateThumbNav();
+                                // Disable if at boundaries
+                                thumbPrev.disabled = currentIdx >= allPosts.length - 1;
+                                thumbNext.disabled = currentIdx <= 0;
                             } catch (e) {
                                 console.error('Failed to set up wave navigation:', e);
                             }
