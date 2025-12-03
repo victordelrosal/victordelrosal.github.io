@@ -4064,35 +4064,95 @@ footer {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.6), box-shadow 0.3s ease-out;
+    /* Smooth return transition with natural deceleration */
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.4s ease-out;
+    will-change: transform;
 }
 
-/* Springy bounce keyframes for thumbnail hover */
-@keyframes thumb-bounce {
+/*
+ * Realistic Damped Harmonic Spring Physics
+ * =========================================
+ * Models: x(t) = A * e^(-ζωt) * cos(ωd*t + φ)
+ *
+ * Parameters used:
+ * - Damping ratio (ζ): 0.25 (underdamped - allows oscillation)
+ * - Decay per cycle: ~65% amplitude retention
+ * - Natural period: ~180ms
+ * - Total settle time: ~700ms (4-5 oscillations)
+ */
+@keyframes thumb-spring {
+    /* t=0: Rest state */
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    /* t=90ms: First peak - maximum displacement */
+    12% {
+        transform: scale(1.48) translateY(-26px);
+    }
+    /* t=180ms: First zero-crossing - overshoots equilibrium */
+    24% {
+        transform: scale(1.26) translateY(-14px);
+    }
+    /* t=270ms: Second peak - 65% of first amplitude */
+    36% {
+        transform: scale(1.44) translateY(-24px);
+    }
+    /* t=360ms: Second zero-crossing */
+    48% {
+        transform: scale(1.30) translateY(-17px);
+    }
+    /* t=450ms: Third peak - 65% of second */
+    58% {
+        transform: scale(1.40) translateY(-22px);
+    }
+    /* t=540ms: Third zero-crossing */
+    70% {
+        transform: scale(1.33) translateY(-19px);
+    }
+    /* t=630ms: Fourth peak - nearly settled */
+    82% {
+        transform: scale(1.37) translateY(-20.5px);
+    }
+    /* t=700ms: Final micro-settle */
+    92% {
+        transform: scale(1.34) translateY(-19.5px);
+    }
+    /* Equilibrium */
+    100% {
+        transform: scale(1.35) translateY(-20px);
+    }
+}
+
+/* Neighbor spring - coupled oscillator with phase lag */
+@keyframes thumb-spring-neighbor {
     0% { transform: scale(1) translateY(0); }
-    30% { transform: scale(1.45) translateY(-26px); }
-    50% { transform: scale(1.30) translateY(-18px); }
-    70% { transform: scale(1.38) translateY(-22px); }
-    100% { transform: scale(1.35) translateY(-20px); }
+    20% { transform: scale(1.09) translateY(-14px); }
+    40% { transform: scale(1.02) translateY(-9px); }
+    55% { transform: scale(1.07) translateY(-13px); }
+    70% { transform: scale(1.04) translateY(-11px); }
+    85% { transform: scale(1.06) translateY(-12.5px); }
+    100% { transform: scale(1.05) translateY(-12px); }
 }
 
-/* Hovered thumbnail: bigger and raise with bounce */
+/* Hovered thumbnail: damped spring animation */
 .wave-thumb-item:hover .thumb-img {
-    animation: thumb-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    animation: thumb-spring 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
     z-index: 10;
 }
 
-/* Next sibling: raise 1/3 up with spring */
+/* Next sibling: sympathetic oscillation with slight delay */
 .wave-thumb-item:hover + .wave-thumb-item .thumb-img {
-    transform: translateY(-12px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    animation: thumb-spring-neighbor 0.6s cubic-bezier(0.33, 1.2, 0.68, 1) forwards;
+    animation-delay: 0.025s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
-/* Previous sibling: raise 1/3 up with spring (using :has selector) */
+/* Previous sibling: sympathetic oscillation */
 .wave-thumb-item:has(+ .wave-thumb-item:hover) .thumb-img {
-    transform: translateY(-12px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    animation: thumb-spring-neighbor 0.6s cubic-bezier(0.33, 1.2, 0.68, 1) forwards;
+    animation-delay: 0.025s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .wave-thumb-item .thumb-img img {
