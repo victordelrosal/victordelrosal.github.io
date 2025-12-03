@@ -894,6 +894,26 @@ section {
     50% { background-position: 0% center; }
 }
 
+/* Logo variant for non-titled pages */
+.wave-navbar-logo {
+    margin-bottom: 8px;
+}
+
+.wave-navbar-logo a {
+    display: inline-block;
+}
+
+.wave-navbar-logo img {
+    height: 36px;
+    width: auto;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.wave-navbar-logo img:hover {
+    transform: scale(1.1);
+}
+
 /* Centered navigation */
 .wave-navbar-links {
     display: flex;
