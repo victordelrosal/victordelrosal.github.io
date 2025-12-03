@@ -367,15 +367,23 @@
                 return 'ocean'; // default
             },
 
-            // Get display title - use hashtag from content if available, otherwise post.title
+            // Get display title - always use the post title
             getDisplayTitle(post) {
+                return post.title;
+            },
+
+            // Get display label - use hashtag from content if available, otherwise classification label
+            getDisplayLabel(post, classification) {
                 const hashtag = WaveAnalyzer.extractHashtag(post.content);
-                return hashtag || post.title;
+                return hashtag || classification.label;
             },
 
             render(post, classification, viewCount = 0, waveCount = 0, commentCount = 0) {
                 const renderer = this[classification.type] || this.longform;
-                const html = renderer.call(this, post, classification, viewCount, waveCount, commentCount);
+                // Use hashtag as label if available, otherwise use classification label
+                const displayLabel = this.getDisplayLabel(post, classification);
+                const classificationWithLabel = { ...classification, label: displayLabel };
+                const html = renderer.call(this, post, classificationWithLabel, viewCount, waveCount, commentCount);
                 const waveStyle = this.getWaveStyle(classification.type);
                 // Inject data-wave-style attribute into the first element
                 return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
