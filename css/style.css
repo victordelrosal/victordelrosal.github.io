@@ -125,7 +125,7 @@ nav {
 .logo img {
     height: 28px;
     width: auto;
-    filter: brightness(0) invert(1);
+    border-radius: 50%;
 }
 
 .nav-links {
