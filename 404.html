@@ -489,8 +489,22 @@
                             const stickyWaveCount = document.getElementById('sticky-wave-count');
                             const mainWaveCount = document.getElementById('wave-count');
 
-                            // Sync wave count with main button
-                            stickyWaveCount.textContent = mainWaveCount.textContent;
+                            // Function to sync wave count
+                            function syncWaveCount() {
+                                const count = mainWaveCount.textContent;
+                                if (count && count !== '0') {
+                                    stickyWaveCount.textContent = count;
+                                }
+                            }
+
+                            // Watch for changes to main wave count using MutationObserver
+                            const observer = new MutationObserver(() => {
+                                syncWaveCount();
+                            });
+                            observer.observe(mainWaveCount, { childList: true, characterData: true, subtree: true });
+
+                            // Initial sync (in case it's already loaded)
+                            syncWaveCount();
 
                             // Check if already waved
                             const storageKey = 'wave-reacted-' + slug;
@@ -509,11 +523,11 @@
 
                                 // Sync count after a small delay
                                 setTimeout(() => {
-                                    stickyWaveCount.textContent = mainWaveCount.textContent;
+                                    syncWaveCount();
                                     if (localStorage.getItem(storageKey) === 'true') {
                                         stickyWaveBtn.classList.add('waved');
                                     }
-                                }, 100);
+                                }, 500);
                             });
 
                             // Sticky share buttons
