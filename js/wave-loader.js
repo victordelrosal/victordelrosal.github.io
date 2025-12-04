@@ -40,7 +40,7 @@
                     if (typeof DOMPurify !== 'undefined') {
                         return DOMPurify.sanitize(html, {
                             ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'a', 'img', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre', 'div', 'span', 'figure', 'figcaption', 'iframe'],
-                            ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'allowfullscreen', 'allow', 'loading', 'style', 'srcdoc', 'sandbox'],
+                            ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'allowfullscreen', 'allow', 'loading', 'style', 'srcdoc', 'sandbox', 'data-type', 'data-code'],
                             ALLOW_DATA_ATTR: false
                         });
                     }
@@ -204,12 +204,12 @@
                     const temp = document.createElement('div');
                     temp.innerHTML = html;
 
-                    // Find all code blocks with language-embed class
-                    const embedBlocks = temp.querySelectorAll('pre code.language-embed');
+                    // Find all code-embed divs (from TipTap CodeEmbed extension)
+                    const embedBlocks = temp.querySelectorAll('div[data-type="code-embed"]');
 
-                    embedBlocks.forEach(codeBlock => {
-                        const content = codeBlock.textContent.trim();
-                        const preElement = codeBlock.parentElement;
+                    embedBlocks.forEach(embedDiv => {
+                        const content = (embedDiv.getAttribute('data-code') || embedDiv.textContent || '').trim();
+                        if (!content) return;
 
                         // Detect if this is an external URL or custom code
                         let embedElement;
@@ -219,7 +219,7 @@
                             embedElement = createCodeEmbed(content);
                         }
 
-                        preElement.parentNode.replaceChild(embedElement, preElement);
+                        embedDiv.parentNode.replaceChild(embedElement, embedDiv);
                     });
 
                     return temp.innerHTML;
