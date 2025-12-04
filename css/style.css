@@ -4239,6 +4239,11 @@ footer {
         border-radius: 6px;
     }
 
+    /* Show only 8 thumbnails on mobile (hide 9-12) */
+    .wave-thumb-item:nth-child(n+9) {
+        display: none;
+    }
+
     .wave-thumb-item .thumb-preview {
         display: none;
     }
