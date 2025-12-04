@@ -254,6 +254,9 @@ function generateWaveHTML(post) {
     <!-- Load Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- XSS Protection -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
     <!-- Load Posts API and Custom JS -->
     <script src="/posts.js"></script>
     <script src="/js/supabase-client.js"></script>

@@ -35,6 +35,26 @@
                     return temp.innerHTML.trim();
                 }
 
+                // XSS Protection: Sanitize HTML content before rendering
+                function sanitizeHTML(html) {
+                    if (typeof DOMPurify !== 'undefined') {
+                        return DOMPurify.sanitize(html, {
+                            ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'a', 'img', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre', 'div', 'span', 'figure', 'figcaption', 'iframe'],
+                            ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'allowfullscreen', 'allow', 'loading', 'style'],
+                            ALLOW_DATA_ATTR: false
+                        });
+                    }
+                    console.warn('DOMPurify not loaded - content not sanitized');
+                    return html;
+                }
+
+                // Escape HTML for use in template literals (titles, etc.)
+                function escapeHTML(str) {
+                    const div = document.createElement('div');
+                    div.textContent = str;
+                    return div.innerHTML;
+                }
+
                 function getYouTubeVideoId(url) {
                     const patterns = [
                         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
@@ -113,7 +133,7 @@
 
                 document.getElementById('post-date').textContent = window.PostsAPI.formatDate(post.published_at);
                 document.getElementById('post-title').textContent = post.title;
-                document.getElementById('post-content').innerHTML = linkifyUrls(stripFirstLine(post.content));
+                document.getElementById('post-content').innerHTML = sanitizeHTML(linkifyUrls(stripFirstLine(post.content)));
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('post').classList.add('visible');
 
@@ -302,7 +322,7 @@
                                         <img src="${imageUrl}" alt="">
                                     </div>
                                     <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
-                                    <div class="thumb-preview-title">${p.title}</div>
+                                    <div class="thumb-preview-title">${escapeHTML(p.title)}</div>
                                 </div>
                             `;
                             thumbnailsContainer.appendChild(thumb);
