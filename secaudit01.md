@@ -91,7 +91,7 @@ This audit transitioned the victordelrosal.com codebase from prototype ("vibe-co
 **Fix Applied:**
 - Created `encodeHTMLEntities()` function with full entity encoding
 - Applied to all meta tag content (title, description, og:*, twitter:*)
-- Commit: `[pending]`
+- Commit: `6c7b4eb`
 
 #### 8. waves/index.html XSS (HIGH) - FIXED
 **File:** `waves/index.html`
@@ -102,7 +102,7 @@ This audit transitioned the victordelrosal.com codebase from prototype ("vibe-co
 - Modified `getDisplayTitle()` to escape output
 - Modified `getDisplayLabel()` to escape hashtags
 - Escaped `sourceDomain` in reading cards
-- Commit: `[pending]`
+- Commit: `6c7b4eb`
 
 #### 9. Weak Visitor ID Generation (LOW) - FIXED
 **Files:** `js/wave-loader.js:194-200`, `404.html:396-400`
@@ -110,7 +110,7 @@ This audit transitioned the victordelrosal.com codebase from prototype ("vibe-co
 **Fix Applied:**
 - Now uses `crypto.randomUUID()` when available (cryptographically secure)
 - Falls back to original method for older browsers
-- Commit: `[pending]`
+- Commit: `6c7b4eb`
 
 ---
 
@@ -188,7 +188,7 @@ All identified vulnerabilities have been remediated.
 |--------|-------------|---------------|
 | `d16c6cc` | Add XSS protection with DOMPurify | 20 files |
 | `a8f28ac` | Centralize Supabase credentials and improve CI/CD security | 3 files |
-| `[pending]` | Complete security hardening (meta tags, waves/index.html, visitor ID) | ~25 files |
+| `6c7b4eb` | Complete security hardening (meta tags, waves/index.html, visitor ID) | 11 files |
 
 ---
 
