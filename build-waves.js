@@ -73,6 +73,20 @@ function createExcerpt(html, maxLength = 160) {
 }
 
 /**
+ * Encode HTML entities for safe use in HTML attributes
+ * Prevents XSS and ensures proper rendering in meta tags
+ */
+function encodeHTMLEntities(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+/**
  * Generate HTML for a wave page
  */
 function generateWaveHTML(post) {
@@ -80,13 +94,17 @@ function generateWaveHTML(post) {
     const excerpt = createExcerpt(post.content);
     const postUrl = `${SITE_URL}/${post.slug}`;
 
+    // Encode title and excerpt for safe use in HTML attributes
+    const safeTitle = encodeHTMLEntities(post.title);
+    const safeExcerpt = encodeHTMLEntities(excerpt);
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="${excerpt.replace(/"/g, '&quot;')}">
-    <title>${post.title} | Victor del Rosal</title>
+    <meta name="description" content="${safeExcerpt}">
+    <title>${safeTitle} | Victor del Rosal</title>
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -97,8 +115,8 @@ function generateWaveHTML(post) {
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Victor del Rosal">
     <meta property="og:url" content="${postUrl}">
-    <meta property="og:title" content="${post.title} | Victor del Rosal">
-    <meta property="og:description" content="${excerpt.replace(/"/g, '&quot;')}">
+    <meta property="og:title" content="${safeTitle} | Victor del Rosal">
+    <meta property="og:description" content="${safeExcerpt}">
     <meta property="og:image" content="${imageUrl}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -106,8 +124,8 @@ function generateWaveHTML(post) {
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="${postUrl}">
-    <meta name="twitter:title" content="${post.title} | Victor del Rosal">
-    <meta name="twitter:description" content="${excerpt.replace(/"/g, '&quot;')}">
+    <meta name="twitter:title" content="${safeTitle} | Victor del Rosal">
+    <meta name="twitter:description" content="${safeExcerpt}">
     <meta name="twitter:image" content="${imageUrl}">
 
     <!-- Shared Stylesheet -->

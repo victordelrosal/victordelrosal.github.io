@@ -193,7 +193,10 @@
 
                         let visitorId = localStorage.getItem(visitorKey);
                         if (!visitorId) {
-                            visitorId = 'v_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                            // Use crypto.randomUUID if available (more secure), fallback for older browsers
+                            visitorId = typeof crypto !== 'undefined' && crypto.randomUUID
+                                ? 'v_' + crypto.randomUUID()
+                                : 'v_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
                             localStorage.setItem(visitorKey, visitorId);
                         }
 
