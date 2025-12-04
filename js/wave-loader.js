@@ -40,7 +40,7 @@
                     if (typeof DOMPurify !== 'undefined') {
                         return DOMPurify.sanitize(html, {
                             ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'a', 'img', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre', 'div', 'span', 'figure', 'figcaption', 'iframe'],
-                            ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'allowfullscreen', 'allow', 'loading', 'style'],
+                            ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height', 'allowfullscreen', 'allow', 'loading', 'style', 'srcdoc', 'sandbox'],
                             ALLOW_DATA_ATTR: false
                         });
                     }
@@ -131,9 +131,103 @@
                     return temp.innerHTML;
                 }
 
+                // Check if content is an external embed URL
+                function isExternalEmbedUrl(content) {
+                    const embedPatterns = [
+                        /^https?:\/\/(codepen\.io|jsfiddle\.net|codesandbox\.io|stackblitz\.com|gist\.github\.com)/i,
+                        /^https?:\/\/[^\s]+\/embed/i
+                    ];
+                    return embedPatterns.some(pattern => pattern.test(content.trim()));
+                }
+
+                // Create iframe for external embed URLs (CodePen, JSFiddle, etc.)
+                function createExternalEmbed(url) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'embed-container embed-external';
+                    const iframe = document.createElement('iframe');
+                    iframe.src = url.trim();
+                    iframe.setAttribute('loading', 'lazy');
+                    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+                    iframe.setAttribute('allowfullscreen', '');
+                    wrapper.appendChild(iframe);
+                    return wrapper;
+                }
+
+                // Create sandboxed iframe for custom HTML/JS/CSS code
+                function createCodeEmbed(code) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'embed-container embed-code';
+
+                    // Wrap code in a complete HTML document if not already
+                    let htmlContent = code;
+                    if (!code.toLowerCase().includes('<!doctype') && !code.toLowerCase().includes('<html')) {
+                        htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+    </style>
+</head>
+<body>${code}</body>
+</html>`;
+                    }
+
+                    const iframe = document.createElement('iframe');
+                    iframe.srcdoc = htmlContent;
+                    iframe.setAttribute('loading', 'lazy');
+                    // Sandbox: allow scripts but block access to parent DOM
+                    iframe.setAttribute('sandbox', 'allow-scripts');
+
+                    // Auto-resize iframe to fit content
+                    iframe.onload = function() {
+                        try {
+                            const height = iframe.contentDocument.body.scrollHeight;
+                            iframe.style.height = Math.min(Math.max(height + 32, 200), 800) + 'px';
+                        } catch(e) {
+                            // Fallback height if can't access content
+                            iframe.style.height = '400px';
+                        }
+                    };
+
+                    wrapper.appendChild(iframe);
+                    return wrapper;
+                }
+
+                // Transform embed code blocks into sandboxed iframes
+                function transformEmbedBlocks(html) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+
+                    // Find all code blocks with language-embed class
+                    const embedBlocks = temp.querySelectorAll('pre code.language-embed');
+
+                    embedBlocks.forEach(codeBlock => {
+                        const content = codeBlock.textContent.trim();
+                        const preElement = codeBlock.parentElement;
+
+                        // Detect if this is an external URL or custom code
+                        let embedElement;
+                        if (isExternalEmbedUrl(content)) {
+                            embedElement = createExternalEmbed(content);
+                        } else {
+                            embedElement = createCodeEmbed(content);
+                        }
+
+                        preElement.parentNode.replaceChild(embedElement, preElement);
+                    });
+
+                    return temp.innerHTML;
+                }
+
                 document.getElementById('post-date').textContent = window.PostsAPI.formatDate(post.published_at);
                 document.getElementById('post-title').textContent = post.title;
-                document.getElementById('post-content').innerHTML = sanitizeHTML(linkifyUrls(stripFirstLine(post.content)));
+                document.getElementById('post-content').innerHTML = transformEmbedBlocks(sanitizeHTML(linkifyUrls(stripFirstLine(post.content))));
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('post').classList.add('visible');
 
