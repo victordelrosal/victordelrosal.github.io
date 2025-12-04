@@ -4070,70 +4070,85 @@ footer {
 }
 
 /*
- * Subtle Damped Spring Physics
- * ============================
- * A gentle, dignified bounce with quick settle
+ * Ocean Wave Lift Animation
+ * =========================
+ * Recreating that childhood joy of the ocean gently lifting you
  *
- * Parameters:
- * - Damping ratio (ζ): 0.5 (moderately damped)
- * - Decay per cycle: ~40% amplitude retention
- * - Total settle time: ~400ms (2 oscillations)
+ * The wave propagates outward from the hovered thumbnail,
+ * each one rising and falling like floating on gentle swells.
+ * The motion is organic, smooth, and joyful.
  */
-@keyframes thumb-spring {
-    /* Rest state */
+
+/* The main wave lift - for the hovered thumbnail */
+@keyframes ocean-wave-lift {
     0% {
-        transform: scale(1) translateY(0);
+        transform: translateY(0) scale(1);
     }
-    /* First peak - gentle lift */
-    18% {
-        transform: scale(1.18) translateY(-10px);
+    /* Gentle swell - lifted by the wave */
+    35% {
+        transform: translateY(-14px) scale(1.08);
     }
-    /* First undershoot */
-    38% {
-        transform: scale(1.08) translateY(-5px);
+    /* The wave passes underneath */
+    65% {
+        transform: translateY(-10px) scale(1.05);
     }
-    /* Second peak - subtle */
-    58% {
-        transform: scale(1.14) translateY(-8px);
-    }
-    /* Settling */
-    78% {
-        transform: scale(1.11) translateY(-7px);
-    }
-    /* Equilibrium */
+    /* Gently settling back */
     100% {
-        transform: scale(1.12) translateY(-7px);
+        transform: translateY(-8px) scale(1.04);
     }
 }
 
-/* Neighbor spring - gentle sympathetic motion */
-@keyframes thumb-spring-neighbor {
-    0% { transform: scale(1) translateY(0); }
-    25% { transform: scale(1.05) translateY(-5px); }
-    50% { transform: scale(1.02) translateY(-3px); }
-    75% { transform: scale(1.04) translateY(-4.5px); }
-    100% { transform: scale(1.03) translateY(-4px); }
+/* Wave ripple for neighbors - diminishing amplitude based on distance */
+@keyframes ocean-wave-ripple {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    /* Rise with the wave */
+    40% {
+        transform: translateY(calc(var(--wave-height, -8px))) scale(calc(1 + var(--wave-scale, 0.03)));
+    }
+    /* Gentle bobbing motion */
+    70% {
+        transform: translateY(calc(var(--wave-height, -8px) * 0.6)) scale(calc(1 + var(--wave-scale, 0.03) * 0.7));
+    }
+    /* Settle */
+    100% {
+        transform: translateY(calc(var(--wave-height, -8px) * 0.4)) scale(calc(1 + var(--wave-scale, 0.03) * 0.5));
+    }
 }
 
-/* Hovered thumbnail: damped spring animation */
-.wave-thumb-item:hover .thumb-img {
-    animation: thumb-spring 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+/* Return to rest animation - gentle descent */
+@keyframes ocean-wave-settle {
+    0% {
+        transform: translateY(var(--current-y, 0)) scale(var(--current-scale, 1));
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Wave state classes - applied via JavaScript for the ripple effect */
+.wave-thumb-item .thumb-img {
+    --wave-height: 0px;
+    --wave-scale: 0;
+}
+
+/* The hovered thumbnail - epicenter of the wave */
+.wave-thumb-item.wave-active .thumb-img {
+    animation: ocean-wave-lift 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
 
-/* Next sibling: sympathetic oscillation with slight delay */
-.wave-thumb-item:hover + .wave-thumb-item .thumb-img {
-    animation: thumb-spring-neighbor 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-    animation-delay: 0.02s;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+/* Thumbnails caught in the wave - with CSS custom properties for dynamic amplitude */
+.wave-thumb-item.wave-ripple .thumb-img {
+    animation: ocean-wave-ripple 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: var(--wave-delay, 0s);
 }
 
-/* Previous sibling: sympathetic oscillation */
-.wave-thumb-item:has(+ .wave-thumb-item:hover) .thumb-img {
-    animation: thumb-spring-neighbor 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-    animation-delay: 0.02s;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+/* Settling back to rest */
+.wave-thumb-item.wave-settling .thumb-img {
+    animation: ocean-wave-settle 0.6s cubic-bezier(0.33, 1, 0.68, 1) forwards;
 }
 
 .wave-thumb-item .thumb-img img {

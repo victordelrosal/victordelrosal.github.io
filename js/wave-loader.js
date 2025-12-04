@@ -330,6 +330,89 @@
                             `;
                             thumbnailsContainer.appendChild(thumb);
                         });
+
+                        // ==========================================
+                        // Ocean Wave Effect
+                        // ==========================================
+                        // Recreating that childhood joy of the ocean gently lifting you
+                        // When hovering on a thumbnail, a wave propagates through all 12
+                        (function initOceanWave() {
+                            const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
+                            if (thumbs.length === 0) return;
+
+                            let isWaveActive = false;
+                            let waveTimeout = null;
+
+                            // Wave physics parameters
+                            const WAVE_SPEED = 60; // ms delay between each thumbnail
+                            const MAX_HEIGHT = -12; // pixels - the peak of the wave
+                            const MAX_SCALE = 0.05; // scale boost at peak
+                            const DECAY = 0.7; // how much the wave diminishes per step
+
+                            function clearWaveClasses() {
+                                thumbs.forEach(thumb => {
+                                    thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
+                                });
+                            }
+
+                            function triggerWave(epicenterIndex) {
+                                if (waveTimeout) clearTimeout(waveTimeout);
+                                clearWaveClasses();
+                                isWaveActive = true;
+
+                                thumbs.forEach((thumb, i) => {
+                                    const distance = Math.abs(i - epicenterIndex);
+                                    const thumbImg = thumb.querySelector('.thumb-img');
+
+                                    if (distance === 0) {
+                                        // Epicenter - the one being hovered
+                                        thumb.classList.add('wave-active');
+                                    } else {
+                                        // Ripple outward - calculate wave properties based on distance
+                                        const amplitude = Math.pow(DECAY, distance);
+                                        const waveHeight = MAX_HEIGHT * amplitude;
+                                        const waveScale = MAX_SCALE * amplitude;
+                                        const delay = distance * WAVE_SPEED;
+
+                                        // Set CSS custom properties for the animation
+                                        thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
+                                        thumbImg.style.setProperty('--wave-scale', waveScale);
+                                        thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
+
+                                        thumb.classList.add('wave-ripple');
+                                    }
+                                });
+                            }
+
+                            function settleWave() {
+                                isWaveActive = false;
+                                clearWaveClasses();
+
+                                // Apply settling animation to all
+                                thumbs.forEach(thumb => {
+                                    thumb.classList.add('wave-settling');
+                                });
+
+                                // Clean up after settle animation completes
+                                waveTimeout = setTimeout(() => {
+                                    clearWaveClasses();
+                                }, 600);
+                            }
+
+                            // Attach event listeners
+                            thumbs.forEach((thumb, index) => {
+                                thumb.addEventListener('mouseenter', () => {
+                                    triggerWave(index);
+                                });
+                            });
+
+                            // When mouse leaves the entire thumbnail container, settle the wave
+                            thumbnailsContainer.addEventListener('mouseleave', () => {
+                                if (isWaveActive) {
+                                    settleWave();
+                                }
+                            });
+                        })();
                     } catch (e) {
                         console.error('Failed to set up wave navigation:', e);
                     }

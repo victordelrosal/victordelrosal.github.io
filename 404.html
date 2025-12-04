@@ -547,6 +547,70 @@
                                     `;
                                     thumbnailsContainer.appendChild(thumb);
                                 });
+
+                                // ==========================================
+                                // Ocean Wave Effect
+                                // ==========================================
+                                // Recreating that childhood joy of the ocean gently lifting you
+                                (function initOceanWave() {
+                                    const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
+                                    if (thumbs.length === 0) return;
+
+                                    let isWaveActive = false;
+                                    let waveTimeout = null;
+
+                                    const WAVE_SPEED = 60;
+                                    const MAX_HEIGHT = -12;
+                                    const MAX_SCALE = 0.05;
+                                    const DECAY = 0.7;
+
+                                    function clearWaveClasses() {
+                                        thumbs.forEach(thumb => {
+                                            thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
+                                        });
+                                    }
+
+                                    function triggerWave(epicenterIndex) {
+                                        if (waveTimeout) clearTimeout(waveTimeout);
+                                        clearWaveClasses();
+                                        isWaveActive = true;
+
+                                        thumbs.forEach((thumb, i) => {
+                                            const distance = Math.abs(i - epicenterIndex);
+                                            const thumbImg = thumb.querySelector('.thumb-img');
+
+                                            if (distance === 0) {
+                                                thumb.classList.add('wave-active');
+                                            } else {
+                                                const amplitude = Math.pow(DECAY, distance);
+                                                const waveHeight = MAX_HEIGHT * amplitude;
+                                                const waveScale = MAX_SCALE * amplitude;
+                                                const delay = distance * WAVE_SPEED;
+
+                                                thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
+                                                thumbImg.style.setProperty('--wave-scale', waveScale);
+                                                thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
+
+                                                thumb.classList.add('wave-ripple');
+                                            }
+                                        });
+                                    }
+
+                                    function settleWave() {
+                                        isWaveActive = false;
+                                        clearWaveClasses();
+                                        thumbs.forEach(thumb => thumb.classList.add('wave-settling'));
+                                        waveTimeout = setTimeout(() => clearWaveClasses(), 600);
+                                    }
+
+                                    thumbs.forEach((thumb, index) => {
+                                        thumb.addEventListener('mouseenter', () => triggerWave(index));
+                                    });
+
+                                    thumbnailsContainer.addEventListener('mouseleave', () => {
+                                        if (isWaveActive) settleWave();
+                                    });
+                                })();
                             } catch (e) {
                                 console.error('Failed to set up wave navigation:', e);
                             }
