@@ -4,6 +4,10 @@
  * This enables proper Open Graph meta tags for social sharing
  *
  * Run with: node build-waves.js
+ *
+ * Environment variables (optional, for CI/CD):
+ *   SUPABASE_URL - Supabase project URL
+ *   SUPABASE_ANON_KEY - Supabase anonymous key
  */
 
 const https = require('https');
@@ -11,8 +15,9 @@ const fs = require('fs');
 const path = require('path');
 
 // Supabase Configuration
-const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
+// Uses environment variables if available (for CI/CD), falls back to defaults for local dev
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://azzzrjnqgkqwpqnroost.supabase.co';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
 const SITE_URL = 'https://victordelrosal.com';
 
 /**

@@ -1,23 +1,40 @@
 /**
  * Posts API for victordelrosal.com
  * Fetches published posts from Supabase
+ *
+ * Note: Credentials are sourced from SupabaseClient (js/supabase-client.js)
+ * to maintain a single source of truth.
  */
 
-// Supabase Configuration (same as Flux app)
-const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
+/**
+ * Get Supabase configuration from SupabaseClient
+ * Uses lazy loading since supabase-client.js may load after this file
+ */
+function getSupabaseConfig() {
+  if (window.SupabaseClient) {
+    return {
+      url: window.SupabaseClient.SUPABASE_URL,
+      key: window.SupabaseClient.SUPABASE_ANON_KEY
+    };
+  }
+  console.error('SupabaseClient not loaded - ensure supabase-client.js is included');
+  return null;
+}
 
 /**
  * Fetch all published posts
  * @returns {Promise<Array>} Array of published posts
  */
 async function fetchPosts() {
+  const config = getSupabaseConfig();
+  if (!config) return [];
+
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/published_posts?select=*&order=published_at.desc`,
+      `${config.url}/rest/v1/published_posts?select=*&order=published_at.desc`,
       {
         headers: {
-          'apikey': SUPABASE_ANON_KEY,
+          'apikey': config.key,
           'Content-Type': 'application/json',
         },
       }
@@ -40,12 +57,15 @@ async function fetchPosts() {
  * @returns {Promise<Object|null>} The post object or null if not found
  */
 async function fetchPostBySlug(slug) {
+  const config = getSupabaseConfig();
+  if (!config) return null;
+
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/published_posts?slug=eq.${encodeURIComponent(slug)}&select=*`,
+      `${config.url}/rest/v1/published_posts?slug=eq.${encodeURIComponent(slug)}&select=*`,
       {
         headers: {
-          'apikey': SUPABASE_ANON_KEY,
+          'apikey': config.key,
           'Content-Type': 'application/json',
         },
       }
