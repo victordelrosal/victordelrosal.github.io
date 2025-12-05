@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +29,7 @@
     <!-- Shared Stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body class="bg-light waves-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -48,10 +50,14 @@
                     C 0.42,1 0.33,0.9 0.25,0.94
                     C 0.16,0.98 0.08,0.88 0,0.94
                     Z
-                "/>
+                " />
             </clipPath>
         </defs>
     </svg>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-client.js"></script>
 
     <!-- Universal Navigation -->
     <div id="navbar-container" data-page-title="Waves" data-active-link="/waves/"></div>
@@ -67,12 +73,15 @@
             <div class="waves-search-container">
                 <div class="waves-search-row">
                     <div class="waves-search-box">
-                        <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg class="waves-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="M21 21l-4.35-4.35"></path>
                         </svg>
-                        <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..." autocomplete="off">
-                        <button id="waves-search-clear" class="waves-search-clear" style="display: none;" aria-label="Clear search">
+                        <input type="text" id="waves-search" class="waves-search-input" placeholder="Search waves..."
+                            autocomplete="off">
+                        <button id="waves-search-clear" class="waves-search-clear" style="display: none;"
+                            aria-label="Clear search">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 6L6 18M6 6l12 12"></path>
                             </svg>
@@ -121,15 +130,14 @@
         <p class="footer-copyright">© 2024 Victor del Rosal</p>
     </footer>
 
-    <!-- Load Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
     <!-- XSS Protection -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
     <!-- Load Posts API and Page Views -->
     <script src="/posts.js"></script>
-    <script src="/js/supabase-client.js"></script>
+
     <script src="/js/page-views.js"></script>
     <script src="/js/comments.js"></script>
 
@@ -234,7 +242,7 @@
                     /^[a-z]/,
                 ];
                 return text.length < WAVE_THRESHOLDS.THOUGHT_MAX_CHARS &&
-                       informalPatterns.some(p => p.test(combined));
+                    informalPatterns.some(p => p.test(combined));
             },
 
             isJournalStyle(text, title) {
@@ -245,8 +253,8 @@
                     /stream of|consciousness|rambling/i
                 ];
                 return text.length >= WAVE_THRESHOLDS.JOURNAL_MIN_CHARS &&
-                       text.length < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS &&
-                       journalPatterns.some(p => p.test(combined));
+                    text.length < WAVE_THRESHOLDS.LONGFORM_MIN_CHARS &&
+                    journalPatterns.some(p => p.test(combined));
             },
 
             isReadingContent(html, text, title) {
@@ -694,7 +702,7 @@
                     try {
                         const url = new URL(firstLink.href);
                         sourceDomain = url.hostname.replace('www.', '');
-                    } catch (e) {}
+                    } catch (e) { }
                 }
 
                 const sourceTag = sourceDomain
@@ -1037,7 +1045,7 @@
         }
 
         // Fetch and render waves
-        (async function() {
+        (async function () {
             try {
                 console.log('[waves] Starting initialization...');
 
@@ -1175,4 +1183,5 @@
 
     </script>
 </body>
+
 </html>
