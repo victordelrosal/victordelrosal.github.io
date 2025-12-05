@@ -5,7 +5,7 @@
 
 // Prevent double-loading
 if (!window.SupabaseClient) {
-  (function() {
+  (function () {
     // Supabase Configuration
     const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
@@ -139,6 +139,25 @@ if (!window.SupabaseClient) {
         }
 
         commentUserProfile = data;
+
+        // Check if new user (created within last minute) and welcome not shown
+        if (data && data.created_at) {
+          const createdTime = new Date(data.created_at).getTime();
+          const now = Date.now();
+          const isRecent = (now - createdTime) < 60000; // 1 minute
+          const hasSeenWelcome = localStorage.getItem(`welcome_shown_${data.id}`);
+
+          if (isRecent && !hasSeenWelcome) {
+            // Mark as shown immediately to prevent double showing
+            localStorage.setItem(`welcome_shown_${data.id}`, 'true');
+
+            // Dispatch event for UI to handle
+            window.dispatchEvent(new CustomEvent('supabase:new-user', {
+              detail: { user: data }
+            }));
+          }
+        }
+
         return data;
       } catch (error) {
         console.error('Failed to load user profile:', error);

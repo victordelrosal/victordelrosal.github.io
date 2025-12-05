@@ -140,10 +140,129 @@ const Navbar = {
             window.SupabaseClient.onAuthStateChange((user) => {
                 this.updateAuthUI(user);
             });
+
+            // Listen for new user welcome event
+            window.addEventListener('supabase:new-user', (e) => {
+                this.showWelcomeModal(e.detail.user);
+            });
         } else {
             // Retry if SupabaseClient is not yet loaded
             setTimeout(() => this.initAuth(), 100);
         }
+    },
+
+    /**
+     * Show welcome modal for new users
+     */
+    showWelcomeModal(user) {
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.className = 'welcome-modal-overlay';
+        modal.innerHTML = `
+            <div class="welcome-modal">
+                <div class="welcome-icon">👋</div>
+                <h2>Welcome, ${user.display_name.split(' ')[0]}!</h2>
+                <p>You are now subscribed for updates.</p>
+                <button class="welcome-btn" id="welcome-close-btn">Awesome!</button>
+            </div>
+        `;
+
+        // Add to body
+        document.body.appendChild(modal);
+        document.body.classList.add('modal-open');
+
+        // Add styles dynamically if not present
+        if (!document.getElementById('welcome-modal-styles')) {
+            const style = document.createElement('style');
+            style.id = 'welcome-modal-styles';
+            style.textContent = `
+                .welcome-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.4);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    animation: fadeIn 0.5s ease forwards;
+                }
+                .welcome-modal {
+                    background: white;
+                    padding: 40px;
+                    border-radius: 24px;
+                    text-align: center;
+                    max-width: 400px;
+                    width: 90%;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+                    transform: scale(0.9);
+                    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.1s;
+                }
+                .welcome-icon {
+                    font-size: 48px;
+                    margin-bottom: 16px;
+                    animation: wave 2s infinite;
+                    display: inline-block;
+                    transform-origin: 70% 70%;
+                }
+                .welcome-modal h2 {
+                    margin: 0 0 12px;
+                    color: #1a1a1a;
+                    font-size: 24px;
+                }
+                .welcome-modal p {
+                    margin: 0 0 24px;
+                    color: #666;
+                    font-size: 16px;
+                    line-height: 1.5;
+                }
+                .welcome-btn {
+                    background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
+                    color: #5c4000;
+                    border: none;
+                    padding: 12px 32px;
+                    border-radius: 100px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                    box-shadow: 0 4px 12px rgba(253, 185, 49, 0.3);
+                }
+                .welcome-btn:hover {
+                    transform: scale(1.05);
+                }
+                body.modal-open {
+                    overflow: hidden;
+                }
+                @keyframes fadeIn { to { opacity: 1; } }
+                @keyframes popIn { to { transform: scale(1); } }
+                @keyframes wave {
+                    0% { transform: rotate(0deg); }
+                    10% { transform: rotate(14deg); }
+                    20% { transform: rotate(-8deg); }
+                    30% { transform: rotate(14deg); }
+                    40% { transform: rotate(-4deg); }
+                    50% { transform: rotate(10deg); }
+                    60% { transform: rotate(0deg); }
+                    100% { transform: rotate(0deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Close handler
+        document.getElementById('welcome-close-btn').addEventListener('click', () => {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.remove();
+                document.body.classList.remove('modal-open');
+            }, 300);
+        });
     },
 
     /**
