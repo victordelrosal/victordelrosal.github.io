@@ -135,7 +135,7 @@ const Navbar = {
         if (window.SupabaseClient) {
             // Initialize auth in SupabaseClient
             window.SupabaseClient.initAuth();
-            
+
             // Subscribe to auth state changes
             window.SupabaseClient.onAuthStateChange((user) => {
                 this.updateAuthUI(user);
@@ -153,11 +153,15 @@ const Navbar = {
         const container = document.getElementById('auth-container');
         if (!container) return;
 
+        const navbar = document.getElementById('wave-navbar');
+
         if (user) {
             // User is logged in
+            if (navbar) navbar.classList.add('gold-mode');
+
             const avatarUrl = user.user_metadata.avatar_url || user.user_metadata.picture;
             const name = user.user_metadata.full_name || user.user_metadata.name || user.email;
-            
+
             container.innerHTML = `
                 <div class="user-profile" id="user-profile-btn">
                     <img src="${avatarUrl}" alt="${name}" class="user-avatar">
@@ -192,6 +196,8 @@ const Navbar = {
 
         } else {
             // User is logged out
+            if (navbar) navbar.classList.remove('gold-mode');
+
             container.innerHTML = `
                 <button id="login-btn" class="login-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

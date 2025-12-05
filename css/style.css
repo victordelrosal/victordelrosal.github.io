@@ -980,6 +980,49 @@ section {
     animation: waveNavbarFlow 8s ease-in-out infinite;
 }
 
+/* ===== GOLD MODE (Authenticated) ===== */
+.wave-navbar.gold-mode .wave-navbar-bg {
+    background: linear-gradient(to bottom,
+            #2c2000 0%,
+            #4b3621 20%,
+            #785c26 50%,
+            #b8860b 100%);
+}
+
+.wave-navbar.gold-mode .wave-navbar-bg::before {
+    background:
+        radial-gradient(circle at 30% 70%, rgba(184, 134, 11, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(139, 69, 19, 0.2) 0%, transparent 60%);
+}
+
+.wave-navbar.gold-mode .wave-navbar-bg .wave-deep {
+    fill: rgba(60, 40, 0, 0.8);
+}
+
+.wave-navbar.gold-mode .wave-navbar-bg .wave-mid {
+    fill: rgba(120, 90, 20, 0.6);
+}
+
+.wave-navbar.gold-mode .wave-navbar-bg .wave-surface {
+    fill: rgba(184, 134, 11, 0.5);
+}
+
+.wave-navbar.gold-mode .wave-navbar-title {
+    background: linear-gradient(90deg,
+            #fff 0%,
+            #fff 35%,
+            #ffd700 45%,
+            #f0e68c 50%,
+            #ffd700 55%,
+            #fff 65%,
+            #fff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 @keyframes waveNavbarFlow {
 
     0%,
