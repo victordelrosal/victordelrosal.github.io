@@ -4781,33 +4781,37 @@ footer {
 
 .user-dropdown {
     position: absolute;
-    top: calc(100% + 12px);
+    top: calc(100% + 16px);
     right: 0;
-    width: 240px;
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    width: 280px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 20px 50px -10px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.2s ease;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 1000;
+    overflow: hidden;
 }
 
 .user-profile.active .user-dropdown {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
+/* Remove the arrow for a cleaner, floating look */
 .user-dropdown::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    right: 12px;
-    border: 8px solid transparent;
-    border-bottom-color: white;
+    display: none;
 }
 
 .user-info {
@@ -4815,37 +4819,50 @@ footer {
     flex-direction: column;
     margin-bottom: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .user-name {
-    font-weight: 600;
-    color: var(--text-dark);
-    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
 }
 
 .user-email {
     font-size: 13px;
-    color: var(--text-dark-secondary);
-    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
 }
 
 .logout-btn {
     width: 100%;
-    padding: 8px;
-    background: transparent;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    color: var(--text-dark);
+    padding: 10px;
+    margin-top: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .logout-btn:hover {
-    background: #f5f5f5;
-    border-color: #ccc;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
 }
 
 @media (max-width: 768px) {
