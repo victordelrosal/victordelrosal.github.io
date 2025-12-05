@@ -1003,18 +1003,19 @@ section {
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-deep {
-    fill: rgba(101, 67, 33, 0.9);
-    /* Dark Brown/Gold */
+    fill: #8B4513 !important;
+    /* SaddleBrown - Opaque to cover blue */
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-mid {
-    fill: rgba(184, 134, 11, 0.7);
-    /* Dark Golden Rod */
+    fill: #B8860B !important;
+    /* DarkGoldenRod */
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-surface {
-    fill: rgba(218, 165, 32, 0.6);
-    /* Golden Rod */
+    fill: #FFD700 !important;
+    /* Gold */
+    opacity: 0.8;
 }
 
 .wave-navbar.gold-mode .wave-navbar-title {
