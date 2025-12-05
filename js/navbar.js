@@ -281,6 +281,31 @@ const Navbar = {
 
             const userProfile = window.SupabaseClient.getUserProfile();
             const isSubscribed = userProfile?.is_subscribed !== false; // Default to true
+            const userTimezone = userProfile?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            // Common timezones
+            const timezones = [
+                'UTC',
+                'America/New_York',
+                'America/Los_Angeles',
+                'America/Chicago',
+                'Europe/London',
+                'Europe/Paris',
+                'Europe/Berlin',
+                'Asia/Tokyo',
+                'Asia/Dubai',
+                'Australia/Sydney'
+            ];
+
+            // Add user's detected timezone if not in list
+            if (!timezones.includes(userTimezone)) {
+                timezones.push(userTimezone);
+                timezones.sort();
+            }
+
+            const timezoneOptions = timezones.map(tz =>
+                `<option value="${tz}" ${tz === userTimezone ? 'selected' : ''}>${tz.replace('_', ' ')}</option>`
+            ).join('');
 
             container.innerHTML = `
                 <div class="user-profile" id="user-profile-btn">
@@ -291,17 +316,26 @@ const Navbar = {
                             <span class="user-email">${user.email}</span>
                         </div>
                         <div class="dropdown-divider"></div>
+                        
                         <div class="subscription-container">
                             <label class="dropdown-item checkbox-item">
                                 <input type="checkbox" id="subscribe-checkbox" ${isSubscribed ? 'checked' : ''}>
-                                <span>✅ Subscribed to email updates</span>
+                                <span>Subscribed to email updates</span>
                             </label>
                             <p id="subscription-warning" class="subscription-warning" style="display: none;">
                                 You will receive no more email updates.
                             </p>
                         </div>
+
+                        <div class="timezone-container">
+                            <label for="timezone-select" class="timezone-label">Email Timezone</label>
+                            <select id="timezone-select" class="timezone-select">
+                                ${timezoneOptions}
+                            </select>
+                        </div>
+
                         <button id="delete-account-btn" class="dropdown-item delete-item">
-                            ❌ Delete Account
+                            Delete Account
                         </button>
                         <div class="dropdown-divider"></div>
                         <button id="logout-btn" class="logout-btn">Sign Out</button>
@@ -310,6 +344,19 @@ const Navbar = {
             `;
 
             // Add event listeners
+
+            // Timezone selector
+            const tzSelect = document.getElementById('timezone-select');
+            if (tzSelect) {
+                tzSelect.addEventListener('change', async (e) => {
+                    try {
+                        await window.SupabaseClient.updateTimezone(e.target.value);
+                    } catch (err) {
+                        console.error('Failed to update timezone', err);
+                        alert('Failed to update timezone.');
+                    }
+                });
+            }
 
             // Subscription toggle
             const subCheckbox = document.getElementById('subscribe-checkbox');

@@ -1031,13 +1031,49 @@ section {
     animation: fadeIn 0.3s ease;
 }
 
+.timezone-container {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+}
+
+.timezone-label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 4px;
+}
+
+.timezone-select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    padding: 6px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+.timezone-select option {
+    background: #1a1a1a;
+    color: white;
+}
+
 .delete-item {
-    color: #ff6b6b;
+    color: rgba(255, 255, 255, 0.9);
+    /* All white */
+    font-size: 11px;
+    /* 25% smaller (approx 14px * 0.75) */
+    opacity: 0.7;
+    justify-content: center;
+    margin-top: 4px;
 }
 
 .delete-item:hover {
-    background: rgba(255, 107, 107, 0.1);
-    color: #ff8787;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    opacity: 1;
 }
 
 .wave-navbar.gold-mode .wave-navbar-title {

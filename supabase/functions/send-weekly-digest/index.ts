@@ -6,60 +6,61 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
-    if (req.method === "OPTIONS") {
-        return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    if (!RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is not set");
     }
 
-    try {
-        if (!RESEND_API_KEY) {
-            throw new Error("RESEND_API_KEY is not set");
-        }
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
-        const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+    // 1. Fetch posts published in the last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        // 1. Fetch posts published in the last 7 days
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const { data: posts, error: postsError } = await supabase
+      .from("published_posts")
+      .select("*")
+      .gte("published_at", sevenDaysAgo.toISOString())
+      .order("published_at", { ascending: false });
 
-        const { data: posts, error: postsError } = await supabase
-            .from("published_posts")
-            .select("*")
-            .gte("published_at", sevenDaysAgo.toISOString())
-            .order("published_at", { ascending: false });
+    if (postsError) throw postsError;
 
-        if (postsError) throw postsError;
+    if (!posts || posts.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No new posts this week." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-        if (!posts || posts.length === 0) {
-            return new Response(
-                JSON.stringify({ message: "No new posts this week." }),
-                { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-        }
+    // 2. Fetch subscribed users
+    // We fetch ALL subscribed users, then filter by timezone in the loop
+    const { data: users, error: usersError } = await supabase
+      .from("comment_users")
+      .select("email, display_name, timezone")
+      .eq("is_subscribed", true);
 
-        // 2. Fetch subscribed users
-        const { data: users, error: usersError } = await supabase
-            .from("comment_users")
-            .select("email, display_name")
-            .eq("is_subscribed", true);
+    if (usersError) throw usersError;
 
-        if (usersError) throw usersError;
+    if (!users || users.length === 0) {
+      return new Response(
+        JSON.stringify({ message: "No subscribed users found." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-        if (!users || users.length === 0) {
-            return new Response(
-                JSON.stringify({ message: "No subscribed users found." }),
-                { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-        }
-
-        // 3. Generate Email HTML
-        const postsHtml = posts
-            .map(
-                (post) => `
+    // 3. Generate Email HTML
+    const postsHtml = posts
+      .map(
+        (post) => `
         <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #eee;">
           <h2 style="margin: 0 0 8px 0;">
             <a href="https://victordelrosal.com/${post.slug}" style="color: #333; text-decoration: none;">
@@ -74,10 +75,10 @@ serve(async (req) => {
           </p>
         </div>
       `
-            )
-            .join("");
+      )
+      .join("");
 
-        const emailHtml = `
+    const emailHtml = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -106,45 +107,69 @@ serve(async (req) => {
       </html>
     `;
 
-        // 4. Send Emails (Batching via loop for now, Resend supports batching but this is simpler for demo)
-        // Ideally use Resend's batch API or a loop with delay
-        const results = [];
-        for (const user of users) {
-            const res = await fetch("https://api.resend.com/emails", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${RESEND_API_KEY}`,
-                },
-                body: JSON.stringify({
-                    from: "Victor del Rosal <updates@victordelrosal.com>", // User needs to verify this domain
-                    to: user.email,
-                    subject: `Weekly Waves: ${posts.length} new post${posts.length > 1 ? 's' : ''}`,
-                    html: emailHtml,
-                }),
-            });
-            results.push(res.status);
-        }
+    // 4. Send Emails (Filtered by Timezone)
+    const results = [];
+    let sentCount = 0;
 
-        // 5. Log the run
-        await supabase.from("weekly_email_logs").insert({
-            post_count: posts.length,
-            recipient_count: users.length,
-            status: "success",
-        });
+    for (const user of users) {
+      // Determine if it is 10 AM on Sunday in the user's timezone
+      const userTimezone = user.timezone || 'UTC';
 
-        return new Response(
-            JSON.stringify({
-                message: `Sent emails to ${users.length} users`,
-                postCount: posts.length
+      try {
+        const now = new Date();
+        const userDateString = now.toLocaleString('en-US', { timeZone: userTimezone });
+        const userDate = new Date(userDateString);
+
+        // Check if it's Sunday (0) and 10 AM (10)
+        // We allow a small window (e.g., run at 10:05, still counts)
+        if (userDate.getDay() === 0 && userDate.getHours() === 10) {
+
+          const res = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${RESEND_API_KEY}`,
+            },
+            body: JSON.stringify({
+              from: "Victor del Rosal <updates@victordelrosal.com>",
+              to: user.email,
+              subject: `Weekly Waves: ${posts.length} new post${posts.length > 1 ? 's' : ''}`,
+              html: emailHtml,
             }),
-            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+          });
+          results.push({ email: user.email, status: res.status });
+          if (res.ok) sentCount++;
 
-    } catch (error) {
-        return new Response(
-            JSON.stringify({ error: error.message }),
-            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        } else {
+          // Not the right time for this user
+          // console.log(`Skipping ${user.email} (${userTimezone}): It is ${userDate.getDay()} ${userDate.getHours()}:00`);
+        }
+      } catch (err) {
+        console.error(`Error processing user ${user.email} with timezone ${userTimezone}:`, err);
+      }
     }
+
+    // 5. Log the run (only if emails were sent)
+    if (sentCount > 0) {
+      await supabase.from("weekly_email_logs").insert({
+        post_count: posts.length,
+        recipient_count: sentCount,
+        status: "success",
+      });
+    }
+
+    return new Response(
+      JSON.stringify({
+        message: `Processed ${users.length} users. Sent emails to ${sentCount} users.`,
+        postCount: posts.length
+      }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
 });

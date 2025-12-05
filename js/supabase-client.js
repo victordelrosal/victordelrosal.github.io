@@ -216,6 +216,32 @@ if (!window.SupabaseClient) {
     }
 
     /**
+     * Update user timezone
+     * @param {string} timezone 
+     */
+    async function updateTimezone(timezone) {
+      if (!supabase || !currentUser) return;
+
+      try {
+        const { error } = await supabase
+          .from('comment_users')
+          .update({ timezone: timezone })
+          .eq('auth_id', currentUser.id);
+
+        if (error) throw error;
+
+        // Update local cache
+        if (commentUserProfile) {
+          commentUserProfile.timezone = timezone;
+        }
+        return true;
+      } catch (error) {
+        console.error('Failed to update timezone:', error);
+        throw error;
+      }
+    }
+
+    /**
      * Delete the user's account (profile)
      */
     async function deleteAccount() {
@@ -255,6 +281,7 @@ if (!window.SupabaseClient) {
       getUserProfile,
       isAdmin,
       updateSubscription,
+      updateTimezone,
       deleteAccount,
       getClient,
       // Expose constants for other modules
