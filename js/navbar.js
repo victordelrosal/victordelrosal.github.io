@@ -291,10 +291,15 @@ const Navbar = {
                             <span class="user-email">${user.email}</span>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <label class="dropdown-item checkbox-item">
-                            <input type="checkbox" id="subscribe-checkbox" ${isSubscribed ? 'checked' : ''}>
-                            <span>Subscribed to email updates</span>
-                        </label>
+                        <div class="subscription-container">
+                            <label class="dropdown-item checkbox-item">
+                                <input type="checkbox" id="subscribe-checkbox" ${isSubscribed ? 'checked' : ''}>
+                                <span>✅ Subscribed to email updates</span>
+                            </label>
+                            <p id="subscription-warning" class="subscription-warning" style="display: none;">
+                                You will receive no more email updates.
+                            </p>
+                        </div>
                         <button id="delete-account-btn" class="dropdown-item delete-item">
                             ❌ Delete Account
                         </button>
@@ -308,13 +313,29 @@ const Navbar = {
 
             // Subscription toggle
             const subCheckbox = document.getElementById('subscribe-checkbox');
+            const subWarning = document.getElementById('subscription-warning');
+
+            // Initial state check
+            if (subCheckbox && subWarning) {
+                subWarning.style.display = subCheckbox.checked ? 'none' : 'block';
+            }
+
             if (subCheckbox) {
                 subCheckbox.addEventListener('change', async (e) => {
+                    const isChecked = e.target.checked;
+                    // Toggle warning immediately for responsiveness
+                    if (subWarning) {
+                        subWarning.style.display = isChecked ? 'none' : 'block';
+                    }
+
                     try {
-                        await window.SupabaseClient.updateSubscription(e.target.checked);
+                        await window.SupabaseClient.updateSubscription(isChecked);
                     } catch (err) {
                         console.error('Failed to update subscription', err);
-                        e.target.checked = !e.target.checked; // Revert on error
+                        e.target.checked = !isChecked; // Revert on error
+                        if (subWarning) {
+                            subWarning.style.display = !isChecked ? 'none' : 'block';
+                        }
                         alert('Failed to update subscription. Please try again.');
                     }
                 });

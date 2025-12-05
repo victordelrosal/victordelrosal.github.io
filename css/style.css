@@ -1016,9 +1016,19 @@ section {
 }
 
 .checkbox-item input[type="checkbox"] {
-    accent-color: #FFD700;
+    accent-color: #10B981;
+    /* Green checkmark */
     width: 16px;
     height: 16px;
+}
+
+.subscription-warning {
+    font-size: 12px;
+    color: #ff6b6b;
+    margin: 4px 12px 12px 38px;
+    /* Align with text */
+    font-style: italic;
+    animation: fadeIn 0.3s ease;
 }
 
 .delete-item {
