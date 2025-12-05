@@ -281,6 +281,9 @@ const Navbar = {
             const avatarUrl = user.user_metadata.avatar_url || user.user_metadata.picture;
             const name = user.user_metadata.full_name || user.user_metadata.name || user.email;
 
+            const userProfile = window.SupabaseClient.getUserProfile();
+            const isSubscribed = userProfile?.is_subscribed !== false; // Default to true
+
             container.innerHTML = `
                 <div class="user-profile" id="user-profile-btn">
                     <img src="${avatarUrl}" alt="${name}" class="user-avatar">
@@ -289,12 +292,51 @@ const Navbar = {
                             <span class="user-name">${name}</span>
                             <span class="user-email">${user.email}</span>
                         </div>
+                        <div class="dropdown-divider"></div>
+                        <label class="dropdown-item checkbox-item">
+                            <input type="checkbox" id="subscribe-checkbox" ${isSubscribed ? 'checked' : ''}>
+                            <span>Subscribed to email updates</span>
+                        </label>
+                        <button id="delete-account-btn" class="dropdown-item delete-item">
+                            ❌ Delete Account
+                        </button>
+                        <div class="dropdown-divider"></div>
                         <button id="logout-btn" class="logout-btn">Sign Out</button>
                     </div>
                 </div>
             `;
 
             // Add event listeners
+
+            // Subscription toggle
+            const subCheckbox = document.getElementById('subscribe-checkbox');
+            if (subCheckbox) {
+                subCheckbox.addEventListener('change', async (e) => {
+                    try {
+                        await window.SupabaseClient.updateSubscription(e.target.checked);
+                    } catch (err) {
+                        console.error('Failed to update subscription', err);
+                        e.target.checked = !e.target.checked; // Revert on error
+                        alert('Failed to update subscription. Please try again.');
+                    }
+                });
+            }
+
+            // Delete account
+            const deleteBtn = document.getElementById('delete-account-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', async () => {
+                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                        try {
+                            await window.SupabaseClient.deleteAccount();
+                        } catch (err) {
+                            console.error('Failed to delete account', err);
+                            alert('Failed to delete account. Please try again.');
+                        }
+                    }
+                });
+            }
+
             document.getElementById('logout-btn').addEventListener('click', () => {
                 window.SupabaseClient.signOut();
             });

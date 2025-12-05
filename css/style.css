@@ -1018,6 +1018,54 @@ section {
     opacity: 0.8;
 }
 
+/* User Dropdown Items */
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 8px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, color 0.2s;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.checkbox-item {
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+    accent-color: #FFD700;
+    width: 16px;
+    height: 16px;
+}
+
+.delete-item {
+    color: #ff6b6b;
+}
+
+.delete-item:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff8787;
+}
+
 .wave-navbar.gold-mode .wave-navbar-title {
     background: linear-gradient(90deg,
             #fff 0%,

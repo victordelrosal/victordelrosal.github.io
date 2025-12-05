@@ -190,6 +190,52 @@ if (!window.SupabaseClient) {
     }
 
     /**
+     * Update email subscription status
+     * @param {boolean} isSubscribed 
+     */
+    async function updateSubscription(isSubscribed) {
+      if (!supabase || !currentUser) return;
+
+      try {
+        const { error } = await supabase
+          .from('comment_users')
+          .update({ is_subscribed: isSubscribed })
+          .eq('auth_id', currentUser.id);
+
+        if (error) throw error;
+
+        // Update local cache
+        if (commentUserProfile) {
+          commentUserProfile.is_subscribed = isSubscribed;
+        }
+        return true;
+      } catch (error) {
+        console.error('Failed to update subscription:', error);
+        throw error;
+      }
+    }
+
+    /**
+     * Delete the user's account (profile)
+     */
+    async function deleteAccount() {
+      if (!supabase || !currentUser) return;
+
+      try {
+        // Call the RPC function to delete the profile
+        const { error } = await supabase.rpc('delete_own_profile');
+        if (error) throw error;
+
+        // Sign out
+        await signOut();
+        return true;
+      } catch (error) {
+        console.error('Failed to delete account:', error);
+        throw error;
+      }
+    }
+
+    /**
      * Get the raw Supabase client for direct queries
      * @returns {Object} The Supabase client instance
      */
@@ -208,6 +254,8 @@ if (!window.SupabaseClient) {
       getCurrentUser,
       getUserProfile,
       isAdmin,
+      updateSubscription,
+      deleteAccount,
       getClient,
       // Expose constants for other modules
       SUPABASE_URL,
