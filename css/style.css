@@ -4913,7 +4913,58 @@ footer {
 
 @media (max-width: 900px) {
     .auth-container {
-        display: none !important;
-        /* Hide on mobile for now or adjust layout */
+        right: 16px;
+    }
+
+    .login-btn {
+        padding: 6px 12px 6px 10px;
+        font-size: 13px;
+        gap: 8px;
+    }
+
+    .login-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .user-dropdown {
+        width: 260px;
+        right: -8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        right: 12px;
+    }
+
+    .login-btn {
+        padding: 5px 10px 5px 8px;
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    .login-btn span {
+        display: none;
+    }
+
+    .login-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .user-dropdown {
+        width: 240px;
+        padding: 16px;
     }
 }
