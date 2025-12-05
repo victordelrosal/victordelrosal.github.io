@@ -981,6 +981,10 @@ section {
 }
 
 /* ===== GOLD MODE (Authenticated) ===== */
+.wave-navbar.gold-mode {
+    border-bottom: 1px solid rgba(184, 134, 11, 0.3);
+}
+
 .wave-navbar.gold-mode .wave-navbar-bg {
     background: linear-gradient(to bottom,
             #2c2000 0%,
@@ -997,15 +1001,18 @@ section {
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-deep {
-    fill: rgba(60, 40, 0, 0.8);
+    fill: rgba(101, 67, 33, 0.9);
+    /* Dark Brown/Gold */
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-mid {
-    fill: rgba(120, 90, 20, 0.6);
+    fill: rgba(184, 134, 11, 0.7);
+    /* Dark Golden Rod */
 }
 
 .wave-navbar.gold-mode .wave-navbar-bg .wave-surface {
-    fill: rgba(184, 134, 11, 0.5);
+    fill: rgba(218, 165, 32, 0.6);
+    /* Golden Rod */
 }
 
 .wave-navbar.gold-mode .wave-navbar-title {
