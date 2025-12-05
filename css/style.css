@@ -3442,8 +3442,8 @@ footer {
 /* ===== 23. RESPONSIVE ===== */
 @media (max-width: 900px) {
     nav {
-        width: calc(100% - 32px);
-        padding: 0 16px;
+        width: fit-content;
+        padding: 0 12px;
     }
 
     .nav-links {
@@ -4911,9 +4911,9 @@ footer {
     transform: translateY(0);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .auth-container {
-        display: none;
+        display: none !important;
         /* Hide on mobile for now or adjust layout */
     }
 }
