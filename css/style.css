@@ -917,7 +917,7 @@ section {
     right: 0;
     height: 90px;
     z-index: 1000;
-    overflow: hidden;
+    /* overflow: hidden; Removed to allow dropdowns to show */
 }
 
 .wave-navbar-bg {
@@ -925,6 +925,8 @@ section {
     inset: 0;
     background: var(--gradient-hero);
     z-index: 0;
+    overflow: hidden;
+    /* Moved here to contain waves */
 }
 
 /* Ambient glow effect like original header */
