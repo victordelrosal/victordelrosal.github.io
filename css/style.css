@@ -985,7 +985,7 @@ section {
 /* User Dropdown Items */
 .dropdown-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(100, 140, 255, 0.12);
     margin: 8px 0;
 }
 
@@ -1006,7 +1006,7 @@ section {
 }
 
 .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(100, 140, 255, 0.12);
     color: white;
 }
 
@@ -4830,17 +4830,23 @@ footer {
     top: calc(100% + 16px);
     right: 0;
     width: 280px;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+        135deg,
+        rgba(13, 27, 74, 0.8) 0%,
+        rgba(20, 40, 90, 0.75) 50%,
+        rgba(13, 27, 74, 0.85) 100%
+    );
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(100, 140, 255, 0.15);
     border-radius: 24px;
     padding: 20px;
     box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06),
-        0 20px 50px -10px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 4px 6px -1px rgba(0, 0, 0, 0.15),
+        0 2px 4px -1px rgba(0, 0, 0, 0.1),
+        0 24px 60px -12px rgba(13, 27, 74, 0.6),
+        inset 0 1px 0 rgba(100, 150, 255, 0.1),
+        inset 0 0 20px rgba(50, 100, 200, 0.05);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px) scale(0.95);
@@ -4865,7 +4871,7 @@ footer {
     flex-direction: column;
     margin-bottom: 16px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(100, 140, 255, 0.12);
 }
 
 .user-name {
@@ -4886,8 +4892,8 @@ footer {
     width: 100%;
     padding: 10px;
     margin-top: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(100, 140, 255, 0.08);
+    border: 1px solid rgba(100, 140, 255, 0.15);
     border-radius: 12px;
     color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
@@ -4901,10 +4907,10 @@ footer {
 }
 
 .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(100, 140, 255, 0.18);
+    border-color: rgba(100, 140, 255, 0.25);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(13, 27, 74, 0.3);
 }
 
 .logout-btn:active {
