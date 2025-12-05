@@ -151,6 +151,9 @@ const CommentsUI = {
       // Also hide any open reply forms
       this.hideReplyForm();
     }
+
+    // Refresh comments to update "Delete" buttons based on new auth state
+    this.loadAndRenderComments();
   },
 
   /**

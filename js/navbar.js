@@ -276,8 +276,6 @@ const Navbar = {
 
         if (user) {
             // User is logged in
-            if (navbar) navbar.classList.add('gold-mode');
-
             const avatarUrl = user.user_metadata.avatar_url || user.user_metadata.picture;
             const name = user.user_metadata.full_name || user.user_metadata.name || user.email;
 
@@ -357,8 +355,6 @@ const Navbar = {
 
         } else {
             // User is logged out
-            if (navbar) navbar.classList.remove('gold-mode');
-
             container.innerHTML = `
                 <button id="login-btn" class="login-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
