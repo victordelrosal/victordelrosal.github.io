@@ -20,6 +20,15 @@ serve(async (req) => {
       throw new Error("RESEND_API_KEY is not set");
     }
 
+    // Check for test_mode parameter (bypasses Sunday 10 AM check)
+    let testMode = false;
+    try {
+      const body = await req.json();
+      testMode = body.test_mode === true;
+    } catch {
+      // No body or invalid JSON, continue with normal mode
+    }
+
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
     // 1. Fetch posts published in the last 7 days
@@ -120,9 +129,14 @@ serve(async (req) => {
         const userDateString = now.toLocaleString('en-US', { timeZone: userTimezone });
         const userDate = new Date(userDateString);
 
-        // Check if it's Sunday (0) and 10 AM (10)
+        // Check if it's Sunday (0) and 10 AM (10), OR if test_mode is enabled
         // We allow a small window (e.g., run at 10:05, still counts)
-        if (userDate.getDay() === 0 && userDate.getHours() === 10) {
+        const isSundayMorning = userDate.getDay() === 0 && userDate.getHours() === 10;
+
+        if (testMode || isSundayMorning) {
+          const subjectPrefix = testMode ? "[TEST] " : "";
+
+          console.log(`Attempting to send email to: ${user.email}`);
 
           const res = await fetch("https://api.resend.com/emails", {
             method: "POST",
@@ -133,12 +147,19 @@ serve(async (req) => {
             body: JSON.stringify({
               from: "Victor del Rosal <updates@victordelrosal.com>",
               to: user.email,
-              subject: `Weekly Waves: ${posts.length} new post${posts.length > 1 ? 's' : ''}`,
+              subject: `${subjectPrefix}Weekly Waves: ${posts.length} new post${posts.length > 1 ? 's' : ''}`,
               html: emailHtml,
             }),
           });
-          results.push({ email: user.email, status: res.status });
+
+          const resBody = await res.json();
+          console.log(`Email to ${user.email}: status=${res.status}, response=${JSON.stringify(resBody)}`);
+
+          results.push({ email: user.email, status: res.status, response: resBody });
           if (res.ok) sentCount++;
+
+          // Rate limit: wait 600ms between emails (Resend allows 2/sec)
+          await new Promise(resolve => setTimeout(resolve, 600));
 
         } else {
           // Not the right time for this user
@@ -154,14 +175,16 @@ serve(async (req) => {
       await supabase.from("weekly_email_logs").insert({
         post_count: posts.length,
         recipient_count: sentCount,
-        status: "success",
+        status: testMode ? "test" : "success",
       });
     }
 
     return new Response(
       JSON.stringify({
         message: `Processed ${users.length} users. Sent emails to ${sentCount} users.`,
-        postCount: posts.length
+        postCount: posts.length,
+        testMode: testMode,
+        results: results
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
