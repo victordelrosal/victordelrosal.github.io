@@ -56,10 +56,20 @@ async function fetchPosts() {
 
 /**
  * Extract first image URL from HTML content
+ * Only returns actual URLs (http/https), skips base64 data URLs
  */
 function extractFirstImage(html) {
-    const imgMatch = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-    return imgMatch ? imgMatch[1] : null;
+    // Find all images in the content
+    const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
+    let match;
+    while ((match = imgRegex.exec(html)) !== null) {
+        const src = match[1];
+        // Only return actual URLs, skip base64 data URLs
+        if (src.startsWith('http://') || src.startsWith('https://')) {
+            return src;
+        }
+    }
+    return null;
 }
 
 /**
