@@ -2408,6 +2408,7 @@ section {
 /* Stats styling */
 .wave-entry[data-wave-style="brainwave"] .wave-stats {
     color: #bae6fd;
+    right: 50px;
 }
 
 .wave-entry[data-wave-style="brainwave"] .wave-stat {
