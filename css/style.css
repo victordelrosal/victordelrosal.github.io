@@ -5160,6 +5160,11 @@ footer {
     margin: 48px 0 32px;
 }
 
+/* Top subscribe CTA - appears at top of wave detail pages */
+.post .subscribe-cta--top {
+    margin: 24px 0 32px;
+}
+
 .post .subscribe-btn {
     background: linear-gradient(135deg, 
         rgba(255,255,255,0.92) 0%, 
