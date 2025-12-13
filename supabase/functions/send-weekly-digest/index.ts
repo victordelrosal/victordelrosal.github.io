@@ -10,6 +10,38 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+/**
+ * Create excerpt from HTML content by stripping tags and truncating
+ */
+function createExcerpt(html: string, maxLength = 150): string {
+  if (!html) return '';
+  // Remove HTML tags and normalize whitespace
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (text.length <= maxLength) return text;
+  // Truncate at word boundary
+  const truncated = text.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 0 ? truncated.substring(0, lastSpace) : truncated) + '...';
+}
+
+/**
+ * Extract first image URL from HTML content
+ * Only returns actual URLs (http/https), skips base64 data URLs
+ */
+function extractFirstImage(html: string): string | null {
+  if (!html) return null;
+  const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
+  let match;
+  while ((match = imgRegex.exec(html)) !== null) {
+    const src = match[1];
+    // Only return actual URLs, skip base64 data URLs
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+      return src;
+    }
+  }
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -20,11 +52,15 @@ serve(async (req) => {
       throw new Error("RESEND_API_KEY is not set");
     }
 
-    // Check for test_mode parameter (bypasses Sunday 10 AM check)
+    // Check for test_mode or force_send parameters
+    // test_mode: bypasses Sunday check, adds [TEST] prefix
+    // force_send: bypasses Sunday check, NO prefix (real email)
     let testMode = false;
+    let forceSend = false;
     try {
       const body = await req.json();
       testMode = body.test_mode === true;
+      forceSend = body.force_send === true;
     } catch {
       // No body or invalid JSON, continue with normal mode
     }
@@ -69,8 +105,17 @@ serve(async (req) => {
     // 3. Generate Email HTML
     const postsHtml = posts
       .map(
-        (post) => `
-        <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #eee;">
+        (post) => {
+          const imageUrl = extractFirstImage(post.content);
+          const imageHtml = imageUrl
+            ? `<a href="https://victordelrosal.com/${post.slug}">
+                <img src="${imageUrl}" alt="${post.title}" style="width: 100%; max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 16px; display: block;" />
+              </a>`
+            : '';
+
+          return `
+        <div style="margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #eee;">
+          ${imageHtml}
           <h2 style="margin: 0 0 8px 0;">
             <a href="https://victordelrosal.com/${post.slug}" style="color: #333; text-decoration: none;">
               ${post.title}
@@ -79,11 +124,15 @@ serve(async (req) => {
           <p style="color: #666; margin: 0 0 12px 0;">
             ${new Date(post.published_at).toLocaleDateString()}
           </p>
+          <p style="color: #444; margin: 0 0 12px 0; line-height: 1.5;">
+            ${createExcerpt(post.content)}
+          </p>
           <p style="margin: 0;">
             <a href="https://victordelrosal.com/${post.slug}" style="color: #0066cc; text-decoration: none;">Read more &rarr;</a>
           </p>
         </div>
-      `
+      `;
+        }
       )
       .join("");
 
@@ -129,11 +178,11 @@ serve(async (req) => {
         const userDateString = now.toLocaleString('en-US', { timeZone: userTimezone });
         const userDate = new Date(userDateString);
 
-        // Check if it's Sunday (0) and 10 AM (10), OR if test_mode is enabled
+        // Check if it's Sunday (0) and 10 AM (10), OR if test_mode/force_send is enabled
         // We allow a small window (e.g., run at 10:05, still counts)
         const isSundayMorning = userDate.getDay() === 0 && userDate.getHours() === 10;
 
-        if (testMode || isSundayMorning) {
+        if (testMode || forceSend || isSundayMorning) {
           const subjectPrefix = testMode ? "[TEST] " : "";
 
           console.log(`Attempting to send email to: ${user.email}`);
@@ -175,7 +224,7 @@ serve(async (req) => {
       await supabase.from("weekly_email_logs").insert({
         post_count: posts.length,
         recipient_count: sentCount,
-        status: testMode ? "test" : "success",
+        status: testMode ? "test" : forceSend ? "force_send" : "success",
       });
     }
 
@@ -184,6 +233,7 @@ serve(async (req) => {
         message: `Processed ${users.length} users. Sent emails to ${sentCount} users.`,
         postCount: posts.length,
         testMode: testMode,
+        forceSend: forceSend,
         results: results
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
