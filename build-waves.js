@@ -308,7 +308,7 @@ function generateWaveHTML(post) {
 
     <!-- Footer -->
     <footer>
-        <p class="footer-copyright">© 2024 Victor del Rosal</p>
+        <p class="footer-copyright">© 2025 Victor del Rosal</p>
     </footer>
 
     <!-- Load Supabase JS -->
