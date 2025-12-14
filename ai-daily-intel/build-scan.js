@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Daily AI Intel Scan - Build Script
+ * Daily AI News Scan - Build Script
  *
  * Fetches AI news from RSS feeds, deduplicates, synthesizes with Claude,
  * and publishes to Supabase as a wave.
@@ -256,11 +256,11 @@ async function synthesizeBriefing(items) {
  * Publish to Supabase
  */
 async function publishToSupabase(briefing) {
-  const slug = `daily-ai-intel-scan-${briefing.dateString}`;
-  const title = `Daily AI Intel Scan — ${briefing.formattedDate}`;
+  const slug = `daily-ai-news-scan-${briefing.dateString}`;
+  const title = `Daily AI News Scan — ${briefing.formattedDate}`;
   // Generate a note_id in the same format as Flux (YYYYMMDDHHMMSS.md)
-  // Using 'ai-scan-' prefix to distinguish from Flux notes
-  const noteId = `ai-scan-${briefing.dateString.replace(/-/g, '')}050000.md`;
+  // Using 'ai-news-scan-' prefix to distinguish from Flux notes
+  const noteId = `ai-news-scan-${briefing.dateString.replace(/-/g, '')}050000.md`;
 
   console.log(`\nPublishing to Supabase: ${slug}`);
 
@@ -306,7 +306,7 @@ async function publishToSupabase(briefing) {
  */
 async function main() {
   console.log('='.repeat(60));
-  console.log('Daily AI Intel Scan - Build');
+  console.log('Daily AI News Scan - Build');
   console.log(`Time: ${new Date().toISOString()}`);
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
   console.log('='.repeat(60));

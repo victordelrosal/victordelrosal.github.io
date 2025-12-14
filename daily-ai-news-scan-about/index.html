@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How the Daily AI News Scan works - automated AI news synthesis">
+    <title>How the Daily AI News Scan Works | Victor del Rosal</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Victor del Rosal">
+    <meta property="og:url" content="https://victordelrosal.com/daily-ai-news-scan-about/">
+    <meta property="og:title" content="How the Daily AI News Scan Works | Victor del Rosal">
+    <meta property="og:description" content="A fully automated AI news scanner - no human editorial review">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://victordelrosal.com/daily-ai-news-scan-about/">
+    <meta name="twitter:title" content="How the Daily AI News Scan Works | Victor del Rosal">
+    <meta name="twitter:description" content="A fully automated AI news scanner - no human editorial review">
+
+    <!-- Shared Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Universal Navigation -->
+    <div id="navbar-container" data-active-link="/waves/"></div>
+    <script src="/js/navbar.js"></script>
+
+    <main id="main-content" class="wave-watermark" style="padding: 120px 24px 100px; max-width: 720px; margin: 0 auto; min-height: 100vh;">
+        <!-- Wave Signature Background Elements -->
+        <div class="wave-signature"></div>
+        <div class="wave-signature-right"></div>
+
+        <article class="post">
+            <a href="/waves/" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Waves
+            </a>
+
+            <header class="post-header">
+                <h1 class="post-title">How the Daily AI News Scan Works</h1>
+            </header>
+
+            <div class="post-content">
+                <p><strong>This is a fully automated news scan. No human reviews or edits the content before publication.</strong></p>
+
+                <h2>The Process</h2>
+                <p>Every day at 05:00 GMT, this system:</p>
+                <ol>
+                    <li><strong>Fetches sources</strong> - RSS feeds and news APIs from ~26 trusted AI sources</li>
+                    <li><strong>Filters by time</strong> - Only items from the last 24 hours</li>
+                    <li><strong>Deduplicates</strong> - Same story reported by multiple outlets? Keeps the primary source</li>
+                    <li><strong>Synthesizes</strong> - Claude AI reads the items and writes a structured summary</li>
+                    <li><strong>Publishes</strong> - Automatically posted to this site</li>
+                </ol>
+
+                <h2>Sources</h2>
+                <p>The scan draws from these categories:</p>
+                <ul>
+                    <li><strong>Primary sources:</strong> OpenAI, Anthropic, Google DeepMind, Google AI, NVIDIA, Microsoft AI, Meta AI</li>
+                    <li><strong>Research:</strong> arXiv (cs.AI, cs.LG)</li>
+                    <li><strong>Quality media:</strong> MIT Technology Review, Wired, The Batch, TechCrunch, VentureBeat, The Verge, Ars Technica</li>
+                    <li><strong>Aggregation:</strong> Google News queries for AI regulation, frontier models, enterprise AI, AI safety, AI tools, ChatGPT, AI agents, AI coding, AI startups, LLMs</li>
+                </ul>
+
+                <h2>What This Is Not</h2>
+                <ul>
+                    <li>Not human-curated editorial</li>
+                    <li>Not investment advice</li>
+                    <li>Not comprehensive coverage of all AI news</li>
+                    <li>Not a replacement for deep reading</li>
+                </ul>
+
+                <h2>Limitations</h2>
+                <ul>
+                    <li>May miss stories not covered by these specific sources</li>
+                    <li>AI synthesis can occasionally misinterpret nuance</li>
+                    <li>No editorial judgment or additional context beyond sources</li>
+                    <li>Timing means some breaking news may appear in the next day's scan</li>
+                </ul>
+
+                <h2>Why Automate?</h2>
+                <p>The goal is consistent daily signal without pretending a human curated it. Transparency over theatre.</p>
+                <p>If you want human analysis and opinion, read the regular <a href="/waves/">waves</a>. This scan is for those who want a quick, automated overview of what happened in AI in the last 24 hours.</p>
+
+                <h2>Technical Details</h2>
+                <ul>
+                    <li><strong>Schedule:</strong> 05:00 GMT daily via GitHub Actions</li>
+                    <li><strong>LLM:</strong> Claude Sonnet 4 (Anthropic)</li>
+                    <li><strong>Code:</strong> Open source on <a href="https://github.com/victordelrosal" target="_blank" rel="noopener">GitHub</a></li>
+                </ul>
+
+                <hr>
+                <p><em>Built by Victor del Rosal. Questions? <a href="mailto:victor@victordelrosal.com">Get in touch</a>.</em></p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px 24px; color: var(--text-light); font-size: 0.9rem;">
+        <p>&copy; 2025 Victor del Rosal</p>
+    </footer>
+</body>
+</html>
