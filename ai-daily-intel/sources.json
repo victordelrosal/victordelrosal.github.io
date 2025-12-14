@@ -36,6 +36,20 @@
       "enabled": true
     },
     {
+      "id": "microsoft-ai-blog",
+      "name": "Microsoft AI Blog",
+      "url": "https://blogs.microsoft.com/ai/feed/",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "meta-ai-blog",
+      "name": "Meta AI Blog",
+      "url": "https://ai.meta.com/blog/rss/",
+      "priority": 1,
+      "enabled": true
+    },
+    {
       "id": "arxiv-cs-ai",
       "name": "arXiv cs.AI",
       "url": "https://rss.arxiv.org/rss/cs.AI",
@@ -73,6 +87,34 @@
       "enabled": true
     },
     {
+      "id": "techcrunch-ai",
+      "name": "TechCrunch AI",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "venturebeat-ai",
+      "name": "VentureBeat AI",
+      "url": "https://venturebeat.com/category/ai/feed/",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "the-verge-ai",
+      "name": "The Verge AI",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "ars-technica-ai",
+      "name": "Ars Technica AI",
+      "url": "https://feeds.arstechnica.com/arstechnica/technology-lab",
+      "priority": 3,
+      "enabled": true
+    },
+    {
       "id": "google-news-frontier-ai",
       "name": "Google News: Frontier AI",
       "url": "https://news.google.com/rss/search?q=frontier+AI+models+when:1d&hl=en-US&gl=US&ceid=US:en",
@@ -97,6 +139,48 @@
       "id": "google-news-ai-safety",
       "name": "Google News: AI Safety",
       "url": "https://news.google.com/rss/search?q=AI+safety+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-tools",
+      "name": "Google News: AI Tools",
+      "url": "https://news.google.com/rss/search?q=AI+tools+apps+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-chatgpt",
+      "name": "Google News: ChatGPT",
+      "url": "https://news.google.com/rss/search?q=ChatGPT+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-agents",
+      "name": "Google News: AI Agents",
+      "url": "https://news.google.com/rss/search?q=AI+agents+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-coding",
+      "name": "Google News: AI Coding",
+      "url": "https://news.google.com/rss/search?q=AI+coding+copilot+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-startups",
+      "name": "Google News: AI Startups",
+      "url": "https://news.google.com/rss/search?q=AI+startup+funding+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-llm",
+      "name": "Google News: LLM",
+      "url": "https://news.google.com/rss/search?q=large+language+model+when:1d&hl=en-US&gl=US&ceid=US:en",
       "priority": 4,
       "enabled": true
     }

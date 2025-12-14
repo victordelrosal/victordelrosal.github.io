@@ -26,10 +26,19 @@ Write a scan with this exact structure in clean HTML:
 <h1>Daily AI Intel Scan — ${formattedDate}</h1>
 
 <h2>Executive Summary</h2>
-<p>50-70 words covering the 2-3 most significant developments. No fluff.</p>
+<p>70-100 words covering the 3-4 most significant developments across different categories. No fluff.</p>
 
 <h2>Key Developments</h2>
-For each of 3-5 key developments:
+Cover 5-7 key developments. Try to include a mix from these categories when available:
+- Model releases and capabilities
+- Policy and regulation
+- Enterprise and business applications
+- AI tools and products
+- Research breakthroughs
+- AI agents and coding tools
+- Funding and startups
+
+For each development:
 <h3>Development Title</h3>
 <p>2-3 sentence factual summary of what happened and why it matters.</p>
 <p><strong>Source:</strong> <a href="URL">Publisher Name</a></p>
@@ -39,8 +48,9 @@ For each of 3-5 key developments:
 
 Important:
 - Output ONLY valid HTML, no markdown
-- Total length: 400-500 words
-- If fewer than 3 meaningful developments exist, say so explicitly
+- Total length: 600-800 words
+- Prioritize diversity of topics over depth on any single story
+- If fewer than 5 meaningful developments exist, include what's available
 - Never invent or hallucinate sources`;
 }
 
