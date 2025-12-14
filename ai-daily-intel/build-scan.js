@@ -246,9 +246,9 @@ async function synthesizeBriefing(items) {
     throw new Error('Unexpected response type from Claude');
   }
 
-  // Prepend header image to the content
-  const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">\n\n`;
-  const htmlWithImage = headerImageHtml + content.text;
+  // Insert header image AFTER the <h1> tag (not before, because wave-loader.js strips the first element)
+  const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">`;
+  const htmlWithImage = content.text.replace(/<\/h1>/i, `</h1>\n${headerImageHtml}\n`);
 
   return {
     html: htmlWithImage,
