@@ -673,13 +673,20 @@ section {
     display: grid;
     grid-template-columns: 1fr 400px;
     gap: 80px;
-    align-items: start;
+    align-items: stretch;
 }
 
 .about-text {
     font-size: 18px;
     line-height: 1.8;
     color: var(--text-dark-secondary);
+    display: flex;
+    flex-direction: column;
+}
+
+.about-text .tags {
+    margin-top: auto;
+    padding-top: 32px;
 }
 
 .about-text p {
@@ -829,6 +836,7 @@ section {
 .stats-grid {
     display: grid;
     gap: 16px;
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .stat-card {
