@@ -1,6 +1,6 @@
 /**
  * Supabase Client with Authentication
- * Handles Google OAuth sign-in/out and user profile management
+ * Handles Google Sign-In with token exchange for branded OAuth experience
  */
 
 // Prevent double-loading
@@ -10,11 +10,16 @@ if (!window.SupabaseClient) {
     const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
 
+    // Google OAuth Client ID (for branded sign-in on victordelrosal.com)
+    const GOOGLE_CLIENT_ID = '67204010920-ifejjqhm4128lk0gfnlkv3p9cdq7o1tv.apps.googleusercontent.com';
+
     // Initialize Supabase client (requires supabase-js to be loaded first)
     let supabase = null;
     let currentUser = null;
     let commentUserProfile = null;
     let authStateListeners = [];
+    let googleScriptLoaded = false;
+    let googleScriptLoading = false;
 
     /**
      * Initialize the Supabase client
@@ -81,27 +86,158 @@ if (!window.SupabaseClient) {
     }
 
     /**
-     * Sign in with Google OAuth
-     * Redirects to Google sign-in page
+     * Load Google Identity Services script
      */
-    async function signInWithGoogle() {
+    function loadGoogleScript() {
+      return new Promise((resolve, reject) => {
+        if (googleScriptLoaded) {
+          resolve();
+          return;
+        }
+
+        if (googleScriptLoading) {
+          // Wait for existing load
+          const checkLoaded = setInterval(() => {
+            if (googleScriptLoaded) {
+              clearInterval(checkLoaded);
+              resolve();
+            }
+          }, 100);
+          return;
+        }
+
+        googleScriptLoading = true;
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          googleScriptLoaded = true;
+          googleScriptLoading = false;
+          resolve();
+        };
+        script.onerror = () => {
+          googleScriptLoading = false;
+          reject(new Error('Failed to load Google Identity Services'));
+        };
+        document.head.appendChild(script);
+      });
+    }
+
+    /**
+     * Handle Google credential response and exchange with Supabase
+     */
+    async function handleGoogleCredential(response) {
       if (!supabase) {
         console.error('Supabase not initialized');
         return;
       }
 
       try {
-        const { error } = await supabase.auth.signInWithOAuth({
+        const { data, error } = await supabase.auth.signInWithIdToken({
           provider: 'google',
-          options: {
-            redirectTo: window.location.href
-          }
+          token: response.credential,
         });
 
         if (error) {
-          console.error('Sign in error:', error);
+          console.error('Token exchange error:', error);
           throw error;
         }
+
+        return data;
+      } catch (error) {
+        console.error('Failed to exchange token:', error);
+        throw error;
+      }
+    }
+
+    /**
+     * Sign in with Google
+     * Uses Google Identity Services for branded sign-in experience
+     * Shows "Continue to victordelrosal.com" instead of ugly Supabase URL
+     */
+    async function signInWithGoogle() {
+      if (!supabase) {
+        if (!initSupabase()) {
+          console.error('Supabase not initialized');
+          return;
+        }
+      }
+
+      try {
+        // Load Google Identity Services if not already loaded
+        await loadGoogleScript();
+
+        // Use Google's OAuth2 popup flow
+        const client = google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'openid email profile',
+          callback: () => {}, // Will be overridden
+        });
+
+        // For ID token flow, use the ID client instead
+        return new Promise((resolve, reject) => {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: async (response) => {
+              try {
+                await handleGoogleCredential(response);
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            },
+          });
+
+          // Trigger the One Tap or popup
+          google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed()) {
+              // One Tap not available, fall back to button click flow
+              // Create a temporary container for Google button
+              const container = document.createElement('div');
+              container.style.position = 'fixed';
+              container.style.top = '50%';
+              container.style.left = '50%';
+              container.style.transform = 'translate(-50%, -50%)';
+              container.style.zIndex = '10000';
+              container.style.background = 'white';
+              container.style.padding = '20px';
+              container.style.borderRadius = '8px';
+              container.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+              container.id = 'google-signin-container';
+
+              // Add close button
+              const closeBtn = document.createElement('button');
+              closeBtn.innerHTML = '&times;';
+              closeBtn.style.cssText = 'position:absolute;top:5px;right:10px;border:none;background:none;font-size:24px;cursor:pointer;color:#666;';
+              closeBtn.onclick = () => {
+                container.remove();
+                reject(new Error('Sign in cancelled'));
+              };
+              container.appendChild(closeBtn);
+
+              // Add instruction text
+              const text = document.createElement('p');
+              text.textContent = 'Sign in with Google';
+              text.style.cssText = 'margin:0 0 15px 0;font-weight:500;text-align:center;';
+              container.appendChild(text);
+
+              // Render Google button
+              const buttonDiv = document.createElement('div');
+              container.appendChild(buttonDiv);
+              document.body.appendChild(container);
+
+              google.accounts.id.renderButton(buttonDiv, {
+                theme: 'outline',
+                size: 'large',
+                width: 250,
+              });
+            } else if (notification.isSkippedMoment()) {
+              // User closed One Tap
+              console.log('One Tap skipped');
+            }
+          });
+        });
       } catch (error) {
         console.error('Failed to sign in:', error);
         throw error;
@@ -286,7 +422,8 @@ if (!window.SupabaseClient) {
       getClient,
       // Expose constants for other modules
       SUPABASE_URL,
-      SUPABASE_ANON_KEY
+      SUPABASE_ANON_KEY,
+      GOOGLE_CLIENT_ID
     };
 
   })();
