@@ -1,0 +1,19 @@
+{
+  "name": "ai-daily-intel",
+  "version": "1.0.0",
+  "description": "Automated Daily AI Intel Scan for victordelrosal.com",
+  "main": "build-scan.js",
+  "type": "module",
+  "scripts": {
+    "build": "node build-scan.js",
+    "test": "node build-scan.js --dry-run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@supabase/supabase-js": "^2.45.0",
+    "rss-parser": "^3.13.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

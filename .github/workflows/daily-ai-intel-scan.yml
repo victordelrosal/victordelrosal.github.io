@@ -1,0 +1,43 @@
+name: Daily AI Intel Scan
+
+on:
+  schedule:
+    # Run at 5:00 AM UTC (GMT) every day
+    - cron: '0 5 * * *'
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  build-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ai-daily-intel/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ai-daily-intel
+
+      - name: Build daily AI intel scan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node build-scan.js
+        working-directory: ai-daily-intel
+
+      - name: Trigger wave build workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: wave_published
+          token: ${{ secrets.GITHUB_TOKEN }}

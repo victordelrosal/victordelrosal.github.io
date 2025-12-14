@@ -1,0 +1,115 @@
+{
+  "rss": [
+    {
+      "id": "openai-blog",
+      "name": "OpenAI Blog",
+      "url": "https://openai.com/blog/rss.xml",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/rss.xml",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "deepmind-blog",
+      "name": "Google DeepMind Blog",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "google-ai-blog",
+      "name": "Google AI Blog",
+      "url": "https://blog.google/technology/ai/rss/",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "nvidia-ai-blog",
+      "name": "NVIDIA AI Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "arxiv-cs-ai",
+      "name": "arXiv cs.AI",
+      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "priority": 2,
+      "enabled": true,
+      "maxItems": 5
+    },
+    {
+      "id": "arxiv-cs-lg",
+      "name": "arXiv cs.LG",
+      "url": "https://rss.arxiv.org/rss/cs.LG",
+      "priority": 2,
+      "enabled": true,
+      "maxItems": 5
+    },
+    {
+      "id": "mit-tech-review-ai",
+      "name": "MIT Technology Review AI",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "wired-ai",
+      "name": "Wired AI",
+      "url": "https://www.wired.com/feed/tag/ai/latest/rss",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "the-batch",
+      "name": "The Batch (deeplearning.ai)",
+      "url": "https://www.deeplearning.ai/the-batch/feed/",
+      "priority": 3,
+      "enabled": true
+    },
+    {
+      "id": "google-news-frontier-ai",
+      "name": "Google News: Frontier AI",
+      "url": "https://news.google.com/rss/search?q=frontier+AI+models+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-regulation",
+      "name": "Google News: AI Regulation",
+      "url": "https://news.google.com/rss/search?q=AI+regulation+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-generative-ai",
+      "name": "Google News: Generative AI Enterprise",
+      "url": "https://news.google.com/rss/search?q=generative+AI+enterprise+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    },
+    {
+      "id": "google-news-ai-safety",
+      "name": "Google News: AI Safety",
+      "url": "https://news.google.com/rss/search?q=AI+safety+when:1d&hl=en-US&gl=US&ceid=US:en",
+      "priority": 4,
+      "enabled": true
+    }
+  ],
+  "api": [
+    {
+      "id": "newsapi-ai",
+      "name": "NewsAPI AI",
+      "type": "newsapi",
+      "query": "artificial intelligence OR generative AI OR large language model",
+      "priority": 4,
+      "enabled": false,
+      "note": "Enable when NEWS_API_KEY is configured"
+    }
+  ]
+}
