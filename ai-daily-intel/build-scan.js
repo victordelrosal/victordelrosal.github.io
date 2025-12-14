@@ -258,6 +258,9 @@ async function synthesizeBriefing(items) {
 async function publishToSupabase(briefing) {
   const slug = `daily-ai-intel-scan-${briefing.dateString}`;
   const title = `Daily AI Intel Scan — ${briefing.formattedDate}`;
+  // Generate a note_id in the same format as Flux (YYYYMMDDHHMMSS.md)
+  // Using 'ai-scan-' prefix to distinguish from Flux notes
+  const noteId = `ai-scan-${briefing.dateString.replace(/-/g, '')}050000.md`;
 
   console.log(`\nPublishing to Supabase: ${slug}`);
 
@@ -284,6 +287,7 @@ async function publishToSupabase(briefing) {
     const { error } = await supabase
       .from('published_posts')
       .insert({
+        note_id: noteId,
         slug,
         title,
         content: briefing.html,
