@@ -723,6 +723,108 @@ section {
     border-radius: 100px;
 }
 
+/* ===== TRAINING LOGOS SCROLLER ===== */
+.training-logos {
+    margin: 2rem 0;
+}
+
+.training-logos h3 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark-secondary);
+    font-weight: 600;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 2rem;
+    border-radius: 8px;
+}
+
+.training-logos-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.training-logos-track {
+    display: flex;
+    gap: 3rem;
+    animation: scrollLogos 20s linear infinite;
+    width: max-content;
+}
+
+.training-logos-track:hover {
+    animation-play-state: paused;
+}
+
+.training-logos-track img {
+    height: 150px;
+    width: auto;
+    filter: grayscale(100%);
+    opacity: 0.8;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.training-logos-track img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.25);
+    z-index: 10;
+    position: relative;
+}
+
+@keyframes scrollLogos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 1.5rem)); }
+}
+
+/* Awards recognition box */
+.awards-box {
+    background: rgba(0, 102, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-left: 4px solid #C9A227;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.awards-box img {
+    height: 94px;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    opacity: 0.8;
+}
+
+.awards-box p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.awards-box strong {
+    color: #C9A227;
+}
+
+@media (max-width: 768px) {
+    .training-logos-track img {
+        height: 100px;
+    }
+
+    .awards-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .awards-box img {
+        height: 70px;
+    }
+}
+
 /* ===== 7. STATS GRID ===== */
 .stats-grid {
     display: grid;
