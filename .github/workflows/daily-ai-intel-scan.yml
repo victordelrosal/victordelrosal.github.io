@@ -35,9 +35,6 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: node build-scan.js
         working-directory: ai-daily-intel
-
-      - name: Trigger wave build workflow
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: wave_published
-          token: ${{ secrets.GITHUB_TOKEN }}
+        # Note: build-waves.yml runs every 30 minutes on schedule,
+        # so no explicit trigger needed. The static page will be
+        # generated automatically within 30 minutes of publishing.
