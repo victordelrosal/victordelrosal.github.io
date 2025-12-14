@@ -25,6 +25,7 @@ const HOURS_LOOKBACK = 24;
 const MAX_ITEMS_PER_SOURCE = 10;
 const MIN_ITEMS_REQUIRED = 3;
 const FUZZY_MATCH_THRESHOLD = 0.8;
+const HEADER_IMAGE_URL = 'https://victordelrosal.com/img/daily-ai-news-scan.png';
 
 // Initialize clients
 const supabase = createClient(
@@ -245,8 +246,12 @@ async function synthesizeBriefing(items) {
     throw new Error('Unexpected response type from Claude');
   }
 
+  // Prepend header image to the content
+  const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">\n\n`;
+  const htmlWithImage = headerImageHtml + content.text;
+
   return {
-    html: content.text,
+    html: htmlWithImage,
     dateString,
     formattedDate,
   };
@@ -278,6 +283,7 @@ async function publishToSupabase(briefing) {
       .update({
         title,
         content: briefing.html,
+        image: HEADER_IMAGE_URL,
         published_at: new Date().toISOString(),
       })
       .eq('slug', slug);
@@ -291,6 +297,7 @@ async function publishToSupabase(briefing) {
         slug,
         title,
         content: briefing.html,
+        image: HEADER_IMAGE_URL,
         published_at: new Date().toISOString(),
       });
 
