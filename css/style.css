@@ -823,6 +823,22 @@ section {
 .section-dark {
     background: #0a0a0a;
     color: var(--text-white);
+    position: relative;
+}
+
+.section-dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/img/wavesbackgr_d.png') center/cover no-repeat;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.section-dark > * {
+    position: relative;
+    z-index: 1;
 }
 
 .section-dark .section-label {
