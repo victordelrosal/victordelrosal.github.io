@@ -5632,6 +5632,13 @@ footer {
     height: 51px;
 }
 
+/* Hide thumbnails on mobile - desktop only */
+@media (max-width: 768px) {
+    .wave-thumbnails--homepage {
+        display: none;
+    }
+}
+
 .wave-thumb-item {
     position: relative;
     width: 46px;
