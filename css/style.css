@@ -1047,6 +1047,7 @@ section {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .stat-label {
