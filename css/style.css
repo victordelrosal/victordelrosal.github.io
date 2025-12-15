@@ -1006,7 +1006,6 @@ section {
 .stats-grid {
     display: grid;
     gap: 16px;
-    grid-template-rows: repeat(3, 1fr);
 }
 
 .stat-card {
