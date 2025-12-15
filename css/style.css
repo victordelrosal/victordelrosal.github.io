@@ -5613,12 +5613,23 @@ footer {
     flex-wrap: wrap;
 }
 
-/* Homepage variant - centered under search bar */
+/* Homepage variant - flush left/right with even spacing */
 .wave-thumbnails--homepage {
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 24px;
     margin-bottom: 32px;
-    padding: 0 20px;
+    padding: 0;
+}
+
+/* Larger thumbnails for homepage (10% bigger: 46px -> 51px) */
+.wave-thumbnails--homepage .wave-thumb-item {
+    width: 51px;
+    height: 51px;
+}
+
+.wave-thumbnails--homepage .wave-thumb-item .thumb-img {
+    width: 51px;
+    height: 51px;
 }
 
 .wave-thumb-item {
