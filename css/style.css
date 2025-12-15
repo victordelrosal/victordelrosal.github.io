@@ -853,6 +853,7 @@ section {
 .about-text .tags {
     margin-top: 0;
     padding-top: 12px;
+    margin-bottom: 16px;
 }
 
 .about-text p {
