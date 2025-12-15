@@ -1378,12 +1378,12 @@ section {
     font-family: 'Orbitron', var(--font-heading);
     font-size: 28px;
     font-weight: 700;
-    color: #00f0ff;
+    color: #00D4FF;
     margin-bottom: 24px;
     text-align: center;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.4);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.6), 0 0 20px rgba(0, 212, 255, 0.4);
     position: relative;
     z-index: 10;
 }
