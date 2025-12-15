@@ -1005,7 +1005,7 @@ section {
 }
 
 .stat-number {
-    font-size: 48px;
+    font-size: 70px;
     font-weight: 700;
     background: linear-gradient(135deg, var(--blue-7) 0%, var(--accent-cyan) 100%);
     -webkit-background-clip: text;
@@ -1017,6 +1017,13 @@ section {
 .stat-label {
     font-size: 15px;
     color: var(--text-dark-secondary);
+}
+
+/* Center stat cards content on mobile */
+@media (max-width: 768px) {
+    .stat-card {
+        text-align: center;
+    }
 }
 
 /* ===== 8. WORK SECTION ===== */
