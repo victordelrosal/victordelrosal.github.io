@@ -1939,13 +1939,13 @@ section {
 .contact-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 16px;
+    gap: 16px;
+    font-size: 32px;
     font-weight: 600;
     color: var(--text-white);
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 14px 28px;
+    padding: 28px 56px;
     border-radius: 100px;
     text-decoration: none;
     transition: all 0.3s var(--ease-out);
@@ -1955,6 +1955,16 @@ section {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
+}
+
+/* Mobile: ensure contact link fits screen */
+@media (max-width: 768px) {
+    .contact-link {
+        font-size: 18px;
+        padding: 16px 32px;
+        gap: 10px;
+        max-width: calc(100% - 48px);
+    }
 }
 
 /* ===== 9.5 WAVE NAVBAR (waves.html) ===== */
