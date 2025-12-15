@@ -712,6 +712,20 @@ nav {
         0 0 280px rgba(0, 80, 180, 0.2);
 }
 
+/* Mobile: Fit hero button to screen width */
+@media (max-width: 768px) {
+    .btn-jumbo {
+        padding: 16px 40px;
+        font-size: 24px;
+        width: calc(100% - 40px);
+        max-width: 320px;
+    }
+
+    .btn-jumbo:hover {
+        transform: scale(1.05);
+    }
+}
+
 .btn-secondary {
     display: inline-flex;
     align-items: center;
