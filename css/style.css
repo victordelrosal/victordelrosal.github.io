@@ -850,12 +850,16 @@ section {
 }
 
 .about-text .tags {
-    margin-top: auto;
-    padding-top: 32px;
+    margin-top: 0;
+    padding-top: 12px;
 }
 
 .about-text p {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+}
+
+.about-text p:last-of-type {
+    margin-bottom: 0;
 }
 
 .about-text strong {
