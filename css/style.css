@@ -1416,12 +1416,14 @@ section {
     cursor: pointer;
     transition: all 0.3s var(--ease-out);
     filter: saturate(1.2) brightness(1.05);
+    transform-origin: center;
+    transform-box: fill-box;
 }
 
 .wedge:hover,
 .wedge.active {
     filter: saturate(1.5) brightness(1.3) drop-shadow(0 0 25px currentColor) drop-shadow(0 0 50px currentColor);
-    transform-origin: center;
+    transform: scale(1.15);
 }
 
 /* Glow overlay effect */
