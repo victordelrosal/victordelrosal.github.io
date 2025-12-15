@@ -781,6 +781,15 @@ section {
     margin-bottom: 80px;
 }
 
+.about-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
 .section-label {
     display: inline-flex;
     font-size: 12px;
