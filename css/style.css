@@ -830,8 +830,8 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/img/wavesbackgr_d.png') center/cover no-repeat;
-    opacity: 0.15;
+    background: url('/img/wavesbackgr_d.png') repeat;
+    opacity: 0.25;
     pointer-events: none;
     z-index: 0;
 }
