@@ -837,8 +837,9 @@ section {
 .about-container {
     display: grid;
     grid-template-columns: 1fr 400px;
-    gap: 80px;
+    gap: 40px;
     align-items: stretch;
+    margin-bottom: 0;
 }
 
 .about-text {
@@ -901,7 +902,7 @@ section {
 
 /* ===== TRAINING LOGOS SCROLLER ===== */
 .training-logos {
-    margin: 2rem 0;
+    margin: 0;
 }
 
 .training-logos h3 {
@@ -911,7 +912,7 @@ section {
     color: var(--text-dark-secondary);
     font-weight: 600;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
-    padding-top: 2rem;
+    padding-top: 1rem;
     border-radius: 8px;
 }
 
