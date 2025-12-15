@@ -1436,6 +1436,12 @@ section {
     height: 110px;
     perspective: 500px;
     z-index: 10;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.sphere-container:hover {
+    transform: translate(-50%, -50%) scale(1.33);
 }
 
 .metallic-sphere {
