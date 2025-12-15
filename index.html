@@ -388,30 +388,26 @@
                         path.setAttribute('data-label-id', `label-${i}`);
                     });
 
-                    // Center circle
-                    const centerBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    centerBg.setAttribute('cx', cx);
-                    centerBg.setAttribute('cy', cy);
-                    centerBg.setAttribute('r', innerRadius - 5);
-                    centerBg.setAttribute('class', 'center-circle');
-                    svg.appendChild(centerBg);
-
-                    // Center text
-                    const centerText1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    centerText1.setAttribute('x', cx);
-                    centerText1.setAttribute('y', cy - 5);
-                    centerText1.setAttribute('class', 'center-text');
-                    centerText1.textContent = '160+';
-                    svg.appendChild(centerText1);
-
-                    const centerText2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    centerText2.setAttribute('x', cx);
-                    centerText2.setAttribute('y', cy + 12);
-                    centerText2.setAttribute('class', 'center-subtext');
-                    centerText2.textContent = 'PROJECTS';
-                    svg.appendChild(centerText2);
-
                     container.appendChild(svg);
+
+                    // Create 3D Metallic Sphere in center
+                    const sphereContainer = document.createElement('div');
+                    sphereContainer.className = 'sphere-container';
+
+                    const sphere = document.createElement('div');
+                    sphere.className = 'metallic-sphere';
+
+                    const sphereInner = document.createElement('div');
+                    sphereInner.className = 'sphere-inner';
+
+                    const sphereText = document.createElement('div');
+                    sphereText.className = 'sphere-text';
+                    sphereText.innerHTML = '<span class="sphere-number">160+</span><span class="sphere-label">PROJECTS</span>';
+
+                    sphere.appendChild(sphereInner);
+                    sphereContainer.appendChild(sphere);
+                    sphereContainer.appendChild(sphereText);
+                    container.appendChild(sphereContainer);
                 })();
                 </script>
 
