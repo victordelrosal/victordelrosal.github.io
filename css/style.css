@@ -5613,6 +5613,14 @@ footer {
     flex-wrap: wrap;
 }
 
+/* Homepage variant - centered under search bar */
+.wave-thumbnails--homepage {
+    justify-content: center;
+    margin-top: 24px;
+    margin-bottom: 32px;
+    padding: 0 20px;
+}
+
 .wave-thumb-item {
     position: relative;
     width: 46px;

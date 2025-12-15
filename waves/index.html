@@ -118,6 +118,9 @@
                 <div id="waves-search-results" class="waves-search-results" style="display: none;"></div>
             </div>
 
+            <!-- Wave Thumbnails Carousel -->
+            <div id="wave-thumbnails" class="wave-thumbnails wave-thumbnails--homepage"></div>
+
             <!-- Loading State -->
             <div id="loading" class="loading">
                 <div class="loading-spinner"></div>
@@ -1165,6 +1168,109 @@
                 console.log('[waves] Render complete - waves visible');
 
                 GalleryController.init();
+
+                // Initialize wave thumbnails carousel
+                (function initWaveThumbnails() {
+                    const thumbnailsContainer = document.getElementById('wave-thumbnails');
+                    if (!thumbnailsContainer) return;
+
+                    function getFirstImage(html) {
+                        const temp = document.createElement('div');
+                        temp.innerHTML = html;
+                        const img = temp.querySelector('img');
+                        return img ? img.src : null;
+                    }
+
+                    function formatThumbDate(dateStr) {
+                        const date = new Date(dateStr);
+                        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    }
+
+                    const postsWithImages = posts
+                        .filter(p => getFirstImage(p.content))
+                        .slice(0, 12);
+
+                    postsWithImages.forEach(p => {
+                        const thumb = document.createElement('a');
+                        thumb.href = '/' + p.slug;
+                        thumb.className = 'wave-thumb-item';
+                        const imageUrl = getFirstImage(p.content);
+                        thumb.innerHTML = `
+                            <div class="thumb-img">
+                                <img src="${imageUrl}" alt="" loading="lazy">
+                            </div>
+                            <div class="thumb-preview">
+                                <div class="thumb-preview-img">
+                                    <img src="${imageUrl}" alt="">
+                                </div>
+                                <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
+                                <div class="thumb-preview-title">${escapeHTML(p.title)}</div>
+                            </div>
+                        `;
+                        thumbnailsContainer.appendChild(thumb);
+                    });
+
+                    // Ocean Wave Effect
+                    (function initOceanWave() {
+                        const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
+                        if (thumbs.length === 0) return;
+
+                        let isWaveActive = false;
+                        let waveTimeout = null;
+
+                        const WAVE_SPEED = 60;
+                        const MAX_HEIGHT = -12;
+                        const MAX_SCALE = 0.05;
+                        const DECAY = 0.7;
+
+                        function clearWaveClasses() {
+                            thumbs.forEach(thumb => {
+                                thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
+                            });
+                        }
+
+                        function triggerWave(epicenterIndex) {
+                            if (waveTimeout) clearTimeout(waveTimeout);
+                            clearWaveClasses();
+                            isWaveActive = true;
+
+                            thumbs.forEach((thumb, i) => {
+                                const distance = Math.abs(i - epicenterIndex);
+                                const thumbImg = thumb.querySelector('.thumb-img');
+
+                                if (distance === 0) {
+                                    thumb.classList.add('wave-active');
+                                } else {
+                                    const amplitude = Math.pow(DECAY, distance);
+                                    const waveHeight = MAX_HEIGHT * amplitude;
+                                    const waveScale = MAX_SCALE * amplitude;
+                                    const delay = distance * WAVE_SPEED;
+
+                                    thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
+                                    thumbImg.style.setProperty('--wave-scale', waveScale);
+                                    thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
+
+                                    thumb.classList.add('wave-ripple');
+                                }
+                            });
+                        }
+
+                        function settleWave() {
+                            isWaveActive = false;
+                            clearWaveClasses();
+                            thumbs.forEach(thumb => thumb.classList.add('wave-settling'));
+                            waveTimeout = setTimeout(() => clearWaveClasses(), 600);
+                        }
+
+                        thumbs.forEach((thumb, index) => {
+                            thumb.addEventListener('mouseenter', () => triggerWave(index));
+                        });
+
+                        thumbnailsContainer.addEventListener('mouseleave', () => {
+                            if (isWaveActive) settleWave();
+                        });
+                    })();
+                })();
 
                 // Initialize search and filter
                 WaveSearch.init();
