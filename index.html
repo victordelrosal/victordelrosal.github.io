@@ -25,6 +25,11 @@
     <meta name="twitter:description" content="AI educator, Chief AI Officer at fiveinnolabs, author of Humanlike AI book">
     <meta name="twitter:image" content="https://victordelrosal.com/img/og-image.png">
 
+    <!-- HUD Fonts for Technology Fingerprint -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
     <!-- Shared Stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -40,12 +45,24 @@
     <script src="/js/navbar.js"></script>
 
     <main id="main-content">
+        <!-- SVG Filter for Magnifying Glass Distortion -->
+        <svg class="svg-filters" aria-hidden="true" style="position:absolute;width:0;height:0;">
+            <defs>
+                <filter id="magnify-lens" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="blur"/>
+                    <feDisplacementMap in="SourceGraphic" in2="blur" scale="0" xChannelSelector="R" yChannelSelector="G" result="distort"/>
+                </filter>
+            </defs>
+        </svg>
+
         <!-- Hero -->
-        <section class="hero">
+        <section class="hero" id="hero">
+            <canvas id="ripple-canvas" class="ripple-canvas"></canvas>
+            <div id="magnify-lens" class="magnify-lens"></div>
             <div class="hero-bg">
-                <div class="orb orb-1"></div>
-                <div class="orb orb-2"></div>
-                <div class="orb orb-3"></div>
+                <div class="orb orb-1" data-parallax-speed="0.3"></div>
+                <div class="orb orb-2" data-parallax-speed="0.5"></div>
+                <div class="orb orb-3" data-parallax-speed="0.7"></div>
             </div>
 
             <!-- Aquarium Wave Effect -->
@@ -78,13 +95,7 @@
                     Author, lecturer, and Chief AI Officer helping leaders navigate the AI transformation with clarity and purpose.
                 </p>
                 <div class="hero-cta">
-                    <a href="/waves/" class="btn-primary"><span>Read My Thinking</span></a>
-                    <a href="#work" class="btn-secondary">
-                        View Work
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                    <a href="/waves/" class="btn-primary btn-jumbo"><span>Read Latest Waves</span></a>
                 </div>
             </div>
         </section>
@@ -175,82 +186,323 @@
                     <p class="section-label">Work</p>
                     <h2 class="section-title reveal">What I've Built</h2>
                     <p class="section-subtitle reveal reveal-delay-1">
-                        Books, programs, and ventures at the intersection of AI and business.
+                        160+ projects spanning education, enterprise tools, creative experiments, and applied AI.
                     </p>
                 </div>
 
-                <div class="work-grid">
-                    <div class="work-card reveal reveal-delay-1">
-                        <h3>Humanlike: the AI Transformation</h3>
-                        <p class="meta">2024 · Book</p>
-                        <p>
-                            Exploring the intersection of generative AI and business. A practitioner's guide to understanding and implementing GenAI in organizational contexts.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">GenAI</span>
-                            <span class="tag">Business</span>
-                            <span class="tag">Strategy</span>
+                <!-- Builder Stats -->
+                <div class="builder-stats reveal reveal-delay-3">
+                    <div class="builder-stat">
+                        <span class="builder-stat-number">160+</span>
+                        <span class="builder-stat-label">Projects Built</span>
+                    </div>
+                    <div class="builder-stat">
+                        <span class="builder-stat-number">10+</span>
+                        <span class="builder-stat-label">Languages & Frameworks</span>
+                    </div>
+                    <div class="builder-stat">
+                        <span class="builder-stat-number">Full</span>
+                        <span class="builder-stat-label">Stack Coverage</span>
+                    </div>
+                </div>
+
+                <!-- Tech Stack Visualization - Radial Wedge Chart -->
+                <div class="tech-radial-chart-wrapper reveal reveal-delay-4">
+                    <div class="tech-radial-chart">
+                        <div class="hud-scanlines"></div>
+                        <div class="hud-corner-tl"></div>
+                        <div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div>
+                        <div class="hud-corner-br"></div>
+                        <h3>Technology Fingerprint</h3>
+                        <div class="radial-chart-container" id="radial-chart">
+                            <!-- Chart will be generated by JavaScript -->
+                        </div>
+                        <div class="radial-tooltip" id="radial-tooltip"></div>
+                    </div>
+                </div>
+
+                <script>
+                (function() {
+                    const data = [
+                        // Frontend (neon blue spectrum)
+                        { name: 'HTML', projects: 111, color: '#00f0ff', category: 'frontend' },
+                        { name: 'JavaScript', projects: 35, color: '#00d4ff', category: 'frontend' },
+                        { name: 'CSS', projects: 12, color: '#0099ff', category: 'frontend' },
+                        { name: 'TypeScript', projects: 11, color: '#0066ff', category: 'frontend' },
+                        { name: 'React', projects: 6, color: '#00ccff', category: 'frontend' },
+                        // Backend (deeper blues)
+                        { name: 'Node.js', projects: 8, color: '#0088ff', category: 'backend' },
+                        { name: 'Python', projects: 7, color: '#00aaff', category: 'backend' },
+                        { name: 'Go', projects: 2, color: '#00bbff', category: 'backend' },
+                        // Data (electric blues)
+                        { name: 'APIs', projects: 52, color: '#3399ff', category: 'data' },
+                        { name: 'Supabase', projects: 4, color: '#00ddff', category: 'data' },
+                        { name: 'Firebase', projects: 3, color: '#0077ff', category: 'data' },
+                        // AI (cyan spectrum)
+                        { name: 'OpenAI', projects: 15, color: '#00e0ff', category: 'ai' },
+                        { name: 'Claude', projects: 12, color: '#00c8ff', category: 'ai' },
+                        { name: 'Gemini', projects: 8, color: '#00b0ff', category: 'ai' }
+                    ];
+
+                    const container = document.getElementById('radial-chart');
+                    const tooltip = document.getElementById('radial-tooltip');
+                    const size = 460;
+                    const cx = size / 2;
+                    const cy = size / 2;
+                    const innerRadius = 55;
+                    const maxRadius = 185;
+
+                    // Use log scale to balance proportions
+                    const logScale = (value) => Math.log(value + 1);
+                    const maxLog = logScale(Math.max(...data.map(d => d.projects)));
+
+                    // Create SVG
+                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+                    svg.setAttribute('class', 'radial-svg');
+
+                    // Add guide circles
+                    [85, 115, 145, 175].forEach((r, i) => {
+                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        circle.setAttribute('cx', cx);
+                        circle.setAttribute('cy', cy);
+                        circle.setAttribute('r', r);
+                        circle.setAttribute('class', 'guide-circle');
+                        svg.appendChild(circle);
+                    });
+
+                    // Outer glowing ring
+                    const outerRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    outerRing.setAttribute('cx', cx);
+                    outerRing.setAttribute('cy', cy);
+                    outerRing.setAttribute('r', maxRadius + 5);
+                    outerRing.setAttribute('class', 'outer-ring');
+                    svg.appendChild(outerRing);
+
+                    // Create wedges
+                    const totalItems = data.length;
+                    const anglePerItem = (2 * Math.PI) / totalItems;
+                    const gapAngle = 0.02; // Small gap between wedges
+
+                    data.forEach((item, i) => {
+                        const startAngle = i * anglePerItem - Math.PI / 2 + gapAngle / 2;
+                        const endAngle = (i + 1) * anglePerItem - Math.PI / 2 - gapAngle / 2;
+                        // Log scale for balanced proportions
+                        const normalizedValue = logScale(item.projects) / maxLog;
+                        const outerRadius = innerRadius + (normalizedValue * (maxRadius - innerRadius));
+
+                        // Create wedge path
+                        const x1 = cx + innerRadius * Math.cos(startAngle);
+                        const y1 = cy + innerRadius * Math.sin(startAngle);
+                        const x2 = cx + outerRadius * Math.cos(startAngle);
+                        const y2 = cy + outerRadius * Math.sin(startAngle);
+                        const x3 = cx + outerRadius * Math.cos(endAngle);
+                        const y3 = cy + outerRadius * Math.sin(endAngle);
+                        const x4 = cx + innerRadius * Math.cos(endAngle);
+                        const y4 = cy + innerRadius * Math.sin(endAngle);
+
+                        const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', `
+                            M ${x1} ${y1}
+                            L ${x2} ${y2}
+                            A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${x3} ${y3}
+                            L ${x4} ${y4}
+                            A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${x1} ${y1}
+                            Z
+                        `);
+                        path.setAttribute('fill', item.color);
+                        path.setAttribute('class', 'wedge');
+                        path.setAttribute('data-name', item.name);
+                        path.setAttribute('data-projects', item.projects);
+
+                        // Hover events
+                        path.addEventListener('mouseenter', function(e) {
+                            this.classList.add('active');
+                            tooltip.innerHTML = `<strong>${item.name}</strong><br>${item.projects} projects`;
+                            tooltip.classList.add('visible');
+                            // Light up label in matching color
+                            const labelId = this.getAttribute('data-label-id');
+                            const label = document.getElementById(labelId);
+                            if (label) {
+                                label.style.fill = item.color;
+                                label.style.filter = `drop-shadow(0 0 8px ${item.color}) drop-shadow(0 0 15px ${item.color})`;
+                            }
+                        });
+
+                        path.addEventListener('mousemove', function(e) {
+                            const rect = container.getBoundingClientRect();
+                            tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+                            tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+                        });
+
+                        path.addEventListener('mouseleave', function() {
+                            this.classList.remove('active');
+                            tooltip.classList.remove('visible');
+                            // Reset label to white
+                            const labelId = this.getAttribute('data-label-id');
+                            const label = document.getElementById(labelId);
+                            if (label) {
+                                label.style.fill = '#ffffff';
+                                label.style.filter = '';
+                            }
+                        });
+
+                        svg.appendChild(path);
+
+                        // Add label
+                        const labelAngle = (startAngle + endAngle) / 2;
+                        const labelRadius = maxRadius + 20;
+                        const labelX = cx + labelRadius * Math.cos(labelAngle);
+                        const labelY = cy + labelRadius * Math.sin(labelAngle);
+
+                        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        text.setAttribute('x', labelX);
+                        text.setAttribute('y', labelY);
+                        text.setAttribute('class', 'wedge-label');
+
+                        // Rotate text to be readable (flip if on left side)
+                        let angleDeg = labelAngle * 180 / Math.PI;
+                        let rotation = angleDeg + 90;
+                        let anchor = 'middle';
+
+                        // For labels on left side, flip them
+                        if (angleDeg > 0 && angleDeg < 180) {
+                            // Bottom half - text reads left to right
+                            rotation = angleDeg - 90;
+                        } else {
+                            // Top half - text reads left to right
+                            rotation = angleDeg + 90;
+                        }
+
+                        text.setAttribute('transform', `rotate(${rotation}, ${labelX}, ${labelY})`);
+                        text.setAttribute('id', `label-${i}`);
+                        text.setAttribute('data-color', item.color);
+                        text.textContent = item.name;
+
+                        svg.appendChild(text);
+
+                        // Link wedge hover to label color
+                        path.setAttribute('data-label-id', `label-${i}`);
+                    });
+
+                    // Center circle
+                    const centerBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    centerBg.setAttribute('cx', cx);
+                    centerBg.setAttribute('cy', cy);
+                    centerBg.setAttribute('r', innerRadius - 5);
+                    centerBg.setAttribute('class', 'center-circle');
+                    svg.appendChild(centerBg);
+
+                    // Center text
+                    const centerText1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    centerText1.setAttribute('x', cx);
+                    centerText1.setAttribute('y', cy - 5);
+                    centerText1.setAttribute('class', 'center-text');
+                    centerText1.textContent = '160+';
+                    svg.appendChild(centerText1);
+
+                    const centerText2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    centerText2.setAttribute('x', cx);
+                    centerText2.setAttribute('y', cy + 12);
+                    centerText2.setAttribute('class', 'center-subtext');
+                    centerText2.textContent = 'PROJECTS';
+                    svg.appendChild(centerText2);
+
+                    container.appendChild(svg);
+                })();
+                </script>
+
+                <!-- Project Types Radial -->
+                <div class="project-types reveal reveal-delay-5">
+                    <h3>What I Build</h3>
+                    <div class="types-grid">
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M9 9h6M9 12h6M9 15h4"/>
+                            </svg>
+                            <span class="type-name">Web Apps</span>
+                            <span class="type-count">100+</span>
+                        </div>
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            <span class="type-name">Full-Stack</span>
+                            <span class="type-count">15+</span>
+                        </div>
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                            </svg>
+                            <span class="type-name">AI-Powered</span>
+                            <span class="type-count">25+</span>
+                        </div>
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <path d="M12 18v-6M9 15l3 3 3-3"/>
+                            </svg>
+                            <span class="type-name">Dev Tools</span>
+                            <span class="type-count">10+</span>
+                        </div>
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span class="type-name">Education</span>
+                            <span class="type-count">20+</span>
+                        </div>
+                        <div class="type-card">
+                            <svg class="type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                            </svg>
+                            <span class="type-name">Creative</span>
+                            <span class="type-count">15+</span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="work-card reveal reveal-delay-2">
-                        <h3>Disruption: Emerging Technologies</h3>
-                        <p class="meta">2015 · Textbook</p>
-                        <p>
-                            Analyzing the impact of AI, robotics, 3D printing, autonomous vehicles, and more. Used as required reading at Texas A&M and universities across 3 countries.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Future of Work</span>
-                            <span class="tag">Innovation</span>
+                <!-- Books Showcase -->
+                <div class="books-section reveal reveal-delay-6">
+                    <h3 class="books-title">Books I Wrote</h3>
+                <div class="books-showcase">
+                    <a href="https://www.amazon.co.uk/Humanlike-Transformation-Victor-del-Rosal/dp/B0D9JCJVQ8" target="_blank" rel="noopener" class="book-card">
+                        <img src="/img/book-humanlike.jpg" alt="Humanlike: The AI Transformation book cover" class="book-cover">
+                        <div class="book-info">
+                            <h3>Humanlike: The AI Transformation</h3>
+                            <p class="book-year">2024</p>
+                            <p class="book-desc">A practitioner's guide to understanding and implementing GenAI in organizational contexts.</p>
                         </div>
-                    </div>
+                    </a>
+                    <a href="https://www.amazon.co.uk/Disruption-Emerging-Technologies-Future-Work/dp/1514173948" target="_blank" rel="noopener" class="book-card">
+                        <img src="/img/book-disruption.jpg" alt="Disruption: Emerging Technologies and the Future of Work book cover" class="book-cover">
+                        <div class="book-info">
+                            <h3>Disruption: Emerging Technologies</h3>
+                            <p class="book-year">2015</p>
+                            <p class="book-desc">Used as a textbook in universities across Ireland, Switzerland, and the US. #12 on BookAuthority's Best Technology Trends Books.</p>
+                        </div>
+                    </a>
+                </div>
+                </div>
 
-                    <div class="work-card reveal reveal-delay-3">
-                        <h3>HELIOS Executive Masterclass</h3>
-                        <p class="meta">2023 · Program</p>
-                        <p>
-                            Comprehensive GenAI training for executives. Strategic AI roadmapping + hands-on implementation frameworks designed for fast value delivery.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Executive Ed</span>
-                            <span class="tag">Training</span>
-                        </div>
-                    </div>
-
-                    <div class="work-card reveal reveal-delay-4">
-                        <h3>fiveinnolabs AI Consultancy</h3>
-                        <p class="meta">2022–Present · Venture</p>
-                        <p>
-                            Turning emerging GenAI capabilities into practical, high-impact solutions for businesses. From strategy to implementation.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Consulting</span>
-                            <span class="tag">Applied AI</span>
-                        </div>
-                    </div>
-
-                    <div class="work-card reveal reveal-delay-5">
-                        <h3>National Student Competition Wins</h3>
-                        <p class="meta">2017–2019 · Mentorship</p>
-                        <p>
-                            Mentored NCI teams to 4 national wins: Solar-bot, Diabetic Retinopathy EyeScan ML, EZ-Leap contactless transport, Codaline cloud platform.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Mentorship</span>
-                            <span class="tag">Innovation</span>
-                        </div>
-                    </div>
-
-                    <div class="work-card reveal reveal-delay-6">
-                        <h3>COMPASS Development Framework</h3>
-                        <p class="meta">2024 · Open Source</p>
-                        <p>
-                            A comprehensive framework for AI-assisted development that encodes software engineering best practices into operational protocols.
-                        </p>
-                        <div class="tags">
-                            <span class="tag">Software</span>
-                            <span class="tag">AI Tools</span>
-                        </div>
+                <!-- Philosophy -->
+                <div class="builder-philosophy reveal reveal-delay-7">
+                    <blockquote>
+                        "I build to learn, teach to share, and ship to validate. Every project is a hypothesis about how technology can create value."
+                    </blockquote>
+                    <div class="philosophy-tags">
+                        <span class="tag">Rapid Prototyping</span>
+                        <span class="tag">AI-First Development</span>
+                        <span class="tag">Ship Early, Iterate Often</span>
                     </div>
                 </div>
             </section>
@@ -278,8 +530,9 @@
 
     <!-- Footer -->
     <footer>
-        <p class="footer-copyright">© 2025 Victor del Rosal</p>
+        <p class="footer-copyright">© <span id="footer-year"></span> Victor del Rosal</p>
     </footer>
+    <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 
     <!-- Scroll Reveal -->
     <script>
@@ -296,17 +549,178 @@
 
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // Parallax effect for orbs
-        document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.orb');
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        // Parallax depth effect for orbs - scroll based
+        let mouseX = 0, mouseY = 0;
 
-            orbs.forEach((orb, i) => {
-                const factor = (i + 1) * 0.5;
-                orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-            });
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+            updateOrbPositions();
         });
+
+        window.addEventListener('scroll', () => {
+            updateOrbPositions();
+        }, { passive: true });
+
+        function updateOrbPositions() {
+            const scrollY = window.scrollY;
+            const orbs = document.querySelectorAll('.orb');
+
+            orbs.forEach((orb) => {
+                const speed = parseFloat(orb.dataset.parallaxSpeed) || 0.5;
+                const scrollOffset = scrollY * speed;
+                const mouseFactorX = mouseX * (1 + speed);
+                const mouseFactorY = mouseY * (1 + speed);
+
+                // Combine scroll parallax with mouse parallax
+                orb.style.transform = `translate3d(${mouseFactorX}px, ${mouseFactorY + scrollOffset}px, 0) scale(${1 - speed * 0.1})`;
+            });
+        }
+
+        // Also add parallax to aquarium waves if they exist
+        const aquariumWaves = document.querySelector('.aquarium-waves');
+        if (aquariumWaves) {
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                aquariumWaves.style.transform = `translateY(${scrollY * 0.2}px)`;
+            }, { passive: true });
+        }
+
+        // Liquid Water Ripple Effect with Magnifying Lens
+        (function() {
+            const canvas = document.getElementById('ripple-canvas');
+            const lens = document.getElementById('magnify-lens');
+            if (!canvas || !lens) return;
+
+            const ctx = canvas.getContext('2d');
+            const hero = document.getElementById('hero');
+
+            // Ripple configuration
+            const config = {
+                strength: 2,
+                radius: 80,
+                speed: 1.5
+            };
+
+            let points = [];
+            let lastPoint = { x: 0, y: 0 };
+            let mouseX = 0, mouseY = 0;
+
+            // Resize canvas to match hero
+            function resizeCanvas() {
+                const rect = hero.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Track mouse movement
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Update lens position
+                mouseX = x;
+                mouseY = y;
+                lens.style.left = x + 'px';
+                lens.style.top = y + 'px';
+
+                // Only add new point if moved far enough
+                const dx = x - lastPoint.x;
+                const dy = y - lastPoint.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance > 8) {
+                    points.push({
+                        x: x,
+                        y: y,
+                        radius: 0,
+                        maxRadius: config.radius,
+                        strength: config.strength,
+                        lifetime: 0,
+                        maxLifetime: 100 * config.speed
+                    });
+                    lastPoint = { x, y };
+                }
+            });
+
+            hero.addEventListener('mouseenter', () => {
+                lens.classList.add('active');
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                lens.classList.remove('active');
+            });
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw ripple points
+                for (let i = points.length - 1; i >= 0; i--) {
+                    const point = points[i];
+                    point.radius += point.maxRadius / 30 * config.speed;
+                    point.lifetime += 1 * config.speed;
+
+                    const opacity = 1 - (point.lifetime / point.maxLifetime);
+                    const strength = point.strength * opacity;
+
+                    if (opacity > 0) {
+                        // Outer ripple ring with glow (95% transparent)
+                        const gradient = ctx.createRadialGradient(
+                            point.x, point.y, point.radius * 0.8,
+                            point.x, point.y, point.radius
+                        );
+                        gradient.addColorStop(0, `rgba(0, 212, 255, 0)`);
+                        gradient.addColorStop(0.5, `rgba(0, 212, 255, ${opacity * 0.0125 * strength})`);
+                        gradient.addColorStop(0.7, `rgba(255, 255, 255, ${opacity * 0.0075 * strength})`);
+                        gradient.addColorStop(1, `rgba(0, 212, 255, 0)`);
+
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+
+                        // Inner bright ring
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, point.radius * 0.85, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.01 * strength})`;
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Second wave ring
+                        if (point.radius > 20) {
+                            ctx.beginPath();
+                            ctx.arc(point.x, point.y, point.radius * 0.6, 0, Math.PI * 2);
+                            ctx.strokeStyle = `rgba(0, 212, 255, ${opacity * 0.006 * strength})`;
+                            ctx.lineWidth = 1.5;
+                            ctx.stroke();
+                        }
+
+                        // Third wave ring
+                        if (point.radius > 35) {
+                            ctx.beginPath();
+                            ctx.arc(point.x, point.y, point.radius * 0.35, 0, Math.PI * 2);
+                            ctx.strokeStyle = `rgba(0, 180, 255, ${opacity * 0.004 * strength})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+
+                    // Remove expired points
+                    if (point.lifetime >= point.maxLifetime) {
+                        points.splice(i, 1);
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
     </script>
 </body>
 </html>
