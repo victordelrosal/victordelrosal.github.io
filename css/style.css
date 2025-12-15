@@ -792,12 +792,12 @@ section {
 
 .section-label {
     display: inline-flex;
-    font-size: 12px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--blue-7);
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 .section-title {
