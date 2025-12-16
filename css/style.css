@@ -731,7 +731,7 @@ nav {
 }
 
 .btn-jumbo:hover {
-    transform: scale(1.25) translateY(-5px) rotateX(4deg);
+    transform: scale(1.15) translateY(-5px) rotateX(4deg);
     filter: brightness(1.1) saturate(1.15);
     box-shadow:
         /* Inner core - bright white/cyan */
