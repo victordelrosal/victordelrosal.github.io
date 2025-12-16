@@ -771,5 +771,19 @@
             animate();
         })();
     </script>
+
+    <!-- Delayed LinkedIn click for pinch effect -->
+    <script>
+        document.querySelectorAll('.contact-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.href;
+                const target = this.target;
+                setTimeout(() => {
+                    window.open(href, target);
+                }, 200);
+            });
+        });
+    </script>
 </body>
 </html>
