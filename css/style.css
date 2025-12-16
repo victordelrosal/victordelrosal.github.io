@@ -717,62 +717,88 @@ nav {
 }
 
 .btn-jumbo {
-    /* Spring physics: overshoot then settle */
+    /* Advanced spring physics with damping */
     transition:
-        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.3s ease-out;
-    transform-origin: center center;
-    will-change: transform;
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background 0.3s ease-out,
+        filter 0.2s ease-out;
+    transform-origin: center bottom;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform, box-shadow;
+    filter: brightness(1) saturate(1);
 }
 
 .btn-jumbo:hover {
-    transform: scale(1.33);
+    transform: scale(1.33) translateY(-5px) rotateX(4deg);
+    filter: brightness(1.1) saturate(1.15);
     box-shadow:
         /* Inner core - bright white/cyan */
-        0 0 20px rgba(255, 255, 255, 0.8),
-        0 0 40px rgba(200, 240, 255, 0.7),
+        0 0 25px rgba(255, 255, 255, 0.85),
+        0 0 50px rgba(200, 240, 255, 0.75),
         /* Mid glow - intense cyan */
-        0 0 60px rgba(0, 212, 255, 0.6),
-        0 0 100px rgba(0, 180, 255, 0.5),
+        0 0 80px rgba(0, 212, 255, 0.65),
+        0 0 120px rgba(0, 180, 255, 0.55),
         /* Outer corona - blue radiance */
-        0 0 150px rgba(0, 150, 255, 0.4),
-        0 0 200px rgba(0, 100, 200, 0.3),
-        0 0 280px rgba(0, 80, 180, 0.2);
+        0 0 180px rgba(0, 150, 255, 0.45),
+        0 0 250px rgba(0, 100, 200, 0.35),
+        0 0 350px rgba(0, 80, 180, 0.2);
 }
 
-/* Physics-based pinch: squash & stretch */
+/* Enhanced shine on hover */
+.btn-jumbo:hover::before {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* Physics-based pinch: squash & stretch with 3D tilt */
 .btn-jumbo:active,
 .btn-jumbo.pinched {
-    /* Squash: compress vertically, bulge horizontally */
-    transform: scaleX(1.12) scaleY(0.78) translateY(6px);
-    /* Fast snap-in for immediate tactile response */
+    /* 3D squash with perspective tilt into surface */
+    transform: scaleX(1.15) scaleY(0.75) translateY(8px) rotateX(-10deg);
+    /* Instant snap for tactile response */
     transition:
-        transform 0.08s cubic-bezier(0.2, 0, 0.7, 1),
-        box-shadow 0.06s ease-out;
-    /* Pressed into surface - compressed shadows */
+        transform 0.06s cubic-bezier(0.32, 0, 0.67, 0),
+        box-shadow 0.04s ease-out,
+        background 0.04s ease-out,
+        filter 0.04s ease-out;
+    /* Pressed color - darker, less saturated */
     background: linear-gradient(180deg,
-        rgba(0, 70, 140, 1) 0%,
-        rgba(0, 45, 110, 1) 35%,
-        rgba(0, 20, 80, 1) 100%);
+        rgba(0, 60, 120, 1) 0%,
+        rgba(0, 40, 100, 1) 35%,
+        rgba(0, 18, 70, 1) 100%);
+    filter: brightness(0.88) saturate(0.9);
+    /* Compressed contact shadow with lateral spread */
     box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.5),
-        0 4px 12px rgba(0, 30, 100, 0.4),
-        6px 0 12px -3px rgba(0, 0, 0, 0.3),
-        -6px 0 12px -3px rgba(0, 0, 0, 0.3),
-        inset 0 4px 12px rgba(0, 0, 0, 0.5),
-        inset 0 -2px 4px rgba(100, 180, 255, 0.1);
+        0 2px 4px rgba(0, 0, 0, 0.6),
+        0 4px 10px rgba(0, 20, 80, 0.5),
+        /* Lateral squash shadows */
+        8px 0 14px -5px rgba(0, 0, 0, 0.4),
+        -8px 0 14px -5px rgba(0, 0, 0, 0.4),
+        /* Deep inset */
+        inset 0 5px 15px rgba(0, 0, 0, 0.55),
+        inset 0 -2px 6px rgba(100, 180, 255, 0.08);
 }
 
-/* Dim the glossy shine when pressed */
+/* Shine compresses and dims when pressed */
 .btn-jumbo:active::before,
 .btn-jumbo.pinched::before {
-    opacity: 0.4;
+    opacity: 0.3;
+    transform: translateY(3px) scaleY(0.8);
 }
 
-/* Release animation with spring bounce */
+/* Multi-phase spring release - overshoot */
 .btn-jumbo.releasing {
+    transform: scale(1.03) translateY(-3px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+    filter: brightness(1.03);
+}
+
+/* Final settle phase */
+.btn-jumbo.settled {
     transform: scale(1) translateY(0);
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Mobile: Fit hero button to screen width */
@@ -2020,20 +2046,26 @@ section {
     padding: 14px 36px;
     border-radius: 50px;
     text-decoration: none;
-    /* Spring physics: overshoot then settle */
+    /* Spring physics with precise damping */
     transition:
-        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.3s ease-out,
-        background 0.2s ease-out;
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background 0.3s ease-out,
+        filter 0.2s ease-out;
     box-shadow:
+        /* Ambient shadow */
         0 6px 12px rgba(0, 0, 0, 0.5),
         0 12px 28px rgba(0, 0, 0, 0.35),
+        /* Inner depth */
         inset 0 -4px 8px rgba(0, 0, 0, 0.4),
         inset 0 4px 8px rgba(255, 255, 255, 0.1);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     overflow: hidden;
-    transform-origin: center center;
-    will-change: transform;
+    transform-origin: center bottom;
+    transform-style: preserve-3d;
+    perspective: 800px;
+    will-change: transform, box-shadow;
+    filter: brightness(1) saturate(1);
 }
 
 /* Glossy shine highlight */
@@ -2045,59 +2077,87 @@ section {
     right: 10%;
     height: 45%;
     background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.35) 0%,
-        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.38) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
         transparent 100%);
     border-radius: 50px 50px 100px 100px;
     pointer-events: none;
-    transition: opacity 0.15s ease-out;
+    transition:
+        opacity 0.15s ease-out,
+        transform 0.15s ease-out;
+    transform: translateY(0);
 }
 
 .contact-link:hover {
     background: linear-gradient(180deg,
-        rgba(110, 110, 110, 1) 0%,
-        rgba(75, 75, 75, 1) 40%,
-        rgba(45, 45, 45, 1) 100%);
-    transform: scale(1.35) translateY(-3px);
+        rgba(115, 115, 115, 1) 0%,
+        rgba(80, 80, 80, 1) 40%,
+        rgba(50, 50, 50, 1) 100%);
+    transform: scale(1.35) translateY(-4px) rotateX(5deg);
+    filter: brightness(1.08) saturate(1.1);
     box-shadow:
-        0 8px 16px rgba(0, 0, 0, 0.5),
-        0 16px 32px rgba(0, 0, 0, 0.35),
-        inset 0 -5px 10px rgba(0, 0, 0, 0.4),
-        inset 0 5px 10px rgba(255, 255, 255, 0.12);
+        /* Lifted shadow - larger, softer */
+        0 12px 24px rgba(0, 0, 0, 0.5),
+        0 24px 48px rgba(0, 0, 0, 0.35),
+        /* Subtle glow */
+        0 0 30px rgba(255, 255, 255, 0.08),
+        /* Inner depth enhanced */
+        inset 0 -6px 12px rgba(0, 0, 0, 0.35),
+        inset 0 6px 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Shine brightens on hover */
+.contact-link:hover::before {
+    opacity: 1;
+    transform: translateY(-1px);
 }
 
 .contact-link:active,
 .contact-link.pinched {
-    /* Squash: compress vertically, bulge horizontally (real physics) */
-    transform: scaleX(1.08) scaleY(0.82) translateY(4px);
-    /* Fast snap-in for immediate tactile response */
+    /* 3D squash with perspective tilt */
+    transform: scaleX(1.12) scaleY(0.78) translateY(5px) rotateX(-8deg);
+    /* Instant snap for tactile feel */
     transition:
-        transform 0.08s cubic-bezier(0.2, 0, 0.7, 1),
-        box-shadow 0.06s ease-out,
-        background 0.05s ease-out;
+        transform 0.06s cubic-bezier(0.32, 0, 0.67, 0),
+        box-shadow 0.04s ease-out,
+        background 0.04s ease-out,
+        filter 0.04s ease-out;
     background: linear-gradient(180deg,
-        rgba(55, 55, 55, 1) 0%,
-        rgba(40, 40, 40, 1) 40%,
-        rgba(25, 25, 25, 1) 100%);
-    /* Shadow compresses and spreads when pressed into surface */
+        rgba(50, 50, 50, 1) 0%,
+        rgba(35, 35, 35, 1) 40%,
+        rgba(22, 22, 22, 1) 100%);
+    filter: brightness(0.92) saturate(0.95);
+    /* Compressed contact shadow */
     box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.6),
-        0 2px 6px rgba(0, 0, 0, 0.4),
-        4px 0 8px -2px rgba(0, 0, 0, 0.3),
-        -4px 0 8px -2px rgba(0, 0, 0, 0.3),
-        inset 0 3px 8px rgba(0, 0, 0, 0.6),
-        inset 0 -1px 2px rgba(255, 255, 255, 0.03);
+        /* Tight contact shadow */
+        0 1px 3px rgba(0, 0, 0, 0.7),
+        0 3px 8px rgba(0, 0, 0, 0.5),
+        /* Lateral spread from squash */
+        6px 0 10px -4px rgba(0, 0, 0, 0.4),
+        -6px 0 10px -4px rgba(0, 0, 0, 0.4),
+        /* Deep inset - pressed into surface */
+        inset 0 4px 10px rgba(0, 0, 0, 0.65),
+        inset 0 -2px 4px rgba(255, 255, 255, 0.02);
 }
 
+/* Shine compresses and dims */
 .contact-link:active::before,
 .contact-link.pinched::before {
-    opacity: 0.3;
+    opacity: 0.25;
+    transform: translateY(2px) scaleY(0.85);
 }
 
-/* Release animation with spring bounce */
+/* Multi-phase spring release */
 .contact-link.releasing {
+    transform: scale(1.02) translateY(-2px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+    filter: brightness(1.02);
+}
+
+/* Final settle */
+.contact-link.settled {
     transform: scale(1) translateY(0);
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* Mobile: ensure contact link fits screen */

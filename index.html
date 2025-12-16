@@ -772,9 +772,9 @@
         })();
     </script>
 
-    <!-- Physics-based pinch effect for buttons -->
+    <!-- Advanced physics-based pinch effect for buttons -->
     <script>
-        // Apply pinch effect to contact links and jumbo buttons
+        // Multi-phase spring animation: pinch → release → overshoot → settle
         document.querySelectorAll('.contact-link, .btn-jumbo').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -782,28 +782,36 @@
                 const target = this.target || '_self';
                 const el = this;
 
-                // Squash phase - fast snap in
+                // Phase 1: Squash (instant snap-in)
                 el.classList.add('pinched');
 
-                // Hold the squash, then release with spring bounce
+                // Phase 2: Hold squash for tactile feel
                 setTimeout(() => {
                     el.classList.remove('pinched');
+
+                    // Phase 3: Spring release with overshoot
                     el.classList.add('releasing');
 
-                    // Navigate after release begins
+                    // Navigate during the bounce-back
                     setTimeout(() => {
                         if (target === '_blank') {
                             window.open(href, target);
                         } else {
                             window.location.href = href;
                         }
-                    }, 100);
+                    }, 150);
 
-                    // Clean up releasing class
+                    // Phase 4: Settle to rest position
                     setTimeout(() => {
                         el.classList.remove('releasing');
-                    }, 500);
-                }, 350);
+                        el.classList.add('settled');
+
+                        // Clean up
+                        setTimeout(() => {
+                            el.classList.remove('settled');
+                        }, 300);
+                    }, 400);
+                }, 300);
             });
         });
     </script>
