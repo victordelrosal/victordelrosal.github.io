@@ -217,12 +217,14 @@ function generateWaveHTML(post) {
                 <button class="font-size-btn" data-size="5" title="Extra Large">A</button>
             </div>
 
+            <!-- View Count - centered below font controls -->
+            <div id="view-count-container" class="view-count-top"></div>
+
             <div id="post-content" class="post-content"></div>
 
-            <!-- Engagement Row: Views, Wave, Share -->
+            <!-- Engagement Row: Wave, Share -->
             <div class="share-section">
                 <div class="engagement-row">
-                    <div id="view-count-container"></div>
                     <button class="wave-reaction-btn" id="wave-reaction-btn" title="Wave at this post">
                         <span class="wave-emoji">👋</span>
                         <span class="wave-count" id="wave-count">0</span>

@@ -4748,6 +4748,12 @@ footer {
     opacity: 0.8;
 }
 
+/* View count positioned at top, below font controls */
+.view-count-top {
+    text-align: center;
+    margin: 16px 0;
+}
+
 /* View badge on wave cards */
 .wave-view-badge {
     display: inline-flex;
