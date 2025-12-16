@@ -1894,7 +1894,7 @@ section {
 .contact-bg {
     position: absolute;
     inset: 0;
-    background: #0a0a0a;
+    background: rgba(10, 10, 10, 0.5);
 }
 
 .contact-bg::before {
