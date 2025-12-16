@@ -788,17 +788,47 @@ nav {
     transform: translateY(3px) scaleY(0.8);
 }
 
-/* Multi-phase spring release - overshoot */
-.btn-jumbo.releasing {
-    transform: scale(1.03) translateY(-3px);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
-    filter: brightness(1.03);
+/* Squishy bounce-back animation for jumbo button */
+.btn-jumbo.bouncing {
+    animation: squishyBounceJumbo 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* Final settle phase */
-.btn-jumbo.settled {
-    transform: scale(1) translateY(0);
-    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+@keyframes squishyBounceJumbo {
+    0% {
+        /* Start from squashed state */
+        transform: scaleX(1.15) scaleY(0.75) translateY(8px);
+        filter: brightness(0.88);
+    }
+    18% {
+        /* Big overshoot - tall and thin */
+        transform: scaleX(0.85) scaleY(1.22) translateY(-10px);
+        filter: brightness(1.05);
+    }
+    38% {
+        /* Squash again - short and wide */
+        transform: scaleX(1.1) scaleY(0.9) translateY(4px);
+        filter: brightness(0.98);
+    }
+    52% {
+        /* Overshoot again */
+        transform: scaleX(0.94) scaleY(1.08) translateY(-3px);
+        filter: brightness(1.02);
+    }
+    68% {
+        /* Small squash */
+        transform: scaleX(1.03) scaleY(0.97) translateY(1px);
+        filter: brightness(0.99);
+    }
+    82% {
+        /* Tiny overshoot */
+        transform: scaleX(0.98) scaleY(1.02) translateY(-1px);
+        filter: brightness(1.01);
+    }
+    100% {
+        /* Rest position */
+        transform: scaleX(1) scaleY(1) translateY(0);
+        filter: brightness(1);
+    }
 }
 
 /* Mobile: Fit hero button to screen width */
@@ -2147,17 +2177,40 @@ section {
     transform: translateY(2px) scaleY(0.85);
 }
 
-/* Multi-phase spring release */
-.contact-link.releasing {
-    transform: scale(1.02) translateY(-2px);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
-    filter: brightness(1.02);
+/* Squishy bounce-back animation */
+.contact-link.bouncing {
+    animation: squishyBounce 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* Final settle */
-.contact-link.settled {
-    transform: scale(1) translateY(0);
-    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+@keyframes squishyBounce {
+    0% {
+        /* Start from squashed state */
+        transform: scaleX(1.12) scaleY(0.78) translateY(5px);
+    }
+    20% {
+        /* Overshoot vertical - tall and thin */
+        transform: scaleX(0.88) scaleY(1.18) translateY(-6px);
+    }
+    40% {
+        /* Squash again - short and wide */
+        transform: scaleX(1.08) scaleY(0.92) translateY(2px);
+    }
+    55% {
+        /* Slight overshoot */
+        transform: scaleX(0.96) scaleY(1.06) translateY(-2px);
+    }
+    70% {
+        /* Tiny squash */
+        transform: scaleX(1.02) scaleY(0.98) translateY(1px);
+    }
+    85% {
+        /* Almost settled */
+        transform: scaleX(0.99) scaleY(1.01) translateY(0);
+    }
+    100% {
+        /* Rest position */
+        transform: scaleX(1) scaleY(1) translateY(0);
+    }
 }
 
 /* Mobile: ensure contact link fits screen */

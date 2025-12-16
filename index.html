@@ -774,7 +774,7 @@
 
     <!-- Advanced physics-based pinch effect for buttons -->
     <script>
-        // Multi-phase spring animation: pinch → release → overshoot → settle
+        // Squishy bounce animation: pinch → bouncy spring-back
         document.querySelectorAll('.contact-link, .btn-jumbo').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -782,36 +782,28 @@
                 const target = this.target || '_self';
                 const el = this;
 
-                // Phase 1: Squash (instant snap-in)
+                // Phase 1: Squash down (instant pinch)
                 el.classList.add('pinched');
 
-                // Phase 2: Hold squash for tactile feel
+                // Phase 2: Release into squishy bounce-back
                 setTimeout(() => {
                     el.classList.remove('pinched');
+                    el.classList.add('bouncing');
 
-                    // Phase 3: Spring release with overshoot
-                    el.classList.add('releasing');
-
-                    // Navigate during the bounce-back
+                    // Navigate during the bounce animation
                     setTimeout(() => {
                         if (target === '_blank') {
                             window.open(href, target);
                         } else {
                             window.location.href = href;
                         }
-                    }, 150);
+                    }, 200);
 
-                    // Phase 4: Settle to rest position
+                    // Clean up bouncing class after animation completes
                     setTimeout(() => {
-                        el.classList.remove('releasing');
-                        el.classList.add('settled');
-
-                        // Clean up
-                        setTimeout(() => {
-                            el.classList.remove('settled');
-                        }, 300);
-                    }, 400);
-                }, 300);
+                        el.classList.remove('bouncing');
+                    }, 750);
+                }, 280);
             });
         });
     </script>
