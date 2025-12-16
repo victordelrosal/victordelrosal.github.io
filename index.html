@@ -772,31 +772,36 @@
         })();
     </script>
 
-    <!-- Delayed LinkedIn click with physics-based pinch -->
+    <!-- Physics-based pinch effect for buttons -->
     <script>
-        document.querySelectorAll('.contact-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+        // Apply pinch effect to contact links and jumbo buttons
+        document.querySelectorAll('.contact-link, .btn-jumbo').forEach(btn => {
+            btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.href;
-                const target = this.target;
-                const btn = this;
+                const target = this.target || '_self';
+                const el = this;
 
                 // Squash phase - fast snap in
-                btn.classList.add('pinched');
+                el.classList.add('pinched');
 
                 // Hold the squash, then release with spring bounce
                 setTimeout(() => {
-                    btn.classList.remove('pinched');
-                    btn.classList.add('releasing');
+                    el.classList.remove('pinched');
+                    el.classList.add('releasing');
 
-                    // Open link slightly after release begins
+                    // Navigate after release begins
                     setTimeout(() => {
-                        window.open(href, target);
+                        if (target === '_blank') {
+                            window.open(href, target);
+                        } else {
+                            window.location.href = href;
+                        }
                     }, 100);
 
                     // Clean up releasing class
                     setTimeout(() => {
-                        btn.classList.remove('releasing');
+                        el.classList.remove('releasing');
                     }, 500);
                 }, 350);
             });

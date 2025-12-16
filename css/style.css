@@ -703,7 +703,12 @@ nav {
 }
 
 .btn-jumbo {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Spring physics: overshoot then settle */
+    transition:
+        transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease-out;
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .btn-jumbo:hover {
@@ -719,6 +724,28 @@ nav {
         0 0 150px rgba(0, 150, 255, 0.4),
         0 0 200px rgba(0, 100, 200, 0.3),
         0 0 280px rgba(0, 80, 180, 0.2);
+}
+
+/* Physics-based pinch: squash & stretch */
+.btn-jumbo:active,
+.btn-jumbo.pinched {
+    /* Squash: compress vertically, bulge horizontally */
+    transform: scaleX(1.12) scaleY(0.78) translateY(6px);
+    /* Fast snap-in for immediate tactile response */
+    transition:
+        transform 0.08s cubic-bezier(0.2, 0, 0.7, 1),
+        box-shadow 0.06s ease-out;
+    box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 20px rgba(0, 212, 255, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        inset 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Release animation with spring bounce */
+.btn-jumbo.releasing {
+    transform: scale(1) translateY(0);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Mobile: Fit hero button to screen width */
