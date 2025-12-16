@@ -1388,6 +1388,18 @@ section {
     width: 100%;
     height: 100%;
     overflow: visible;
+    animation: ferris-wheel-spin 60s linear infinite;
+    transform-origin: center center;
+}
+
+/* Gentle ferris wheel rotation */
+@keyframes ferris-wheel-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Guide circles - HUD style */
