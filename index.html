@@ -779,9 +779,11 @@
                 e.preventDefault();
                 const href = this.href;
                 const target = this.target;
+                this.classList.add('pinched');
                 setTimeout(() => {
                     window.open(href, target);
-                }, 200);
+                    this.classList.remove('pinched');
+                }, 450);
             });
         });
     </script>

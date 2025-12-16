@@ -2005,7 +2005,8 @@ section {
         inset 0 4px 8px rgba(255, 255, 255, 0.15);
 }
 
-.contact-link:active {
+.contact-link:active,
+.contact-link.pinched {
     transform: scale(0.85) translateY(2px);
     transition: transform 0.1s ease-in;
     background: linear-gradient(180deg,
@@ -2019,7 +2020,8 @@ section {
         inset 0 -2px 4px rgba(255, 255, 255, 0.05);
 }
 
-.contact-link:active::before {
+.contact-link:active::before,
+.contact-link.pinched::before {
     opacity: 0.5;
 }
 
