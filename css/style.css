@@ -642,7 +642,7 @@ nav {
     opacity: 1;
 }
 
-/* Jumbo Button - Hero section style with floating orbs */
+/* Jumbo Button - Hero section style with 3D pill effect */
 .btn-jumbo {
     padding: 20px 82px;
     font-size: 48px;
@@ -650,25 +650,38 @@ nav {
     letter-spacing: 0.05em;
     position: relative;
     overflow: hidden;
-    background: var(--gradient-hero);
+    /* 3D convex gradient - lighter top, darker bottom */
+    background: linear-gradient(180deg,
+        rgba(0, 100, 180, 0.95) 0%,
+        rgba(0, 60, 140, 1) 35%,
+        rgba(0, 30, 100, 1) 100%);
+    /* 3D depth shadows */
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.5),
+        0 16px 40px rgba(0, 50, 150, 0.4),
+        inset 0 -6px 12px rgba(0, 0, 0, 0.4),
+        inset 0 6px 12px rgba(100, 180, 255, 0.2);
+    border: none;
 }
 
-/* Floating orbs inside button */
+/* Glossy shine highlight overlay */
 .btn-jumbo::before {
     content: '';
     position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue-7) 0%, var(--blue-5) 100%);
-    filter: blur(30px);
-    opacity: 0.8;
-    top: -40%;
-    right: -10%;
-    animation: btnOrbFloat 8s ease-in-out infinite;
-    z-index: 0;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 50%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(200, 230, 255, 0.2) 40%,
+        transparent 100%);
+    border-radius: 200px 200px 300px 300px;
+    pointer-events: none;
+    z-index: 1;
 }
 
+/* Floating orb accent */
 .btn-jumbo::after {
     content: '';
     position: absolute;
@@ -677,29 +690,30 @@ nav {
     border-radius: 50%;
     background: linear-gradient(135deg, #00D4FF 0%, var(--blue-7) 100%);
     filter: blur(25px);
-    opacity: 0.7;
+    opacity: 0.5;
     bottom: -30%;
-    left: -5%;
-    animation: btnOrbFloat 8s ease-in-out infinite reverse;
-    animation-delay: -4s;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: btnOrbFloat 8s ease-in-out infinite;
     z-index: 0;
 }
 
 @keyframes btnOrbFloat {
     0%, 100% {
-        transform: translate(0, 0) scale(1);
+        transform: translateX(-50%) translate(0, 0) scale(1);
     }
     33% {
-        transform: translate(15px, -10px) scale(1.1);
+        transform: translateX(-50%) translate(15px, -10px) scale(1.1);
     }
     66% {
-        transform: translate(-10px, 8px) scale(0.95);
+        transform: translateX(-50%) translate(-10px, 8px) scale(0.95);
     }
 }
 
 .btn-jumbo span {
     position: relative;
     z-index: 2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .btn-jumbo {
@@ -735,11 +749,24 @@ nav {
     transition:
         transform 0.08s cubic-bezier(0.2, 0, 0.7, 1),
         box-shadow 0.06s ease-out;
+    /* Pressed into surface - compressed shadows */
+    background: linear-gradient(180deg,
+        rgba(0, 70, 140, 1) 0%,
+        rgba(0, 45, 110, 1) 35%,
+        rgba(0, 20, 80, 1) 100%);
     box-shadow:
-        0 0 10px rgba(255, 255, 255, 0.4),
-        0 0 20px rgba(0, 212, 255, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.4),
-        inset 0 3px 10px rgba(0, 0, 0, 0.3);
+        0 2px 6px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 30, 100, 0.4),
+        6px 0 12px -3px rgba(0, 0, 0, 0.3),
+        -6px 0 12px -3px rgba(0, 0, 0, 0.3),
+        inset 0 4px 12px rgba(0, 0, 0, 0.5),
+        inset 0 -2px 4px rgba(100, 180, 255, 0.1);
+}
+
+/* Dim the glossy shine when pressed */
+.btn-jumbo:active::before,
+.btn-jumbo.pinched::before {
+    opacity: 0.4;
 }
 
 /* Release animation with spring bounce */
