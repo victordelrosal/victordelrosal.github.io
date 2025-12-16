@@ -405,6 +405,27 @@
                     sphereContainer.appendChild(sphere);
                     sphereContainer.appendChild(sphereText);
                     container.appendChild(sphereContainer);
+
+                    // Counter-rotate labels to keep them upright (like cats landing on feet)
+                    const labels = svg.querySelectorAll('.wedge-label');
+                    const rotationDuration = 60000; // 60 seconds for full rotation (matches CSS)
+                    const startTime = performance.now();
+
+                    function updateLabelRotations() {
+                        const elapsed = performance.now() - startTime;
+                        const wheelAngle = (elapsed / rotationDuration) * 360 % 360;
+
+                        labels.forEach((label, i) => {
+                            const labelX = parseFloat(label.getAttribute('x'));
+                            const labelY = parseFloat(label.getAttribute('y'));
+                            // Counter-rotate by the negative of wheel angle
+                            label.setAttribute('transform', `rotate(${-wheelAngle}, ${labelX}, ${labelY})`);
+                        });
+
+                        requestAnimationFrame(updateLabelRotations);
+                    }
+
+                    updateLabelRotations();
                 })();
                 </script>
 
