@@ -785,7 +785,7 @@
                 // Phase 1: Squash down (instant pinch)
                 el.classList.add('pinched');
 
-                // Phase 2: Release into squishy bounce-back
+                // Phase 2: Quick release into squishy bounce-back
                 setTimeout(() => {
                     el.classList.remove('pinched');
                     el.classList.add('bouncing');
@@ -797,13 +797,13 @@
                         } else {
                             window.location.href = href;
                         }
-                    }, 200);
+                    }, 180);
 
                     // Clean up bouncing class after animation completes
                     setTimeout(() => {
                         el.classList.remove('bouncing');
                     }, 750);
-                }, 280);
+                }, 120);
             });
         });
     </script>
