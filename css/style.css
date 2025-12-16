@@ -1894,7 +1894,7 @@ section {
 .contact-bg {
     position: absolute;
     inset: 0;
-    background: rgba(10, 10, 10, 0.2);
+    background: rgba(10, 10, 10, 0.1);
 }
 
 .contact-bg::before {
@@ -1902,7 +1902,7 @@ section {
     position: absolute;
     inset: 0;
     background: url('/img/wavebackgr_d.png') repeat;
-    opacity: 0.2;
+    opacity: 0.1;
     pointer-events: none;
     z-index: 0;
 }
