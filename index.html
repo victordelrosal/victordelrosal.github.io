@@ -772,18 +772,33 @@
         })();
     </script>
 
-    <!-- Delayed LinkedIn click for pinch effect -->
+    <!-- Delayed LinkedIn click with physics-based pinch -->
     <script>
         document.querySelectorAll('.contact-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.href;
                 const target = this.target;
-                this.classList.add('pinched');
+                const btn = this;
+
+                // Squash phase - fast snap in
+                btn.classList.add('pinched');
+
+                // Hold the squash, then release with spring bounce
                 setTimeout(() => {
-                    window.open(href, target);
-                    this.classList.remove('pinched');
-                }, 450);
+                    btn.classList.remove('pinched');
+                    btn.classList.add('releasing');
+
+                    // Open link slightly after release begins
+                    setTimeout(() => {
+                        window.open(href, target);
+                    }, 100);
+
+                    // Clean up releasing class
+                    setTimeout(() => {
+                        btn.classList.remove('releasing');
+                    }, 500);
+                }, 350);
             });
         });
     </script>
