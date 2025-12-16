@@ -38,6 +38,7 @@
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-config.js"></script>
     <script src="/js/supabase-client.js"></script>
 
     <!-- Universal Navigation -->
@@ -540,6 +541,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- Bottom CTA with Waves -->
+        <section class="hero hero-footer" id="hero-footer">
+            <div class="hero-bg">
+                <div class="orb orb-1" data-parallax-speed="0.3"></div>
+                <div class="orb orb-2" data-parallax-speed="0.5"></div>
+                <div class="orb orb-3" data-parallax-speed="0.7"></div>
+            </div>
+
+            <!-- Aquarium Wave Effect -->
+            <div class="aquarium-waves">
+                <!-- Deep wave layer (slowest, largest) -->
+                <svg class="wave wave-deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z"></path>
+                </svg>
+                <!-- Mid wave layer -->
+                <svg class="wave wave-mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path d="M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200 L1440,320 L0,320 Z"></path>
+                </svg>
+                <!-- Surface wave layer (fastest, smallest) -->
+                <svg class="wave wave-surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path d="M0,240 C180,200 360,280 540,240 C720,200 900,280 1080,240 C1260,200 1350,280 1440,240 L1440,320 L0,320 Z"></path>
+                </svg>
+                <!-- Caustic light patterns -->
+                <div class="caustics"></div>
+            </div>
+
+            <div class="hero-grid"></div>
+            <div class="hero-content">
+                <div class="hero-cta">
+                    <a href="/waves/" class="btn-primary btn-jumbo"><span>Read Latest Waves</span></a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->

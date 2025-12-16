@@ -182,6 +182,15 @@ nav {
     overflow: hidden;
 }
 
+.hero-footer {
+    min-height: 400px;
+    padding: 80px 24px;
+}
+
+.hero-footer .hero-content {
+    margin-top: 0;
+}
+
 /* Interactive Water Ripple Canvas */
 .ripple-canvas {
     position: absolute;
