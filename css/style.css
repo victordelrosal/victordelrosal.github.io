@@ -1900,13 +1900,11 @@ section {
 .contact-bg::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
-    filter: blur(60px);
+    inset: 0;
+    background: url('/img/wavebackgr_d.png') repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .contact-section {
