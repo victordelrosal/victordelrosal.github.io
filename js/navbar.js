@@ -230,11 +230,36 @@ const Navbar = {
                     font-size: 16px;
                     font-weight: 600;
                     cursor: pointer;
-                    transition: transform 0.2s;
+                    /* Spring physics transition */
+                    transition:
+                        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                     box-shadow: 0 4px 12px rgba(253, 185, 49, 0.3);
+                    transform-origin: center bottom;
+                    will-change: transform, box-shadow;
                 }
                 .welcome-btn:hover {
-                    transform: scale(1.05);
+                    transform: scale(1.08) translateY(-2px);
+                    box-shadow: 0 8px 20px rgba(253, 185, 49, 0.4);
+                }
+                .welcome-btn:active,
+                .welcome-btn.pinched {
+                    transform: scaleX(1.08) scaleY(0.85) translateY(2px);
+                    transition:
+                        transform 0.06s cubic-bezier(0.32, 0, 0.67, 0),
+                        box-shadow 0.04s ease-out;
+                    box-shadow: 0 2px 6px rgba(253, 185, 49, 0.25);
+                }
+                .welcome-btn.bouncing {
+                    animation: squishyBounceSmall 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                }
+                @keyframes squishyBounceSmall {
+                    0% { transform: scaleX(1.08) scaleY(0.85) translateY(2px); }
+                    20% { transform: scaleX(0.94) scaleY(1.1) translateY(-3px); }
+                    40% { transform: scaleX(1.04) scaleY(0.95) translateY(1px); }
+                    55% { transform: scaleX(0.98) scaleY(1.03) translateY(-1px); }
+                    70% { transform: scaleX(1.01) scaleY(0.99) translateY(0); }
+                    100% { transform: scaleX(1) scaleY(1) translateY(0); }
                 }
                 body.modal-open {
                     overflow: hidden;
@@ -255,13 +280,26 @@ const Navbar = {
             document.head.appendChild(style);
         }
 
-        // Close handler
-        document.getElementById('welcome-close-btn').addEventListener('click', () => {
-            modal.style.opacity = '0';
+        // Close handler with bounce animation
+        const welcomeBtn = document.getElementById('welcome-close-btn');
+        welcomeBtn.addEventListener('click', () => {
+            // Phase 1: Squash down (instant pinch)
+            welcomeBtn.classList.add('pinched');
+
+            // Phase 2: Quick release into squishy bounce-back
             setTimeout(() => {
-                modal.remove();
-                document.body.classList.remove('modal-open');
-            }, 300);
+                welcomeBtn.classList.remove('pinched');
+                welcomeBtn.classList.add('bouncing');
+
+                // Close modal during bounce
+                setTimeout(() => {
+                    modal.style.opacity = '0';
+                    setTimeout(() => {
+                        modal.remove();
+                        document.body.classList.remove('modal-open');
+                    }, 300);
+                }, 150);
+            }, 44);
         });
     },
 
@@ -435,8 +473,26 @@ const Navbar = {
                 </button>
             `;
 
-            document.getElementById('login-btn').addEventListener('click', () => {
-                window.SupabaseClient.signInWithGoogle();
+            const loginBtn = document.getElementById('login-btn');
+            loginBtn.addEventListener('click', () => {
+                // Phase 1: Squash down (instant pinch)
+                loginBtn.classList.add('pinched');
+
+                // Phase 2: Quick release into squishy bounce-back
+                setTimeout(() => {
+                    loginBtn.classList.remove('pinched');
+                    loginBtn.classList.add('bouncing');
+
+                    // Trigger sign-in during bounce
+                    setTimeout(() => {
+                        window.SupabaseClient.signInWithGoogle();
+                    }, 150);
+
+                    // Clean up bouncing class after animation
+                    setTimeout(() => {
+                        loginBtn.classList.remove('bouncing');
+                    }, 600);
+                }, 44);
             });
         }
     }

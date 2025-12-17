@@ -54,6 +54,7 @@
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-config.js"></script>
     <script src="/js/supabase-client.js"></script>
 
     <!-- Universal Navigation -->
@@ -1304,11 +1305,28 @@
 
             if (!subscribeCta || !subscribeBtn) return;
 
-            // Click handler - trigger Google sign-in
+            // Click handler - trigger Google sign-in with bounce animation
             subscribeBtn.addEventListener('click', () => {
-                if (window.SupabaseClient) {
-                    window.SupabaseClient.signInWithGoogle();
-                }
+                // Phase 1: Squash down (instant pinch)
+                subscribeBtn.classList.add('pinched');
+
+                // Phase 2: Quick release into squishy bounce-back
+                setTimeout(() => {
+                    subscribeBtn.classList.remove('pinched');
+                    subscribeBtn.classList.add('bouncing');
+
+                    // Trigger sign-in during bounce
+                    setTimeout(() => {
+                        if (window.SupabaseClient) {
+                            window.SupabaseClient.signInWithGoogle();
+                        }
+                    }, 150);
+
+                    // Clean up bouncing class after animation
+                    setTimeout(() => {
+                        subscribeBtn.classList.remove('bouncing');
+                    }, 600);
+                }, 44);
             });
 
             // Auth state listener - hide when logged in
