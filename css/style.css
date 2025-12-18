@@ -681,7 +681,7 @@ nav {
     z-index: 1;
 }
 
-/* Floating orb accent */
+/* Floating orb accent - sweeps left-right */
 .btn-jumbo::after {
     content: '';
     position: absolute;
@@ -692,21 +692,20 @@ nav {
     filter: blur(25px);
     opacity: 0.5;
     bottom: -30%;
-    left: 50%;
+    left: 10%;
     transform: translateX(-50%);
-    animation: btnOrbFloat 8s ease-in-out infinite;
+    animation: btnOrbSweep 6s ease-in-out infinite;
     z-index: 0;
 }
 
-@keyframes btnOrbFloat {
+@keyframes btnOrbSweep {
     0%, 100% {
-        transform: translateX(-50%) translate(0, 0) scale(1);
+        left: 10%;
+        transform: translateX(-50%) scale(1);
     }
-    33% {
-        transform: translateX(-50%) translate(15px, -10px) scale(1.1);
-    }
-    66% {
-        transform: translateX(-50%) translate(-10px, 8px) scale(0.95);
+    50% {
+        left: 90%;
+        transform: translateX(-50%) scale(1.1);
     }
 }
 
