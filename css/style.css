@@ -209,22 +209,38 @@ nav {
     overflow: visible;
 }
 
-/* Front lip - covers bottom of cards, blends with hero background */
+/* The "hole" - inner shadow creates depth illusion */
+.carousel-well::after {
+    content: '';
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 24px;
+    border-radius: 50%;
+    /* Dark shadow = the hole opening */
+    background: radial-gradient(
+        ellipse 100% 100% at center,
+        rgba(0, 0, 20, 0.6) 0%,
+        rgba(0, 0, 40, 0.3) 50%,
+        transparent 70%
+    );
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* Ground cover - hides card bottoms and shadows */
 .carousel-well::before {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 520px;
-    height: 20px;
-    border-radius: 10px;
-    /* Match hero gradient colors */
-    background: linear-gradient(
-        180deg,
-        var(--blue-6) 0%,
-        var(--blue-7) 100%
-    );
+    width: 600px;
+    height: 40px;
+    /* Solid hero color to fully cover shadows */
+    background: var(--blue-7);
     z-index: 5;
     pointer-events: none;
 }
