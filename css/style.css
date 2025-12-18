@@ -2034,7 +2034,7 @@ section {
 .contact-section {
     position: relative;
     text-align: center;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 40px;
     padding: 80px 48px;
