@@ -6,9 +6,15 @@
 // Prevent double-loading
 if (!window.SupabaseClient) {
   (function () {
-    // Supabase Configuration
-    const SUPABASE_URL = 'https://azzzrjnqgkqwpqnroost.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
+    // Supabase Configuration (injected at runtime, not hard-coded)
+    const supabaseConfig = window.__SUPABASE_CONFIG || {};
+    const SUPABASE_URL = supabaseConfig.url || supabaseConfig.supabaseUrl;
+    const SUPABASE_ANON_KEY = supabaseConfig.anonKey || supabaseConfig.supabaseAnonKey;
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      console.error('Supabase configuration is missing. Define window.__SUPABASE_CONFIG = { url, anonKey } before loading supabase-client.js.');
+      return;
+    }
 
     // Google OAuth Client ID (for branded sign-in on victordelrosal.com)
     const GOOGLE_CLIENT_ID = '67204010920-ifejjqhm4128lk0gfnlkv3p9cdq7o1tv.apps.googleusercontent.com';
