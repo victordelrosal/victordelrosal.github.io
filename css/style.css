@@ -197,6 +197,98 @@ nav {
     z-index: 10;
 }
 
+/* The Well: 3D recessed tray where thumbnails live */
+.carousel-well {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 32px 24px;
+    border-radius: 20px;
+
+    /* 3D depth: inset shadows create the "sunken" effect */
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 20, 40, 0.25) 40%,
+        rgba(0, 40, 60, 0.15) 100%
+    );
+    box-shadow:
+        /* Outer rim highlight (top edge catching light) */
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        /* Deep inner shadow (top - light blocked) */
+        inset 0 8px 20px rgba(0, 0, 0, 0.4),
+        /* Subtle side shadows */
+        inset 4px 0 12px rgba(0, 0, 0, 0.2),
+        inset -4px 0 12px rgba(0, 0, 0, 0.2),
+        /* Bottom reflection (ambient light bouncing) */
+        inset 0 -2px 8px rgba(0, 180, 220, 0.08),
+        /* Outer glow - subtle presence */
+        0 4px 24px rgba(0, 0, 0, 0.3);
+
+    /* Subtle border for definition */
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-top-color: rgba(0, 0, 0, 0.2);
+
+    /* Floor reflection effect */
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 20, 40, 0.25) 40%,
+            rgba(0, 40, 60, 0.15) 100%
+        ),
+        radial-gradient(
+            ellipse 80% 50% at 50% 100%,
+            rgba(0, 180, 220, 0.06) 0%,
+            transparent 70%
+        );
+}
+
+/* Well floor shine - subtle caustic-like reflection */
+.carousel-well::before {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 200, 255, 0.15) 30%,
+        rgba(0, 200, 255, 0.2) 50%,
+        rgba(0, 200, 255, 0.15) 70%,
+        transparent 100%
+    );
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+/* Rim highlight on hover - subtle life */
+.carousel-well:hover {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 8px 20px rgba(0, 0, 0, 0.35),
+        inset 4px 0 12px rgba(0, 0, 0, 0.2),
+        inset -4px 0 12px rgba(0, 0, 0, 0.2),
+        inset 0 -2px 10px rgba(0, 180, 220, 0.12),
+        0 4px 28px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(0, 180, 220, 0.08);
+}
+
+.carousel-well:hover::before {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 200, 255, 0.2) 30%,
+        rgba(0, 200, 255, 0.3) 50%,
+        rgba(0, 200, 255, 0.2) 70%,
+        transparent 100%
+    );
+}
+
 .hero-footer {
     min-height: 280px;
     padding: 60px 24px;
@@ -5999,12 +6091,12 @@ footer {
     }
 }
 
-/* Hero variant - centering handled by .hero-carousel-area flex container */
+/* Hero variant - lives inside .carousel-well which handles spacing */
 .wave-thumbnails--hero {
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
     margin: 0;
-    padding: 0 var(--hero-padding-x, 24px);
+    padding: 0;
 }
 
 /* Slightly larger thumbnails for hero (10% bigger: 46px -> 51px) */
