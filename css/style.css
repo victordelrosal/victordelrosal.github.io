@@ -199,72 +199,34 @@ nav {
     z-index: 10;
 }
 
-/* The Well: Deep metallic container where cards are tucked in */
+/* Invisible well container - cards float here */
 .carousel-well {
     position: relative;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    /* Well dimensions */
     padding: 0 20px;
-    padding-top: 60px;
-    height: 38px;
-    border-radius: 18px;
-    /* Allow cards to escape upward on hover */
     overflow: visible;
-
-    /* Seamless metallic silver - dark at top, lighter at bottom */
-    background: linear-gradient(
-        180deg,
-        rgb(70, 75, 85) 0%,
-        rgb(100, 105, 115) 40%,
-        rgb(140, 145, 155) 100%
-    );
-
-    box-shadow:
-        /* Deep inner shadow - the well depth */
-        inset 0 12px 24px rgba(0, 0, 0, 0.5),
-        inset 0 4px 8px rgba(0, 0, 0, 0.3),
-        /* Side walls */
-        inset 6px 0 12px rgba(0, 0, 0, 0.25),
-        inset -6px 0 12px rgba(0, 0, 0, 0.25),
-        /* Outer shadow for depth */
-        0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* Front lip - seamless extension of well bottom */
+/* Front lip - covers bottom of cards, blends with hero background */
 .carousel-well::before {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    height: 24px;
-    border-radius: 0 0 18px 18px;
-    /* Continue from well bottom color */
-    background: rgb(140, 145, 155);
-    /* Sit in front of cards */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    height: 20px;
+    border-radius: 10px;
+    /* Match hero gradient colors */
+    background: linear-gradient(
+        180deg,
+        var(--blue-6) 0%,
+        var(--blue-7) 100%
+    );
     z-index: 5;
     pointer-events: none;
-}
-
-/* Top rim inner shadow line */
-.carousel-well::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(0, 0, 0, 0.4) 20%,
-        rgba(0, 0, 0, 0.5) 50%,
-        rgba(0, 0, 0, 0.4) 80%,
-        transparent 100%
-    );
-    z-index: 1;
 }
 
 .hero-footer {
