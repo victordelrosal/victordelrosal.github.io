@@ -185,6 +185,7 @@ if (!window.SupabaseClient) {
         return new Promise((resolve, reject) => {
           google.accounts.id.initialize({
             client_id: GOOGLE_CLIENT_ID,
+            use_fedcm_for_prompt: true,
             callback: async (response) => {
               try {
                 await handleGoogleCredential(response);
@@ -197,8 +198,8 @@ if (!window.SupabaseClient) {
 
           // Trigger the One Tap or popup
           google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed()) {
-              // One Tap not available, fall back to button click flow
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+              // One Tap not available or skipped, fall back to button click flow
               // Create a temporary container for Google button
               const container = document.createElement('div');
               container.style.position = 'fixed';
@@ -211,6 +212,11 @@ if (!window.SupabaseClient) {
               container.style.borderRadius = '8px';
               container.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
               container.id = 'google-signin-container';
+
+              // Check if container already exists to avoid duplicates
+              if (document.getElementById('google-signin-container')) {
+                  return;
+              }
 
               // Add close button
               const closeBtn = document.createElement('button');
@@ -238,9 +244,6 @@ if (!window.SupabaseClient) {
                 size: 'large',
                 width: 250,
               });
-            } else if (notification.isSkippedMoment()) {
-              // User closed One Tap
-              console.log('One Tap skipped');
             }
           });
         });
