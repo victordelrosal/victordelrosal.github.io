@@ -14,11 +14,15 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-// Supabase Configuration
-// Uses environment variables if available (for CI/CD), falls back to defaults for local dev
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://azzzrjnqgkqwpqnroost.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE';
+// Supabase Configuration (must be provided via environment)
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const SITE_URL = 'https://victordelrosal.com';
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY in environment. Aborting build to avoid hitting production with defaults.');
+    process.exit(1);
+}
 
 /**
  * Fetch all published posts from Supabase
@@ -315,13 +319,14 @@ function generateWaveHTML(post) {
 
     <!-- Load Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-config.js"></script>
+    <script src="/js/supabase-client.js"></script>
 
     <!-- XSS Protection -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
     <!-- Load Posts API and Custom JS -->
     <script src="/posts.js"></script>
-    <script src="/js/supabase-client.js"></script>
     <script src="/js/page-views.js"></script>
     <script src="/js/comments.js"></script>
     <script src="/js/comments-ui.js"></script>
