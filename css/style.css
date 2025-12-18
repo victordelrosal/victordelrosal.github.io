@@ -188,7 +188,7 @@ nav {
     overflow-y: visible;
 }
 
-/* Hero carousel area: takes remaining space, centers carousel vertically within */
+/* Hero carousel area: takes remaining space, centers well vertically within */
 .hero-carousel-area {
     flex: 1;
     display: flex;
@@ -197,122 +197,90 @@ nav {
     width: 100%;
     position: relative;
     z-index: 10;
-    /* 3D perspective context for the tray */
-    perspective: 800px;
-    perspective-origin: 50% 30%;
 }
 
-/* The Well: 3D metallic silver well where thumbnails hover */
+/* The Well: Deep metallic container where cards are tucked in */
 .carousel-well {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    /* Narrower, deeper well shape */
-    padding: 24px 18px 28px;
-    border-radius: 16px;
+    /* Deep well - cards tucked inside */
+    padding: 0 20px;
+    height: 44px;
+    border-radius: 22px;
+    /* Clip cards - only tops visible until hover */
+    overflow: hidden;
 
-    /* 3D tilt - shallow angle so tray recedes, cards pop forward */
-    transform: rotateX(22deg);
-    transform-style: preserve-3d;
-
-    /* Metallic silver surface */
+    /* Metallic silver interior */
     background: linear-gradient(
         180deg,
-        rgb(175, 180, 190) 0%,
-        rgb(145, 150, 160) 40%,
-        rgb(120, 125, 135) 80%,
-        rgb(100, 105, 115) 100%
+        rgb(85, 90, 100) 0%,
+        rgb(105, 110, 120) 30%,
+        rgb(130, 135, 145) 60%,
+        rgb(160, 165, 175) 100%
     );
 
     box-shadow:
-        /* Bright chrome rim highlight */
-        inset 0 2px 0 rgba(255, 255, 255, 0.7),
-        /* Deeper inner shadows for well effect */
-        inset 0 -12px 20px rgba(0, 0, 0, 0.35),
-        inset 0 6px 14px rgba(0, 0, 0, 0.2),
-        /* Stronger side walls for depth */
-        inset 8px 0 14px rgba(0, 0, 0, 0.2),
-        inset -8px 0 14px rgba(0, 0, 0, 0.2),
-        /* Floor reflection */
-        inset 0 -3px 8px rgba(255, 255, 255, 0.12),
-        /* Well shadow on surface below */
-        0 20px 40px rgba(0, 0, 0, 0.5),
-        0 10px 20px rgba(0, 0, 0, 0.35);
+        /* Deep inner shadow - the well depth */
+        inset 0 12px 24px rgba(0, 0, 0, 0.5),
+        inset 0 4px 8px rgba(0, 0, 0, 0.3),
+        /* Side walls */
+        inset 6px 0 12px rgba(0, 0, 0, 0.25),
+        inset -6px 0 12px rgba(0, 0, 0, 0.25),
+        /* Bottom floor highlight */
+        inset 0 -2px 6px rgba(255, 255, 255, 0.2),
+        /* Outer shadow */
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.3);
 
-    /* Chrome rim border - thicker for well */
-    border: 3px solid rgb(190, 195, 205);
-    border-top-color: rgb(225, 230, 240);
-    border-bottom-color: rgb(90, 95, 105);
+    /* Thick rim border */
+    border: 4px solid rgb(180, 185, 195);
+    border-top-color: rgb(140, 145, 155);
+    border-bottom-color: rgb(220, 225, 235);
 }
 
-/* Tray floor surface - brushed metal texture */
+/* Well floor - brushed metal */
 .carousel-well::before {
     content: '';
     position: absolute;
-    inset: 6px;
-    border-radius: 8px;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 20px;
+    border-radius: 0 0 14px 14px;
     background:
-        /* Subtle brushed metal lines */
         repeating-linear-gradient(
             90deg,
             transparent 0px,
-            rgba(255, 255, 255, 0.03) 1px,
+            rgba(255, 255, 255, 0.02) 1px,
             transparent 2px,
-            transparent 4px
+            transparent 3px
         ),
-        /* Center highlight */
-        radial-gradient(
-            ellipse 80% 40% at 50% 30%,
-            rgba(255, 255, 255, 0.2) 0%,
-            transparent 60%
-        ),
-        /* Bottom shadow */
         linear-gradient(
             180deg,
-            transparent 0%,
-            rgba(0, 0, 0, 0.08) 100%
+            rgba(0, 0, 0, 0.1) 0%,
+            rgba(255, 255, 255, 0.1) 100%
         );
     pointer-events: none;
 }
 
-/* Rim highlight line - brighter for chrome */
+/* Top rim highlight */
 .carousel-well::after {
     content: '';
     position: absolute;
     top: 0;
-    left: 10%;
-    right: 10%;
+    left: 15%;
+    right: 15%;
     height: 1px;
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.8) 30%,
-        rgba(255, 255, 255, 0.95) 50%,
-        rgba(255, 255, 255, 0.8) 70%,
+        rgba(0, 0, 0, 0.3) 30%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.3) 70%,
         transparent 100%
     );
-}
-
-/* Hover: subtle lift with enhanced shine */
-.carousel-well:hover {
-    transform: rotateX(20deg) translateY(-2px);
-    background: linear-gradient(
-        180deg,
-        rgb(185, 190, 200) 0%,
-        rgb(155, 160, 170) 40%,
-        rgb(130, 135, 145) 80%,
-        rgb(110, 115, 125) 100%
-    );
-    box-shadow:
-        inset 0 2px 0 rgba(255, 255, 255, 0.85),
-        inset 0 -12px 20px rgba(0, 0, 0, 0.3),
-        inset 0 6px 14px rgba(0, 0, 0, 0.15),
-        inset 8px 0 14px rgba(0, 0, 0, 0.15),
-        inset -8px 0 14px rgba(0, 0, 0, 0.15),
-        inset 0 -3px 10px rgba(255, 255, 255, 0.18),
-        0 24px 48px rgba(0, 0, 0, 0.5),
-        0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .hero-footer {
@@ -6117,42 +6085,60 @@ footer {
     }
 }
 
-/* Hero variant - lives inside .carousel-well, floats above tray */
+/* Hero variant - cards tucked into the well */
 .wave-thumbnails--hero {
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
     margin: 0;
-    padding: 0;
-    /* Float high above the tilted tray - counter-rotate to face viewer */
-    transform: translateZ(50px) rotateX(-22deg);
-    transform-style: preserve-3d;
+    padding: 0 8px;
+    padding-bottom: 6px;
+    align-items: flex-end;
 }
 
-/* Thumbnails hover above tray surface */
+/* Cards tucked in - only top ~60% visible */
 .wave-thumbnails--hero .wave-thumb-item {
-    width: 51px;
-    height: 51px;
-    transform-style: preserve-3d;
+    width: 48px;
+    height: 48px;
+    /* Push card down so bottom is hidden in well */
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+}
+
+/* On hover - card pops up out of the well */
+.wave-thumbnails--hero .wave-thumb-item:hover {
+    transform: translateY(-8px);
+    z-index: 10;
 }
 
 .wave-thumbnails--hero .wave-thumb-item .thumb-img {
-    width: 51px;
-    height: 51px;
-    /* Floating shadow - shadow falls on tray below */
+    width: 48px;
+    height: 48px;
     box-shadow:
-        0 8px 16px rgba(0, 0, 0, 0.5),
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(0, 180, 220, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        0 2px 6px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Enhanced hover - lift higher */
-.wave-thumbnails--hero .wave-thumb-item.wave-active .thumb-img {
+/* Hovered card - enhanced glow */
+.wave-thumbnails--hero .wave-thumb-item:hover .thumb-img {
     box-shadow:
-        0 14px 28px rgba(0, 0, 0, 0.5),
-        0 8px 16px rgba(0, 0, 0, 0.35),
-        0 0 30px rgba(0, 180, 220, 0.25);
-    border-color: rgba(0, 200, 255, 0.3);
+        0 12px 28px rgba(0, 0, 0, 0.5),
+        0 6px 14px rgba(0, 0, 0, 0.35),
+        0 0 24px rgba(0, 180, 220, 0.3);
+    border-color: rgba(0, 200, 255, 0.4);
+}
+
+/* Neighbor cards peek up slightly when one is hovered */
+.wave-thumbnails--hero .wave-thumb-item.wave-active {
+    transform: translateY(-8px);
+    z-index: 10;
+}
+
+.wave-thumbnails--hero .wave-thumb-item.wave-ripple {
+    transform: translateY(calc(20px + var(--wave-height, 0px)));
 }
 
 /* Hide carousel area on mobile - desktop only */
