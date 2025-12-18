@@ -361,21 +361,12 @@
                         text.setAttribute('y', labelY);
                         text.setAttribute('class', 'wedge-label');
 
-                        // Rotate text to be readable (flip if on left side)
+                        // Store initial angle for gravity counter-rotation
                         let angleDeg = labelAngle * 180 / Math.PI;
-                        let rotation = angleDeg + 90;
-                        let anchor = 'middle';
+                        text.setAttribute('data-initial-angle', angleDeg);
 
-                        // For labels on left side, flip them
-                        if (angleDeg > 0 && angleDeg < 180) {
-                            // Bottom half - text reads left to right
-                            rotation = angleDeg - 90;
-                        } else {
-                            // Top half - text reads left to right
-                            rotation = angleDeg + 90;
-                        }
-
-                        text.setAttribute('transform', `rotate(${rotation}, ${labelX}, ${labelY})`);
+                        // Labels always face down (pulled by gravity) - no initial rotation needed
+                        // The counter-rotation animation will handle keeping them upright
                         text.setAttribute('id', `label-${i}`);
                         text.setAttribute('data-color', item.color);
                         text.textContent = item.name;
@@ -407,21 +398,39 @@
                     sphereContainer.appendChild(sphereText);
                     container.appendChild(sphereContainer);
 
-                    // Counter-rotate labels to keep them upright (like cats landing on feet)
+                    // Counter-rotate labels to keep them facing DOWN (gravity-pulled)
                     const labels = svg.querySelectorAll('.wedge-label');
                     const rotationDuration = 60000; // 60 seconds for full rotation (matches CSS)
                     const startTime = performance.now();
+                    let isPaused = false;
+                    let pauseTime = 0;
+                    let totalPausedTime = 0;
+
+                    // Listen for hover to sync pause state
+                    const chartContainer = document.getElementById('radial-chart');
+                    chartContainer.addEventListener('mouseenter', () => {
+                        isPaused = true;
+                        pauseTime = performance.now();
+                    });
+                    chartContainer.addEventListener('mouseleave', () => {
+                        if (isPaused) {
+                            totalPausedTime += performance.now() - pauseTime;
+                        }
+                        isPaused = false;
+                    });
 
                     function updateLabelRotations() {
-                        const elapsed = performance.now() - startTime;
-                        const wheelAngle = (elapsed / rotationDuration) * 360 % 360;
+                        if (!isPaused) {
+                            const elapsed = performance.now() - startTime - totalPausedTime;
+                            const wheelAngle = (elapsed / rotationDuration) * 360 % 360;
 
-                        labels.forEach((label, i) => {
-                            const labelX = parseFloat(label.getAttribute('x'));
-                            const labelY = parseFloat(label.getAttribute('y'));
-                            // Counter-rotate by the negative of wheel angle
-                            label.setAttribute('transform', `rotate(${-wheelAngle}, ${labelX}, ${labelY})`);
-                        });
+                            labels.forEach((label) => {
+                                const labelX = parseFloat(label.getAttribute('x'));
+                                const labelY = parseFloat(label.getAttribute('y'));
+                                // Counter-rotate by exactly the wheel angle to keep labels facing down
+                                label.setAttribute('transform', `rotate(${-wheelAngle}, ${labelX}, ${labelY})`);
+                            });
+                        }
 
                         requestAnimationFrame(updateLabelRotations);
                     }
