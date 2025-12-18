@@ -202,7 +202,7 @@ nav {
     perspective-origin: 50% 30%;
 }
 
-/* The Well: 3D angled tray where thumbnails hover */
+/* The Well: 3D metallic silver tray where thumbnails hover */
 .carousel-well {
     position: relative;
     display: flex;
@@ -215,57 +215,67 @@ nav {
     transform: rotateX(22deg);
     transform-style: preserve-3d;
 
-    /* Tray surface */
+    /* Metallic silver surface */
     background: linear-gradient(
         180deg,
-        rgba(30, 35, 45, 0.95) 0%,
-        rgba(25, 30, 40, 0.9) 50%,
-        rgba(20, 25, 35, 0.85) 100%
+        rgb(180, 185, 195) 0%,
+        rgb(150, 155, 165) 30%,
+        rgb(130, 135, 145) 70%,
+        rgb(110, 115, 125) 100%
     );
 
     box-shadow:
-        /* Top rim (closer to viewer - brighter) */
-        inset 0 2px 0 rgba(255, 255, 255, 0.15),
-        /* Inner depth */
-        inset 0 -8px 16px rgba(0, 0, 0, 0.5),
-        inset 0 4px 12px rgba(0, 0, 0, 0.3),
+        /* Bright chrome rim highlight */
+        inset 0 2px 0 rgba(255, 255, 255, 0.7),
+        /* Inner depth - softer for silver */
+        inset 0 -6px 12px rgba(0, 0, 0, 0.25),
+        inset 0 3px 8px rgba(0, 0, 0, 0.15),
         /* Side walls */
-        inset 6px 0 10px rgba(0, 0, 0, 0.25),
-        inset -6px 0 10px rgba(0, 0, 0, 0.25),
-        /* Floor ambient */
-        inset 0 -2px 6px rgba(0, 160, 200, 0.1),
+        inset 4px 0 8px rgba(0, 0, 0, 0.12),
+        inset -4px 0 8px rgba(0, 0, 0, 0.12),
+        /* Floor reflection */
+        inset 0 -2px 6px rgba(255, 255, 255, 0.15),
         /* Tray shadow on surface below */
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        0 10px 20px rgba(0, 0, 0, 0.3);
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 10px 20px rgba(0, 0, 0, 0.35);
 
-    /* Raised rim border */
-    border: 2px solid rgba(60, 70, 85, 0.8);
-    border-top-color: rgba(100, 110, 130, 0.6);
-    border-bottom-color: rgba(20, 25, 35, 0.9);
+    /* Chrome rim border */
+    border: 2px solid rgb(200, 205, 215);
+    border-top-color: rgb(230, 235, 245);
+    border-bottom-color: rgb(100, 105, 115);
 }
 
-/* Tray floor surface texture */
+/* Tray floor surface - brushed metal texture */
 .carousel-well::before {
     content: '';
     position: absolute;
     inset: 6px;
     border-radius: 8px;
     background:
+        /* Subtle brushed metal lines */
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 2px,
+            transparent 4px
+        ),
+        /* Center highlight */
         radial-gradient(
-            ellipse 100% 60% at 50% 100%,
-            rgba(0, 180, 220, 0.08) 0%,
+            ellipse 80% 40% at 50% 30%,
+            rgba(255, 255, 255, 0.2) 0%,
             transparent 60%
         ),
+        /* Bottom shadow */
         linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.15) 0%,
-            transparent 30%,
-            rgba(0, 180, 220, 0.03) 100%
+            transparent 0%,
+            rgba(0, 0, 0, 0.08) 100%
         );
     pointer-events: none;
 }
 
-/* Rim highlight line */
+/* Rim highlight line - brighter for chrome */
 .carousel-well::after {
     content: '';
     position: absolute;
@@ -276,26 +286,32 @@ nav {
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.3) 30%,
-        rgba(255, 255, 255, 0.4) 50%,
-        rgba(255, 255, 255, 0.3) 70%,
+        rgba(255, 255, 255, 0.8) 30%,
+        rgba(255, 255, 255, 0.95) 50%,
+        rgba(255, 255, 255, 0.8) 70%,
         transparent 100%
     );
 }
 
-/* Hover: subtle lift */
+/* Hover: subtle lift with enhanced shine */
 .carousel-well:hover {
     transform: rotateX(20deg) translateY(-2px);
+    background: linear-gradient(
+        180deg,
+        rgb(190, 195, 205) 0%,
+        rgb(160, 165, 175) 30%,
+        rgb(140, 145, 155) 70%,
+        rgb(120, 125, 135) 100%
+    );
     box-shadow:
-        inset 0 2px 0 rgba(255, 255, 255, 0.18),
-        inset 0 -8px 16px rgba(0, 0, 0, 0.45),
-        inset 0 4px 12px rgba(0, 0, 0, 0.25),
-        inset 6px 0 10px rgba(0, 0, 0, 0.2),
-        inset -6px 0 10px rgba(0, 0, 0, 0.2),
-        inset 0 -2px 8px rgba(0, 160, 200, 0.15),
-        0 24px 48px rgba(0, 0, 0, 0.45),
-        0 12px 24px rgba(0, 0, 0, 0.35),
-        0 0 60px rgba(0, 160, 200, 0.1);
+        inset 0 2px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -6px 12px rgba(0, 0, 0, 0.2),
+        inset 0 3px 8px rgba(0, 0, 0, 0.12),
+        inset 4px 0 8px rgba(0, 0, 0, 0.1),
+        inset -4px 0 8px rgba(0, 0, 0, 0.1),
+        inset 0 -2px 8px rgba(255, 255, 255, 0.2),
+        0 24px 48px rgba(0, 0, 0, 0.5),
+        0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .hero-footer {
