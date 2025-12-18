@@ -2061,33 +2061,35 @@ section {
     }
 }
 
-/* Subtle shimmer effect - 45 degree angle */
+/* Gentle diagonal shimmer - 45 degrees, top-left to bottom-right */
 .contact-section::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -100%;
-    width: 60%;
+    top: 0;
+    left: 0;
+    width: 200%;
     height: 200%;
     background: linear-gradient(
         45deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.02) 40%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.03) 45%,
         rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.02) 60%,
+        rgba(255, 255, 255, 0.03) 55%,
+        transparent 60%,
         transparent 100%
     );
-    animation: contactShimmer 8s ease-in-out infinite;
+    animation: contactShimmer 10s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
 }
 
 @keyframes contactShimmer {
     0%, 100% {
-        left: -100%;
+        transform: translate(-75%, -75%);
     }
     50% {
-        left: 150%;
+        transform: translate(0%, 0%);
     }
 }
 
