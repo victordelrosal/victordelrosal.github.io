@@ -209,17 +209,16 @@ nav {
     padding: 0 20px;
     padding-top: 60px;
     height: 38px;
-    border-radius: 22px;
+    border-radius: 18px;
     /* Allow cards to escape upward on hover */
     overflow: visible;
 
-    /* Metallic silver interior */
+    /* Seamless metallic silver - dark at top, lighter at bottom */
     background: linear-gradient(
         180deg,
-        rgb(85, 90, 100) 0%,
-        rgb(105, 110, 120) 30%,
-        rgb(130, 135, 145) 60%,
-        rgb(160, 165, 175) 100%
+        rgb(70, 75, 85) 0%,
+        rgb(100, 105, 115) 40%,
+        rgb(140, 145, 155) 100%
     );
 
     box-shadow:
@@ -229,44 +228,24 @@ nav {
         /* Side walls */
         inset 6px 0 12px rgba(0, 0, 0, 0.25),
         inset -6px 0 12px rgba(0, 0, 0, 0.25),
-        /* Bottom floor highlight */
-        inset 0 -2px 6px rgba(255, 255, 255, 0.2),
-        /* Outer shadow */
-        0 8px 24px rgba(0, 0, 0, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.3);
-
-    /* Thick rim border */
-    border: 4px solid rgb(180, 185, 195);
-    border-top-color: rgb(140, 145, 155);
-    border-bottom-color: rgb(220, 225, 235);
+        /* Outer shadow for depth */
+        0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
-/* Front lip - covers bottom of cards to create tucked-in illusion */
+/* Front lip - seamless extension of well bottom */
 .carousel-well::before {
     content: '';
     position: absolute;
-    bottom: -4px;
-    left: -4px;
-    right: -4px;
-    height: 28px;
-    border-radius: 0 0 22px 22px;
-    /* Match the well bottom gradient + rim */
-    background: linear-gradient(
-        180deg,
-        rgb(140, 145, 155) 0%,
-        rgb(160, 165, 175) 50%,
-        rgb(180, 185, 195) 100%
-    );
-    border: 4px solid rgb(180, 185, 195);
-    border-top: none;
-    border-bottom-color: rgb(220, 225, 235);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    border-radius: 0 0 18px 18px;
+    /* Continue from well bottom color */
+    background: rgb(140, 145, 155);
     /* Sit in front of cards */
     z-index: 5;
     pointer-events: none;
-    box-shadow:
-        inset 0 4px 8px rgba(0, 0, 0, 0.15),
-        inset 4px 0 8px rgba(0, 0, 0, 0.1),
-        inset -4px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Top rim inner shadow line */
