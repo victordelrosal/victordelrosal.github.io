@@ -690,11 +690,11 @@ nav {
     border-radius: 50%;
     background: linear-gradient(135deg, #00D4FF 0%, var(--blue-7) 100%);
     filter: blur(25px);
-    opacity: 0.5;
+    opacity: 0.25;
     bottom: -30%;
     left: 10%;
     transform: translateX(-50%);
-    animation: btnOrbSweep 6s ease-in-out infinite;
+    animation: btnOrbSweep 10s ease-in-out infinite;
     z-index: 0;
 }
 
