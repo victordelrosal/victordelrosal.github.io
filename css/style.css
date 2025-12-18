@@ -209,8 +209,8 @@ nav {
     padding: 28px 40px 20px;
     border-radius: 12px;
 
-    /* 3D tilt - angled like a serving tray */
-    transform: rotateX(35deg);
+    /* 3D tilt - steeper angle for dramatic effect */
+    transform: rotateX(55deg);
     transform-style: preserve-3d;
 
     /* Tray surface */
@@ -283,7 +283,7 @@ nav {
 
 /* Hover: subtle lift */
 .carousel-well:hover {
-    transform: rotateX(33deg) translateY(-2px);
+    transform: rotateX(52deg) translateY(-2px);
     box-shadow:
         inset 0 2px 0 rgba(255, 255, 255, 0.18),
         inset 0 -8px 16px rgba(0, 0, 0, 0.45),
@@ -6104,8 +6104,8 @@ footer {
     gap: 16px;
     margin: 0;
     padding: 0;
-    /* Float above the tilted tray */
-    transform: translateZ(30px) rotateX(-35deg);
+    /* Float above the tilted tray - counter-rotate to face viewer */
+    transform: translateZ(45px) rotateX(-55deg);
     transform-style: preserve-3d;
 }
 
