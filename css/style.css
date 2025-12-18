@@ -230,20 +230,6 @@ nav {
     pointer-events: none;
 }
 
-/* Ground cover - hides card bottoms and shadows */
-.carousel-well::before {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 40px;
-    /* Solid hero color to fully cover shadows */
-    background: var(--blue-7);
-    z-index: 5;
-    pointer-events: none;
-}
 
 .hero-footer {
     min-height: 280px;
