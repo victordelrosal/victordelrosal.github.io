@@ -183,7 +183,9 @@ nav {
     padding: var(--hero-padding-top) var(--hero-padding-x) var(--hero-padding-bottom);
     background: var(--gradient-hero);
     position: relative;
-    overflow: hidden;
+    /* Allow carousel previews to overflow, clip horizontal only */
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 /* Hero carousel area: takes remaining space, centers carousel vertically within */
