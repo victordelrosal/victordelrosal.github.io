@@ -2061,25 +2061,6 @@ section {
     }
 }
 
-/* Corner accent glows */
-.contact-section::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 40px;
-    pointer-events: none;
-    z-index: 2;
-    background:
-        /* Top-left corner */
-        radial-gradient(circle at 8% 8%, rgba(0, 212, 255, 0.15) 0%, transparent 25%),
-        /* Top-right corner */
-        radial-gradient(circle at 92% 8%, rgba(0, 212, 255, 0.15) 0%, transparent 25%),
-        /* Bottom-left corner */
-        radial-gradient(circle at 8% 92%, rgba(0, 180, 255, 0.1) 0%, transparent 25%),
-        /* Bottom-right corner */
-        radial-gradient(circle at 92% 92%, rgba(0, 180, 255, 0.1) 0%, transparent 25%);
-}
-
 /* Subtle shimmer effect - 45 degree angle */
 .contact-section::before {
     content: '';
