@@ -209,24 +209,25 @@ nav {
     overflow: visible;
 }
 
-/* The "hole" - inner shadow creates depth illusion */
+/* The "hole" - shadow below cards creates depth illusion */
 .carousel-well::after {
     content: '';
     position: absolute;
-    bottom: 28px;
+    bottom: -8px;
     left: 50%;
     transform: translateX(-50%);
-    width: 500px;
-    height: 24px;
+    width: 520px;
+    height: 20px;
     border-radius: 50%;
     /* Dark shadow = the hole opening */
     background: radial-gradient(
         ellipse 100% 100% at center,
-        rgba(0, 0, 20, 0.6) 0%,
-        rgba(0, 0, 40, 0.3) 50%,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 20, 0.3) 50%,
         transparent 70%
     );
-    z-index: 4;
+    /* Below cards (z-index 2) */
+    z-index: 1;
     pointer-events: none;
 }
 
