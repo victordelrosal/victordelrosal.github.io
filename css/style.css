@@ -167,24 +167,42 @@ nav {
 }
 
 .hero {
+    --hero-padding-top: 120px;
+    --hero-padding-bottom: 80px;
+    --hero-padding-x: 24px;
     min-height: 100vh;
     width: 100vw;
     max-width: none;
     margin-left: 0;
     margin-right: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
-    padding: 120px 24px 80px;
+    padding: var(--hero-padding-top) var(--hero-padding-x) var(--hero-padding-bottom);
     background: var(--gradient-hero);
     position: relative;
     overflow: hidden;
 }
 
+/* Hero carousel area: takes remaining space, centers carousel vertically within */
+.hero-carousel-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
 .hero-footer {
     min-height: 280px;
     padding: 60px 24px;
+    /* Footer hero uses original centered layout (no carousel) */
+    flex-direction: row;
+    justify-content: center;
 }
 
 .hero-footer .hero-content {
@@ -5981,15 +5999,12 @@ footer {
     }
 }
 
-/* Hero variant - centered under the CTA button with breathing room */
+/* Hero variant - centering handled by .hero-carousel-area flex container */
 .wave-thumbnails--hero {
     justify-content: center;
     gap: 12px;
-    margin-top: 56px;
-    margin-bottom: 24px;
-    padding: 0 20px;
-    position: relative;
-    z-index: 10;
+    margin: 0;
+    padding: 0 var(--hero-padding-x, 24px);
 }
 
 /* Slightly larger thumbnails for hero (10% bigger: 46px -> 51px) */
@@ -6010,10 +6025,14 @@ footer {
     box-shadow: 0 12px 32px rgba(0, 212, 255, 0.25), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-/* Hide thumbnails on mobile - desktop only */
+/* Hide carousel area on mobile - desktop only */
 @media (max-width: 768px) {
-    .wave-thumbnails--hero {
+    .hero-carousel-area {
         display: none;
+    }
+    /* Restore original hero layout when carousel hidden */
+    .hero:not(.hero-footer) {
+        justify-content: center;
     }
 }
 
