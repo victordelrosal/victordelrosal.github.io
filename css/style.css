@@ -5981,6 +5981,49 @@ footer {
     }
 }
 
+/* Hero variant - centered under the CTA button */
+.wave-thumbnails--hero {
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    margin-bottom: 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Slightly larger thumbnails for hero (10% bigger: 46px -> 51px) */
+.wave-thumbnails--hero .wave-thumb-item {
+    width: 51px;
+    height: 51px;
+}
+
+.wave-thumbnails--hero .wave-thumb-item .thumb-img {
+    width: 51px;
+    height: 51px;
+    /* Subtle glow for dark hero background */
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced hover glow on dark background */
+.wave-thumbnails--hero .wave-thumb-item.wave-active .thumb-img {
+    box-shadow: 0 12px 32px rgba(0, 212, 255, 0.25), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Hide thumbnails on mobile - desktop only */
+@media (max-width: 768px) {
+    .wave-thumbnails--hero {
+        display: none;
+    }
+}
+
+/* Tablet: show fewer thumbnails */
+@media (max-width: 1024px) {
+    .wave-thumbnails--hero .wave-thumb-item:nth-child(n+9) {
+        display: none;
+    }
+}
+
 .wave-thumb-item {
     position: relative;
     width: 46px;

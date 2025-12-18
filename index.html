@@ -98,6 +98,9 @@
                 <div class="hero-cta">
                     <a href="/waves/" class="btn-primary btn-jumbo"><span>Read Latest Waves</span></a>
                 </div>
+
+                <!-- Hero Thumbnail Carousel -->
+                <div id="hero-thumbnails" class="wave-thumbnails wave-thumbnails--hero"></div>
             </div>
         </section>
 
@@ -815,6 +818,139 @@
                 }, 44);
             });
         });
+    </script>
+
+    <!-- Load Posts API for thumbnail carousel -->
+    <script src="/posts.js"></script>
+
+    <!-- Hero Thumbnail Carousel -->
+    <script>
+    (async function initHeroThumbnails() {
+        const thumbnailsContainer = document.getElementById('hero-thumbnails');
+        if (!thumbnailsContainer || !window.PostsAPI) return;
+
+        try {
+            // Initialize Supabase if available
+            if (window.SupabaseClient) {
+                window.SupabaseClient.initSupabase();
+            }
+
+            // Fetch posts
+            const posts = await window.PostsAPI.fetchPosts();
+            if (!posts || posts.length === 0) return;
+
+            function getFirstImage(html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                const img = temp.querySelector('img');
+                return img ? img.src : null;
+            }
+
+            function formatThumbDate(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            function escapeHTML(str) {
+                if (!str) return '';
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // Filter posts with images, take first 12
+            const postsWithImages = posts
+                .filter(p => getFirstImage(p.content))
+                .slice(0, 12);
+
+            if (postsWithImages.length === 0) return;
+
+            // Create thumbnail items
+            postsWithImages.forEach(p => {
+                const thumb = document.createElement('a');
+                thumb.href = '/' + p.slug;
+                thumb.className = 'wave-thumb-item';
+                const imageUrl = getFirstImage(p.content);
+                thumb.innerHTML = `
+                    <div class="thumb-img">
+                        <img src="${imageUrl}" alt="" loading="lazy">
+                    </div>
+                    <div class="thumb-preview">
+                        <div class="thumb-preview-img">
+                            <img src="${imageUrl}" alt="">
+                        </div>
+                        <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
+                        <div class="thumb-preview-title">${escapeHTML(p.title)}</div>
+                    </div>
+                `;
+                thumbnailsContainer.appendChild(thumb);
+            });
+
+            // Ocean Wave Effect
+            (function initOceanWave() {
+                const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
+                if (thumbs.length === 0) return;
+
+                let isWaveActive = false;
+                let waveTimeout = null;
+
+                const WAVE_SPEED = 60;
+                const MAX_HEIGHT = -12;
+                const MAX_SCALE = 0.05;
+                const DECAY = 0.7;
+
+                function clearWaveClasses() {
+                    thumbs.forEach(thumb => {
+                        thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
+                    });
+                }
+
+                function triggerWave(epicenterIndex) {
+                    if (waveTimeout) clearTimeout(waveTimeout);
+                    clearWaveClasses();
+                    isWaveActive = true;
+
+                    thumbs.forEach((thumb, i) => {
+                        const distance = Math.abs(i - epicenterIndex);
+                        const thumbImg = thumb.querySelector('.thumb-img');
+
+                        if (distance === 0) {
+                            thumb.classList.add('wave-active');
+                        } else {
+                            const amplitude = Math.pow(DECAY, distance);
+                            const waveHeight = MAX_HEIGHT * amplitude;
+                            const waveScale = MAX_SCALE * amplitude;
+                            const delay = distance * WAVE_SPEED;
+
+                            thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
+                            thumbImg.style.setProperty('--wave-scale', waveScale);
+                            thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
+
+                            thumb.classList.add('wave-ripple');
+                        }
+                    });
+                }
+
+                function settleWave() {
+                    isWaveActive = false;
+                    clearWaveClasses();
+                    thumbs.forEach(thumb => thumb.classList.add('wave-settling'));
+                    waveTimeout = setTimeout(() => clearWaveClasses(), 600);
+                }
+
+                thumbs.forEach((thumb, index) => {
+                    thumb.addEventListener('mouseenter', () => triggerWave(index));
+                });
+
+                thumbnailsContainer.addEventListener('mouseleave', () => {
+                    if (isWaveActive) settleWave();
+                });
+            })();
+
+        } catch (error) {
+            console.error('Error loading hero thumbnails:', error);
+        }
+    })();
     </script>
 </body>
 </html>
