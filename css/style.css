@@ -1510,6 +1510,11 @@ section {
     transform-origin: center center;
 }
 
+/* Pause wheel spin on hover */
+.radial-chart-container:hover .radial-svg {
+    animation-play-state: paused;
+}
+
 /* Gentle ferris wheel rotation */
 @keyframes ferris-wheel-spin {
     from {
