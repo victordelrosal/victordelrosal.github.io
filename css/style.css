@@ -2048,6 +2048,17 @@ section {
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
         inset 0 -20px 40px rgba(0, 0, 0, 0.3),
         inset 0 20px 40px rgba(255, 255, 255, 0.02);
+    /* Slow breathing zoom effect */
+    animation: contactBreathe 12s ease-in-out infinite;
+}
+
+@keyframes contactBreathe {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
 }
 
 /* Corner accent glows */
@@ -2069,20 +2080,20 @@ section {
         radial-gradient(circle at 92% 92%, rgba(0, 180, 255, 0.1) 0%, transparent 25%);
 }
 
-/* Subtle shimmer effect */
+/* Subtle shimmer effect - 45 degree angle */
 .contact-section::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: -50%;
     left: -100%;
     width: 60%;
-    height: 100%;
+    height: 200%;
     background: linear-gradient(
-        90deg,
+        45deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.03) 40%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.03) 60%,
+        rgba(255, 255, 255, 0.02) 40%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.02) 60%,
         transparent 100%
     );
     animation: contactShimmer 8s ease-in-out infinite;
