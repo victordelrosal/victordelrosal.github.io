@@ -2,8 +2,11 @@ name: Daily AI News Scan
 
 on:
   schedule:
-    # Run at 5:00 AM UTC (GMT) every day
-    - cron: '0 5 * * *'
+    # Run at 7:00 AM Dublin time (handles DST)
+    # Winter (GMT): 07:00 UTC = 7am Dublin
+    # Summer (IST): 06:00 UTC = 7am Dublin
+    - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
 
   # Allow manual trigger for testing
   workflow_dispatch:

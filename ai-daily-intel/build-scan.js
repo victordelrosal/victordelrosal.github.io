@@ -325,6 +325,22 @@ async function main() {
 
   console.log(`\nLoaded ${enabledRSS.length} RSS sources, ${enabledAPI.length} API sources`);
 
+  // Check if today's scan already exists (for DST dual-schedule)
+  const today = new Date();
+  const todaySlug = `daily-ai-news-scan-${today.toISOString().split('T')[0]}`;
+
+  const { data: existingToday } = await supabase
+    .from('published_posts')
+    .select('id')
+    .eq('slug', todaySlug)
+    .single();
+
+  if (existingToday && !DRY_RUN) {
+    console.log(`\n✅ Scan for today (${todaySlug}) already exists. Skipping.`);
+    console.log('This is expected when both DST schedules fire.\n');
+    process.exit(0);
+  }
+
   // Fetch all items
   console.log('\n--- Fetching RSS feeds ---');
   const rssResults = await Promise.all(enabledRSS.map(fetchRSSFeed));

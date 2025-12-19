@@ -1,0 +1,345 @@
+name: Verify DAINS
+
+on:
+  schedule:
+    # Run 30 min after DAINS (7:30 AM Dublin, handles DST)
+    # Winter (GMT): 07:30 UTC
+    # Summer (IST): 06:30 UTC
+    - cron: '30 6 * * *'
+    - cron: '30 7 * * *'
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Calculate today's date and slug
+        id: date
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          echo "date=$TODAY" >> $GITHUB_OUTPUT
+          echo "slug=daily-ai-news-scan-$TODAY" >> $GITHUB_OUTPUT
+          echo "================================================"
+          echo "DAINS Verification for: $TODAY"
+          echo "Expected slug: daily-ai-news-scan-$TODAY"
+          echo "================================================"
+
+      # ========================================
+      # LAYER 1: Check workflow status
+      # ========================================
+      - name: "Layer 1: Check daily-ai-news-scan workflow status"
+        id: layer1
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "--- Layer 1: Workflow Status Check ---"
+          echo "Checking workflow runs for today..."
+
+          # Get today's runs of daily-ai-news-scan
+          RUNS=$(gh run list --workflow=daily-ai-news-scan.yml --limit=10 --json status,conclusion,createdAt,databaseId)
+
+          # Check if any run today succeeded
+          TODAY="${{ steps.date.outputs.date }}"
+          SUCCESS=$(echo "$RUNS" | jq -r ".[] | select(.createdAt | startswith(\"$TODAY\")) | select(.conclusion == \"success\") | .databaseId" | head -1)
+
+          if [ -n "$SUCCESS" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "run_id=$SUCCESS" >> $GITHUB_OUTPUT
+            echo "✅ Layer 1 PASSED: Workflow succeeded (run $SUCCESS)"
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "error=No successful daily-ai-news-scan run found for $TODAY" >> $GITHUB_OUTPUT
+            echo "❌ Layer 1 FAILED: No successful workflow run found for today"
+            echo "Recent runs:"
+            echo "$RUNS" | jq -r '.[] | "\(.createdAt) - \(.conclusion)"' | head -5
+          fi
+
+      # ========================================
+      # LAYER 2: Check Supabase data
+      # ========================================
+      - name: "Layer 2: Check Supabase for today's scan"
+        id: layer2
+        run: |
+          echo "--- Layer 2: Supabase Data Check ---"
+          echo "Querying Supabase for slug: ${{ steps.date.outputs.slug }}"
+
+          RESPONSE=$(curl -s \
+            "${SUPABASE_URL}/rest/v1/published_posts?slug=eq.${{ steps.date.outputs.slug }}&select=id,slug,content" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json")
+
+          # Check if we got a result
+          COUNT=$(echo "$RESPONSE" | jq 'length')
+
+          if [ "$COUNT" -eq "0" ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "error=No published_posts record found for ${{ steps.date.outputs.slug }}" >> $GITHUB_OUTPUT
+            echo "❌ Layer 2 FAILED: No record found in Supabase"
+          else
+            # Check content length
+            CONTENT_LEN=$(echo "$RESPONSE" | jq -r '.[0].content | length')
+            if [ "$CONTENT_LEN" -lt 500 ]; then
+              echo "status=failed" >> $GITHUB_OUTPUT
+              echo "error=Content length $CONTENT_LEN is less than 500 chars" >> $GITHUB_OUTPUT
+              echo "❌ Layer 2 FAILED: Content too short ($CONTENT_LEN chars)"
+            else
+              echo "status=success" >> $GITHUB_OUTPUT
+              echo "content_length=$CONTENT_LEN" >> $GITHUB_OUTPUT
+              echo "✅ Layer 2 PASSED: Record exists with $CONTENT_LEN chars"
+            fi
+          fi
+
+      # ========================================
+      # LAYER 3: Check live URL
+      # ========================================
+      - name: "Layer 3: Check live URL"
+        id: layer3
+        run: |
+          echo "--- Layer 3: Live URL Check ---"
+          URL="https://victordelrosal.com/${{ steps.date.outputs.slug }}/"
+          echo "Fetching: $URL"
+
+          HTTP_CODE=$(curl -s -o /tmp/page.html -w "%{http_code}" "$URL" --max-time 30)
+
+          echo "HTTP Response Code: $HTTP_CODE"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "error=Live URL returned HTTP $HTTP_CODE (expected 200)" >> $GITHUB_OUTPUT
+            echo "❌ Layer 3 FAILED: HTTP $HTTP_CODE"
+          else
+            # Check for real content
+            if grep -q "Executive Summary" /tmp/page.html; then
+              echo "status=success" >> $GITHUB_OUTPUT
+              echo "✅ Layer 3 PASSED: Page loads with expected content"
+            else
+              echo "status=failed" >> $GITHUB_OUTPUT
+              echo "error=Page loaded but does not contain 'Executive Summary'" >> $GITHUB_OUTPUT
+              echo "❌ Layer 3 FAILED: Page loaded but missing expected content"
+              echo "Page preview:"
+              head -50 /tmp/page.html
+            fi
+          fi
+
+      # ========================================
+      # RETRY: Trigger daily-ai-news-scan
+      # ========================================
+      - name: "Retry: Trigger daily-ai-news-scan if Layer 1 or 2 failed"
+        id: retry_scan
+        if: steps.layer1.outputs.status == 'failed' || steps.layer2.outputs.status == 'failed'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🔄 Layer 1 or 2 failed. Triggering retry of daily-ai-news-scan..."
+          gh workflow run daily-ai-news-scan.yml
+          echo "Waiting 5 minutes for workflow to complete..."
+          sleep 300
+          echo "retried=true" >> $GITHUB_OUTPUT
+
+      # ========================================
+      # RETRY: Trigger build-waves
+      # ========================================
+      - name: "Retry: Trigger build-waves if Layer 3 failed (but Layer 2 passed)"
+        id: retry_waves
+        if: steps.layer3.outputs.status == 'failed' && steps.layer2.outputs.status == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🔄 Layer 3 failed but data exists. Triggering build-waves..."
+          gh workflow run build-waves.yml
+          echo "Waiting 2 minutes for workflow and GitHub Pages deploy..."
+          sleep 120
+          echo "retried=true" >> $GITHUB_OUTPUT
+
+      # ========================================
+      # RE-VERIFY after retries
+      # ========================================
+      - name: "Re-verify: Check Supabase after retry"
+        id: layer2_retry
+        if: steps.retry_scan.outputs.retried == 'true'
+        run: |
+          echo "--- Re-verifying Layer 2 after retry ---"
+
+          RESPONSE=$(curl -s \
+            "${SUPABASE_URL}/rest/v1/published_posts?slug=eq.${{ steps.date.outputs.slug }}&select=id,slug,content" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json")
+
+          COUNT=$(echo "$RESPONSE" | jq 'length')
+          CONTENT_LEN=$(echo "$RESPONSE" | jq -r '.[0].content | length // 0')
+
+          if [ "$COUNT" -gt "0" ] && [ "$CONTENT_LEN" -gt 500 ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Layer 2 PASSED on retry"
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Layer 2 STILL FAILED after retry"
+          fi
+
+      - name: "Re-verify: Check live URL after retry"
+        id: layer3_retry
+        if: steps.retry_scan.outputs.retried == 'true' || steps.retry_waves.outputs.retried == 'true'
+        run: |
+          echo "--- Re-verifying Layer 3 after retry ---"
+          URL="https://victordelrosal.com/${{ steps.date.outputs.slug }}/"
+          echo "Re-checking: $URL"
+
+          HTTP_CODE=$(curl -s -o /tmp/page2.html -w "%{http_code}" "$URL" --max-time 30)
+
+          if [ "$HTTP_CODE" = "200" ] && grep -q "Executive Summary" /tmp/page2.html; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Layer 3 PASSED on retry"
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Layer 3 STILL FAILED after retry (HTTP $HTTP_CODE)"
+          fi
+
+      # ========================================
+      # FALLBACK: Publish placeholder
+      # ========================================
+      - name: "Fallback: Publish placeholder if all retries failed"
+        id: fallback
+        if: |
+          (steps.layer2.outputs.status == 'failed' && steps.layer2_retry.outputs.status != 'success') ||
+          (steps.layer3.outputs.status == 'failed' && steps.layer3_retry.outputs.status != 'success')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🚨 All retries failed. Publishing fallback placeholder..."
+
+          TODAY="${{ steps.date.outputs.date }}"
+          SLUG="${{ steps.date.outputs.slug }}"
+
+          # Format date nicely
+          FORMATTED_DATE=$(date -d "$TODAY" "+%A, %B %d, %Y" 2>/dev/null || date "+%A, %B %d, %Y")
+
+          # Create fallback content
+          read -r -d '' FALLBACK_CONTENT << 'ENDCONTENT' || true
+          <h1>Daily AI News Scan — DATEPLACEHOLDER</h1>
+          <img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+          <h2>System Notice</h2>
+          <p>Today's automated scan encountered an issue and could not be generated.</p>
+          <p>Please check back later, or view <a href="/waves/">previous scans</a>.</p>
+          <hr>
+          <p><em>This is an automated fallback page. The DAINS team has been notified.</em></p>
+          ENDCONTENT
+
+          FALLBACK_CONTENT="${FALLBACK_CONTENT//DATEPLACEHOLDER/$FORMATTED_DATE}"
+
+          # Insert/update in Supabase
+          curl -X POST "${SUPABASE_URL}/rest/v1/published_posts" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: resolution=merge-duplicates" \
+            -d "{
+              \"note_id\": \"ai-news-scan-fallback-${TODAY//-/}.md\",
+              \"slug\": \"$SLUG\",
+              \"title\": \"Daily AI News Scan — $FORMATTED_DATE\",
+              \"content\": $(echo "$FALLBACK_CONTENT" | jq -Rs .),
+              \"image\": \"https://victordelrosal.com/img/daily-ai-news-scan.png\",
+              \"published_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+            }"
+
+          echo "Fallback published to Supabase"
+          echo "fallback_published=true" >> $GITHUB_OUTPUT
+
+          # Trigger build-waves to generate static page
+          echo "Triggering build-waves..."
+          gh workflow run build-waves.yml
+
+      # ========================================
+      # ALERT: Send critical alert
+      # ========================================
+      - name: "Alert: Send critical alert if fallback was published"
+        if: steps.fallback.outputs.fallback_published == 'true'
+        working-directory: ai-daily-intel
+        run: |
+          echo "📧 Sending critical alert..."
+
+          LAYER="unknown"
+          ERROR="Multiple layers failed after retries"
+
+          if [ "${{ steps.layer1.outputs.status }}" = "failed" ]; then
+            LAYER="1 (Workflow)"
+            ERROR="${{ steps.layer1.outputs.error }}"
+          elif [ "${{ steps.layer2.outputs.status }}" = "failed" ] && [ "${{ steps.layer2_retry.outputs.status }}" != "success" ]; then
+            LAYER="2 (Supabase)"
+            ERROR="${{ steps.layer2.outputs.error }}"
+          elif [ "${{ steps.layer3.outputs.status }}" = "failed" ] && [ "${{ steps.layer3_retry.outputs.status }}" != "success" ]; then
+            LAYER="3 (Live URL)"
+            ERROR="${{ steps.layer3.outputs.error }}"
+          fi
+
+          node send-alert.js \
+            --type critical \
+            --subject "DAINS FAILED - Fallback published for ${{ steps.date.outputs.date }}" \
+            --body "The Daily AI News Scan failed and a fallback placeholder was published." \
+            --layer "$LAYER" \
+            --error "$ERROR" \
+            --action "Fallback placeholder published. Manual investigation required." \
+            --workflow-url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      # ========================================
+      # SUCCESS SUMMARY
+      # ========================================
+      - name: "Summary: Verification results"
+        if: always()
+        run: |
+          echo ""
+          echo "================================================"
+          echo "DAINS VERIFICATION SUMMARY"
+          echo "Date: ${{ steps.date.outputs.date }}"
+          echo "================================================"
+          echo ""
+
+          # Layer 1
+          if [ "${{ steps.layer1.outputs.status }}" = "success" ]; then
+            echo "Layer 1 (Workflow):  ✅ PASSED"
+          else
+            echo "Layer 1 (Workflow):  ❌ FAILED - ${{ steps.layer1.outputs.error }}"
+          fi
+
+          # Layer 2
+          if [ "${{ steps.layer2.outputs.status }}" = "success" ]; then
+            echo "Layer 2 (Supabase):  ✅ PASSED (${{ steps.layer2.outputs.content_length }} chars)"
+          elif [ "${{ steps.layer2_retry.outputs.status }}" = "success" ]; then
+            echo "Layer 2 (Supabase):  ✅ PASSED (after retry)"
+          else
+            echo "Layer 2 (Supabase):  ❌ FAILED - ${{ steps.layer2.outputs.error }}"
+          fi
+
+          # Layer 3
+          if [ "${{ steps.layer3.outputs.status }}" = "success" ]; then
+            echo "Layer 3 (Live URL):  ✅ PASSED"
+          elif [ "${{ steps.layer3_retry.outputs.status }}" = "success" ]; then
+            echo "Layer 3 (Live URL):  ✅ PASSED (after retry)"
+          else
+            echo "Layer 3 (Live URL):  ❌ FAILED - ${{ steps.layer3.outputs.error }}"
+          fi
+
+          echo ""
+
+          # Fallback
+          if [ "${{ steps.fallback.outputs.fallback_published }}" = "true" ]; then
+            echo "⚠️  FALLBACK PUBLISHED - Check email for details"
+          fi
+
+          echo "================================================"
