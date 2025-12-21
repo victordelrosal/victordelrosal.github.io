@@ -44,7 +44,7 @@ For each development:
 <p><strong>Source:</strong> <a href="URL">Publisher Name</a></p>
 
 <hr>
-<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
+<p><em>This scan is automatically generated at 07:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
 
 Important:
 - Output ONLY valid HTML, no markdown
