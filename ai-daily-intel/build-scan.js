@@ -21,6 +21,7 @@ const __dirname = dirname(__filename);
 
 // Configuration
 const DRY_RUN = process.argv.includes('--dry-run');
+const FORCE_REGENERATE = process.argv.includes('--force');
 const HOURS_LOOKBACK = 24;
 const MAX_ITEMS_PER_SOURCE = 10;
 const MIN_ITEMS_REQUIRED = 3;
@@ -411,11 +412,21 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
 }
 
 /**
+ * Extract headline from HTML content (the h1 tag)
+ */
+function extractHeadline(html) {
+  const match = html.match(/<h1>(.*?)<\/h1>/i);
+  return match ? match[1].trim() : null;
+}
+
+/**
  * Publish to Supabase
  */
 async function publishToSupabase(briefing) {
   const slug = `daily-ai-intel-${briefing.dateString}`;
-  const title = `Daily AI Intel — ${briefing.formattedDate}`;
+  // Use the top story headline as the title (extracted from h1), fallback to generic
+  const headline = extractHeadline(briefing.html);
+  const title = headline || `Daily AI Intel — ${briefing.formattedDate}`;
   // Generate a note_id in the same format as Flux (YYYYMMDDHHMMSS.md)
   // Using 'ai-intel-' prefix to distinguish from Flux notes
   const noteId = `ai-intel-${briefing.dateString.replace(/-/g, '')}070000.md`;
@@ -468,7 +479,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log('Daily AI Intel - Build');
   console.log(`Time: ${new Date().toISOString()}`);
-  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : FORCE_REGENERATE ? 'FORCE REGENERATE' : 'LIVE'}`);
   console.log('='.repeat(60));
 
   // Load sources
@@ -488,10 +499,15 @@ async function main() {
     .eq('slug', todaySlug)
     .single();
 
-  if (existingToday && !DRY_RUN) {
+  if (existingToday && !DRY_RUN && !FORCE_REGENERATE) {
     console.log(`\n✅ Scan for today (${todaySlug}) already exists. Skipping.`);
-    console.log('This is expected when both DST schedules fire.\n');
+    console.log('This is expected when both DST schedules fire.');
+    console.log('Use --force to regenerate.\n');
     process.exit(0);
+  }
+
+  if (FORCE_REGENERATE && existingToday) {
+    console.log(`\n🔄 Force regenerating today's scan (${todaySlug})...`);
   }
 
   // Fetch newsletter items first (they determine ranking)

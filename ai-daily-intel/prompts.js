@@ -28,7 +28,8 @@ ${formattedStories}
 
 Write a briefing with this EXACT structure in clean HTML:
 
-<h1>Daily AI Intel — ${formattedDate}</h1>
+<h1>[TOP STORY HEADLINE]</h1>
+<p class="subtitle">Daily AI Intel — ${formattedDate}</p>
 
 <h2>Executive Summary</h2>
 <p>70-100 words. Lead with the #1 story, mention #2 and #3. Set context for today's news.</p>
@@ -62,6 +63,8 @@ Write a briefing with this EXACT structure in clean HTML:
 <p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
 
 Important:
+- The <h1> MUST be the headline of story #1 (the top story) - NOT "Daily AI Intel"
+- "Daily AI Intel — [Date]" goes in the subtitle <p class="subtitle">
 - Output ONLY valid HTML, no markdown
 - If fewer than 10 stories, adjust sections (min 5 stories)
 - The "Via" line shows which newsletters covered the story

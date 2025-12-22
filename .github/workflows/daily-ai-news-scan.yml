@@ -10,6 +10,12 @@ on:
 
   # Allow manual trigger for testing
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate even if scan exists'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   build-scan:
@@ -36,7 +42,7 @@ jobs:
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: node build-scan.js
+        run: node build-scan.js ${{ inputs.force == true && '--force' || '' }}
         working-directory: ai-daily-intel
         # Note: build-waves.yml runs every 30 minutes on schedule,
         # so no explicit trigger needed. The static page will be
