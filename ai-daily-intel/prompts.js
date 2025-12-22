@@ -1,59 +1,100 @@
 /**
- * Claude prompts for Daily AI News Scan
+ * Claude prompts for Daily AI Intel
  */
 
-export const SYSTEM_PROMPT = `You are an automated AI news scanner producing a daily news scan for victordelrosal.com.
+export const SYSTEM_PROMPT = `You are an automated AI news aggregator producing a daily intelligence briefing for victordelrosal.com.
 
 Rules:
 - Signal over noise. Hype is failure.
-- Use ONLY the items provided. Never invent sources.
-- Every development MUST include a source URL.
-- Prefer primary sources when duplicates exist.
-- If sources conflict, acknowledge it explicitly.
+- Use ONLY the stories provided. Never invent sources.
+- Every story MUST include source attribution.
 - Tone: factual, analytical, no editorializing.
 - This is automated - do not pretend to be human.
-- Output clean, valid HTML only. No markdown.`;
+- Output clean, valid HTML only. No markdown.
+- Follow the tiered format exactly.`;
 
-export function getUserPrompt(date, formattedDate, aggregatedItems) {
+export function getUserPrompt(date, formattedDate, formattedStories, isNewsletterRanked) {
+  const rankingNote = isNewsletterRanked
+    ? 'Stories are ranked by newsletter coverage (hit count). Higher hits = more important.'
+    : 'Stories are from RSS feeds only (newsletter data unavailable).';
+
   return `Today's date: ${date}
 
-Here are today's AI news items:
+${rankingNote}
 
-${aggregatedItems}
+Here are today's top AI stories:
 
-Write a scan with this exact structure in clean HTML:
+${formattedStories}
 
-<h1>Daily AI News Scan — ${formattedDate}</h1>
+Write a briefing with this EXACT structure in clean HTML:
+
+<h1>Daily AI Intel — ${formattedDate}</h1>
 
 <h2>Executive Summary</h2>
-<p>70-100 words covering the 3-4 most significant developments across different categories. No fluff.</p>
+<p>70-100 words. Lead with the #1 story, mention #2 and #3. Set context for today's news.</p>
 
-<h2>Key Developments</h2>
-Cover 5-7 key developments. Try to include a mix from these categories when available:
-- Model releases and capabilities
-- Policy and regulation
-- Enterprise and business applications
-- AI tools and products
-- Research breakthroughs
-- AI agents and coding tools
-- Funding and startups
+<h2>Top Stories</h2>
 
-For each development:
-<h3>Development Title</h3>
-<p>2-3 sentence factual summary of what happened and why it matters.</p>
-<p><strong>Source:</strong> <a href="URL">Publisher Name</a></p>
+<!-- Stories #1-3: Full treatment -->
+<div class="story story-top">
+<h3>1. [Headline] <span class="hits">([X] sources)</span></h3>
+<p>Full paragraph (3-4 sentences) with details, context, and implications.</p>
+<p class="attribution"><strong>Source:</strong> <a href="[URL]">[Publisher]</a><br>
+<em>Via: [Newsletter1], [Newsletter2], [Newsletter3] +[N] more</em></p>
+</div>
+
+<!-- Repeat for #2 and #3 -->
+
+<h2>Notable</h2>
+
+<!-- Stories #4-7: One-liner + subtitle -->
+<p><strong>4. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
+<p><strong>5. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
+<p><strong>6. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
+<p><strong>7. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
+
+<h2>Also Noted</h2>
+
+<!-- Stories #8-10: One-liners only -->
+<p>8. [Headline] ([X]) · 9. [Headline] ([X]) · 10. [Headline] ([X])</p>
 
 <hr>
-<p><em>This scan is automatically generated at 07:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
+<p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
 
 Important:
 - Output ONLY valid HTML, no markdown
-- Total length: 600-800 words
-- Prioritize diversity of topics over depth on any single story
-- If fewer than 5 meaningful developments exist, include what's available
-- Never invent or hallucinate sources`;
+- If fewer than 10 stories, adjust sections (min 5 stories)
+- The "Via" line shows which newsletters covered the story
+- Source link should be primary source when available
+- Hit count in parentheses shows newsletter coverage`;
 }
 
+export function formatStoriesForPrompt(stories, isNewsletterRanked) {
+  return stories.map((story, index) => {
+    const hitCount = story.hits ? story.hits.length : 0;
+    const newsletters = story.hits ? story.hits.map(h => h.newsletter).join(', ') : 'RSS only';
+
+    const primarySource = story.primarySource
+      ? `PRIMARY SOURCE: ${story.primarySource.publisher} - ${story.primarySource.url}`
+      : 'PRIMARY SOURCE: Not identified';
+
+    // Get best summary from hits or use story summary
+    const summaries = story.hits && story.hits.length > 0
+      ? story.hits.map(h => h.summary).filter(Boolean).join(' | ')
+      : story.summary || 'No summary available';
+
+    return `---STORY ${index + 1}---
+HEADLINE: ${story.headline}
+HIT COUNT: ${hitCount} newsletters
+NEWSLETTERS: ${newsletters}
+${primarySource}
+ENTITIES: ${(story.entities || []).join(', ') || 'None identified'}
+SUMMARIES: ${summaries}
+`;
+  }).join('\n');
+}
+
+// Keep old function for backwards compatibility (RSS-only fallback)
 export function formatItemsForPrompt(items) {
   return items.map((item, index) => {
     return `---ITEM ${index + 1}---
