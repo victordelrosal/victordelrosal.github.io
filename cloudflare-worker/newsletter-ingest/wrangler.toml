@@ -1,0 +1,12 @@
+name = "newsletter-ingest"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Email routing
+[triggers]
+email = ["ainews@vdr.me"]
+
+# Environment variables (set via wrangler secret)
+# ANTHROPIC_API_KEY
+# SUPABASE_URL
+# SUPABASE_SERVICE_KEY
