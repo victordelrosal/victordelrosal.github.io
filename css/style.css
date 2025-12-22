@@ -3949,6 +3949,15 @@ body.waves-page {
     background: rgba(59, 130, 246, 0.1);
 }
 
+.dains-stack-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
 .dains-stack-latest-content {
     flex: 1;
 }
@@ -4128,6 +4137,13 @@ body.waves-page {
 
     .dains-stack-latest {
         padding: 16px 18px;
+    }
+
+    .dains-stack-image {
+        width: 70px;
+        height: 70px;
+        margin-right: 14px;
+        border-radius: 10px;
     }
 
     .dains-stack-latest .wave-title {
