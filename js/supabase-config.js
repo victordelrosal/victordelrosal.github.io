@@ -10,5 +10,5 @@
  */
 window.__SUPABASE_CONFIG = {
   url: 'https://azzzrjnqgkqwpqnroost.supabase.co',
-  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NDU5MzEsImV4cCI6MjA3NzEyMTkzMX0.sVQTpX_ilu_366c9HhCUmKL1YOhRZo5N4YKVoIMoTyE'
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6enpyam5xZ2txd3BxbnJvb3N0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0NDQwNTAsImV4cCI6MjA4MTgwNDA1MH0.mIl8mavxiuo5-7mmQbuynfl1pXLTN_oPmfXjACr4rYk'
 };
