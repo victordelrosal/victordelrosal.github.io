@@ -3897,6 +3897,23 @@ body.waves-page {
     50% { background-position: 100% 50%; }
 }
 
+.wave-entry--dains-stack::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 200px;
+    background-image: url('/img/eye_mask_t.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .wave-entry--dains-stack:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4),
@@ -3904,8 +3921,14 @@ body.waves-page {
     border-color: rgba(59, 130, 246, 0.5);
 }
 
+.wave-entry--dains-stack:hover::after {
+    opacity: 0.12;
+}
+
 /* Header with badge and count */
 .dains-stack-header {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -3943,6 +3966,7 @@ body.waves-page {
     color: inherit;
     transition: background 0.3s ease;
     position: relative;
+    z-index: 1;
 }
 
 .dains-stack-latest:hover {
@@ -4013,6 +4037,8 @@ body.waves-page {
 
 /* Toggle button */
 .dains-stack-toggle {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4040,6 +4066,8 @@ body.waves-page {
 
 /* Stacked items list */
 .dains-stack-list {
+    position: relative;
+    z-index: 1;
     flex-direction: column;
     max-height: 400px;
     overflow-y: auto;
@@ -4131,6 +4159,10 @@ body.waves-page {
 
 /* Mobile responsive */
 @media (max-width: 640px) {
+    .wave-entry--dains-stack::after {
+        display: none;
+    }
+
     .dains-stack-header {
         padding: 16px 18px 0;
     }
