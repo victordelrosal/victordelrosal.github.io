@@ -181,6 +181,9 @@ async function streamToText(stream) {
   return result;
 }
 
+// Forwarding destination for inbox copy
+const FORWARD_TO = 'victordelrosal+ainews@gmail.com';
+
 /**
  * Main email handler
  */
@@ -192,12 +195,20 @@ export default {
     console.log(`Received email from: ${from}`);
     console.log(`Subject: ${subject}`);
 
+    // Always forward to inbox first (so you get the email even if processing fails)
+    try {
+      await message.forward(FORWARD_TO);
+      console.log(`Forwarded to ${FORWARD_TO}`);
+    } catch (forwardError) {
+      console.error(`Failed to forward: ${forwardError.message}`);
+    }
+
     // Identify newsletter
     const newsletterName = identifyNewsletter(from);
 
     if (!newsletterName) {
-      console.log(`Unknown sender, ignoring: ${from}`);
-      return; // Silently ignore unknown senders
+      console.log(`Unknown sender, forwarded but not processing: ${from}`);
+      return; // Already forwarded, just don't process for DAINS
     }
 
     console.log(`Identified newsletter: ${newsletterName}`);
@@ -224,7 +235,7 @@ export default {
       console.log(`Successfully stored ${stored} items from ${newsletterName}`);
     } catch (error) {
       console.error(`Error processing newsletter: ${error.message}`);
-      // Don't throw - we don't want to bounce the email
+      // Don't throw - email already forwarded, just log the processing error
     }
   },
 };
