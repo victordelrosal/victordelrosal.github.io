@@ -802,14 +802,19 @@
                 const olderPosts = sortedPosts.slice(1);
                 const totalCount = sortedPosts.length;
 
-                // Get stats for latest post
-                const viewCount = viewCountsData[latestPost.slug] || 0;
-                const waveCount = waveCountsData[latestPost.slug] || 0;
-                const commentCount = commentCountsData[latestPost.slug] || 0;
+                // Calculate total stats across ALL DAINS editions for the aggregated card
+                let totalViews = 0;
+                let totalWaves = 0;
+                let totalComments = 0;
+                sortedPosts.forEach(post => {
+                    totalViews += viewCountsData[post.slug] || 0;
+                    totalWaves += waveCountsData[post.slug] || 0;
+                    totalComments += commentCountsData[post.slug] || 0;
+                });
 
-                const statsBadge = this.createStatsBadge(viewCount, waveCount, commentCount);
+                const statsBadge = this.createStatsBadge(totalViews, totalWaves, totalComments);
 
-                // Create the stacked items HTML for older posts
+                // Create the stacked items HTML for older posts (with individual view counts)
                 const stackedItemsHtml = olderPosts.map(post => {
                     const postDate = new Date(post.published_at);
                     const dateStr = postDate.toLocaleDateString('en-US', {
@@ -817,10 +822,13 @@
                         month: 'short',
                         day: 'numeric'
                     });
+                    const itemViews = viewCountsData[post.slug] || 0;
+                    const viewsHtml = itemViews ? `<span class="dains-stack-item-views">${itemViews} views</span>` : '';
                     return `
                         <a href="/${post.slug}" class="dains-stack-item">
                             <span class="dains-stack-item-date">${dateStr}</span>
                             <span class="dains-stack-item-title">${escapeHTML(post.title)}</span>
+                            ${viewsHtml}
                             ${this.arrowSvg}
                         </a>
                     `;
