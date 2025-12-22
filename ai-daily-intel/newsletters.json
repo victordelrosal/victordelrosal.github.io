@@ -1,0 +1,74 @@
+{
+  "newsletters": [
+    {
+      "id": "ai-fire",
+      "name": "AI Fire",
+      "sender": "aifire@mail.beehiiv.com"
+    },
+    {
+      "id": "the-neuron",
+      "name": "The Neuron",
+      "sender": "theneuron@newsletter.theneurondaily.com"
+    },
+    {
+      "id": "rundown-ai",
+      "name": "The Rundown AI",
+      "sender": "news@daily.therundown.ai"
+    },
+    {
+      "id": "rohans-bytes",
+      "name": "Rohan's Bytes",
+      "sender": "rohanpaul+daily-ai-newsletter@substack.com"
+    },
+    {
+      "id": "techpresso",
+      "name": "Techpresso",
+      "sender": "techpresso@dupple.com"
+    },
+    {
+      "id": "1440-digest",
+      "name": "1440 Daily Digest",
+      "sender": "dailydigest@email.join1440.com"
+    },
+    {
+      "id": "ibm-think",
+      "name": "IBM Think Newsletter",
+      "sender": "IBM@email.ibm.com"
+    },
+    {
+      "id": "ai-for-good",
+      "name": "AI for Good",
+      "sender": "mailings@aiforgood.itu.int"
+    },
+    {
+      "id": "state-of-ai",
+      "name": "State of AI",
+      "sender": "stateai@substack.com"
+    },
+    {
+      "id": "pragmatic-engineer",
+      "name": "The Pragmatic Engineer",
+      "sender": "pragmaticengineer+deepdives@substack.com"
+    },
+    {
+      "id": "exponential-view",
+      "name": "Exponential View",
+      "sender": "exponentialview@substack.com"
+    },
+    {
+      "id": "david-shapiro",
+      "name": "David Shapiro",
+      "sender": "daveshap@substack.com"
+    },
+    {
+      "id": "future-blueprint",
+      "name": "Future Blueprint",
+      "sender": "futureblueprint@mail.beehiiv.com"
+    },
+    {
+      "id": "superhuman-ai",
+      "name": "Superhuman AI",
+      "sender": "superhuman@mail.joinsuperhuman.ai"
+    }
+  ]
+}
