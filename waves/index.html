@@ -835,7 +835,7 @@
                 }).join('');
 
                 return `
-                    <div class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
+                    <div id="daily-ai-news-scan" class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
                         <div class="dains-stack-header">
                             <span class="wave-type">📰 Daily News</span>
                             <span class="dains-stack-count">${totalCount} updates</span>
@@ -1318,6 +1318,24 @@
 
                 GalleryController.init();
                 DainsStackRenderer.initToggle();
+
+                // Handle hash navigation to DAINS section
+                if (window.location.hash === '#daily-ai-news-scan') {
+                    setTimeout(() => {
+                        const dainsCard = document.getElementById('daily-ai-news-scan');
+                        if (dainsCard) {
+                            // Auto-expand the DAINS stack
+                            const toggleBtn = dainsCard.querySelector('.dains-stack-toggle');
+                            if (toggleBtn && toggleBtn.getAttribute('aria-expanded') !== 'true') {
+                                toggleBtn.click();
+                            }
+                            // Scroll to the card with offset for navbar
+                            const yOffset = -100;
+                            const y = dainsCard.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }
+                    }, 100);
+                }
 
                 // Initialize wave thumbnails carousel
                 (function initWaveThumbnails() {
