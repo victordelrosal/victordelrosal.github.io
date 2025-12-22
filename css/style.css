@@ -3909,7 +3909,7 @@ body.waves-page {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.08;
+    opacity: 0.18;
     pointer-events: none;
     z-index: 0;
 }
@@ -3922,7 +3922,12 @@ body.waves-page {
 }
 
 .wave-entry--dains-stack:hover::after {
-    opacity: 0.12;
+    opacity: 0.22;
+}
+
+/* Keep DAINS title white on hover (override general .wave-entry:hover rule) */
+.wave-entry--dains-stack:hover .wave-title {
+    color: #ffffff;
 }
 
 /* Header with badge and count */
