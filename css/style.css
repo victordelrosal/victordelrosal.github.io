@@ -3863,6 +3863,297 @@ body.waves-page {
 }
 
 
+/* ===== DAINS STACKED NEWS CARD ===== */
+/* A single card that stacks all Daily AI News Scan entries */
+
+.wave-entry--dains-stack {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1e293b 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 20px rgba(30, 58, 95, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.4s var(--ease-out);
+}
+
+.wave-entry--dains-stack::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd, #60a5fa, #3b82f6);
+    background-size: 200% 100%;
+    animation: dains-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes dains-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.wave-entry--dains-stack:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+/* Header with badge and count */
+.dains-stack-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 0;
+}
+
+.wave-entry--dains-stack .wave-type {
+    position: static;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.dains-stack-count {
+    font-size: 0.8rem;
+    color: #93c5fd;
+    font-weight: 500;
+    padding: 4px 12px;
+    background: rgba(59, 130, 246, 0.15);
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Latest post link */
+.dains-stack-latest {
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.3s ease;
+    position: relative;
+}
+
+.dains-stack-latest:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.dains-stack-latest-content {
+    flex: 1;
+}
+
+.dains-stack-latest .wave-meta {
+    font-size: 0.8rem;
+    color: #93c5fd;
+    margin-bottom: 8px;
+}
+
+.dains-stack-latest .wave-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.dains-stack-latest .wave-body {
+    font-size: 0.9rem;
+    color: #bfdbfe;
+    line-height: 1.5;
+}
+
+.dains-stack-latest .wave-stats {
+    position: absolute;
+    right: 60px;
+    bottom: 20px;
+    color: #93c5fd;
+}
+
+.dains-stack-latest .wave-stat {
+    color: #93c5fd;
+}
+
+.dains-stack-latest .wave-arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    color: #60a5fa;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.dains-stack-latest:hover .wave-arrow {
+    opacity: 1;
+    transform: translateY(-50%) translateX(4px);
+    color: #93c5fd;
+}
+
+/* Toggle button */
+.dains-stack-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    background: rgba(59, 130, 246, 0.1);
+    border: none;
+    border-top: 1px solid rgba(59, 130, 246, 0.2);
+    cursor: pointer;
+    color: #93c5fd;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dains-stack-toggle:hover {
+    background: rgba(59, 130, 246, 0.2);
+    color: #bfdbfe;
+}
+
+.dains-stack-chevron {
+    transition: transform 0.3s ease;
+}
+
+/* Stacked items list */
+.dains-stack-list {
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(15, 23, 42, 0.5);
+    border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.dains-stack-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    transition: background 0.3s ease;
+    position: relative;
+}
+
+.dains-stack-item:last-child {
+    border-bottom: none;
+}
+
+.dains-stack-item:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.dains-stack-item-date {
+    font-size: 0.75rem;
+    color: #60a5fa;
+    font-weight: 500;
+    min-width: 90px;
+    padding: 4px 10px;
+    background: rgba(59, 130, 246, 0.15);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.dains-stack-item-title {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dains-stack-item .wave-arrow {
+    width: 18px;
+    height: 18px;
+    color: #60a5fa;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.dains-stack-item:hover .wave-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+/* Custom scrollbar for the list */
+.dains-stack-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dains-stack-list::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+}
+
+.dains-stack-list::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 3px;
+}
+
+.dains-stack-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .dains-stack-header {
+        padding: 16px 18px 0;
+    }
+
+    .dains-stack-latest {
+        padding: 16px 18px;
+    }
+
+    .dains-stack-latest .wave-title {
+        font-size: 1.1rem;
+        padding-right: 36px;
+    }
+
+    .dains-stack-latest .wave-stats {
+        position: static;
+        margin-top: 12px;
+    }
+
+    .dains-stack-latest .wave-arrow {
+        right: 16px;
+    }
+
+    .dains-stack-toggle {
+        padding: 12px 18px;
+    }
+
+    .dains-stack-item {
+        padding: 12px 18px;
+        flex-wrap: wrap;
+    }
+
+    .dains-stack-item-date {
+        min-width: 80px;
+        font-size: 0.7rem;
+    }
+
+    .dains-stack-item-title {
+        font-size: 0.85rem;
+    }
+}
+
+
 /* ===== 13. WAVE ENTRY VARIANTS ===== */
 
 /* Photo entry */

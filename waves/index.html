@@ -169,6 +169,13 @@
             JOURNAL_MIN_CHARS: 300,
         };
 
+        // DAINS (Daily AI News Scan) detection
+        const DAINS_SLUG_PATTERN = /^daily-ai-news-scan-\d{4}-\d{2}-\d{2}$/;
+
+        function isDainsPost(post) {
+            return DAINS_SLUG_PATTERN.test(post.slug);
+        }
+
         // XSS Protection: Escape HTML for safe rendering in templates
         function escapeHTML(str) {
             if (!str) return '';
@@ -770,6 +777,107 @@
             }
         };
 
+        /**
+         * STACKED DAINS CARD RENDERER
+         * Renders all DAINS (Daily AI News Scan) posts as a single stacked card
+         */
+        const DainsStackRenderer = {
+            chevronDownSvg: `<svg class="dains-stack-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>`,
+
+            arrowSvg: `<svg class="wave-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>`,
+
+            render(dainsPosts, viewCountsData, waveCountsData, commentCountsData) {
+                if (!dainsPosts || dainsPosts.length === 0) return '';
+
+                // Sort by date descending (newest first)
+                const sortedPosts = [...dainsPosts].sort((a, b) =>
+                    new Date(b.published_at) - new Date(a.published_at)
+                );
+
+                const latestPost = sortedPosts[0];
+                const olderPosts = sortedPosts.slice(1);
+                const totalCount = sortedPosts.length;
+
+                // Get stats for latest post
+                const viewCount = viewCountsData[latestPost.slug] || 0;
+                const waveCount = waveCountsData[latestPost.slug] || 0;
+                const commentCount = commentCountsData[latestPost.slug] || 0;
+
+                const statsBadge = this.createStatsBadge(viewCount, waveCount, commentCount);
+
+                // Create the stacked items HTML for older posts
+                const stackedItemsHtml = olderPosts.map(post => {
+                    const postDate = new Date(post.published_at);
+                    const dateStr = postDate.toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                    return `
+                        <a href="/${post.slug}" class="dains-stack-item">
+                            <span class="dains-stack-item-date">${dateStr}</span>
+                            <span class="dains-stack-item-title">${escapeHTML(post.title)}</span>
+                            ${this.arrowSvg}
+                        </a>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
+                        <div class="dains-stack-header">
+                            <span class="wave-type">📰 Daily News</span>
+                            <span class="dains-stack-count">${totalCount} updates</span>
+                        </div>
+                        <a href="/${latestPost.slug}" class="dains-stack-latest">
+                            <div class="dains-stack-latest-content">
+                                <p class="wave-meta">${window.PostsAPI.formatDate(latestPost.published_at)}</p>
+                                <h2 class="wave-title">${escapeHTML(latestPost.title)}</h2>
+                                <p class="wave-body">Latest AI news and developments curated daily.</p>
+                            </div>
+                            ${statsBadge}
+                            ${this.arrowSvg}
+                        </a>
+                        ${olderPosts.length > 0 ? `
+                            <button class="dains-stack-toggle" aria-expanded="false">
+                                <span class="dains-stack-toggle-text">View ${olderPosts.length} previous update${olderPosts.length !== 1 ? 's' : ''}</span>
+                                ${this.chevronDownSvg}
+                            </button>
+                            <div class="dains-stack-list" style="display: none;">
+                                ${stackedItemsHtml}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            },
+
+            createStatsBadge(viewCount, waveCount, commentCount) {
+                const viewHtml = viewCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>${viewCount}</span>` : '';
+                const waveHtml = waveCount ? `<span class="wave-stat"><span class="wave-stat-emoji">👋</span>${waveCount}</span>` : '';
+                const commentHtml = commentCount ? `<span class="wave-stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>${commentCount}</span>` : '';
+                if (!viewHtml && !waveHtml && !commentHtml) return '';
+                return `<span class="wave-stats">${viewHtml}${waveHtml}${commentHtml}</span>`;
+            },
+
+            initToggle() {
+                const toggleBtn = document.querySelector('.dains-stack-toggle');
+                if (!toggleBtn) return;
+
+                const stackList = document.querySelector('.dains-stack-list');
+                const chevron = toggleBtn.querySelector('.dains-stack-chevron');
+
+                toggleBtn.addEventListener('click', () => {
+                    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                    toggleBtn.setAttribute('aria-expanded', !isExpanded);
+                    stackList.style.display = isExpanded ? 'none' : 'flex';
+                    chevron.style.transform = isExpanded ? '' : 'rotate(180deg)';
+                });
+            }
+        };
+
         const GalleryController = {
             init() {
                 const galleries = document.querySelectorAll('.wave-entry--photo-gallery');
@@ -1137,8 +1245,12 @@
                 );
                 console.log('[waves] Comment counts done');
 
-                // Classify all posts and check for active featured
-                const postsWithClassification = posts.map(post => ({
+                // Separate DAINS posts from regular posts
+                const dainsPosts = posts.filter(post => isDainsPost(post));
+                const regularPosts = posts.filter(post => !isDainsPost(post));
+
+                // Classify regular posts and check for active featured
+                const postsWithClassification = regularPosts.map(post => ({
                     post,
                     classification: WaveAnalyzer.classifyWave(post)
                 }));
@@ -1154,21 +1266,50 @@
                     return new Date(b.post.published_at) - new Date(a.post.published_at);
                 });
 
-                // Store for search
-                allPostsData = postsWithClassification;
+                // Store for search (include DAINS posts for search functionality)
+                // Add DAINS posts with a special classification for filtering
+                const dainsWithClassification = dainsPosts.map(post => ({
+                    post,
+                    classification: { type: 'dains', label: 'Daily News' }
+                }));
+                allPostsData = [...dainsWithClassification, ...postsWithClassification];
 
                 console.log('[waves] Rendering waves...');
-                container.innerHTML = postsWithClassification.map(({ post, classification }) => {
+
+                // Render stacked DAINS card (if any DAINS posts exist)
+                const dainsStackHtml = DainsStackRenderer.render(
+                    dainsPosts,
+                    viewCountsData,
+                    waveCountsData,
+                    commentCountsData
+                );
+
+                // Separate featured and non-featured posts
+                const featuredPosts = postsWithClassification.filter(p => p.classification.isActiveFeatured);
+                const nonFeaturedPosts = postsWithClassification.filter(p => !p.classification.isActiveFeatured);
+
+                // Render in order: Featured → DAINS Stack → Regular posts
+                const featuredHtml = featuredPosts.map(({ post, classification }) => {
                     const viewCount = viewCountsData[post.slug] || 0;
                     const waveCount = waveCountsData[post.slug] || 0;
                     const commentCount = commentCountsData[post.slug] || 0;
                     return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
                 }).join('');
 
+                const regularHtml = nonFeaturedPosts.map(({ post, classification }) => {
+                    const viewCount = viewCountsData[post.slug] || 0;
+                    const waveCount = waveCountsData[post.slug] || 0;
+                    const commentCount = commentCountsData[post.slug] || 0;
+                    return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
+                }).join('');
+
+                container.innerHTML = featuredHtml + dainsStackHtml + regularHtml;
+
                 container.style.display = 'flex';
                 console.log('[waves] Render complete - waves visible');
 
                 GalleryController.init();
+                DainsStackRenderer.initToggle();
 
                 // Initialize wave thumbnails carousel
                 (function initWaveThumbnails() {
@@ -1187,8 +1328,19 @@
                         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     }
 
+                    // Filter to show only 1 DAINS post max in thumbnails
+                    let dainsShown = false;
                     const postsWithImages = posts
-                        .filter(p => getFirstImage(p.content))
+                        .filter(p => {
+                            const hasImage = getFirstImage(p.content);
+                            if (!hasImage) return false;
+                            // Allow only the first (most recent) DAINS post
+                            if (isDainsPost(p)) {
+                                if (dainsShown) return false;
+                                dainsShown = true;
+                            }
+                            return true;
+                        })
                         .slice(0, 12);
 
                     postsWithImages.forEach(p => {

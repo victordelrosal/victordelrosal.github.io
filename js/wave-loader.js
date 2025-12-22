@@ -401,8 +401,26 @@
                             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                         }
 
+                        // DAINS (Daily AI News Scan) detection
+                        const DAINS_SLUG_PATTERN = /^daily-ai-news-scan-\d{4}-\d{2}-\d{2}$/;
+                        function isDainsPost(post) {
+                            return DAINS_SLUG_PATTERN.test(post.slug);
+                        }
+
+                        // Filter to show only 1 DAINS post max in thumbnails
+                        let dainsShown = false;
                         const postsWithImages = allPosts
-                            .filter(p => p.slug !== slug && getFirstImage(p.content))
+                            .filter(p => {
+                                if (p.slug === slug) return false;
+                                const hasImage = getFirstImage(p.content);
+                                if (!hasImage) return false;
+                                // Allow only the first (most recent) DAINS post
+                                if (isDainsPost(p)) {
+                                    if (dainsShown) return false;
+                                    dainsShown = true;
+                                }
+                                return true;
+                            })
                             .slice(0, 12);
 
                         postsWithImages.forEach(p => {
