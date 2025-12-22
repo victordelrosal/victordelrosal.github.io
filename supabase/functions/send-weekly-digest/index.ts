@@ -4,11 +4,39 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+// Secret required for invocation (do not expose to clients)
+const DIGEST_FUNCTION_SECRET = Deno.env.get("DIGEST_FUNCTION_SECRET");
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+// Allow only trusted origins; server-to-server calls typically omit Origin
+const ALLOWED_ORIGINS = new Set([
+  "https://victordelrosal.com",
+  "https://www.victordelrosal.com",
+]);
+
+// Basic rate limit guard to prevent repeated abuse
+const MIN_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+const kv = await Deno.openKv();
+const RATE_LIMIT_KEY: ["weekly_digest", "last_run"] = ["weekly_digest", "last_run"];
+
+function buildCorsHeaders(origin?: string | null) {
+  const allowedOrigin = origin && ALLOWED_ORIGINS.has(origin) ? origin : "https://victordelrosal.com";
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-function-secret",
+  };
+}
+
+function unauthorized(headers: Record<string, string>, message = "Unauthorized") {
+  return new Response(message, { status: 401, headers });
+}
+
+function forbidden(headers: Record<string, string>, message = "Forbidden") {
+  return new Response(message, { status: 403, headers });
+}
+
+function tooManyRequests(headers: Record<string, string>, message = "Too Many Requests") {
+  return new Response(message, { status: 429, headers });
+}
 
 /**
  * Create excerpt from HTML content by stripping tags and truncating
@@ -43,8 +71,38 @@ function extractFirstImage(html: string): string | null {
 }
 
 serve(async (req) => {
+  const origin = req.headers.get("origin");
+  const corsHeaders = buildCorsHeaders(origin);
+
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
+  }
+
+  // Require secret for all invocations
+  if (!DIGEST_FUNCTION_SECRET) {
+    console.error("DIGEST_FUNCTION_SECRET is not configured");
+    return forbidden(corsHeaders, "Server misconfiguration");
+  }
+
+  const authHeader = req.headers.get("authorization") || "";
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.replace("Bearer ", "").trim() : null;
+  const headerSecret = req.headers.get("x-function-secret")?.trim();
+
+  const providedSecret = bearerToken || headerSecret;
+  if (!providedSecret || providedSecret !== DIGEST_FUNCTION_SECRET) {
+    return unauthorized(corsHeaders, "Missing or invalid function secret");
+  }
+
+  // Simple rate limit using Deno KV
+  try {
+    const lastRun = await kv.get<number>(RATE_LIMIT_KEY);
+    const now = Date.now();
+    if (lastRun?.value && now - lastRun.value < MIN_INTERVAL_MS) {
+      return tooManyRequests(corsHeaders, "Digest already sent recently");
+    }
+    await kv.set(RATE_LIMIT_KEY, now);
+  } catch (err) {
+    console.error("Rate limit check failed", err);
   }
 
   try {
