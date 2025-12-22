@@ -1,1 +1,71 @@
-Jornada-increible-Claude-Code-14-AI-Newsletters-to-DAINS.md
+# =============================================
+# Security - NEVER commit these
+# =============================================
+
+# SQL files with secrets or security-sensitive content
+setup-test-email-schedules.sql
+grant-superadmin.sql
+make-admin.sql
+
+# Security audit documents (contain sensitive architecture info)
+*SecAuditPlan.md
+*secaudit*.md
+SECURITY-AUDIT*.md
+secaudit/
+
+# Personal journals/notes that may contain secrets
+Jornada-*.md
+
+# Backup files
+*.tar.gz
+backup-*.tar.gz
+misc-bkp/
+
+# =============================================
+# macOS system files
+# =============================================
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# =============================================
+# IDE and editor files
+# =============================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# =============================================
+# Node.js
+# =============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================================
+# Environment files (CRITICAL)
+# =============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# =============================================
+# Build outputs (if any)
+# =============================================
+dist/
+build/
+.cache/
+
+# =============================================
+# Temporary files
+# =============================================
+*.tmp
+*.temp
+*.log
