@@ -442,8 +442,8 @@
                 const classificationWithLabel = { ...classification, label: displayLabel };
                 const html = renderer.call(this, post, classificationWithLabel, viewCount, waveCount, commentCount);
                 const waveStyle = this.getWaveStyle(classification.type);
-                // Inject data-wave-style attribute into the first element
-                return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" class="wave-entry`);
+                // Inject data-wave-style and data-slug attributes for filtering/search
+                return html.replace(/class="wave-entry/, `data-wave-style="${waveStyle}" data-slug="${post.slug}" class="wave-entry`);
             },
 
             statsBadge(viewCount, waveCount, commentCount) {
@@ -974,8 +974,8 @@
             }
         };
 
-        // Global state for search
-        let allPostsData = [];
+        // Global state for search (map by slug for O(1) lookup)
+        let allPostsData = {};
         let viewCountsData = {};
         let waveCountsData = {};
         let commentCountsData = {};
@@ -1096,9 +1096,40 @@
                 const resultsInfo = document.getElementById('waves-search-results');
 
                 let visibleCount = 0;
+                const searchInput = document.getElementById('waves-search');
+                const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
 
-                entries.forEach((el, index) => {
-                    const postData = allPostsData[index];
+                entries.forEach((el) => {
+                    const slug = el.dataset.slug;
+
+                    // Special handling for DAINS stack card (has id but no single slug)
+                    if (el.id === 'daily-ai-news-scan') {
+                        // For DAINS stack, search across all DAINS posts
+                        const isDainsFilter = this.currentFilter === 'all' || this.currentFilter === 'dains';
+                        let matchesSearch = true;
+
+                        if (query) {
+                            // Check if any DAINS post matches the search
+                            matchesSearch = Object.entries(allPostsData).some(([postSlug, data]) => {
+                                if (data.classification.type !== 'dains') return false;
+                                const plainText = WaveAnalyzer.getPlainText(data.post.content);
+                                const searchText = `${data.post.title} ${plainText} daily ai news scan`.toLowerCase();
+                                return searchText.includes(query);
+                            });
+                        }
+
+                        if (isDainsFilter && matchesSearch) {
+                            el.style.display = '';
+                            el.classList.add('revealed');
+                            visibleCount++;
+                        } else {
+                            el.style.display = 'none';
+                        }
+                        return;
+                    }
+
+                    // Regular post - lookup by slug
+                    const postData = allPostsData[slug];
                     if (!postData) return;
 
                     const { classification } = postData;
@@ -1107,10 +1138,7 @@
                     // Check if matches filter
                     const matchesFilter = this.currentFilter === 'all' || type === this.currentFilter;
 
-                    // Also check search query
-                    const searchInput = document.getElementById('waves-search');
-                    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-
+                    // Check search query
                     let matchesSearch = true;
                     if (query) {
                         const { post } = postData;
@@ -1130,8 +1158,6 @@
 
                 // Update results info
                 const filterLabel = this.currentFilter === 'all' ? '' : this.getFilterLabel(this.currentFilter);
-                const searchInput = document.getElementById('waves-search');
-                const query = searchInput ? searchInput.value.trim() : '';
 
                 if (this.currentFilter !== 'all' || query) {
                     resultsInfo.style.display = 'block';
@@ -1275,13 +1301,18 @@
                     return new Date(b.post.published_at) - new Date(a.post.published_at);
                 });
 
-                // Store for search (include DAINS posts for search functionality)
-                // Add DAINS posts with a special classification for filtering
-                const dainsWithClassification = dainsPosts.map(post => ({
-                    post,
-                    classification: { type: 'dains', label: 'Daily News' }
-                }));
-                allPostsData = [...dainsWithClassification, ...postsWithClassification];
+                // Store for search (as a map by slug for O(1) lookup)
+                // Include DAINS posts for search functionality
+                allPostsData = {};
+                dainsPosts.forEach(post => {
+                    allPostsData[post.slug] = {
+                        post,
+                        classification: { type: 'dains', label: 'Daily News' }
+                    };
+                });
+                postsWithClassification.forEach(({ post, classification }) => {
+                    allPostsData[post.slug] = { post, classification };
+                });
 
                 console.log('[waves] Rendering waves...');
 
