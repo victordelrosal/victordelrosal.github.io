@@ -337,7 +337,7 @@ function generateWaveHTML(post) {
         // The actual content loading happens via wave-loader.js
         window.waveSlug = '${post.slug}';
     </script>
-    <script src="/js/wave-loader.js"></script>
+    <script src="/js/wave-loader.js?v=2"></script>
 
     <!-- Reading progress bar -->
     <script>
