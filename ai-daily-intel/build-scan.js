@@ -423,7 +423,7 @@ function extractHeadline(html) {
  * Publish to Supabase
  */
 async function publishToSupabase(briefing) {
-  const slug = `daily-ai-intel-${briefing.dateString}`;
+  const slug = `daily-ai-news-scan-${briefing.dateString}`;
   // Use the top story headline as the title (extracted from h1), fallback to generic
   const headline = extractHeadline(briefing.html);
   const title = headline || `Daily AI News Scan — ${briefing.formattedDate}`;
@@ -491,7 +491,7 @@ async function main() {
 
   // Check if today's scan already exists (for DST dual-schedule)
   const today = new Date();
-  const todaySlug = `daily-ai-intel-${today.toISOString().split('T')[0]}`;
+  const todaySlug = `daily-ai-news-scan-${today.toISOString().split('T')[0]}`;
 
   const { data: existingToday } = await supabase
     .from('published_posts')

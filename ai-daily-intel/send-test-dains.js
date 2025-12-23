@@ -25,7 +25,7 @@ async function main() {
 
   // Fetch today's scan from Supabase
   const today = new Date().toISOString().split('T')[0];
-  const slug = `daily-ai-intel-${today}`;
+  const slug = `daily-ai-news-scan-${today}`;
 
   console.log(`Fetching ${slug} from Supabase...`);
 
