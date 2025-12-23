@@ -6075,6 +6075,22 @@ footer {
     margin-bottom: 1.4em;
 }
 
+/* Scale headings with font-size control */
+.post-content.font-size-1 h2 { font-size: 22px; }
+.post-content.font-size-1 h3 { font-size: 19px; }
+
+.post-content.font-size-2 h2 { font-size: 26px; }
+.post-content.font-size-2 h3 { font-size: 22px; }
+
+.post-content.font-size-3 h2 { font-size: 30px; }
+.post-content.font-size-3 h3 { font-size: 26px; }
+
+.post-content.font-size-4 h2 { font-size: 36px; }
+.post-content.font-size-4 h3 { font-size: 30px; }
+
+.post-content.font-size-5 h2 { font-size: 42px; }
+.post-content.font-size-5 h3 { font-size: 36px; }
+
 @media (max-width: 600px) {
     .font-size-control {
         gap: 2px;
