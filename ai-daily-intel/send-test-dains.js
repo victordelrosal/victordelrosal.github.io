@@ -74,7 +74,7 @@ async function main() {
 <body>
   <div class="container">
     <div class="header">
-      <h1>Daily AI Intel</h1>
+      <h1>Daily AI News Scan</h1>
       <p>[TEST EMAIL] ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
     </div>
 
@@ -100,7 +100,7 @@ async function main() {
       'Authorization': `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: 'Daily AI Intel <updates@victordelrosal.com>',
+      from: 'Daily AI News Scan <updates@victordelrosal.com>',
       to: recipientEmail,
       subject: `[TEST] ${post.title}`,
       html: emailHtml,

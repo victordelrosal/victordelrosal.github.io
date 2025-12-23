@@ -401,7 +401,7 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
   }
 
   // Insert header image AFTER the <h1> tag
-  const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI Intel" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">`;
+  const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">`;
   const htmlWithImage = content.text.replace(/<\/h1>/i, `</h1>\n${headerImageHtml}\n`);
 
   return {
@@ -426,7 +426,7 @@ async function publishToSupabase(briefing) {
   const slug = `daily-ai-intel-${briefing.dateString}`;
   // Use the top story headline as the title (extracted from h1), fallback to generic
   const headline = extractHeadline(briefing.html);
-  const title = headline || `Daily AI Intel — ${briefing.formattedDate}`;
+  const title = headline || `Daily AI News Scan — ${briefing.formattedDate}`;
   // Generate a note_id in the same format as Flux (YYYYMMDDHHMMSS.md)
   // Using 'ai-intel-' prefix to distinguish from Flux notes
   const noteId = `ai-intel-${briefing.dateString.replace(/-/g, '')}070000.md`;
@@ -477,7 +477,7 @@ async function publishToSupabase(briefing) {
  */
 async function main() {
   console.log('='.repeat(60));
-  console.log('Daily AI Intel - Build');
+  console.log('Daily AI News Scan - Build');
   console.log(`Time: ${new Date().toISOString()}`);
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : FORCE_REGENERATE ? 'FORCE REGENERATE' : 'LIVE'}`);
   console.log('='.repeat(60));

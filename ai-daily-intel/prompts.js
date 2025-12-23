@@ -1,8 +1,8 @@
 /**
- * Claude prompts for Daily AI Intel
+ * Claude prompts for Daily AI News Scan (DAINS)
  */
 
-export const SYSTEM_PROMPT = `You are an automated AI news aggregator producing a daily intelligence briefing for victordelrosal.com.
+export const SYSTEM_PROMPT = `You are an automated AI news aggregator producing a daily news scan for victordelrosal.com.
 
 Rules:
 - Signal over noise. Hype is failure.
@@ -15,7 +15,7 @@ Rules:
 
 export function getUserPrompt(date, formattedDate, formattedStories, isNewsletterRanked) {
   const rankingNote = isNewsletterRanked
-    ? 'Stories are ranked by newsletter coverage (hit count). Higher hits = more important.'
+    ? 'Stories are ranked by newsletter coverage. Higher coverage = more important.'
     : 'Stories are from RSS feeds only (newsletter data unavailable).';
 
   return `Today's date: ${date}
@@ -29,7 +29,7 @@ ${formattedStories}
 Write a briefing with this EXACT structure in clean HTML:
 
 <h1>[TOP STORY HEADLINE]</h1>
-<p class="subtitle">Daily AI Intel — ${formattedDate}</p>
+<p class="subtitle">Daily AI News Scan — ${formattedDate}</p>
 
 <h2>Executive Summary</h2>
 <p>70-100 words. Lead with the #1 story, mention #2 and #3. Set context for today's news.</p>
@@ -38,38 +38,39 @@ Write a briefing with this EXACT structure in clean HTML:
 
 <!-- Stories #1-3: Full treatment -->
 <div class="story story-top">
-<h3>1. [Headline] <span class="hits">([X] sources)</span></h3>
+<h3>1. [Headline]</h3>
 <p>Full paragraph (3-4 sentences) with details, context, and implications.</p>
-<p class="attribution"><strong>Source:</strong> <a href="[URL]">[Publisher]</a><br>
-<em>Via: [Newsletter1], [Newsletter2], [Newsletter3] +[N] more</em></p>
+<p class="attribution"><strong>Source:</strong> <a href="[URL]">[Publisher]</a></p>
 </div>
 
 <!-- Repeat for #2 and #3 -->
 
 <h2>Notable</h2>
 
-<!-- Stories #4-7: One-liner + subtitle -->
-<p><strong>4. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
-<p><strong>5. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
-<p><strong>6. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
-<p><strong>7. [Headline]</strong> — [One-sentence summary]. <em>([X] sources)</em></p>
+<!-- Stories #4-7: One-liner + summary -->
+<p><strong>4. [Headline]</strong> — [One-sentence summary].</p>
+<p><strong>5. [Headline]</strong> — [One-sentence summary].</p>
+<p><strong>6. [Headline]</strong> — [One-sentence summary].</p>
+<p><strong>7. [Headline]</strong> — [One-sentence summary].</p>
 
 <h2>Also Noted</h2>
 
-<!-- Stories #8-10: One-liners only -->
-<p>8. [Headline] ([X]) · 9. [Headline] ([X]) · 10. [Headline] ([X])</p>
+<!-- Stories #8-10: Each on its own line with WHY it matters -->
+<p><strong>8. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
+<p><strong>9. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
+<p><strong>10. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
 
 <hr>
-<p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="/daily-ai-news-scan-about/">How this works</a></em></p>
+<p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="https://victordelrosal.com/daily-ai-news-scan-about/">How this works</a></em></p>
 
 Important:
-- The <h1> MUST be the headline of story #1 (the top story) - NOT "Daily AI Intel"
-- "Daily AI Intel — [Date]" goes in the subtitle <p class="subtitle">
+- The <h1> MUST be the headline of story #1 (the top story) - NOT "Daily AI News Scan"
+- "Daily AI News Scan — [Date]" goes in the subtitle <p class="subtitle">
+- Do NOT include source counts like "(X sources)" anywhere - we removed this
 - Output ONLY valid HTML, no markdown
 - If fewer than 10 stories, adjust sections (min 5 stories)
-- The "Via" line shows which newsletters covered the story
 - Source link should be primary source when available
-- Hit count in parentheses shows newsletter coverage`;
+- For "Also Noted" stories, explain WHY each story matters to AI practitioners`;
 }
 
 export function formatStoriesForPrompt(stories, isNewsletterRanked) {
