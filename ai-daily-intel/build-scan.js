@@ -374,11 +374,13 @@ function deduplicateItems(items) {
 async function synthesizeBriefing(stories, isNewsletterRanked) {
   const today = new Date();
   const dateString = today.toISOString().split('T')[0];
+  // Use explicit UTC timezone to ensure consistent day-of-week calculation
   const formattedDate = today.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   });
 
   const formattedStories = formatStoriesForPrompt(stories, isNewsletterRanked);
