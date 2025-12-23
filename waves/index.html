@@ -825,22 +825,22 @@
                     const itemViews = viewCountsData[post.slug] || 0;
                     const viewsHtml = itemViews ? `<span class="dains-stack-item-views">${itemViews} views</span>` : '';
                     return `
-                        <a href="/${post.slug}" class="dains-stack-item">
+                        <span class="dains-stack-item" onclick="event.preventDefault(); event.stopPropagation(); window.location='/${post.slug}';" style="cursor: pointer;">
                             <span class="dains-stack-item-date">${dateStr}</span>
                             <span class="dains-stack-item-title">${escapeHTML(post.title)}</span>
                             ${viewsHtml}
                             ${this.arrowSvg}
-                        </a>
+                        </span>
                     `;
                 }).join('');
 
                 return `
-                    <div id="daily-ai-news-scan" class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
+                    <a href="/waves/#daily-ai-news-scan" id="daily-ai-news-scan" class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
                         <div class="dains-stack-header">
                             <span class="wave-type">📰 Daily News</span>
                             <span class="dains-stack-count">${totalCount} updates</span>
                         </div>
-                        <a href="/${latestPost.slug}" class="dains-stack-latest">
+                        <span class="dains-stack-latest" onclick="event.preventDefault(); window.location='/${latestPost.slug}';" style="cursor: pointer;">
                             <img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" class="dains-stack-image">
                             <div class="dains-stack-latest-content">
                                 <p class="wave-meta">${window.PostsAPI.formatDate(latestPost.published_at)}</p>
@@ -849,9 +849,9 @@
                             </div>
                             ${statsBadge}
                             ${this.arrowSvg}
-                        </a>
+                        </span>
                         ${olderPosts.length > 0 ? `
-                            <button class="dains-stack-toggle" aria-expanded="false">
+                            <button class="dains-stack-toggle" aria-expanded="false" onclick="event.preventDefault(); event.stopPropagation();">
                                 <span class="dains-stack-toggle-text">View ${olderPosts.length} previous update${olderPosts.length !== 1 ? 's' : ''}</span>
                                 ${this.chevronDownSvg}
                             </button>
@@ -859,7 +859,7 @@
                                 ${stackedItemsHtml}
                             </div>
                         ` : ''}
-                    </div>
+                    </a>
                 `;
             },
 
