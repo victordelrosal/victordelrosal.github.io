@@ -54,7 +54,19 @@
                 <h1 class="post-title">About the Daily AI News Scan</h1>
             </header>
 
-            <div class="post-content">
+            <!-- Font Size Control -->
+            <div class="font-size-control" id="font-size-control">
+                <button class="font-size-btn" data-size="1" title="Tiny">A</button>
+                <button class="font-size-btn" data-size="2" title="Small">A</button>
+                <button class="font-size-btn active" data-size="3" title="Medium">A</button>
+                <button class="font-size-btn" data-size="4" title="Large">A</button>
+                <button class="font-size-btn" data-size="5" title="Extra Large">A</button>
+            </div>
+
+            <!-- View Count -->
+            <div id="view-count-container" class="view-count-top"></div>
+
+            <div id="post-content" class="post-content">
                 <p style="font-size: 1.15rem; color: var(--text-light); margin-bottom: 2rem;"><strong>This is a fully automated news scan. No human reviews or edits the content before publication.</strong></p>
 
                 <p>Every morning, a machine wakes up and reads the AI news for you. It doesn't editorialize. It doesn't hype. It just summarizes what happened in the last 24 hours across the AI landscape.</p>
@@ -199,5 +211,68 @@
     <footer style="text-align: center; padding: 40px 24px; color: var(--text-light); font-size: 0.9rem;">
         <p>&copy; 2025 Victor del Rosal</p>
     </footer>
+
+    <!-- Load Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/js/supabase-config.js"></script>
+    <script src="/js/supabase-client.js"></script>
+
+    <!-- Load Page Views -->
+    <script src="/js/page-views.js"></script>
+
+    <!-- Font Size Control & View Tracking -->
+    <script>
+    (function() {
+        const slug = 'daily-ai-news-scan-about';
+        const postContent = document.getElementById('post-content');
+        const fontSizeButtons = document.querySelectorAll('.font-size-btn');
+        const storageKey = 'wave-font-size';
+
+        // Font Size Control
+        function setFontSize(size) {
+            postContent.classList.remove('font-size-1', 'font-size-2', 'font-size-3', 'font-size-4', 'font-size-5');
+            postContent.classList.add('font-size-' + size);
+            fontSizeButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.size === String(size));
+            });
+            localStorage.setItem(storageKey, size);
+        }
+
+        // Load saved preference
+        const savedSize = localStorage.getItem(storageKey);
+        if (savedSize) {
+            setFontSize(savedSize);
+        }
+
+        // Button click handlers
+        fontSizeButtons.forEach(btn => {
+            btn.addEventListener('click', () => setFontSize(btn.dataset.size));
+        });
+
+        // View Tracking
+        async function initViewTracking() {
+            if (!window.PageViews || !window.SupabaseClient) {
+                setTimeout(initViewTracking, 100);
+                return;
+            }
+
+            const container = document.getElementById('view-count-container');
+            if (!container) return;
+
+            // Track the view
+            const count = await window.PageViews.trackView(slug);
+            if (count !== null) {
+                container.innerHTML = window.PageViews.createViewCountHTML(count);
+            }
+        }
+
+        // Wait for dependencies to load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initViewTracking);
+        } else {
+            initViewTracking();
+        }
+    })();
+    </script>
 </body>
 </html>
