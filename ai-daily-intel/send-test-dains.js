@@ -23,14 +23,11 @@ async function main() {
     process.exit(1);
   }
 
-  // Fetch today's scan from Supabase
-  const today = new Date().toISOString().split('T')[0];
-  const slug = `daily-ai-news-scan-${today}`;
-
-  console.log(`Fetching ${slug} from Supabase...`);
+  // Fetch most recent DAINS from Supabase
+  console.log('Fetching most recent DAINS from Supabase...');
 
   const response = await fetch(
-    `${SUPABASE_URL}/rest/v1/published_posts?slug=eq.${slug}&select=*`,
+    `${SUPABASE_URL}/rest/v1/published_posts?slug=like.daily-ai-news-scan-*&order=published_at.desc&limit=1&select=*`,
     {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
@@ -42,7 +39,7 @@ async function main() {
   const posts = await response.json();
 
   if (!posts || posts.length === 0) {
-    console.error(`No scan found for ${slug}`);
+    console.error('No DAINS found in database');
     process.exit(1);
   }
 
