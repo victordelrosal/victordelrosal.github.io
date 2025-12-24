@@ -607,8 +607,10 @@ async function main() {
 }
 
 // Run
-main().catch(error => {
-  console.error('\nFATAL ERROR:', error.message);
-  console.error(error.stack);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch(error => {
+    console.error('\nFATAL ERROR:', error.message);
+    console.error(error.stack);
+    process.exit(1);
+  });
