@@ -502,6 +502,29 @@ const Navbar = {
     }
 };
 
+// Load gamification scripts dynamically (except on homepage)
+function loadGamification() {
+    // Skip on homepage
+    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        return;
+    }
+
+    // Skip if already loaded
+    if (window.Gamification || document.querySelector('script[src*="gamification.js"]')) {
+        return;
+    }
+
+    // Load gamification.js first, then gamification-ui.js
+    const gamificationScript = document.createElement('script');
+    gamificationScript.src = '/js/gamification.js';
+    gamificationScript.onload = () => {
+        const uiScript = document.createElement('script');
+        uiScript.src = '/js/gamification-ui.js';
+        document.head.appendChild(uiScript);
+    };
+    document.head.appendChild(gamificationScript);
+}
+
 // Auto-initialize if DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -512,6 +535,8 @@ if (document.readyState === 'loading') {
                 pageTitle: container.dataset.pageTitle || null,
                 activeLink: container.dataset.activeLink || null
             });
+            // Load gamification after navbar is ready
+            loadGamification();
         }
     });
 } else {
@@ -521,6 +546,8 @@ if (document.readyState === 'loading') {
             pageTitle: container.dataset.pageTitle || null,
             activeLink: container.dataset.activeLink || null
         });
+        // Load gamification after navbar is ready
+        loadGamification();
     }
 }
 
