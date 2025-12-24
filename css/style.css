@@ -7127,3 +7127,467 @@ footer {
         rgba(200,230,250,0.9) 100%);
 }
 
+
+/* ===== GAMIFICATION SYSTEM ===== */
+/* Ocean-themed XP, levels, streaks & achievements */
+
+/* === Navbar XP Indicator === */
+.gamify-indicator {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+}
+
+.gamify-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    color: var(--text-white);
+}
+
+.gamify-btn:hover {
+    background: rgba(0, 212, 255, 0.25);
+    border-color: rgba(0, 212, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.gamify-level-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.gamify-level-name {
+    font-weight: 500;
+    color: var(--accent-cyan);
+}
+
+.gamify-xp-bar {
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.gamify-xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-electric) 100%);
+    border-radius: 2px;
+    transition: width 0.5s ease-out;
+}
+
+.gamify-streak {
+    font-size: 12px;
+    padding: 2px 6px;
+    background: rgba(255, 107, 0, 0.2);
+    border-radius: 10px;
+    color: #FF9500;
+}
+
+/* === Achievements Panel === */
+.gamify-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.gamify-panel.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gamify-panel-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.gamify-panel-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    background: linear-gradient(180deg, var(--blue-2) 0%, var(--blue-1) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 24px;
+    overflow: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s var(--ease-out);
+    box-shadow: 
+        0 0 60px rgba(0, 212, 255, 0.2),
+        0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.gamify-panel.visible .gamify-panel-content {
+    transform: translateY(0) scale(1);
+}
+
+.gamify-panel-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--text-white);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 1;
+}
+
+.gamify-panel-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.gamify-panel-header {
+    padding: 24px 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gamify-panel-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin: 0;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gamify-panel-body {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(85vh - 100px);
+}
+
+/* === Stats Section === */
+.gamify-level-display {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.gamify-level-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.gamify-level-badge-icon {
+    font-size: 32px;
+}
+
+.gamify-level-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.gamify-level-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 4px;
+}
+
+.gamify-xp-text {
+    font-size: 14px;
+    color: var(--accent-cyan);
+    margin-bottom: 8px;
+}
+
+.gamify-xp-bar-large {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.gamify-xp-bar-large .gamify-xp-fill {
+    height: 100%;
+}
+
+.gamify-xp-next {
+    font-size: 12px;
+    color: var(--text-white-tertiary);
+}
+
+.gamify-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.gamify-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gamify-stat-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.gamify-stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.gamify-stat-label {
+    font-size: 11px;
+    color: var(--text-white-tertiary);
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* === Achievements Section === */
+.gamify-achievements-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 16px;
+}
+
+.gamify-achievements-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gamify-achievement {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.gamify-achievement.unlocked {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.gamify-achievement.locked {
+    opacity: 0.6;
+}
+
+.gamify-achievement-icon {
+    font-size: 28px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.gamify-achievement-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.gamify-achievement-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-white);
+}
+
+.gamify-achievement-desc {
+    font-size: 12px;
+    color: var(--text-white-secondary);
+    margin-top: 2px;
+}
+
+.gamify-achievement-progress {
+    font-size: 11px;
+    color: var(--accent-cyan);
+    margin-top: 4px;
+}
+
+.gamify-achievement-xp {
+    font-size: 12px;
+    color: #FFD700;
+    font-weight: 500;
+    padding: 4px 8px;
+    background: rgba(255, 215, 0, 0.15);
+    border-radius: 8px;
+}
+
+/* === Toast Notifications === */
+.gamify-toasts {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.gamify-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, rgba(0, 36, 54, 0.95) 0%, rgba(0, 20, 40, 0.95) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.3s var(--ease-out);
+    pointer-events: auto;
+}
+
+.gamify-toast.visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.gamify-toast--special {
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3);
+    animation: toastGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes toastGlow {
+    0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2); }
+    50% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.4); }
+}
+
+.gamify-toast-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.gamify-toast-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.gamify-toast-reason {
+    font-size: 12px;
+    color: var(--accent-cyan);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .gamify-btn {
+        padding: 4px 10px;
+        gap: 4px;
+    }
+
+    .gamify-level-name {
+        display: none;
+    }
+
+    .gamify-xp-bar {
+        width: 30px;
+    }
+
+    .gamify-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gamify-level-display {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .gamify-toasts {
+        right: 10px;
+        left: 10px;
+    }
+
+    .gamify-toast {
+        transform: translateY(-20px);
+    }
+
+    .gamify-toast.visible {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .gamify-panel-content {
+        width: 95%;
+        max-height: 90vh;
+        border-radius: 16px;
+    }
+
+    .gamify-panel-body {
+        padding: 16px;
+    }
+
+    .gamify-achievement {
+        padding: 10px 12px;
+    }
+
+    .gamify-achievement-icon {
+        font-size: 24px;
+        width: 32px;
+    }
+}
+
+/* === Light theme adjustments for wave pages === */
+body.bg-light .gamify-btn {
+    background: rgba(0, 100, 200, 0.1);
+    border-color: rgba(0, 100, 200, 0.2);
+    color: var(--text-dark);
+}
+
+body.bg-light .gamify-btn:hover {
+    background: rgba(0, 100, 200, 0.15);
+    border-color: rgba(0, 100, 200, 0.3);
+}
+
+body.bg-light .gamify-level-name {
+    color: var(--blue-6);
+}
+
+body.bg-light .gamify-xp-bar {
+    background: rgba(0, 100, 200, 0.15);
+}

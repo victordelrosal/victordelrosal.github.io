@@ -1,0 +1,541 @@
+/**
+ * Gamification System - Ocean-themed XP, Levels, Streaks & Achievements
+ * Incentivizes engagement through game mechanics
+ */
+
+(function() {
+    'use strict';
+
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+
+    const XP_CONFIG = {
+        pageView: 5,
+        wave: 10,
+        comment: 20,
+        share: 15,
+        dailyVisit: 25,
+        streakBonus: 10,  // Per day in streak
+        firstComment: 50, // Bonus for first ever comment
+        firstWave: 25     // Bonus for first ever wave
+    };
+
+    // Ocean-themed levels
+    const LEVELS = [
+        { name: 'Droplet', minXP: 0, icon: '💧', color: '#87CEEB' },
+        { name: 'Ripple', minXP: 100, icon: '🌊', color: '#4FC3F7' },
+        { name: 'Wave', minXP: 300, icon: '🌊', color: '#29B6F6' },
+        { name: 'Current', minXP: 600, icon: '🌀', color: '#03A9F4' },
+        { name: 'Surge', minXP: 1000, icon: '⚡', color: '#0288D1' },
+        { name: 'Tide', minXP: 1500, icon: '🌙', color: '#0277BD' },
+        { name: 'Tsunami', minXP: 2500, icon: '🌊', color: '#01579B' },
+        { name: 'Ocean Master', minXP: 5000, icon: '🔱', color: '#004D73' }
+    ];
+
+    // Achievement definitions
+    const ACHIEVEMENTS = {
+        // Reading achievements
+        first_read: {
+            id: 'first_read',
+            name: 'First Dive',
+            description: 'Read your first wave',
+            icon: '📖',
+            xpReward: 10
+        },
+        deep_diver: {
+            id: 'deep_diver',
+            name: 'Deep Diver',
+            description: 'Read 10 waves',
+            icon: '🤿',
+            requirement: 10,
+            xpReward: 50
+        },
+        ocean_explorer: {
+            id: 'ocean_explorer',
+            name: 'Ocean Explorer',
+            description: 'Read 25 waves',
+            icon: '🧭',
+            requirement: 25,
+            xpReward: 100
+        },
+        wave_surfer: {
+            id: 'wave_surfer',
+            name: 'Wave Surfer',
+            description: 'Read 50 waves',
+            icon: '🏄',
+            requirement: 50,
+            xpReward: 200
+        },
+
+        // Wave/reaction achievements
+        first_wave: {
+            id: 'first_wave',
+            name: 'First Wave',
+            description: 'Wave at your first post',
+            icon: '👋',
+            xpReward: 25
+        },
+        wave_maker: {
+            id: 'wave_maker',
+            name: 'Wave Maker',
+            description: 'Wave at 10 posts',
+            icon: '🌊',
+            requirement: 10,
+            xpReward: 75
+        },
+        wave_enthusiast: {
+            id: 'wave_enthusiast',
+            name: 'Wave Enthusiast',
+            description: 'Wave at 25 posts',
+            icon: '🌊',
+            requirement: 25,
+            xpReward: 150
+        },
+
+        // Comment achievements
+        first_comment: {
+            id: 'first_comment',
+            name: 'Voice of the Sea',
+            description: 'Leave your first comment',
+            icon: '💬',
+            xpReward: 50
+        },
+        conversationalist: {
+            id: 'conversationalist',
+            name: 'Conversationalist',
+            description: 'Leave 10 comments',
+            icon: '🗣️',
+            requirement: 10,
+            xpReward: 100
+        },
+
+        // Share achievements
+        first_share: {
+            id: 'first_share',
+            name: 'Message in a Bottle',
+            description: 'Share your first wave',
+            icon: '📬',
+            xpReward: 25
+        },
+        sharing_sailor: {
+            id: 'sharing_sailor',
+            name: 'Sharing Sailor',
+            description: 'Share 10 waves',
+            icon: '⛵',
+            requirement: 10,
+            xpReward: 100
+        },
+
+        // Streak achievements
+        streak_3: {
+            id: 'streak_3',
+            name: 'Consistent Current',
+            description: '3-day visit streak',
+            icon: '🔥',
+            requirement: 3,
+            xpReward: 30
+        },
+        streak_7: {
+            id: 'streak_7',
+            name: 'Weekly Wave',
+            description: '7-day visit streak',
+            icon: '🔥',
+            requirement: 7,
+            xpReward: 75
+        },
+        streak_14: {
+            id: 'streak_14',
+            name: 'Fortnight Tide',
+            description: '14-day visit streak',
+            icon: '🔥',
+            requirement: 14,
+            xpReward: 150
+        },
+        streak_30: {
+            id: 'streak_30',
+            name: 'Monthly Moon',
+            description: '30-day visit streak',
+            icon: '🌙',
+            requirement: 30,
+            xpReward: 500
+        },
+
+        // Time-based achievements
+        night_owl: {
+            id: 'night_owl',
+            name: 'Night Owl',
+            description: 'Engage after midnight',
+            icon: '🦉',
+            xpReward: 25
+        },
+        early_bird: {
+            id: 'early_bird',
+            name: 'Early Bird',
+            description: 'Engage before 7 AM',
+            icon: '🐦',
+            xpReward: 25
+        },
+
+        // Special achievements
+        subscriber: {
+            id: 'subscriber',
+            name: 'Connected',
+            description: 'Subscribe to updates',
+            icon: '📧',
+            xpReward: 50
+        }
+    };
+
+    // Storage keys
+    const STORAGE_KEYS = {
+        xp: 'gamify_xp',
+        stats: 'gamify_stats',
+        achievements: 'gamify_achievements',
+        streak: 'gamify_streak',
+        lastVisit: 'gamify_last_visit'
+    };
+
+    // ==========================================
+    // DATA MANAGEMENT
+    // ==========================================
+
+    function getStoredData(key, defaultValue) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : defaultValue;
+        } catch (e) {
+            console.error('[Gamification] Error reading storage:', e);
+            return defaultValue;
+        }
+    }
+
+    function setStoredData(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+            console.error('[Gamification] Error writing storage:', e);
+        }
+    }
+
+    function getStats() {
+        return getStoredData(STORAGE_KEYS.stats, {
+            reads: 0,
+            waves: 0,
+            comments: 0,
+            shares: 0,
+            postsRead: []  // Track unique post slugs
+        });
+    }
+
+    function updateStats(field, slug = null) {
+        const stats = getStats();
+        stats[field] = (stats[field] || 0) + 1;
+
+        // Track unique posts read
+        if (field === 'reads' && slug && !stats.postsRead.includes(slug)) {
+            stats.postsRead.push(slug);
+        }
+
+        setStoredData(STORAGE_KEYS.stats, stats);
+        return stats;
+    }
+
+    function getXP() {
+        return getStoredData(STORAGE_KEYS.xp, 0);
+    }
+
+    function addXP(amount, reason) {
+        const currentXP = getXP();
+        const newXP = currentXP + amount;
+        setStoredData(STORAGE_KEYS.xp, newXP);
+
+        // Dispatch event for UI updates
+        window.dispatchEvent(new CustomEvent('gamify:xp-gained', {
+            detail: { amount, total: newXP, reason }
+        }));
+
+        // Check for level up
+        const oldLevel = getLevelForXP(currentXP);
+        const newLevel = getLevelForXP(newXP);
+        if (newLevel.name !== oldLevel.name) {
+            window.dispatchEvent(new CustomEvent('gamify:level-up', {
+                detail: { oldLevel, newLevel, totalXP: newXP }
+            }));
+        }
+
+        return newXP;
+    }
+
+    function getUnlockedAchievements() {
+        return getStoredData(STORAGE_KEYS.achievements, []);
+    }
+
+    function unlockAchievement(achievementId) {
+        const unlocked = getUnlockedAchievements();
+        if (unlocked.includes(achievementId)) return false;
+
+        const achievement = ACHIEVEMENTS[achievementId];
+        if (!achievement) return false;
+
+        unlocked.push(achievementId);
+        setStoredData(STORAGE_KEYS.achievements, unlocked);
+
+        // Award XP for achievement
+        if (achievement.xpReward) {
+            addXP(achievement.xpReward, `Achievement: ${achievement.name}`);
+        }
+
+        // Dispatch event for UI notification
+        window.dispatchEvent(new CustomEvent('gamify:achievement-unlocked', {
+            detail: { achievement }
+        }));
+
+        return true;
+    }
+
+    function hasAchievement(achievementId) {
+        return getUnlockedAchievements().includes(achievementId);
+    }
+
+    // ==========================================
+    // LEVEL SYSTEM
+    // ==========================================
+
+    function getLevelForXP(xp) {
+        let currentLevel = LEVELS[0];
+        for (const level of LEVELS) {
+            if (xp >= level.minXP) {
+                currentLevel = level;
+            } else {
+                break;
+            }
+        }
+        return currentLevel;
+    }
+
+    function getLevelProgress(xp) {
+        const currentLevel = getLevelForXP(xp);
+        const currentIndex = LEVELS.indexOf(currentLevel);
+        const nextLevel = LEVELS[currentIndex + 1];
+
+        if (!nextLevel) {
+            return { current: currentLevel, next: null, progress: 100, xpToNext: 0 };
+        }
+
+        const xpInLevel = xp - currentLevel.minXP;
+        const xpForLevel = nextLevel.minXP - currentLevel.minXP;
+        const progress = Math.min((xpInLevel / xpForLevel) * 100, 100);
+
+        return {
+            current: currentLevel,
+            next: nextLevel,
+            progress,
+            xpToNext: nextLevel.minXP - xp
+        };
+    }
+
+    // ==========================================
+    // STREAK SYSTEM
+    // ==========================================
+
+    function getStreak() {
+        return getStoredData(STORAGE_KEYS.streak, { count: 0, lastDate: null });
+    }
+
+    function updateStreak() {
+        const streak = getStreak();
+        const today = new Date().toDateString();
+        const lastVisit = streak.lastDate;
+
+        if (lastVisit === today) {
+            // Already visited today
+            return streak;
+        }
+
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toDateString();
+
+        if (lastVisit === yesterdayStr) {
+            // Continuing streak
+            streak.count++;
+            streak.lastDate = today;
+
+            // Award streak bonus
+            addXP(XP_CONFIG.dailyVisit + (XP_CONFIG.streakBonus * Math.min(streak.count, 10)),
+                  `Daily visit (${streak.count} day streak)`);
+
+            // Check streak achievements
+            checkStreakAchievements(streak.count);
+        } else if (!lastVisit || new Date(lastVisit) < yesterday) {
+            // Streak broken or first visit
+            const wasStreak = streak.count > 0;
+            streak.count = 1;
+            streak.lastDate = today;
+            addXP(XP_CONFIG.dailyVisit, 'Daily visit');
+
+            if (wasStreak) {
+                window.dispatchEvent(new CustomEvent('gamify:streak-broken', {
+                    detail: { previousStreak: getStoredData(STORAGE_KEYS.streak, {}).count || 0 }
+                }));
+            }
+        }
+
+        setStoredData(STORAGE_KEYS.streak, streak);
+        return streak;
+    }
+
+    function checkStreakAchievements(streakCount) {
+        if (streakCount >= 3 && !hasAchievement('streak_3')) unlockAchievement('streak_3');
+        if (streakCount >= 7 && !hasAchievement('streak_7')) unlockAchievement('streak_7');
+        if (streakCount >= 14 && !hasAchievement('streak_14')) unlockAchievement('streak_14');
+        if (streakCount >= 30 && !hasAchievement('streak_30')) unlockAchievement('streak_30');
+    }
+
+    // ==========================================
+    // ACTION TRACKING
+    // ==========================================
+
+    function trackPageView(slug) {
+        const stats = getStats();
+
+        // Only award XP for unique post reads
+        if (!stats.postsRead.includes(slug)) {
+            const isFirstRead = stats.reads === 0;
+            updateStats('reads', slug);
+            addXP(XP_CONFIG.pageView, 'Reading a wave');
+
+            // Check reading achievements
+            if (isFirstRead) unlockAchievement('first_read');
+
+            const newStats = getStats();
+            if (newStats.postsRead.length >= 10 && !hasAchievement('deep_diver')) {
+                unlockAchievement('deep_diver');
+            }
+            if (newStats.postsRead.length >= 25 && !hasAchievement('ocean_explorer')) {
+                unlockAchievement('ocean_explorer');
+            }
+            if (newStats.postsRead.length >= 50 && !hasAchievement('wave_surfer')) {
+                unlockAchievement('wave_surfer');
+            }
+        }
+
+        // Check time-based achievements
+        checkTimeAchievements();
+    }
+
+    function trackWave(slug) {
+        const stats = getStats();
+        const isFirstWave = stats.waves === 0;
+
+        updateStats('waves');
+        addXP(XP_CONFIG.wave + (isFirstWave ? XP_CONFIG.firstWave : 0),
+              isFirstWave ? 'First wave ever!' : 'Waving at a wave');
+
+        // Check wave achievements
+        if (isFirstWave) unlockAchievement('first_wave');
+
+        const newStats = getStats();
+        if (newStats.waves >= 10 && !hasAchievement('wave_maker')) {
+            unlockAchievement('wave_maker');
+        }
+        if (newStats.waves >= 25 && !hasAchievement('wave_enthusiast')) {
+            unlockAchievement('wave_enthusiast');
+        }
+
+        checkTimeAchievements();
+    }
+
+    function trackComment() {
+        const stats = getStats();
+        const isFirstComment = stats.comments === 0;
+
+        updateStats('comments');
+        addXP(XP_CONFIG.comment + (isFirstComment ? XP_CONFIG.firstComment : 0),
+              isFirstComment ? 'First comment ever!' : 'Leaving a comment');
+
+        // Check comment achievements
+        if (isFirstComment) unlockAchievement('first_comment');
+
+        const newStats = getStats();
+        if (newStats.comments >= 10 && !hasAchievement('conversationalist')) {
+            unlockAchievement('conversationalist');
+        }
+
+        checkTimeAchievements();
+    }
+
+    function trackShare(platform) {
+        const stats = getStats();
+        const isFirstShare = stats.shares === 0;
+
+        updateStats('shares');
+        addXP(XP_CONFIG.share, `Sharing on ${platform}`);
+
+        // Check share achievements
+        if (isFirstShare) unlockAchievement('first_share');
+
+        const newStats = getStats();
+        if (newStats.shares >= 10 && !hasAchievement('sharing_sailor')) {
+            unlockAchievement('sharing_sailor');
+        }
+    }
+
+    function trackSubscription() {
+        if (!hasAchievement('subscriber')) {
+            unlockAchievement('subscriber');
+        }
+    }
+
+    function checkTimeAchievements() {
+        const hour = new Date().getHours();
+
+        // Night owl: midnight to 4 AM
+        if (hour >= 0 && hour < 4 && !hasAchievement('night_owl')) {
+            unlockAchievement('night_owl');
+        }
+
+        // Early bird: 5 AM to 7 AM
+        if (hour >= 5 && hour < 7 && !hasAchievement('early_bird')) {
+            unlockAchievement('early_bird');
+        }
+    }
+
+    // ==========================================
+    // PUBLIC API
+    // ==========================================
+
+    window.Gamification = {
+        // Core data
+        getXP,
+        getStats,
+        getStreak,
+        getLevelProgress,
+        getLevelForXP,
+
+        // Achievements
+        getUnlockedAchievements,
+        getAllAchievements: () => ACHIEVEMENTS,
+        hasAchievement,
+
+        // Actions
+        trackPageView,
+        trackWave,
+        trackComment,
+        trackShare,
+        trackSubscription,
+        updateStreak,
+
+        // Config access
+        LEVELS,
+        ACHIEVEMENTS,
+        XP_CONFIG
+    };
+
+    // Initialize streak on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateStreak();
+    });
+
+})();
