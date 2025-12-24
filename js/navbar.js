@@ -415,6 +415,10 @@ const Navbar = {
 
                     try {
                         await window.SupabaseClient.updateSubscription(isChecked);
+                        // Gamification: track subscription
+                        if (isChecked && window.Gamification) {
+                            window.Gamification.trackSubscription();
+                        }
                     } catch (err) {
                         console.error('Failed to update subscription', err);
                         e.target.checked = !isChecked; // Revert on error

@@ -266,6 +266,10 @@
                             if (viewCount !== null) {
                                 document.getElementById('view-count-container').innerHTML = window.PageViews.createViewCountHTML(viewCount);
                             }
+                            // Gamification: track page view
+                            if (window.Gamification) {
+                                window.Gamification.trackPageView(slug);
+                            }
                         } catch (e) {
                             console.error('Failed to track view:', e);
                         }
@@ -324,6 +328,10 @@
                                 waveCountEl.textContent = data || 0;
                                 localStorage.setItem(storageKey, 'true');
                                 waveBtn.classList.add('waved');
+                                // Gamification: track wave reaction
+                                if (window.Gamification) {
+                                    window.Gamification.trackWave(slug);
+                                }
                             } catch (e) {
                                 console.error('Failed to add wave:', e);
                             }
@@ -335,15 +343,19 @@
 
                 document.getElementById('share-whatsapp').addEventListener('click', () => {
                     window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
+                    if (window.Gamification) window.Gamification.trackShare('WhatsApp');
                 });
                 document.getElementById('share-linkedin').addEventListener('click', () => {
                     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank');
+                    if (window.Gamification) window.Gamification.trackShare('LinkedIn');
                 });
                 document.getElementById('share-x').addEventListener('click', () => {
                     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank');
+                    if (window.Gamification) window.Gamification.trackShare('X');
                 });
                 document.getElementById('share-bluesky').addEventListener('click', () => {
                     window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
+                    if (window.Gamification) window.Gamification.trackShare('Bluesky');
                 });
                 document.getElementById('share-copy').addEventListener('click', async (e) => {
                     const btn = e.currentTarget;
@@ -351,6 +363,7 @@
                         await navigator.clipboard.writeText(postUrl);
                         btn.classList.add('copied');
                         setTimeout(() => btn.classList.remove('copied'), 2000);
+                        if (window.Gamification) window.Gamification.trackShare('Copy Link');
                     } catch (err) {
                         const ta = document.createElement('textarea');
                         ta.value = postUrl;
@@ -361,6 +374,7 @@
                         document.body.removeChild(ta);
                         btn.classList.add('copied');
                         setTimeout(() => btn.classList.remove('copied'), 2000);
+                        if (window.Gamification) window.Gamification.trackShare('Copy Link');
                     }
                 });
 

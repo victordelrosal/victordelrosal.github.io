@@ -389,6 +389,10 @@ const CommentsUI = {
       await window.Comments.postComment(this.currentSlug, content);
       input.value = '';
       document.getElementById('char-current').textContent = '0';
+      // Gamification: track comment
+      if (window.Gamification) {
+        window.Gamification.trackComment();
+      }
       await this.loadAndRenderComments();
     } catch (error) {
       alert(error.message || 'Failed to post comment');
@@ -416,6 +420,10 @@ const CommentsUI = {
     try {
       await window.Comments.postComment(this.currentSlug, content, this.replyingTo);
       this.hideReplyForm();
+      // Gamification: track comment (reply counts as comment)
+      if (window.Gamification) {
+        window.Gamification.trackComment();
+      }
       await this.loadAndRenderComments();
     } catch (error) {
       alert(error.message || 'Failed to post reply');
