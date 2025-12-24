@@ -333,7 +333,6 @@
 
     function init() {
         if (isInitialized) return;
-        isInitialized = true;
 
         // Wait for Gamification module
         if (!window.Gamification) {
@@ -342,16 +341,21 @@
         }
 
         // Create and inject XP indicator into navbar
-        // Try different navbar structures
         const authContainer = document.getElementById('auth-container');
         const navbarContent = document.querySelector('.wave-navbar-content');
 
-        if (authContainer && navbarContent) {
-            const indicator = createXPIndicator();
-            if (indicator) {
-                // Insert before auth container
-                navbarContent.insertBefore(indicator, authContainer);
-            }
+        // Don't mark as initialized until navbar is ready
+        if (!authContainer || !navbarContent) {
+            return;
+        }
+
+        // Now we can mark as initialized
+        isInitialized = true;
+
+        const indicator = createXPIndicator();
+        if (indicator) {
+            // Insert before auth container
+            navbarContent.insertBefore(indicator, authContainer);
         }
 
         // Create achievements panel (hidden by default)
@@ -374,7 +378,7 @@
 
     // Also try to init when navbar loads
     const navbarObserver = new MutationObserver((mutations, obs) => {
-        if (document.querySelector('nav .nav-right') && !isInitialized) {
+        if (document.querySelector('.wave-navbar-content #auth-container') && !isInitialized) {
             init();
             obs.disconnect();
         }
