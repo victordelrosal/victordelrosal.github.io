@@ -47,18 +47,18 @@ Write a briefing with this EXACT structure in clean HTML:
 
 <h2>Notable</h2>
 
-<!-- Stories #4-7: One-liner + summary -->
-<p><strong>4. [Headline]</strong> — [One-sentence summary].</p>
-<p><strong>5. [Headline]</strong> — [One-sentence summary].</p>
-<p><strong>6. [Headline]</strong> — [One-sentence summary].</p>
-<p><strong>7. [Headline]</strong> — [One-sentence summary].</p>
+<!-- Stories #4-7: One-liner + summary + source link -->
+<p><strong>4. [Headline]</strong> — [One-sentence summary]. <a href="[URL]">[Source]</a></p>
+<p><strong>5. [Headline]</strong> — [One-sentence summary]. <a href="[URL]">[Source]</a></p>
+<p><strong>6. [Headline]</strong> — [One-sentence summary]. <a href="[URL]">[Source]</a></p>
+<p><strong>7. [Headline]</strong> — [One-sentence summary]. <a href="[URL]">[Source]</a></p>
 
 <h2>Also Noted</h2>
 
-<!-- Stories #8-10: Each on its own line with WHY it matters -->
-<p><strong>8. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
-<p><strong>9. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
-<p><strong>10. [Headline]</strong> — [Why this is relevant to AI practitioners/industry].</p>
+<!-- Stories #8-10: Each on its own line with WHY it matters + source link -->
+<p><strong>8. [Headline]</strong> — [Why this is relevant to AI practitioners/industry]. <a href="[URL]">[Source]</a></p>
+<p><strong>9. [Headline]</strong> — [Why this is relevant to AI practitioners/industry]. <a href="[URL]">[Source]</a></p>
+<p><strong>10. [Headline]</strong> — [Why this is relevant to AI practitioners/industry]. <a href="[URL]">[Source]</a></p>
 
 <hr>
 <p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="https://victordelrosal.com/daily-ai-news-scan-about/">How this works</a></em></p>
@@ -69,6 +69,7 @@ Important:
 - Do NOT include source counts like "(X sources)" anywhere - we removed this
 - Output ONLY valid HTML, no markdown
 - If fewer than 10 stories, adjust sections (min 5 stories)
+- EVERY story (Top, Notable, Also Noted) MUST have a clickable source link
 - Source link should be primary source when available
 - For "Also Noted" stories, explain WHY each story matters to AI practitioners`;
 }
