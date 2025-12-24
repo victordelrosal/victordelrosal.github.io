@@ -157,6 +157,10 @@ function generateWaveHTML(post) {
     <div id="navbar-container" data-active-link="/waves/"></div>
     <script src="/js/navbar.js"></script>
 
+    <!-- Gamification System -->
+    <script src="/js/gamification.js"></script>
+    <script src="/js/gamification-ui.js"></script>
+
     <main id="main-content" class="wave-watermark" style="padding: 120px 24px 100px; max-width: 720px; margin: 0 auto; min-height: 100vh;">
         <!-- Wave Signature Background Elements -->
         <div class="wave-signature"></div>
