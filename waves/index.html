@@ -1206,20 +1206,26 @@
             try {
                 console.log('[waves] Starting initialization...');
 
-                // Initialize Supabase - auth is optional for waves display
+                // Initialize Supabase client only (auth handled by navbar)
                 if (window.SupabaseClient) {
                     window.SupabaseClient.initSupabase();
-                    // Don't await initAuth - let it run in background, don't block page load
-                    window.SupabaseClient.initAuth().catch(e => console.warn('[waves] Auth init failed:', e));
-                    console.log('[waves] Supabase initialized (auth loading in background)');
+                    // Auth is now handled by navbar.js with deduplication - don't call here
+                    console.log('[waves] Supabase client initialized');
                 }
 
-                console.log('[waves] Fetching posts...');
-                const posts = await window.PostsAPI.fetchPosts();
-                console.log('[waves] Posts fetched:', posts.length);
                 const container = document.getElementById('waves-container');
                 const loading = document.getElementById('loading');
                 const emptyState = document.getElementById('empty-state');
+
+                // Fetch posts with timeout (primary content - fail fast if unavailable)
+                const FETCH_TIMEOUT = 5000; // 5 seconds max
+                console.log('[waves] Fetching posts...');
+                const posts = await withTimeout(
+                    window.PostsAPI.fetchPosts(),
+                    FETCH_TIMEOUT,
+                    []
+                );
+                console.log('[waves] Posts fetched:', posts.length);
 
                 loading.style.display = 'none';
 
@@ -1228,285 +1234,305 @@
                     return;
                 }
 
-                // Fetch view counts, wave counts, and comment counts for all posts
-                // Using timeouts to prevent indefinite hangs if Supabase client is in bad state
+                // PHASE 1: Render posts immediately with zero counts
+                // This ensures content is visible within ~1 second
                 const slugs = posts.map(p => p.slug);
-                const FETCH_TIMEOUT = 5000; // 5 seconds max per fetch
+                console.log('[waves] Rendering posts immediately (counts loading in background)...');
+                renderWaves(posts, {}, {}, {});
 
-                console.log('[waves] Fetching view counts...');
-                viewCountsData = await withTimeout(
-                    window.PageViews?.getViewCounts(slugs) || Promise.resolve({}),
-                    FETCH_TIMEOUT,
-                    {}
-                );
-                console.log('[waves] View counts done');
-
-                // Fetch wave reaction counts
-                console.log('[waves] Fetching wave counts...');
-                waveCountsData = await withTimeout(
-                    (async () => {
-                        const supabase = window.SupabaseClient?.getClient();
-                        if (!supabase) return {};
-                        try {
-                            const { data, error } = await supabase
-                                .from('wave_reaction_counts')
-                                .select('post_slug, wave_count')
-                                .in('post_slug', slugs);
-                            if (!error && data) {
-                                const counts = {};
-                                data.forEach(item => {
-                                    counts[item.post_slug] = item.wave_count;
-                                });
-                                return counts;
+                // PHASE 2: Fetch all counts IN PARALLEL (not sequentially!)
+                // Max wait is now 5s total instead of 15s
+                console.log('[waves] Fetching all counts in parallel...');
+                const [viewCounts, waveCounts, commentCounts] = await Promise.all([
+                    withTimeout(
+                        window.PageViews?.getViewCounts(slugs) || Promise.resolve({}),
+                        FETCH_TIMEOUT,
+                        {}
+                    ),
+                    withTimeout(
+                        (async () => {
+                            const supabase = window.SupabaseClient?.getClient();
+                            if (!supabase) return {};
+                            try {
+                                const { data, error } = await supabase
+                                    .from('wave_reaction_counts')
+                                    .select('post_slug, wave_count')
+                                    .in('post_slug', slugs);
+                                if (!error && data) {
+                                    const counts = {};
+                                    data.forEach(item => {
+                                        counts[item.post_slug] = item.wave_count;
+                                    });
+                                    return counts;
+                                }
+                                return {};
+                            } catch (e) {
+                                console.error('Failed to fetch wave counts:', e);
+                                return {};
                             }
-                            return {};
-                        } catch (e) {
-                            console.error('Failed to fetch wave counts:', e);
-                            return {};
-                        }
-                    })(),
-                    FETCH_TIMEOUT,
-                    {}
-                );
+                        })(),
+                        FETCH_TIMEOUT,
+                        {}
+                    ),
+                    withTimeout(
+                        window.Comments?.getCommentCounts(slugs) || Promise.resolve({}),
+                        FETCH_TIMEOUT,
+                        {}
+                    )
+                ]);
+                console.log('[waves] All counts fetched');
 
-                console.log('[waves] Wave counts done');
+                // Store counts globally for search/filter
+                viewCountsData = viewCounts;
+                waveCountsData = waveCounts;
+                commentCountsData = commentCounts;
 
-                // Fetch comment counts
-                console.log('[waves] Fetching comment counts...');
-                commentCountsData = await withTimeout(
-                    window.Comments?.getCommentCounts(slugs) || Promise.resolve({}),
-                    FETCH_TIMEOUT,
-                    {}
-                );
-                console.log('[waves] Comment counts done');
-
-                // Separate DAINS posts from regular posts
-                const dainsPosts = posts.filter(post => isDainsPost(post));
-                const regularPosts = posts.filter(post => !isDainsPost(post));
-
-                // Classify regular posts and check for active featured
-                const postsWithClassification = regularPosts.map(post => ({
-                    post,
-                    classification: WaveAnalyzer.classifyWave(post)
-                }));
-
-                // Sort: active featured posts first, then by date
-                postsWithClassification.sort((a, b) => {
-                    const aFeatured = a.classification.isActiveFeatured ? 1 : 0;
-                    const bFeatured = b.classification.isActiveFeatured ? 1 : 0;
-                    if (aFeatured !== bFeatured) {
-                        return bFeatured - aFeatured; // Featured first
-                    }
-                    // Both featured or both not: sort by date (newest first)
-                    return new Date(b.post.published_at) - new Date(a.post.published_at);
-                });
-
-                // Store for search (as a map by slug for O(1) lookup)
-                // Include DAINS posts for search functionality
-                allPostsData = {};
-                dainsPosts.forEach(post => {
-                    allPostsData[post.slug] = {
-                        post,
-                        classification: { type: 'dains', label: 'Daily News' }
-                    };
-                });
-                postsWithClassification.forEach(({ post, classification }) => {
-                    allPostsData[post.slug] = { post, classification };
-                });
-
-                console.log('[waves] Rendering waves...');
-
-                // Render stacked DAINS card (if any DAINS posts exist)
-                const dainsStackHtml = DainsStackRenderer.render(
-                    dainsPosts,
-                    viewCountsData,
-                    waveCountsData,
-                    commentCountsData
-                );
-
-                // Separate featured and non-featured posts
-                const featuredPosts = postsWithClassification.filter(p => p.classification.isActiveFeatured);
-                const nonFeaturedPosts = postsWithClassification.filter(p => !p.classification.isActiveFeatured);
-
-                // Render in order: Featured → DAINS Stack → Regular posts
-                const featuredHtml = featuredPosts.map(({ post, classification }) => {
-                    const viewCount = viewCountsData[post.slug] || 0;
-                    const waveCount = waveCountsData[post.slug] || 0;
-                    const commentCount = commentCountsData[post.slug] || 0;
-                    return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
-                }).join('');
-
-                const regularHtml = nonFeaturedPosts.map(({ post, classification }) => {
-                    const viewCount = viewCountsData[post.slug] || 0;
-                    const waveCount = waveCountsData[post.slug] || 0;
-                    const commentCount = commentCountsData[post.slug] || 0;
-                    return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
-                }).join('');
-
-                container.innerHTML = featuredHtml + dainsStackHtml + regularHtml;
-
-                container.style.display = 'flex';
-                console.log('[waves] Render complete - waves visible');
-
-                GalleryController.init();
-                DainsStackRenderer.initToggle();
-
-                // Handle hash navigation to DAINS section
-                if (window.location.hash === '#daily-ai-news-scan') {
-                    setTimeout(() => {
-                        const dainsCard = document.getElementById('daily-ai-news-scan');
-                        if (dainsCard) {
-                            // Auto-expand the DAINS stack
-                            const toggleBtn = dainsCard.querySelector('.dains-stack-toggle');
-                            if (toggleBtn && toggleBtn.getAttribute('aria-expanded') !== 'true') {
-                                toggleBtn.click();
-                            }
-                            // Scroll to the card with offset for navbar
-                            const yOffset = -100;
-                            const y = dainsCard.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                            window.scrollTo({ top: y, behavior: 'smooth' });
-                        }
-                    }, 100);
+                // PHASE 3: Re-render with counts (progressive enhancement)
+                // Only re-render if we got any counts
+                if (Object.keys(viewCounts).length || Object.keys(waveCounts).length || Object.keys(commentCounts).length) {
+                    console.log('[waves] Updating with counts...');
+                    renderWaves(posts, viewCounts, waveCounts, commentCounts);
                 }
 
-                // Initialize wave thumbnails carousel
-                (function initWaveThumbnails() {
-                    const thumbnailsContainer = document.getElementById('wave-thumbnails');
-                    if (!thumbnailsContainer) return;
-
-                    function getFirstImage(html) {
-                        const temp = document.createElement('div');
-                        temp.innerHTML = html;
-                        const img = temp.querySelector('img');
-                        return img ? img.src : null;
-                    }
-
-                    function formatThumbDate(dateStr) {
-                        const date = new Date(dateStr);
-                        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                    }
-
-                    // Filter to show only 1 DAINS post max in thumbnails
-                    let dainsShown = false;
-                    const postsWithImages = posts
-                        .filter(p => {
-                            const hasImage = getFirstImage(p.content);
-                            if (!hasImage) return false;
-                            // Allow only the first (most recent) DAINS post
-                            if (isDainsPost(p)) {
-                                if (dainsShown) return false;
-                                dainsShown = true;
-                            }
-                            return true;
-                        })
-                        .slice(0, 12);
-
-                    postsWithImages.forEach(p => {
-                        const thumb = document.createElement('a');
-                        thumb.href = '/' + p.slug;
-                        thumb.className = 'wave-thumb-item';
-                        const imageUrl = getFirstImage(p.content);
-                        thumb.innerHTML = `
-                            <div class="thumb-img">
-                                <img src="${imageUrl}" alt="" loading="lazy">
-                            </div>
-                            <div class="thumb-preview">
-                                <div class="thumb-preview-img">
-                                    <img src="${imageUrl}" alt="">
-                                </div>
-                                <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
-                                <div class="thumb-preview-title">${escapeHTML(p.title)}</div>
-                            </div>
-                        `;
-                        thumbnailsContainer.appendChild(thumb);
-                    });
-
-                    // Ocean Wave Effect
-                    (function initOceanWave() {
-                        const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
-                        if (thumbs.length === 0) return;
-
-                        let isWaveActive = false;
-                        let waveTimeout = null;
-
-                        const WAVE_SPEED = 60;
-                        const MAX_HEIGHT = -12;
-                        const MAX_SCALE = 0.05;
-                        const DECAY = 0.7;
-
-                        function clearWaveClasses() {
-                            thumbs.forEach(thumb => {
-                                thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
-                            });
-                        }
-
-                        function triggerWave(epicenterIndex) {
-                            if (waveTimeout) clearTimeout(waveTimeout);
-                            clearWaveClasses();
-                            isWaveActive = true;
-
-                            thumbs.forEach((thumb, i) => {
-                                const distance = Math.abs(i - epicenterIndex);
-                                const thumbImg = thumb.querySelector('.thumb-img');
-
-                                if (distance === 0) {
-                                    thumb.classList.add('wave-active');
-                                } else {
-                                    const amplitude = Math.pow(DECAY, distance);
-                                    const waveHeight = MAX_HEIGHT * amplitude;
-                                    const waveScale = MAX_SCALE * amplitude;
-                                    const delay = distance * WAVE_SPEED;
-
-                                    thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
-                                    thumbImg.style.setProperty('--wave-scale', waveScale);
-                                    thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
-
-                                    thumb.classList.add('wave-ripple');
-                                }
-                            });
-                        }
-
-                        function settleWave() {
-                            isWaveActive = false;
-                            clearWaveClasses();
-                            thumbs.forEach(thumb => thumb.classList.add('wave-settling'));
-                            waveTimeout = setTimeout(() => clearWaveClasses(), 600);
-                        }
-
-                        thumbs.forEach((thumb, index) => {
-                            thumb.addEventListener('mouseenter', () => triggerWave(index));
-                        });
-
-                        thumbnailsContainer.addEventListener('mouseleave', () => {
-                            if (isWaveActive) settleWave();
-                        });
-                    })();
-                })();
-
-                // Initialize search and filter
-                WaveSearch.init();
-                WaveFilter.init();
-
-                const revealObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('revealed');
-                            revealObserver.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                });
-
-                document.querySelectorAll('.wave-entry')
-                    .forEach(el => revealObserver.observe(el));
+                console.log('[waves] Initialization complete');
             } catch (error) {
                 console.error('Error loading waves:', error);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
             }
         })();
+
+        // Render waves function - extracted for reuse with progressive enhancement
+        function renderWaves(posts, viewCounts, waveCounts, commentCounts) {
+            const container = document.getElementById('waves-container');
+
+            // Separate DAINS posts from regular posts
+            const dainsPosts = posts.filter(post => isDainsPost(post));
+            const regularPosts = posts.filter(post => !isDainsPost(post));
+
+            // Classify regular posts and check for active featured
+            const postsWithClassification = regularPosts.map(post => ({
+                post,
+                classification: WaveAnalyzer.classifyWave(post)
+            }));
+
+            // Sort: active featured posts first, then by date
+            postsWithClassification.sort((a, b) => {
+                const aFeatured = a.classification.isActiveFeatured ? 1 : 0;
+                const bFeatured = b.classification.isActiveFeatured ? 1 : 0;
+                if (aFeatured !== bFeatured) {
+                    return bFeatured - aFeatured; // Featured first
+                }
+                // Both featured or both not: sort by date (newest first)
+                return new Date(b.post.published_at) - new Date(a.post.published_at);
+            });
+
+            // Store for search (as a map by slug for O(1) lookup)
+            // Include DAINS posts for search functionality
+            allPostsData = {};
+            dainsPosts.forEach(post => {
+                allPostsData[post.slug] = {
+                    post,
+                    classification: { type: 'dains', label: 'Daily News' }
+                };
+            });
+            postsWithClassification.forEach(({ post, classification }) => {
+                allPostsData[post.slug] = { post, classification };
+            });
+
+            console.log('[waves] Rendering waves...');
+
+            // Render stacked DAINS card (if any DAINS posts exist)
+            // Use passed parameters, not global variables
+            const dainsStackHtml = DainsStackRenderer.render(
+                dainsPosts,
+                viewCounts,
+                waveCounts,
+                commentCounts
+            );
+
+            // Separate featured and non-featured posts
+            const featuredPosts = postsWithClassification.filter(p => p.classification.isActiveFeatured);
+            const nonFeaturedPosts = postsWithClassification.filter(p => !p.classification.isActiveFeatured);
+
+            // Render in order: Featured → DAINS Stack → Regular posts
+            // Use passed parameters, not global variables
+            const featuredHtml = featuredPosts.map(({ post, classification }) => {
+                const viewCount = viewCounts[post.slug] || 0;
+                const waveCount = waveCounts[post.slug] || 0;
+                const commentCount = commentCounts[post.slug] || 0;
+                return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
+            }).join('');
+
+            const regularHtml = nonFeaturedPosts.map(({ post, classification }) => {
+                const viewCount = viewCounts[post.slug] || 0;
+                const waveCount = waveCounts[post.slug] || 0;
+                const commentCount = commentCounts[post.slug] || 0;
+                return WaveRenderer.render(post, classification, viewCount, waveCount, commentCount);
+            }).join('');
+
+            container.innerHTML = featuredHtml + dainsStackHtml + regularHtml;
+            container.style.display = 'flex';
+            console.log('[waves] Render complete - waves visible');
+
+            GalleryController.init();
+            DainsStackRenderer.initToggle();
+
+            // Handle hash navigation to DAINS section
+            if (window.location.hash === '#daily-ai-news-scan') {
+                setTimeout(() => {
+                    const dainsCard = document.getElementById('daily-ai-news-scan');
+                    if (dainsCard) {
+                        // Auto-expand the DAINS stack
+                        const toggleBtn = dainsCard.querySelector('.dains-stack-toggle');
+                        if (toggleBtn && toggleBtn.getAttribute('aria-expanded') !== 'true') {
+                            toggleBtn.click();
+                        }
+                        // Scroll to the card with offset for navbar
+                        const yOffset = -100;
+                        const y = dainsCard.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+
+            // Initialize wave thumbnails carousel
+            (function initWaveThumbnails() {
+                const thumbnailsContainer = document.getElementById('wave-thumbnails');
+                if (!thumbnailsContainer) return;
+
+                // Clear existing thumbnails to avoid duplicates on re-render
+                thumbnailsContainer.innerHTML = '';
+
+                function getFirstImage(html) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    const img = temp.querySelector('img');
+                    return img ? img.src : null;
+                }
+
+                function formatThumbDate(dateStr) {
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+
+                // Filter to show only 1 DAINS post max in thumbnails
+                let dainsShown = false;
+                const postsWithImages = posts
+                    .filter(p => {
+                        const hasImage = getFirstImage(p.content);
+                        if (!hasImage) return false;
+                        // Allow only the first (most recent) DAINS post
+                        if (isDainsPost(p)) {
+                            if (dainsShown) return false;
+                            dainsShown = true;
+                        }
+                        return true;
+                    })
+                    .slice(0, 12);
+
+                postsWithImages.forEach(p => {
+                    const thumb = document.createElement('a');
+                    thumb.href = '/' + p.slug;
+                    thumb.className = 'wave-thumb-item';
+                    const imageUrl = getFirstImage(p.content);
+                    thumb.innerHTML = `
+                        <div class="thumb-img">
+                            <img src="${imageUrl}" alt="" loading="lazy">
+                        </div>
+                        <div class="thumb-preview">
+                            <div class="thumb-preview-img">
+                                <img src="${imageUrl}" alt="">
+                            </div>
+                            <div class="thumb-preview-date">${formatThumbDate(p.published_at)}</div>
+                            <div class="thumb-preview-title">${escapeHTML(p.title)}</div>
+                        </div>
+                    `;
+                    thumbnailsContainer.appendChild(thumb);
+                });
+
+                // Ocean Wave Effect
+                (function initOceanWave() {
+                    const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.wave-thumb-item'));
+                    if (thumbs.length === 0) return;
+
+                    let isWaveActive = false;
+                    let waveTimeout = null;
+
+                    const WAVE_SPEED = 60;
+                    const MAX_HEIGHT = -12;
+                    const MAX_SCALE = 0.05;
+                    const DECAY = 0.7;
+
+                    function clearWaveClasses() {
+                        thumbs.forEach(thumb => {
+                            thumb.classList.remove('wave-active', 'wave-ripple', 'wave-settling');
+                        });
+                    }
+
+                    function triggerWave(epicenterIndex) {
+                        if (waveTimeout) clearTimeout(waveTimeout);
+                        clearWaveClasses();
+                        isWaveActive = true;
+
+                        thumbs.forEach((thumb, i) => {
+                            const distance = Math.abs(i - epicenterIndex);
+                            const thumbImg = thumb.querySelector('.thumb-img');
+
+                            if (distance === 0) {
+                                thumb.classList.add('wave-active');
+                            } else {
+                                const amplitude = Math.pow(DECAY, distance);
+                                const waveHeight = MAX_HEIGHT * amplitude;
+                                const waveScale = MAX_SCALE * amplitude;
+                                const delay = distance * WAVE_SPEED;
+
+                                thumbImg.style.setProperty('--wave-height', `${waveHeight}px`);
+                                thumbImg.style.setProperty('--wave-scale', waveScale);
+                                thumbImg.style.setProperty('--wave-delay', `${delay}ms`);
+
+                                thumb.classList.add('wave-ripple');
+                            }
+                        });
+                    }
+
+                    function settleWave() {
+                        isWaveActive = false;
+                        clearWaveClasses();
+                        thumbs.forEach(thumb => thumb.classList.add('wave-settling'));
+                        waveTimeout = setTimeout(() => clearWaveClasses(), 600);
+                    }
+
+                    thumbs.forEach((thumb, index) => {
+                        thumb.addEventListener('mouseenter', () => triggerWave(index));
+                    });
+
+                    thumbnailsContainer.addEventListener('mouseleave', () => {
+                        if (isWaveActive) settleWave();
+                    });
+                })();
+            })();
+
+            // Initialize search and filter
+            WaveSearch.init();
+            WaveFilter.init();
+
+            // Reveal animation for wave entries
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.wave-entry')
+                .forEach(el => revealObserver.observe(el));
+        }
 
         // Subscribe CTA - click handler and auth-aware visibility
         (function initSubscribeCTA() {

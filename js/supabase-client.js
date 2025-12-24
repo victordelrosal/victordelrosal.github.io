@@ -26,6 +26,7 @@ if (!window.SupabaseClient) {
     let authStateListeners = [];
     let googleScriptLoaded = false;
     let googleScriptLoading = false;
+    let authInitPromise = null;  // Deduplication: track ongoing/completed init
 
     /**
      * Initialize the Supabase client
@@ -49,36 +50,72 @@ if (!window.SupabaseClient) {
     /**
      * Initialize authentication state
      * Sets up listener for auth changes and loads current session
+     * Deduplicated: returns existing promise if already running/completed
      */
     async function initAuth() {
-      if (!supabase) {
-        if (!initSupabase()) return;
+      // Deduplication: if already running or completed, return existing promise
+      if (authInitPromise) {
+        return authInitPromise;
       }
 
-      try {
-        // Get current session
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          currentUser = session.user;
-          await loadUserProfile();
+      // Create the promise and store it immediately to prevent race conditions
+      authInitPromise = (async () => {
+        if (!supabase) {
+          if (!initSupabase()) return;
         }
 
-        // Listen for auth changes
-        supabase.auth.onAuthStateChange(async (event, session) => {
-          currentUser = session?.user || null;
+        const AUTH_TIMEOUT = 5000; // 5 second timeout for auth operations
 
-          if (currentUser) {
-            await loadUserProfile();
-          } else {
-            commentUserProfile = null;
+        try {
+          // Get current session with timeout
+          const sessionPromise = supabase.auth.getSession();
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Auth session timeout')), AUTH_TIMEOUT)
+          );
+
+          let session = null;
+          try {
+            const result = await Promise.race([sessionPromise, timeoutPromise]);
+            session = result?.data?.session;
+          } catch (e) {
+            console.warn('[auth] Session retrieval timed out, continuing without session');
           }
 
-          // Notify all listeners
-          authStateListeners.forEach(callback => callback(currentUser, commentUserProfile));
-        });
-      } catch (error) {
-        console.error('Failed to initialize auth:', error);
-      }
+          if (session) {
+            currentUser = session.user;
+            // Load profile with timeout
+            try {
+              await Promise.race([
+                loadUserProfile(),
+                new Promise((_, reject) =>
+                  setTimeout(() => reject(new Error('Profile load timeout')), AUTH_TIMEOUT)
+                )
+              ]);
+            } catch (e) {
+              console.warn('[auth] Profile load timed out, continuing without profile');
+            }
+          }
+
+          // Listen for auth changes (only register once due to deduplication)
+          supabase.auth.onAuthStateChange(async (event, session) => {
+            currentUser = session?.user || null;
+
+            if (currentUser) {
+              // Don't block on profile load in listener
+              loadUserProfile().catch(e => console.warn('[auth] Profile load failed:', e));
+            } else {
+              commentUserProfile = null;
+            }
+
+            // Notify all listeners
+            authStateListeners.forEach(callback => callback(currentUser, commentUserProfile));
+          });
+        } catch (error) {
+          console.error('Failed to initialize auth:', error);
+        }
+      })();
+
+      return authInitPromise;
     }
 
     /**
