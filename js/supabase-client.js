@@ -427,22 +427,14 @@ if (!window.SupabaseClient) {
      * Delete the user's account (profile and auth)
      */
     async function deleteAccount() {
-      console.log('[SupabaseClient] deleteAccount called');
-
       if (!supabase || !currentUser) {
-        console.error('[SupabaseClient] No supabase client or user');
         throw new Error('Not authenticated');
       }
 
       try {
         // Get current session for auth header
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          console.error('[SupabaseClient] No active session');
-          throw new Error('No active session');
-        }
-
-        console.log('[SupabaseClient] Calling Edge Function at:', `${SUPABASE_URL}/functions/v1/delete-account`);
+        if (!session) throw new Error('No active session');
 
         // Call Edge Function to fully delete account
         const response = await fetch(`${SUPABASE_URL}/functions/v1/delete-account`, {
@@ -453,10 +445,7 @@ if (!window.SupabaseClient) {
           }
         });
 
-        console.log('[SupabaseClient] Edge Function response status:', response.status);
-
         const result = await response.json();
-        console.log('[SupabaseClient] Edge Function result:', result);
 
         if (!response.ok) {
           throw new Error(result.error || 'Failed to delete account');
@@ -469,10 +458,9 @@ if (!window.SupabaseClient) {
         // Notify listeners
         authStateListeners.forEach(listener => listener(null));
 
-        console.log('[SupabaseClient] Account deleted successfully');
         return true;
       } catch (error) {
-        console.error('[SupabaseClient] Failed to delete account:', error);
+        console.error('Failed to delete account:', error);
         throw error;
       }
     }
