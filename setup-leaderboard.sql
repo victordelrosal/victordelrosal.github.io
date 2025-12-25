@@ -16,7 +16,7 @@ CREATE POLICY "Anyone can view leaderboard"
     ON user_gamification FOR SELECT
     USING (show_on_leaderboard = true);
 
--- Create view for leaderboard with user info
+-- Create view for leaderboard with user info from auth.users
 CREATE OR REPLACE VIEW public.leaderboard_view AS
 SELECT
     ug.user_id,
@@ -24,10 +24,17 @@ SELECT
     ug.streak_count,
     ug.achievements,
     ug.show_on_leaderboard,
-    p.full_name,
-    p.avatar_url
+    COALESCE(
+        u.raw_user_meta_data->>'full_name',
+        u.raw_user_meta_data->>'name',
+        split_part(u.email, '@', 1)
+    ) as full_name,
+    COALESCE(
+        u.raw_user_meta_data->>'avatar_url',
+        u.raw_user_meta_data->>'picture'
+    ) as avatar_url
 FROM user_gamification ug
-JOIN profiles p ON ug.user_id = p.id
+JOIN auth.users u ON ug.user_id = u.id
 WHERE ug.show_on_leaderboard = true
 ORDER BY ug.xp DESC;
 
