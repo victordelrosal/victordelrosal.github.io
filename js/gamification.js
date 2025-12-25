@@ -363,7 +363,7 @@
     // Also check on load if already logged in
     setTimeout(() => {
         if (window.SupabaseClient) {
-            const user = window.SupabaseClient.getUser();
+            const user = window.SupabaseClient.getCurrentUser();
             if (user) {
                 initSync(user.id);
             }
