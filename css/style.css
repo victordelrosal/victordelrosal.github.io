@@ -6915,6 +6915,106 @@ footer {
     transform: translateY(0);
 }
 
+/* === Dropdown Gamification Section === */
+.dropdown-gamify-section {
+    position: relative;
+    z-index: 1;
+    padding: 12px;
+    background: rgba(0, 212, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+.dropdown-gamify-header {
+    margin-bottom: 12px;
+}
+
+.dropdown-gamify-level {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.dropdown-gamify-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-gamify-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.dropdown-gamify-name {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-white);
+}
+
+.dropdown-gamify-xp {
+    display: block;
+    font-size: 12px;
+    color: var(--accent-cyan);
+}
+
+.dropdown-gamify-streak {
+    font-size: 14px;
+    padding: 4px 8px;
+    background: rgba(255, 100, 0, 0.2);
+    border-radius: 12px;
+}
+
+.dropdown-gamify-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.dropdown-gamify-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), #00f0ff);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.dropdown-gamify-next {
+    font-size: 11px;
+    color: var(--text-white-tertiary);
+}
+
+.journey-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 150, 255, 0.1) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 10px;
+    color: var(--accent-cyan);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.journey-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 150, 255, 0.2) 100%);
+    border-color: rgba(0, 212, 255, 0.4);
+    transform: translateY(-1px);
+}
+
 @media (max-width: 900px) {
     .auth-container {
         right: 16px;

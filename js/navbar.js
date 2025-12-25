@@ -345,6 +345,39 @@ const Navbar = {
                 `<option value="${tz}" ${tz === userTimezone ? 'selected' : ''}>${tz.replace('_', ' ')}</option>`
             ).join('');
 
+            // Get gamification data if available
+            let gamifyHTML = '';
+            if (window.Gamification) {
+                const xp = window.Gamification.getXP();
+                const levelProgress = window.Gamification.getLevelProgress(xp);
+                const streak = window.Gamification.getStreak();
+                gamifyHTML = `
+                    <div class="dropdown-gamify-section">
+                        <div class="dropdown-gamify-header">
+                            <div class="dropdown-gamify-level">
+                                <span class="dropdown-gamify-icon" style="background: ${levelProgress.current.color}">${levelProgress.current.icon}</span>
+                                <div class="dropdown-gamify-info">
+                                    <span class="dropdown-gamify-name">${levelProgress.current.name}</span>
+                                    <span class="dropdown-gamify-xp">${xp.toLocaleString()} XP</span>
+                                </div>
+                                ${streak.count > 1 ? `<span class="dropdown-gamify-streak">🔥${streak.count}</span>` : ''}
+                            </div>
+                            <div class="dropdown-gamify-bar">
+                                <div class="dropdown-gamify-fill" style="width: ${levelProgress.progress}%"></div>
+                            </div>
+                            ${levelProgress.next
+                                ? `<span class="dropdown-gamify-next">${levelProgress.xpToNext} XP to ${levelProgress.next.name}</span>`
+                                : `<span class="dropdown-gamify-next">Max level!</span>`
+                            }
+                        </div>
+                        <button id="view-journey-btn" class="dropdown-item journey-btn">
+                            🌊 View Your Journey
+                        </button>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                `;
+            }
+
             container.innerHTML = `
                 <div class="user-profile" id="user-profile-btn">
                     <img src="${avatarUrl}" alt="${name}" class="user-avatar">
@@ -354,7 +387,9 @@ const Navbar = {
                             <span class="user-email">${user.email}</span>
                         </div>
                         <div class="dropdown-divider"></div>
-                        
+
+                        ${gamifyHTML}
+
                         <div class="subscription-container">
                             <label class="dropdown-item checkbox-item">
                                 <input type="checkbox" id="subscribe-checkbox" ${isSubscribed ? 'checked' : ''}>
@@ -426,6 +461,21 @@ const Navbar = {
                             subWarning.style.display = !isChecked ? 'none' : 'block';
                         }
                         alert('Failed to update subscription. Please try again.');
+                    }
+                });
+            }
+
+            // View Journey button (gamification)
+            const journeyBtn = document.getElementById('view-journey-btn');
+            if (journeyBtn) {
+                journeyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent dropdown from closing
+                    // Close the dropdown
+                    const dropdown = document.querySelector('.user-dropdown');
+                    if (dropdown) dropdown.classList.remove('show');
+                    // Open gamification panel
+                    if (window.GamificationUI) {
+                        window.GamificationUI.toggleAchievementsPanel();
                     }
                 });
             }
