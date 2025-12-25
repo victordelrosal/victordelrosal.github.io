@@ -7900,32 +7900,98 @@ footer {
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background: rgba(10, 20, 35, 1);
-    border: 3px solid rgba(255, 255, 255, 0.15);
+    /* 3D Sphere base */
+    background:
+        /* Top highlight - light catching the sphere */
+        radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+        /* Inner glow */
+        radial-gradient(ellipse 80% 80% at 50% 50%, rgba(60, 80, 100, 0.3) 0%, transparent 60%),
+        /* Core gradient - 3D shading */
+        radial-gradient(ellipse 120% 120% at 40% 35%,
+            rgba(40, 60, 90, 1) 0%,
+            rgba(25, 40, 65, 1) 40%,
+            rgba(15, 25, 45, 1) 70%,
+            rgba(8, 15, 30, 1) 100%);
+    border: none;
     margin-bottom: 8px;
     position: relative;
     z-index: 2;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        /* Outer subtle glow */
+        0 0 8px rgba(100, 150, 200, 0.2),
+        /* 3D depth shadow */
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        /* Top rim highlight */
+        inset 0 2px 4px rgba(255, 255, 255, 0.2),
+        /* Bottom shadow for depth */
+        inset 0 -4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .gamify-level-node.completed .gamify-level-node-icon {
-    border-color: rgba(0, 229, 255, 0.7);
-    background: rgba(0, 30, 50, 1);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    background:
+        /* Top highlight */
+        radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+        /* Cyan inner glow */
+        radial-gradient(ellipse 70% 70% at 50% 50%, rgba(0, 200, 255, 0.25) 0%, transparent 60%),
+        /* Core gradient - cyan tinted */
+        radial-gradient(ellipse 120% 120% at 40% 35%,
+            rgba(0, 80, 100, 1) 0%,
+            rgba(0, 50, 80, 1) 40%,
+            rgba(0, 30, 55, 1) 70%,
+            rgba(0, 15, 35, 1) 100%);
+    box-shadow:
+        /* Cyan outer glow */
+        0 0 12px rgba(0, 229, 255, 0.5),
+        0 0 25px rgba(0, 200, 255, 0.25),
+        /* 3D depth */
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        /* Top rim */
+        inset 0 2px 4px rgba(0, 229, 255, 0.3),
+        /* Bottom shadow */
+        inset 0 -4px 10px rgba(0, 20, 40, 0.6);
 }
 
 .gamify-level-node.current .gamify-level-node-icon {
-    border-color: rgba(255, 215, 0, 0.9);
-    background: rgba(40, 30, 10, 1);
+    background:
+        /* Top highlight - bright */
+        radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+        /* Gold inner glow */
+        radial-gradient(ellipse 70% 70% at 50% 50%, rgba(255, 200, 50, 0.3) 0%, transparent 60%),
+        /* Core gradient - gold tinted */
+        radial-gradient(ellipse 120% 120% at 40% 35%,
+            rgba(120, 90, 20, 1) 0%,
+            rgba(80, 60, 15, 1) 40%,
+            rgba(50, 35, 10, 1) 70%,
+            rgba(30, 20, 5, 1) 100%);
     box-shadow:
-        0 0 20px rgba(255, 215, 0, 0.5),
-        0 0 40px rgba(255, 215, 0, 0.25);
+        /* Gold outer glow */
+        0 0 15px rgba(255, 215, 0, 0.6),
+        0 0 30px rgba(255, 180, 0, 0.3),
+        /* 3D depth */
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        /* Top rim - gold */
+        inset 0 2px 4px rgba(255, 230, 100, 0.4),
+        /* Bottom shadow */
+        inset 0 -4px 10px rgba(40, 25, 0, 0.6);
     animation: currentNodeGlow 2.5s ease-in-out infinite;
 }
 
 .gamify-level-node.locked .gamify-level-node-icon {
-    opacity: 0.4;
-    background: rgba(10, 20, 35, 0.8);
+    opacity: 0.5;
+    background:
+        /* Dim highlight */
+        radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+        /* Core gradient - muted */
+        radial-gradient(ellipse 120% 120% at 40% 35%,
+            rgba(30, 40, 55, 1) 0%,
+            rgba(20, 28, 40, 1) 40%,
+            rgba(12, 18, 28, 1) 70%,
+            rgba(8, 12, 20, 1) 100%);
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.4);
 }
 
 .gamify-level-node-name {
