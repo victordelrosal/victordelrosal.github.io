@@ -12,33 +12,37 @@
     // ==========================================
 
     function animateAvatarXP(amount, reason) {
+        // Try user avatar first, then anonymous game button
         const avatar = document.querySelector('.user-avatar');
-        if (!avatar) return;
+        const anonBtn = document.querySelector('.anon-game-btn');
+        const target = avatar || anonBtn;
+
+        if (!target) return;
 
         // Add happy dance animation
-        avatar.classList.add('xp-dance');
+        target.classList.add('xp-dance');
 
         // Create the XP notification bubble
         const notification = document.createElement('div');
         notification.className = 'xp-notification';
 
-        // Position near avatar
-        const avatarRect = avatar.getBoundingClientRect();
+        // Position near target element
+        const targetRect = target.getBoundingClientRect();
         notification.style.position = 'fixed';
-        notification.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
-        notification.style.top = `${avatarRect.top + avatarRect.height / 2}px`;
+        notification.style.left = `${targetRect.left + targetRect.width / 2}px`;
+        notification.style.top = `${targetRect.top + targetRect.height / 2}px`;
 
         notification.innerHTML = `<span class="xp-earned">+${amount}</span>`;
 
         document.body.appendChild(notification);
 
-        // Create the reason message card (to the left of avatar)
+        // Create the reason message card (to the left of target)
         if (reason) {
             const messageCard = document.createElement('div');
             messageCard.className = 'xp-message-card';
             messageCard.style.position = 'fixed';
-            messageCard.style.right = `${window.innerWidth - avatarRect.left + 12}px`;
-            messageCard.style.top = `${avatarRect.top + avatarRect.height / 2}px`;
+            messageCard.style.right = `${window.innerWidth - targetRect.left + 12}px`;
+            messageCard.style.top = `${targetRect.top + targetRect.height / 2}px`;
 
             // Get icon based on reason
             const icon = getReasonIcon(reason);
@@ -70,7 +74,7 @@
 
         // Remove dance after animation
         setTimeout(() => {
-            avatar.classList.remove('xp-dance');
+            target.classList.remove('xp-dance');
         }, 1000);
 
         // Remove notification after animation
@@ -78,6 +82,16 @@
             notification.classList.add('fading');
             setTimeout(() => notification.remove(), 400);
         }, 2200);
+
+        // Update the XP display in the anon button if applicable
+        if (anonBtn && !avatar) {
+            const xpSpan = anonBtn.querySelector('.anon-game-xp');
+            if (xpSpan && window.Gamification) {
+                setTimeout(() => {
+                    xpSpan.textContent = `${window.Gamification.getXP()} XP`;
+                }, 500);
+            }
+        }
     }
 
     // Premium SVG icons for XP reasons

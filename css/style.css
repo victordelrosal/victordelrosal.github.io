@@ -3998,7 +3998,7 @@ body.waves-page {
 }
 
 .dains-stack-latest .wave-title {
-    font-size: 1.25rem;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 8px;
@@ -4186,7 +4186,7 @@ body.waves-page {
     }
 
     .dains-stack-latest .wave-title {
-        font-size: 1.1rem;
+        font-size: 18px;
         padding-right: 36px;
     }
 
@@ -7273,7 +7273,8 @@ footer {
 /* Billionaire-grade, iPhone-native, award-winning design */
 
 /* === Avatar Celebration Animation === */
-.user-avatar.xp-dance {
+.user-avatar.xp-dance,
+.anon-game-btn.xp-dance {
     animation: avatarCelebrate 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 100;
     filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
