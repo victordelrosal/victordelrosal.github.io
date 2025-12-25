@@ -1,5 +1,5 @@
 /**
- * Gamification UI - Renders XP bar, level badges, achievements panel, and notifications
+ * Gamification UI - Avatar animations, achievements panel, and notifications
  */
 
 (function() {
@@ -8,64 +8,64 @@
     let isInitialized = false;
 
     // ==========================================
-    // XP INDICATOR (Navbar)
+    // AVATAR XP ANIMATION
     // ==========================================
 
-    function createXPIndicator() {
-        if (!window.Gamification) return null;
+    function animateAvatarXP(amount) {
+        const avatar = document.querySelector('.user-avatar');
+        if (!avatar) return;
 
-        const xp = window.Gamification.getXP();
-        const levelProgress = window.Gamification.getLevelProgress(xp);
-        const streak = window.Gamification.getStreak();
+        // Add shake animation
+        avatar.classList.add('xp-shake');
 
-        const indicator = document.createElement('div');
-        indicator.className = 'gamify-indicator';
-        indicator.id = 'gamify-indicator';
-        indicator.innerHTML = `
-            <button class="gamify-btn" id="gamify-btn" title="View your progress">
-                <span class="gamify-level-icon">${levelProgress.current.icon}</span>
-                <span class="gamify-level-name">${levelProgress.current.name}</span>
-                <div class="gamify-xp-bar">
-                    <div class="gamify-xp-fill" style="width: ${levelProgress.progress}%"></div>
-                </div>
-                ${streak.count > 1 ? `<span class="gamify-streak" title="${streak.count} day streak">🔥${streak.count}</span>` : ''}
-            </button>
-        `;
+        // Create floating +XP badge
+        const badge = document.createElement('div');
+        badge.className = 'xp-badge-float';
+        badge.textContent = `+${amount} XP`;
 
-        // Add click handler to open achievements panel
-        indicator.querySelector('#gamify-btn').addEventListener('click', toggleAchievementsPanel);
+        // Position near avatar
+        const avatarRect = avatar.getBoundingClientRect();
+        badge.style.position = 'fixed';
+        badge.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
+        badge.style.top = `${avatarRect.top}px`;
+        document.body.appendChild(badge);
 
-        return indicator;
+        // Remove shake after animation
+        setTimeout(() => {
+            avatar.classList.remove('xp-shake');
+        }, 600);
+
+        // Remove badge after float animation
+        setTimeout(() => {
+            badge.remove();
+        }, 1500);
     }
 
-    function updateXPIndicator() {
-        const indicator = document.getElementById('gamify-indicator');
-        if (!indicator || !window.Gamification) return;
+    function animateLevelUp(newLevel) {
+        const avatar = document.querySelector('.user-avatar');
+        if (!avatar) return;
 
-        const xp = window.Gamification.getXP();
-        const levelProgress = window.Gamification.getLevelProgress(xp);
-        const streak = window.Gamification.getStreak();
+        // Add level up glow
+        avatar.classList.add('level-up-glow');
 
-        indicator.querySelector('.gamify-level-icon').textContent = levelProgress.current.icon;
-        indicator.querySelector('.gamify-level-name').textContent = levelProgress.current.name;
-        indicator.querySelector('.gamify-xp-fill').style.width = `${levelProgress.progress}%`;
+        // Create level up badge
+        const badge = document.createElement('div');
+        badge.className = 'level-up-badge-float';
+        badge.innerHTML = `${newLevel.icon} Level Up!`;
 
-        // Update streak
-        const streakEl = indicator.querySelector('.gamify-streak');
-        if (streak.count > 1) {
-            if (streakEl) {
-                streakEl.textContent = `🔥${streak.count}`;
-            } else {
-                const btn = indicator.querySelector('.gamify-btn');
-                const streakSpan = document.createElement('span');
-                streakSpan.className = 'gamify-streak';
-                streakSpan.title = `${streak.count} day streak`;
-                streakSpan.textContent = `🔥${streak.count}`;
-                btn.appendChild(streakSpan);
-            }
-        } else if (streakEl) {
-            streakEl.remove();
-        }
+        const avatarRect = avatar.getBoundingClientRect();
+        badge.style.position = 'fixed';
+        badge.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
+        badge.style.top = `${avatarRect.top}px`;
+        document.body.appendChild(badge);
+
+        setTimeout(() => {
+            avatar.classList.remove('level-up-glow');
+        }, 1500);
+
+        setTimeout(() => {
+            badge.remove();
+        }, 2500);
     }
 
     // ==========================================
@@ -81,7 +81,7 @@
         panel.innerHTML = `
             <div class="gamify-panel-backdrop"></div>
             <div class="gamify-panel-content">
-                <button class="gamify-panel-close" aria-label="Close">&times;</button>
+                <button class="gamify-panel-close">&times;</button>
                 <div class="gamify-panel-header">
                     <h2>Your Journey</h2>
                 </div>
@@ -192,14 +192,16 @@
         `;
 
         // Render achievements
-        const achievementIds = Object.keys(allAchievements);
-        achievementsGrid.innerHTML = achievementIds.map(id => {
-            const achievement = allAchievements[id];
-            const isUnlocked = unlockedAchievements.includes(id);
+        achievementsGrid.innerHTML = renderAchievements(allAchievements, unlockedAchievements);
+    }
+
+    function renderAchievements(allAchievements, unlocked) {
+        return Object.entries(allAchievements).map(([id, achievement]) => {
+            const isUnlocked = unlocked.includes(id);
             return `
                 <div class="gamify-achievement ${isUnlocked ? 'unlocked' : 'locked'}">
                     <div class="gamify-achievement-icon">${isUnlocked ? achievement.icon : '🔒'}</div>
-                    <div class="gamify-achievement-info">
+                    <div class="gamify-achievement-details">
                         <div class="gamify-achievement-name">${achievement.name}</div>
                         <div class="gamify-achievement-desc">${achievement.description}</div>
                         ${!isUnlocked && achievement.requirement
@@ -255,80 +257,37 @@
 
     function closeAchievementsPanel() {
         const panel = document.getElementById('gamify-panel');
-        if (!panel) return;
-        panel.classList.remove('visible');
-        document.body.style.overflow = '';
+        if (panel) {
+            panel.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
     }
 
     // ==========================================
     // TOAST NOTIFICATIONS
     // ==========================================
 
-    function createToastContainer() {
-        if (document.getElementById('gamify-toasts')) return;
+    function showToast(type, detail) {
+        // Achievement toast only
+        if (type === 'achievement') {
+            const achievement = detail.achievement;
+            const toast = document.createElement('div');
+            toast.className = 'gamify-toast achievement-toast';
+            toast.innerHTML = `
+                <div class="gamify-toast-icon">${achievement.icon}</div>
+                <div class="gamify-toast-content">
+                    <div class="gamify-toast-title">Achievement Unlocked!</div>
+                    <div class="gamify-toast-text">${achievement.name}</div>
+                </div>
+            `;
+            document.body.appendChild(toast);
 
-        const container = document.createElement('div');
-        container.id = 'gamify-toasts';
-        container.className = 'gamify-toasts';
-        document.body.appendChild(container);
-    }
-
-    function showToast(type, data) {
-        createToastContainer();
-        const container = document.getElementById('gamify-toasts');
-
-        const toast = document.createElement('div');
-        toast.className = `gamify-toast gamify-toast--${type}`;
-
-        switch(type) {
-            case 'xp':
-                toast.innerHTML = `
-                    <span class="gamify-toast-icon">⭐</span>
-                    <span class="gamify-toast-text">+${data.amount} XP</span>
-                    <span class="gamify-toast-reason">${data.reason}</span>
-                `;
-                break;
-
-            case 'level-up':
-                toast.innerHTML = `
-                    <span class="gamify-toast-icon">${data.newLevel.icon}</span>
-                    <span class="gamify-toast-text">Level Up!</span>
-                    <span class="gamify-toast-reason">${data.newLevel.name}</span>
-                `;
-                toast.classList.add('gamify-toast--special');
-                break;
-
-            case 'achievement':
-                toast.innerHTML = `
-                    <span class="gamify-toast-icon">${data.achievement.icon}</span>
-                    <span class="gamify-toast-text">Achievement Unlocked!</span>
-                    <span class="gamify-toast-reason">${data.achievement.name}</span>
-                `;
-                toast.classList.add('gamify-toast--special');
-                break;
-
-            case 'streak':
-                toast.innerHTML = `
-                    <span class="gamify-toast-icon">🔥</span>
-                    <span class="gamify-toast-text">${data.count} Day Streak!</span>
-                    <span class="gamify-toast-reason">Keep it up!</span>
-                `;
-                break;
+            setTimeout(() => toast.classList.add('visible'), 100);
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
         }
-
-        container.appendChild(toast);
-
-        // Animate in
-        requestAnimationFrame(() => {
-            toast.classList.add('visible');
-        });
-
-        // Remove after delay
-        const duration = type === 'achievement' || type === 'level-up' ? 4000 : 2500;
-        setTimeout(() => {
-            toast.classList.remove('visible');
-            setTimeout(() => toast.remove(), 300);
-        }, duration);
     }
 
     // ==========================================
@@ -336,15 +295,14 @@
     // ==========================================
 
     function setupEventListeners() {
-        // XP gained
+        // XP gained - animate avatar
         window.addEventListener('gamify:xp-gained', (e) => {
-            showToast('xp', e.detail);
-            updateXPIndicator();
+            animateAvatarXP(e.detail.amount);
         });
 
-        // Level up
+        // Level up - special animation
         window.addEventListener('gamify:level-up', (e) => {
-            showToast('level-up', e.detail);
+            animateLevelUp(e.detail.newLevel);
         });
 
         // Achievement unlocked
@@ -352,10 +310,8 @@
             showToast('achievement', e.detail);
         });
 
-        // Data synced from server - refresh UI
+        // Data synced from server - refresh panel if open
         window.addEventListener('gamify:synced', () => {
-            updateXPIndicator();
-            // Refresh achievements panel if open
             const panel = document.getElementById('gamify-panel');
             if (panel?.classList.contains('visible')) {
                 renderAchievementsPanel();
@@ -376,23 +332,14 @@
             return;
         }
 
-        // Create and inject XP indicator into navbar
+        // Wait for auth container to be ready
         const authContainer = document.getElementById('auth-container');
-        const navbarContent = document.querySelector('.wave-navbar-content');
-
-        // Don't mark as initialized until navbar is ready
-        if (!authContainer || !navbarContent) {
+        if (!authContainer) {
             return;
         }
 
         // Now we can mark as initialized
         isInitialized = true;
-
-        const indicator = createXPIndicator();
-        if (indicator) {
-            // Insert before auth container
-            navbarContent.insertBefore(indicator, authContainer);
-        }
 
         // Create achievements panel (hidden by default)
         const panel = createAchievementsPanel();
@@ -408,13 +355,12 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
-        // DOM already loaded, wait a tick for navbar to be ready
         setTimeout(init, 100);
     }
 
     // Also try to init when navbar loads
     const navbarObserver = new MutationObserver((mutations, obs) => {
-        if (document.querySelector('.wave-navbar-content #auth-container') && !isInitialized) {
+        if (document.querySelector('#auth-container') && !isInitialized) {
             init();
             obs.disconnect();
         }
@@ -425,7 +371,6 @@
     // Expose for external use
     window.GamificationUI = {
         init,
-        updateXPIndicator,
         toggleAchievementsPanel,
         showToast
     };

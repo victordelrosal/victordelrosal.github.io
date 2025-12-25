@@ -7231,68 +7231,119 @@ footer {
 /* ===== GAMIFICATION SYSTEM ===== */
 /* Ocean-themed XP, levels, streaks & achievements */
 
-/* === Navbar XP Indicator === */
-.gamify-indicator {
-    position: absolute;
-    right: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    z-index: 20;
+/* === Avatar XP Animation === */
+.user-avatar.xp-shake {
+    animation: avatarShake 0.6s ease;
 }
 
-.gamify-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+@keyframes avatarShake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    10% { transform: translateX(-3px) rotate(-5deg); }
+    20% { transform: translateX(3px) rotate(5deg); }
+    30% { transform: translateX(-3px) rotate(-3deg); }
+    40% { transform: translateX(3px) rotate(3deg); }
+    50% { transform: translateX(-2px) rotate(-2deg); }
+    60% { transform: translateX(2px) rotate(2deg); }
+    70% { transform: translateX(-1px) rotate(-1deg); }
+    80% { transform: translateX(1px) rotate(1deg); }
+    90% { transform: translateX(0) rotate(0); }
+}
+
+/* Floating +XP badge */
+.xp-badge-float {
+    position: fixed;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-electric) 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
     padding: 6px 12px;
-    background: rgba(0, 212, 255, 0.15);
-    border: 1px solid rgba(0, 212, 255, 0.3);
     border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 13px;
-    color: var(--text-white);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+    z-index: 10001;
+    pointer-events: none;
+    animation: xpBadgeFloat 1.5s ease-out forwards;
 }
 
-.gamify-btn:hover {
-    background: rgba(0, 212, 255, 0.25);
-    border-color: rgba(0, 212, 255, 0.5);
-    transform: translateY(-1px);
+@keyframes xpBadgeFloat {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-30px) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-60px) scale(0.8);
+    }
 }
 
-.gamify-level-icon {
+/* Level up glow effect */
+.user-avatar.level-up-glow {
+    animation: levelUpGlow 1.5s ease;
+}
+
+@keyframes levelUpGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+    25% {
+        box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 30px 15px rgba(255, 215, 0, 0.4);
+    }
+    75% {
+        box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.2);
+    }
+}
+
+/* Level up floating badge */
+.level-up-badge-float {
+    position: fixed;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1a1a2e;
     font-size: 16px;
-    line-height: 1;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 100px;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+    z-index: 10001;
+    pointer-events: none;
+    animation: levelUpBadgeFloat 2.5s ease-out forwards;
 }
 
-.gamify-level-name {
-    font-weight: 500;
-    color: var(--accent-cyan);
+@keyframes levelUpBadgeFloat {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0) scale(0.5);
+    }
+    15% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-20px) scale(1.2);
+    }
+    30% {
+        transform: translateX(-50%) translateY(-25px) scale(1);
+    }
+    70% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-30px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50px) scale(0.8);
+    }
 }
 
-.gamify-xp-bar {
-    width: 40px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
+/* XP bar fill (used in panel) */
 .gamify-xp-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-electric) 100%);
     border-radius: 2px;
     transition: width 0.5s ease-out;
-}
-
-.gamify-streak {
-    font-size: 12px;
-    padding: 2px 6px;
-    background: rgba(255, 107, 0, 0.2);
-    border-radius: 10px;
-    color: #FF9500;
 }
 
 /* === Achievements Panel === */
