@@ -424,18 +424,38 @@ if (!window.SupabaseClient) {
     }
 
     /**
-     * Delete the user's account (profile)
+     * Delete the user's account (profile and auth)
      */
     async function deleteAccount() {
       if (!supabase || !currentUser) return;
 
       try {
-        // Call the RPC function to delete the profile
-        const { error } = await supabase.rpc('delete_own_profile');
-        if (error) throw error;
+        // Get current session for auth header
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) throw new Error('No active session');
 
-        // Sign out
-        await signOut();
+        // Call Edge Function to fully delete account
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/delete-account`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to delete account');
+        }
+
+        // Clear local state
+        currentUser = null;
+        userProfile = null;
+
+        // Notify listeners
+        authStateListeners.forEach(listener => listener(null));
+
         return true;
       } catch (error) {
         console.error('Failed to delete account:', error);
