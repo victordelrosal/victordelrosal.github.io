@@ -421,6 +421,112 @@
     }
 
     // ==========================================
+    // LEADERBOARD PANEL
+    // ==========================================
+
+    function createLeaderboardPanel() {
+        const panel = document.createElement('div');
+        panel.className = 'gamify-panel leaderboard-panel';
+        panel.id = 'leaderboard-panel';
+        panel.innerHTML = `
+            <div class="gamify-panel-backdrop"></div>
+            <div class="gamify-panel-content">
+                <button class="gamify-panel-close">&times;</button>
+                <div class="gamify-panel-header">
+                    <h2>🏆 Leaderboard</h2>
+                </div>
+                <div class="gamify-panel-body">
+                    <div class="leaderboard-list" id="leaderboard-list">
+                        <div class="leaderboard-loading">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Close handlers
+        panel.querySelector('.gamify-panel-backdrop').addEventListener('click', closeLeaderboardPanel);
+        panel.querySelector('.gamify-panel-close').addEventListener('click', closeLeaderboardPanel);
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && panel.classList.contains('visible')) {
+                closeLeaderboardPanel();
+            }
+        });
+
+        return panel;
+    }
+
+    async function renderLeaderboardPanel() {
+        const listEl = document.getElementById('leaderboard-list');
+        if (!listEl) return;
+
+        listEl.innerHTML = '<div class="leaderboard-loading">Loading...</div>';
+
+        try {
+            const leaderboard = await window.Gamification.fetchLeaderboard();
+            const currentUser = window.SupabaseClient?.getCurrentUser?.();
+
+            if (!leaderboard || leaderboard.length === 0) {
+                listEl.innerHTML = `
+                    <div class="leaderboard-empty">
+                        <p>No one on the leaderboard yet!</p>
+                        <p class="leaderboard-empty-hint">Enable "Show me on leaderboard" in settings to be the first.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const allLevels = window.Gamification.LEVELS;
+
+            listEl.innerHTML = leaderboard.map(entry => {
+                const level = allLevels.find(l => entry.xp >= l.minXP && (!allLevels[allLevels.indexOf(l) + 1] || entry.xp < allLevels[allLevels.indexOf(l) + 1].minXP)) || allLevels[0];
+                const isCurrentUser = currentUser && entry.user_id === currentUser.id;
+                const rankClass = entry.rank === 1 ? 'gold' : entry.rank === 2 ? 'silver' : entry.rank === 3 ? 'bronze' : '';
+
+                return `
+                    <div class="leaderboard-entry ${isCurrentUser ? 'current-user' : ''} ${rankClass}">
+                        <div class="leaderboard-rank">${entry.rank <= 3 ? ['🥇', '🥈', '🥉'][entry.rank - 1] : entry.rank}</div>
+                        <img class="leaderboard-avatar" src="${entry.avatar_url || '/img/default-avatar.png'}" alt="${entry.full_name || 'User'}">
+                        <div class="leaderboard-info">
+                            <span class="leaderboard-name">${entry.full_name || 'Anonymous'}</span>
+                            <span class="leaderboard-level" style="color: ${level.color}">${level.icon} ${level.name}</span>
+                        </div>
+                        <div class="leaderboard-xp">${entry.xp.toLocaleString()} XP</div>
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error('Failed to render leaderboard:', err);
+            listEl.innerHTML = '<div class="leaderboard-error">Failed to load leaderboard</div>';
+        }
+    }
+
+    function toggleLeaderboardPanel() {
+        let panel = document.getElementById('leaderboard-panel');
+        if (!panel) {
+            panel = createLeaderboardPanel();
+            document.body.appendChild(panel);
+        }
+
+        if (panel.classList.contains('visible')) {
+            closeLeaderboardPanel();
+        } else {
+            renderLeaderboardPanel();
+            panel.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeLeaderboardPanel() {
+        const panel = document.getElementById('leaderboard-panel');
+        if (panel) {
+            panel.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // ==========================================
     // TOAST NOTIFICATIONS
     // ==========================================
 
@@ -529,6 +635,7 @@
     window.GamificationUI = {
         init,
         toggleAchievementsPanel,
+        toggleLeaderboardPanel,
         showToast
     };
 

@@ -684,6 +684,65 @@
     }
 
     // ==========================================
+    // LEADERBOARD
+    // ==========================================
+
+    const LEADERBOARD_KEY = 'gamify_show_on_leaderboard';
+
+    function getShowOnLeaderboard() {
+        const stored = localStorage.getItem(LEADERBOARD_KEY);
+        return stored === 'true';
+    }
+
+    async function setShowOnLeaderboard(value) {
+        localStorage.setItem(LEADERBOARD_KEY, value ? 'true' : 'false');
+
+        // Sync to Supabase if available
+        if (window.SupabaseClient) {
+            const user = window.SupabaseClient.getCurrentUser?.();
+            if (user) {
+                try {
+                    const supabase = window.SupabaseClient.getClient?.();
+                    if (supabase) {
+                        await supabase
+                            .from('user_gamification')
+                            .update({ show_on_leaderboard: value })
+                            .eq('user_id', user.id);
+                    }
+                } catch (err) {
+                    console.error('Failed to sync leaderboard setting:', err);
+                    throw err;
+                }
+            }
+        }
+    }
+
+    async function fetchLeaderboard(limit = 50) {
+        if (!window.SupabaseClient) return [];
+
+        try {
+            const supabase = window.SupabaseClient.getClient?.();
+            if (!supabase) return [];
+
+            const { data, error } = await supabase
+                .from('leaderboard_view')
+                .select('*')
+                .limit(limit);
+
+            if (error) throw error;
+
+            // Add rank to each entry
+            return (data || []).map((entry, index) => ({
+                ...entry,
+                rank: index + 1
+            }));
+        } catch (err) {
+            console.error('Failed to fetch leaderboard:', err);
+            return [];
+        }
+    }
+
+    // ==========================================
     // PUBLIC API
     // ==========================================
 
@@ -708,6 +767,11 @@
         trackSubscription,
         updateStreak,
         updateAvatarBorder,
+
+        // Leaderboard
+        getShowOnLeaderboard,
+        setShowOnLeaderboard,
+        fetchLeaderboard,
 
         // Config access
         LEVELS,

@@ -351,6 +351,7 @@ const Navbar = {
                 const xp = window.Gamification.getXP();
                 const levelProgress = window.Gamification.getLevelProgress(xp);
                 const streak = window.Gamification.getStreak();
+                const showOnLeaderboard = window.Gamification.getShowOnLeaderboard?.() || false;
                 gamifyHTML = `
                     <div class="dropdown-gamify-section">
                         <div class="dropdown-gamify-header">
@@ -373,6 +374,13 @@ const Navbar = {
                         <button id="view-journey-btn" class="dropdown-item journey-btn">
                             🌊 View Your Journey
                         </button>
+                        <button id="view-leaderboard-btn" class="dropdown-item journey-btn">
+                            🏆 Leaderboard
+                        </button>
+                        <label class="dropdown-item checkbox-item leaderboard-toggle">
+                            <input type="checkbox" id="leaderboard-checkbox" ${showOnLeaderboard ? 'checked' : ''}>
+                            <span>Show me on leaderboard</span>
+                        </label>
                     </div>
                     <div class="dropdown-divider"></div>
                 `;
@@ -476,6 +484,36 @@ const Navbar = {
                     // Open gamification panel
                     if (window.GamificationUI) {
                         window.GamificationUI.toggleAchievementsPanel();
+                    }
+                });
+            }
+
+            // View Leaderboard button
+            const leaderboardBtn = document.getElementById('view-leaderboard-btn');
+            if (leaderboardBtn) {
+                leaderboardBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const dropdown = document.querySelector('.user-dropdown');
+                    if (dropdown) dropdown.classList.remove('show');
+                    if (window.GamificationUI) {
+                        window.GamificationUI.toggleLeaderboardPanel();
+                    }
+                });
+            }
+
+            // Leaderboard visibility toggle
+            const leaderboardCheckbox = document.getElementById('leaderboard-checkbox');
+            if (leaderboardCheckbox) {
+                leaderboardCheckbox.addEventListener('change', async (e) => {
+                    const isChecked = e.target.checked;
+                    try {
+                        if (window.Gamification) {
+                            await window.Gamification.setShowOnLeaderboard(isChecked);
+                        }
+                    } catch (err) {
+                        console.error('Failed to update leaderboard visibility', err);
+                        e.target.checked = !isChecked; // Revert on error
+                        alert('Failed to update leaderboard setting. Please try again.');
                     }
                 });
             }

@@ -8571,3 +8571,186 @@ body.bg-light .gamify-level-name {
 body.bg-light .gamify-xp-bar {
     background: rgba(0, 100, 200, 0.15);
 }
+
+/* =====================================================
+   LEADERBOARD PANEL
+   ===================================================== */
+
+.leaderboard-panel .gamify-panel-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.leaderboard-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.leaderboard-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.2s ease;
+}
+
+.leaderboard-entry:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(4px);
+}
+
+.leaderboard-entry.current-user {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.leaderboard-entry.gold {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 180, 0, 0.08) 100%);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-entry.silver {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.12) 0%, rgba(169, 169, 169, 0.06) 100%);
+    border-color: rgba(192, 192, 192, 0.25);
+}
+
+.leaderboard-entry.bronze {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.12) 0%, rgba(184, 115, 51, 0.06) 100%);
+    border-color: rgba(205, 127, 50, 0.25);
+}
+
+.leaderboard-rank {
+    font-size: 18px;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.leaderboard-entry.gold .leaderboard-rank,
+.leaderboard-entry.silver .leaderboard-rank,
+.leaderboard-entry.bronze .leaderboard-rank {
+    font-size: 22px;
+}
+
+.leaderboard-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+}
+
+.leaderboard-entry.gold .leaderboard-avatar {
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-entry.silver .leaderboard-avatar {
+    border-color: rgba(192, 192, 192, 0.6);
+    box-shadow: 0 0 10px rgba(192, 192, 192, 0.25);
+}
+
+.leaderboard-entry.bronze .leaderboard-avatar {
+    border-color: rgba(205, 127, 50, 0.6);
+    box-shadow: 0 0 10px rgba(205, 127, 50, 0.25);
+}
+
+.leaderboard-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.leaderboard-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leaderboard-level {
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.leaderboard-xp {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(0, 212, 255, 0.9);
+    white-space: nowrap;
+}
+
+.leaderboard-loading,
+.leaderboard-empty,
+.leaderboard-error {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.leaderboard-empty-hint {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 8px;
+}
+
+.leaderboard-error {
+    color: #ff6b6b;
+}
+
+/* Leaderboard toggle in dropdown */
+.leaderboard-toggle {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    .leaderboard-entry {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .leaderboard-avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    .leaderboard-name {
+        font-size: 14px;
+    }
+
+    .leaderboard-xp {
+        font-size: 13px;
+    }
+}
