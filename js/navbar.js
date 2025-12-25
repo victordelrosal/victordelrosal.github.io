@@ -572,6 +572,14 @@ function loadGamification() {
         const uiScript = document.createElement('script');
         uiScript.src = `/js/gamification-ui.js?${cacheBust}`;
         document.head.appendChild(uiScript);
+
+        // Re-render auth UI to include gamification section
+        if (window.SupabaseClient && window.Navbar) {
+            const user = window.SupabaseClient.getCurrentUser?.();
+            if (user) {
+                window.Navbar.updateAuthUI(user);
+            }
+        }
     };
     document.head.appendChild(gamificationScript);
 }
