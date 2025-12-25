@@ -15,30 +15,46 @@
         const avatar = document.querySelector('.user-avatar');
         if (!avatar) return;
 
-        // Add shake animation
-        avatar.classList.add('xp-shake');
+        // Get current total XP for balance display
+        const totalXP = window.Gamification ? window.Gamification.getXP() : 0;
 
-        // Create floating +XP badge
-        const badge = document.createElement('div');
-        badge.className = 'xp-badge-float';
-        badge.textContent = `+${amount} XP`;
+        // Add happy dance animation
+        avatar.classList.add('xp-dance');
+
+        // Create the XP notification container
+        const notification = document.createElement('div');
+        notification.className = 'xp-notification';
 
         // Position near avatar
         const avatarRect = avatar.getBoundingClientRect();
-        badge.style.position = 'fixed';
-        badge.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
-        badge.style.top = `${avatarRect.top}px`;
-        document.body.appendChild(badge);
+        notification.style.position = 'fixed';
+        notification.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
+        notification.style.top = `${avatarRect.top + avatarRect.height / 2}px`;
 
-        // Remove shake after animation
-        setTimeout(() => {
-            avatar.classList.remove('xp-shake');
-        }, 600);
+        notification.innerHTML = `
+            <div class="xp-notification-inner">
+                <span class="xp-balance">${totalXP.toLocaleString()} pts</span>
+                <span class="xp-earned">+${amount} pts</span>
+            </div>
+        `;
 
-        // Remove badge after float animation
+        document.body.appendChild(notification);
+
+        // Trigger animation after append
+        requestAnimationFrame(() => {
+            notification.classList.add('visible');
+        });
+
+        // Remove dance after animation
         setTimeout(() => {
-            badge.remove();
-        }, 1500);
+            avatar.classList.remove('xp-dance');
+        }, 1000);
+
+        // Remove notification after animation
+        setTimeout(() => {
+            notification.classList.add('fading');
+            setTimeout(() => notification.remove(), 400);
+        }, 2200);
     }
 
     function animateLevelUp(newLevel) {
