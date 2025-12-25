@@ -552,13 +552,8 @@ const Navbar = {
     }
 };
 
-// Load gamification scripts dynamically (except on homepage)
+// Load gamification scripts dynamically
 function loadGamification() {
-    // Skip on homepage
-    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        return;
-    }
-
     // Skip if already loaded
     if (window.Gamification || document.querySelector('script[src*="gamification.js"]')) {
         return;
