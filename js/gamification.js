@@ -880,18 +880,30 @@
 
         // Sync to Supabase if available
         if (window.SupabaseClient) {
+            const supabase = window.SupabaseClient.getClient?.();
+            if (!supabase) return;
+
             const user = window.SupabaseClient.getCurrentUser?.();
             if (user) {
+                // Registered user - update user_gamification
                 try {
-                    const supabase = window.SupabaseClient.getClient?.();
-                    if (supabase) {
-                        await supabase
-                            .from('user_gamification')
-                            .update({ show_on_leaderboard: value })
-                            .eq('user_id', user.id);
-                    }
+                    await supabase
+                        .from('user_gamification')
+                        .update({ show_on_leaderboard: value })
+                        .eq('user_id', user.id);
                 } catch (err) {
                     console.error('Failed to sync leaderboard setting:', err);
+                    throw err;
+                }
+            } else if (isAnonymousUser && anonymousId) {
+                // Anonymous user - update anonymous_users
+                try {
+                    await supabase.rpc('set_anonymous_leaderboard_visibility', {
+                        p_anon_id: anonymousId,
+                        p_show: value
+                    });
+                } catch (err) {
+                    console.error('Failed to sync anonymous leaderboard setting:', err);
                     throw err;
                 }
             }
