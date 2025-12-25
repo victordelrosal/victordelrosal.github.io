@@ -8052,9 +8052,11 @@ footer {
 }
 
 /* Happy squishy bounce on hover! */
-.gamify-level-node-icon:hover {
+.gamify-level-node-icon:hover,
+.gamify-level-node.current .gamify-level-node-icon:hover,
+.gamify-level-node.completed .gamify-level-node-icon:hover {
     cursor: pointer;
-    animation: levelNodeBounce 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: levelNodeBounce 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
 }
 
 @keyframes levelNodeBounce {
