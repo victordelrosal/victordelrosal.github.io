@@ -62,7 +62,6 @@ const CommentsUI = {
           <div class="user-info">
             <img id="user-avatar" src="" alt="" class="user-avatar">
             <span id="user-name" class="user-name"></span>
-            <button id="sign-out-btn" class="btn-signout">Sign out</button>
           </div>
         </div>
       </div>
@@ -168,18 +167,6 @@ const CommentsUI = {
           await window.SupabaseClient.signInWithGoogle();
         } catch (error) {
           console.error('Sign in failed:', error);
-        }
-      });
-    }
-
-    // Sign out
-    const signOutBtn = document.getElementById('sign-out-btn');
-    if (signOutBtn) {
-      signOutBtn.addEventListener('click', async () => {
-        try {
-          await window.SupabaseClient.signOut();
-        } catch (error) {
-          console.error('Sign out failed:', error);
         }
       });
     }
