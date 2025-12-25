@@ -504,17 +504,30 @@
 
             const allLevels = window.Gamification.LEVELS;
 
+            // Check if current user is anonymous
+            const anonData = window.Gamification?.getOrCreateAnonId?.();
+            const currentAnonId = anonData?.anonId;
+
             listEl.innerHTML = leaderboard.map(entry => {
                 const level = allLevels.find(l => entry.xp >= l.minXP && (!allLevels[allLevels.indexOf(l) + 1] || entry.xp < allLevels[allLevels.indexOf(l) + 1].minXP)) || allLevels[0];
-                const isCurrentUser = currentUser && entry.user_id === currentUser.id;
+                const isCurrentUser = (currentUser && entry.user_id === currentUser.id) ||
+                                      (entry.user_type === 'anonymous' && entry.anon_id === currentAnonId);
+                const isAnonymous = entry.user_type === 'anonymous';
                 const rankClass = entry.rank === 1 ? 'gold' : entry.rank === 2 ? 'silver' : entry.rank === 3 ? 'bronze' : '';
 
+                // Use wave icon for anonymous users
+                const avatarHtml = isAnonymous
+                    ? `<div class="leaderboard-avatar anonymous-avatar">🌊</div>`
+                    : `<img class="leaderboard-avatar" src="${entry.avatar_url || '/img/default-avatar.png'}" alt="${entry.full_name || 'User'}">`;
+
+                const guestBadge = isAnonymous ? '<span class="guest-badge">Guest</span>' : '';
+
                 return `
-                    <div class="leaderboard-entry ${isCurrentUser ? 'current-user' : ''} ${rankClass}">
+                    <div class="leaderboard-entry ${isCurrentUser ? 'current-user' : ''} ${rankClass} ${isAnonymous ? 'anonymous-entry' : ''}">
                         <div class="leaderboard-rank">${entry.rank <= 3 ? ['🥇', '🥈', '🥉'][entry.rank - 1] : entry.rank}</div>
-                        <img class="leaderboard-avatar" src="${entry.avatar_url || '/img/default-avatar.png'}" alt="${entry.full_name || 'User'}">
+                        ${avatarHtml}
                         <div class="leaderboard-info">
-                            <span class="leaderboard-name">${entry.full_name || 'Anonymous'}</span>
+                            <span class="leaderboard-name">${entry.full_name || 'Anonymous'}${guestBadge}</span>
                             <span class="leaderboard-level" style="color: ${level.color}">${level.icon} ${level.name}</span>
                         </div>
                         <div class="leaderboard-xp">${entry.xp.toLocaleString()} XP</div>

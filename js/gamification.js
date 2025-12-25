@@ -196,8 +196,20 @@
         stats: 'gamify_stats',
         achievements: 'gamify_achievements',
         streak: 'gamify_streak',
-        lastVisit: 'gamify_last_visit'
+        lastVisit: 'gamify_last_visit',
+        anonId: 'gamify_anon_id',
+        anonName: 'gamify_anon_name'
     };
+
+    // Ocean-themed name components for anonymous users
+    const OCEAN_NAME_PREFIXES = [
+        'Wave', 'Tide', 'Reef', 'Coral', 'Shell', 'Pearl', 'Drift', 'Harbor',
+        'Cove', 'Bay', 'Deep', 'Azure', 'Aqua', 'Marina', 'Lagoon', 'Kelp'
+    ];
+    const OCEAN_NAME_SUFFIXES = [
+        'Surfer', 'Diver', 'Sailor', 'Explorer', 'Voyager', 'Wanderer',
+        'Seeker', 'Swimmer', 'Cruiser', 'Fisher', 'Watcher', 'Rider'
+    ];
 
     // ==========================================
     // DATA MANAGEMENT
@@ -206,6 +218,150 @@
     let syncEnabled = false;
     let currentUserId = null;
     let syncDebounceTimer = null;
+    let isAnonymousUser = false;
+    let anonymousId = null;
+    let anonymousName = null;
+
+    // ==========================================
+    // ANONYMOUS USER MANAGEMENT
+    // ==========================================
+
+    function generateOceanName() {
+        const prefix = OCEAN_NAME_PREFIXES[Math.floor(Math.random() * OCEAN_NAME_PREFIXES.length)];
+        const suffix = OCEAN_NAME_SUFFIXES[Math.floor(Math.random() * OCEAN_NAME_SUFFIXES.length)];
+        // Add short unique suffix from UUID
+        const uniqueId = crypto.randomUUID().split('-')[0].substring(0, 4);
+        return `${prefix}${suffix}_${uniqueId}`;
+    }
+
+    function getOrCreateAnonId() {
+        let anonId = localStorage.getItem(STORAGE_KEYS.anonId);
+        let anonName = localStorage.getItem(STORAGE_KEYS.anonName);
+
+        if (!anonId) {
+            anonId = crypto.randomUUID();
+            anonName = generateOceanName();
+            localStorage.setItem(STORAGE_KEYS.anonId, anonId);
+            localStorage.setItem(STORAGE_KEYS.anonName, anonName);
+        }
+
+        return { anonId, anonName };
+    }
+
+    function getAnonDisplayName() {
+        return localStorage.getItem(STORAGE_KEYS.anonName) || 'Guest';
+    }
+
+    function isAnonymous() {
+        return isAnonymousUser && !currentUserId;
+    }
+
+    async function initAnonymousUser() {
+        const { anonId, anonName } = getOrCreateAnonId();
+        anonymousId = anonId;
+        anonymousName = anonName;
+        isAnonymousUser = true;
+
+        // Register with Supabase (creates if new, returns existing if found)
+        if (window.SupabaseClient) {
+            try {
+                const supabase = window.SupabaseClient.getClient?.();
+                if (supabase) {
+                    const { data, error } = await supabase.rpc('get_or_create_anonymous_user', {
+                        p_anon_id: anonId,
+                        p_display_name: anonName
+                    });
+
+                    if (error) {
+                        console.error('[Gamification] Error initializing anonymous user:', error);
+                    } else if (data) {
+                        // Merge server data with local data
+                        const serverXP = data.xp || 0;
+                        const localXP = getStoredData(STORAGE_KEYS.xp, 0);
+                        if (serverXP > localXP) {
+                            localStorage.setItem(STORAGE_KEYS.xp, JSON.stringify(serverXP));
+                        }
+                        if (data.stats) {
+                            const localStats = getStoredData(STORAGE_KEYS.stats, { reads: 0, waves: 0, comments: 0, shares: 0, postsRead: [] });
+                            const merged = {
+                                reads: Math.max(localStats.reads || 0, data.stats.reads || 0),
+                                waves: Math.max(localStats.waves || 0, data.stats.waves || 0),
+                                comments: Math.max(localStats.comments || 0, data.stats.comments || 0),
+                                shares: Math.max(localStats.shares || 0, data.stats.shares || 0),
+                                postsRead: [...new Set([...(localStats.postsRead || []), ...(data.stats.postsRead || [])])]
+                            };
+                            localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged));
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('[Gamification] Error initializing anonymous user:', e);
+            }
+        }
+    }
+
+    async function syncAnonymousToSupabase() {
+        if (!isAnonymousUser || !anonymousId || !window.SupabaseClient) return;
+
+        try {
+            const supabase = window.SupabaseClient.getClient?.();
+            if (!supabase) return;
+
+            const xp = getStoredData(STORAGE_KEYS.xp, 0);
+            const stats = getStoredData(STORAGE_KEYS.stats, { reads: 0, waves: 0, comments: 0, shares: 0, postsRead: [] });
+
+            const { error } = await supabase.rpc('update_anonymous_xp', {
+                p_anon_id: anonymousId,
+                p_xp_to_add: 0, // We're not adding, we're just syncing current state
+                p_stats: stats
+            });
+
+            // Actually update the XP directly since the RPC adds to existing
+            if (!error) {
+                await supabase
+                    .from('anonymous_users')
+                    .update({ xp, stats, last_seen: new Date().toISOString() })
+                    .eq('anon_id', anonymousId);
+            }
+        } catch (e) {
+            console.error('[Gamification] Anonymous sync error:', e);
+        }
+    }
+
+    async function mergeAnonymousToRegistered(userId) {
+        if (!anonymousId || !window.SupabaseClient) return false;
+
+        try {
+            const supabase = window.SupabaseClient.getClient?.();
+            if (!supabase) return false;
+
+            // First sync current state
+            await syncAnonymousToSupabase();
+
+            // Then merge to registered account
+            const { data, error } = await supabase.rpc('merge_anonymous_to_registered', {
+                p_anon_id: anonymousId,
+                p_user_id: userId
+            });
+
+            if (error) {
+                console.error('[Gamification] Merge error:', error);
+                return false;
+            }
+
+            // Clear anonymous data from localStorage
+            localStorage.removeItem(STORAGE_KEYS.anonId);
+            localStorage.removeItem(STORAGE_KEYS.anonName);
+            isAnonymousUser = false;
+            anonymousId = null;
+            anonymousName = null;
+
+            return true;
+        } catch (e) {
+            console.error('[Gamification] Merge error:', e);
+            return false;
+        }
+    }
 
     function getStoredData(key, defaultValue) {
         try {
@@ -223,10 +379,21 @@
             // Debounced sync to Supabase
             if (syncEnabled && currentUserId) {
                 debouncedSync();
+            } else if (isAnonymousUser && anonymousId) {
+                // Sync anonymous user data
+                debouncedAnonSync();
             }
         } catch (e) {
             console.error('[Gamification] Error writing storage:', e);
         }
+    }
+
+    let anonSyncDebounceTimer = null;
+    function debouncedAnonSync() {
+        if (anonSyncDebounceTimer) clearTimeout(anonSyncDebounceTimer);
+        anonSyncDebounceTimer = setTimeout(() => {
+            syncAnonymousToSupabase();
+        }, 2000); // Wait 2 seconds before syncing anonymous data
     }
 
     // ==========================================
@@ -353,23 +520,37 @@
 
     // Listen for auth state changes
     if (window.SupabaseClient) {
-        window.SupabaseClient.onAuthStateChange((event, session) => {
+        window.SupabaseClient.onAuthStateChange(async (event, session) => {
             if (session?.user) {
-                initSync(session.user.id);
+                // User just signed in - merge anonymous data if exists
+                if (isAnonymousUser && anonymousId) {
+                    console.log('[Gamification] Merging anonymous data to registered user...');
+                    await mergeAnonymousToRegistered(session.user.id);
+                }
+                await initSync(session.user.id);
             } else {
                 syncEnabled = false;
                 currentUserId = null;
+                // Initialize as anonymous user when not logged in
+                initAnonymousUser();
             }
         });
     }
 
     // Also check on load if already logged in
-    setTimeout(() => {
+    setTimeout(async () => {
         if (window.SupabaseClient) {
             const user = window.SupabaseClient.getCurrentUser();
             if (user) {
-                initSync(user.id);
+                await initSync(user.id);
+            } else {
+                // Not logged in - initialize as anonymous
+                await initAnonymousUser();
             }
+        } else {
+            // No Supabase client - still track anonymously locally
+            getOrCreateAnonId();
+            isAnonymousUser = true;
         }
     }, 500);
 
@@ -773,6 +954,11 @@
         getShowOnLeaderboard,
         setShowOnLeaderboard,
         fetchLeaderboard,
+
+        // Anonymous users
+        isAnonymous,
+        getAnonDisplayName,
+        getOrCreateAnonId,
 
         // Config access
         LEVELS,
