@@ -342,7 +342,7 @@
                 const shareText = `${post.title} by Victor del Rosal`;
 
                 // Share button delay so users can see +pts animation
-                const SHARE_DELAY = 800;
+                const SHARE_DELAY = 1000;
 
                 document.getElementById('share-whatsapp').addEventListener('click', () => {
                     if (window.Gamification) window.Gamification.trackShare('WhatsApp');
@@ -549,7 +549,7 @@
 
                 // Sticky footer functionality
                 (function() {
-                    const SHARE_DELAY = 800; // Delay so users can see +pts animation
+                    const SHARE_DELAY = 1000; // Delay so users can see +pts animation
                     const stickyFooter = document.getElementById('sticky-footer');
                     const stickyWaveBtn = document.getElementById('sticky-wave-btn');
                     const stickyWaveEmoji = stickyWaveBtn.querySelector('.wave-emoji');

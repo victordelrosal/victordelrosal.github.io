@@ -565,11 +565,12 @@ function loadGamification() {
     }
 
     // Load gamification.js first, then gamification-ui.js
+    const cacheBust = 'v2';
     const gamificationScript = document.createElement('script');
-    gamificationScript.src = '/js/gamification.js';
+    gamificationScript.src = `/js/gamification.js?${cacheBust}`;
     gamificationScript.onload = () => {
         const uiScript = document.createElement('script');
-        uiScript.src = '/js/gamification-ui.js';
+        uiScript.src = `/js/gamification-ui.js?${cacheBust}`;
         document.head.appendChild(uiScript);
     };
     document.head.appendChild(gamificationScript);
