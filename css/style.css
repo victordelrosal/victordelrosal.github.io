@@ -7270,19 +7270,25 @@ footer {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    /* 3D Deep Ocean Drop - rich navy to indigo */
+    /* 3D Deep Ocean Drop - light from within */
     background:
         /* Primary specular highlight - bright spot where light hits */
         radial-gradient(ellipse 40% 30% at 28% 22%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 25%, transparent 50%),
         /* Secondary highlight - softer spread */
         radial-gradient(ellipse 50% 40% at 32% 28%, rgba(200, 230, 255, 0.35) 0%, transparent 40%),
+        /* Inner glow - flashlight through deep water */
+        radial-gradient(ellipse 60% 60% at 50% 50%,
+            rgba(100, 200, 255, 0.4) 0%,
+            rgba(60, 160, 220, 0.25) 30%,
+            rgba(30, 120, 180, 0.1) 50%,
+            transparent 70%),
         /* Core deep ocean gradient - navy to indigo */
         radial-gradient(ellipse 130% 130% at 40% 35%,
-            rgba(30, 60, 120, 1) 0%,
-            rgba(20, 40, 100, 1) 25%,
-            rgba(15, 25, 80, 1) 45%,
-            rgba(10, 15, 60, 1) 65%,
-            rgba(8, 10, 45, 1) 100%);
+            rgba(25, 50, 110, 1) 0%,
+            rgba(18, 35, 90, 1) 25%,
+            rgba(12, 22, 70, 1) 45%,
+            rgba(8, 14, 55, 1) 65%,
+            rgba(5, 8, 40, 1) 100%);
     /* No border - pure sphere */
     border: none;
     box-shadow:
@@ -7291,8 +7297,10 @@ footer {
         0 15px 35px rgba(5, 10, 30, 0.3),
         /* Top rim highlight */
         inset 0 2px 5px rgba(255, 255, 255, 0.4),
-        /* Deep ocean interior shadow */
-        inset 0 -10px 25px rgba(5, 10, 35, 0.7);
+        /* Inner luminosity - light from within */
+        inset 0 0 20px rgba(80, 180, 255, 0.3),
+        /* Deep ocean edge shadow */
+        inset 0 -8px 20px rgba(5, 10, 35, 0.5);
 }
 
 /* Specular highlight - sharp bright reflection like light on a billiard ball */
