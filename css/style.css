@@ -7270,36 +7270,37 @@ footer {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    /* 3D Sphere - Dark base with lighting from top-left */
+    /* 3D Ocean Water Drop - lighting from top-left */
     background:
         /* Primary specular highlight - bright spot where light hits */
-        radial-gradient(ellipse 45% 35% at 30% 25%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 25%, transparent 55%),
+        radial-gradient(ellipse 45% 35% at 30% 25%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.7) 20%, transparent 50%),
         /* Secondary highlight - softer spread */
-        radial-gradient(ellipse 60% 50% at 35% 30%, rgba(255, 255, 255, 0.35) 0%, transparent 45%),
-        /* Rim light - subtle edge glow on lit side (cyan theme) */
-        radial-gradient(ellipse 100% 100% at 20% 20%, rgba(0, 220, 255, 0.2) 0%, transparent 35%),
-        /* Core sphere gradient - 3D shading dark to light */
+        radial-gradient(ellipse 55% 45% at 35% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
+        /* Caustic light effect - like light through water */
+        radial-gradient(ellipse 80% 60% at 60% 65%, rgba(100, 255, 255, 0.15) 0%, transparent 50%),
+        /* Core ocean water gradient - 3D shading */
         radial-gradient(ellipse 120% 120% at 35% 30%,
-            rgba(90, 80, 100, 1) 0%,
-            rgba(55, 50, 65, 1) 30%,
-            rgba(30, 27, 40, 1) 55%,
-            rgba(18, 15, 28, 1) 100%);
+            rgba(0, 210, 235, 1) 0%,
+            rgba(0, 170, 200, 1) 25%,
+            rgba(0, 130, 170, 1) 45%,
+            rgba(0, 90, 140, 1) 65%,
+            rgba(0, 60, 110, 1) 100%);
     /* No border - pure sphere */
     border: none;
     box-shadow:
-        /* Outer ambient glow - cyan theme */
-        0 0 25px rgba(0, 220, 255, 0.5),
-        0 0 50px rgba(0, 200, 255, 0.3),
-        0 0 80px rgba(0, 180, 255, 0.15),
+        /* Outer water glow */
+        0 0 20px rgba(0, 200, 255, 0.6),
+        0 0 40px rgba(0, 180, 255, 0.35),
+        0 0 60px rgba(0, 160, 255, 0.2),
         /* Ground shadow for 3D depth */
-        0 12px 30px rgba(0, 0, 0, 0.6),
-        0 20px 50px rgba(0, 0, 0, 0.4),
-        /* Top rim highlight */
-        inset 0 2px 6px rgba(255, 255, 255, 0.35),
-        /* Bottom shadow for spherical depth */
-        inset 0 -10px 25px rgba(0, 0, 0, 0.7),
-        /* Ambient occlusion center */
-        inset 0 0 20px rgba(0, 0, 0, 0.2);
+        0 10px 25px rgba(0, 50, 80, 0.5),
+        0 18px 40px rgba(0, 30, 60, 0.35),
+        /* Top rim highlight - crisp water edge */
+        inset 0 2px 4px rgba(255, 255, 255, 0.5),
+        /* Bottom depth - darker ocean */
+        inset 0 -8px 20px rgba(0, 40, 80, 0.6),
+        /* Inner water refraction glow */
+        inset 0 0 15px rgba(0, 180, 220, 0.3);
 }
 
 /* Specular highlight - sharp bright reflection like light on a billiard ball */
