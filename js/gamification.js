@@ -200,6 +200,10 @@
     // DATA MANAGEMENT
     // ==========================================
 
+    let syncEnabled = false;
+    let currentUserId = null;
+    let syncDebounceTimer = null;
+
     function getStoredData(key, defaultValue) {
         try {
             const data = localStorage.getItem(key);
@@ -213,10 +217,158 @@
     function setStoredData(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
+            // Debounced sync to Supabase
+            if (syncEnabled && currentUserId) {
+                debouncedSync();
+            }
         } catch (e) {
             console.error('[Gamification] Error writing storage:', e);
         }
     }
+
+    // ==========================================
+    // SUPABASE SYNC
+    // ==========================================
+
+    function debouncedSync() {
+        if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
+        syncDebounceTimer = setTimeout(() => {
+            syncToSupabase();
+        }, 1000); // Wait 1 second before syncing to batch updates
+    }
+
+    async function syncToSupabase() {
+        if (!syncEnabled || !currentUserId || !window.SupabaseClient) return;
+
+        try {
+            const supabase = window.SupabaseClient.getClient();
+            if (!supabase) return;
+
+            const data = {
+                user_id: currentUserId,
+                xp: getStoredData(STORAGE_KEYS.xp, 0),
+                stats: getStoredData(STORAGE_KEYS.stats, { reads: 0, waves: 0, comments: 0, shares: 0, postsRead: [] }),
+                achievements: getStoredData(STORAGE_KEYS.achievements, []),
+                streak_count: getStoredData(STORAGE_KEYS.streak, { count: 0 }).count || 0,
+                streak_last_date: getStoredData(STORAGE_KEYS.streak, {}).lastDate || null
+            };
+
+            const { error } = await supabase
+                .from('user_gamification')
+                .upsert(data, { onConflict: 'user_id' });
+
+            if (error) {
+                console.error('[Gamification] Sync error:', error);
+            }
+        } catch (e) {
+            console.error('[Gamification] Sync error:', e);
+        }
+    }
+
+    async function loadFromSupabase() {
+        if (!currentUserId || !window.SupabaseClient) return null;
+
+        try {
+            const supabase = window.SupabaseClient.getClient();
+            if (!supabase) return null;
+
+            const { data, error } = await supabase
+                .from('user_gamification')
+                .select('*')
+                .eq('user_id', currentUserId)
+                .single();
+
+            if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+                console.error('[Gamification] Load error:', error);
+                return null;
+            }
+
+            return data;
+        } catch (e) {
+            console.error('[Gamification] Load error:', e);
+            return null;
+        }
+    }
+
+    function mergeData(local, server) {
+        // Take the higher values - user should never lose progress
+        if (!server) return local;
+
+        return {
+            xp: Math.max(local.xp || 0, server.xp || 0),
+            stats: {
+                reads: Math.max(local.stats?.reads || 0, server.stats?.reads || 0),
+                waves: Math.max(local.stats?.waves || 0, server.stats?.waves || 0),
+                comments: Math.max(local.stats?.comments || 0, server.stats?.comments || 0),
+                shares: Math.max(local.stats?.shares || 0, server.stats?.shares || 0),
+                postsRead: [...new Set([...(local.stats?.postsRead || []), ...(server.stats?.postsRead || [])])]
+            },
+            achievements: [...new Set([...(local.achievements || []), ...(server.achievements || [])])],
+            streak: {
+                count: Math.max(local.streak?.count || 0, server.streak_count || 0),
+                lastDate: local.streak?.lastDate || server.streak_last_date
+            }
+        };
+    }
+
+    async function initSync(userId) {
+        if (!userId) {
+            syncEnabled = false;
+            currentUserId = null;
+            return;
+        }
+
+        currentUserId = userId;
+
+        // Load server data
+        const serverData = await loadFromSupabase();
+
+        // Get local data
+        const localData = {
+            xp: getStoredData(STORAGE_KEYS.xp, 0),
+            stats: getStoredData(STORAGE_KEYS.stats, { reads: 0, waves: 0, comments: 0, shares: 0, postsRead: [] }),
+            achievements: getStoredData(STORAGE_KEYS.achievements, []),
+            streak: getStoredData(STORAGE_KEYS.streak, { count: 0, lastDate: null })
+        };
+
+        // Merge data (take higher values)
+        const merged = mergeData(localData, serverData);
+
+        // Update local storage with merged data
+        localStorage.setItem(STORAGE_KEYS.xp, JSON.stringify(merged.xp));
+        localStorage.setItem(STORAGE_KEYS.stats, JSON.stringify(merged.stats));
+        localStorage.setItem(STORAGE_KEYS.achievements, JSON.stringify(merged.achievements));
+        localStorage.setItem(STORAGE_KEYS.streak, JSON.stringify(merged.streak));
+
+        // Enable sync and save merged data to server
+        syncEnabled = true;
+        await syncToSupabase();
+
+        // Dispatch event so UI can update
+        window.dispatchEvent(new CustomEvent('gamify:synced', { detail: merged }));
+    }
+
+    // Listen for auth state changes
+    if (window.SupabaseClient) {
+        window.SupabaseClient.onAuthStateChange((event, session) => {
+            if (session?.user) {
+                initSync(session.user.id);
+            } else {
+                syncEnabled = false;
+                currentUserId = null;
+            }
+        });
+    }
+
+    // Also check on load if already logged in
+    setTimeout(() => {
+        if (window.SupabaseClient) {
+            const user = window.SupabaseClient.getUser();
+            if (user) {
+                initSync(user.id);
+            }
+        }
+    }, 500);
 
     function getStats() {
         return getStoredData(STORAGE_KEYS.stats, {

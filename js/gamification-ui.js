@@ -325,6 +325,16 @@
         window.addEventListener('gamify:achievement-unlocked', (e) => {
             showToast('achievement', e.detail);
         });
+
+        // Data synced from server - refresh UI
+        window.addEventListener('gamify:synced', () => {
+            updateXPIndicator();
+            // Refresh achievements panel if open
+            const panel = document.getElementById('gamify-panel');
+            if (panel?.classList.contains('visible')) {
+                renderAchievementsPanel();
+            }
+        });
     }
 
     // ==========================================
