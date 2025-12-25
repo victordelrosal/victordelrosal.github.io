@@ -7646,6 +7646,7 @@ footer {
     border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    overflow: visible;
 }
 
 .gamify-level-progression h4 {
@@ -7662,15 +7663,23 @@ footer {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    gap: 2px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    overflow: visible;
+    padding: 8px 0;
+    gap: 0;
+    position: relative;
 }
 
-.gamify-levels-track::-webkit-scrollbar {
-    display: none;
+/* Continuous background line */
+.gamify-levels-track::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    right: 27px;
+    top: 27px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    z-index: 0;
 }
 
 .gamify-level-node {
@@ -7678,46 +7687,45 @@ footer {
     flex-direction: column;
     align-items: center;
     min-width: 54px;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-}
-
-.gamify-level-node:hover {
-    transform: translateY(-2px);
+    flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .gamify-level-node-icon {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 17px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid rgba(255, 255, 255, 0.12);
-    margin-bottom: 6px;
+    font-size: 18px;
+    background: rgba(10, 20, 35, 1);
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .gamify-level-node.completed .gamify-level-node-icon {
-    border-color: rgba(0, 229, 255, 0.6);
-    box-shadow:
-        0 0 20px rgba(0, 229, 255, 0.3),
-        inset 0 0 10px rgba(0, 229, 255, 0.1);
+    border-color: rgba(0, 229, 255, 0.7);
+    background: rgba(0, 30, 50, 1);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
 }
 
 .gamify-level-node.current .gamify-level-node-icon {
-    border-color: rgba(255, 215, 0, 0.8);
+    border-color: rgba(255, 215, 0, 0.9);
+    background: rgba(40, 30, 10, 1);
     box-shadow:
-        0 0 25px rgba(255, 215, 0, 0.4),
-        0 0 50px rgba(255, 215, 0, 0.2),
-        inset 0 0 15px rgba(255, 215, 0, 0.1);
+        0 0 20px rgba(255, 215, 0, 0.5),
+        0 0 40px rgba(255, 215, 0, 0.25);
     animation: currentNodeGlow 2.5s ease-in-out infinite;
 }
 
 .gamify-level-node.locked .gamify-level-node-icon {
-    opacity: 0.35;
+    opacity: 0.4;
+    background: rgba(10, 20, 35, 0.8);
 }
 
 .gamify-level-node-name {
@@ -7726,7 +7734,7 @@ footer {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
 }
 
 .gamify-level-node.current .gamify-level-node-name {
@@ -7748,32 +7756,21 @@ footer {
     opacity: 0.4;
 }
 
+/* Hide individual connectors - using continuous line instead */
 .gamify-level-connector {
-    flex: 1;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    margin-top: 19px;
-    min-width: 8px;
-    border-radius: 1px;
-}
-
-.gamify-level-connector.completed {
-    background: linear-gradient(90deg, #00E5FF, #00BFA5);
-    box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+    display: none;
 }
 
 @keyframes currentNodeGlow {
     0%, 100% {
         box-shadow:
-            0 0 25px rgba(255, 215, 0, 0.4),
-            0 0 50px rgba(255, 215, 0, 0.2),
-            inset 0 0 15px rgba(255, 215, 0, 0.1);
+            0 0 20px rgba(255, 215, 0, 0.5),
+            0 0 40px rgba(255, 215, 0, 0.25);
     }
     50% {
         box-shadow:
-            0 0 35px rgba(255, 215, 0, 0.6),
-            0 0 70px rgba(255, 215, 0, 0.3),
-            inset 0 0 20px rgba(255, 215, 0, 0.15);
+            0 0 30px rgba(255, 215, 0, 0.7),
+            0 0 60px rgba(255, 215, 0, 0.35);
     }
 }
 
