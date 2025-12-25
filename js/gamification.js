@@ -885,12 +885,14 @@
 
             const user = window.SupabaseClient.getCurrentUser?.();
             if (user) {
-                // Registered user - update user_gamification
+                // Registered user - upsert user_gamification (creates row if doesn't exist)
                 try {
                     await supabase
                         .from('user_gamification')
-                        .update({ show_on_leaderboard: value })
-                        .eq('user_id', user.id);
+                        .upsert({
+                            user_id: user.id,
+                            show_on_leaderboard: value
+                        }, { onConflict: 'user_id' });
                 } catch (err) {
                     console.error('Failed to sync leaderboard setting:', err);
                     throw err;
