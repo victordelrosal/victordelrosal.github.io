@@ -123,6 +123,10 @@
         const unlockedAchievements = window.Gamification.getUnlockedAchievements();
         const allAchievements = window.Gamification.getAllAchievements();
 
+        // Get all levels for progression display
+        const allLevels = window.Gamification.LEVELS;
+        const currentLevelIndex = allLevels.findIndex(l => l.name === levelProgress.current.name);
+
         // Render stats section
         statsSection.innerHTML = `
             <div class="gamify-level-display">
@@ -139,6 +143,28 @@
                         ? `<div class="gamify-xp-next">${levelProgress.xpToNext.toLocaleString()} XP to ${levelProgress.next.name}</div>`
                         : '<div class="gamify-xp-next">Max level reached!</div>'
                     }
+                </div>
+            </div>
+
+            <div class="gamify-level-progression">
+                <h4>Level Progression</h4>
+                <div class="gamify-levels-track">
+                    ${allLevels.map((level, index) => {
+                        const isCompleted = index < currentLevelIndex;
+                        const isCurrent = index === currentLevelIndex;
+                        const isLocked = index > currentLevelIndex;
+                        const statusClass = isCompleted ? 'completed' : (isCurrent ? 'current' : 'locked');
+                        return `
+                            <div class="gamify-level-node ${statusClass}" title="${level.name} - ${level.minXP.toLocaleString()} XP">
+                                <div class="gamify-level-node-icon" style="${isCompleted || isCurrent ? `background: ${level.color}` : ''}">
+                                    ${isLocked ? '🔒' : level.icon}
+                                </div>
+                                <div class="gamify-level-node-name">${level.name}</div>
+                                <div class="gamify-level-node-xp">${level.minXP.toLocaleString()} XP</div>
+                            </div>
+                            ${index < allLevels.length - 1 ? `<div class="gamify-level-connector ${isCompleted ? 'completed' : ''}"></div>` : ''}
+                        `;
+                    }).join('')}
                 </div>
             </div>
             <div class="gamify-stats-grid">

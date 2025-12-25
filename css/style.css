@@ -7348,6 +7348,112 @@ footer {
     color: var(--text-white-tertiary);
 }
 
+/* === Level Progression Track === */
+.gamify-level-progression {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gamify-level-progression h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-white-secondary);
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gamify-levels-track {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    gap: 4px;
+}
+
+.gamify-level-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+    flex-shrink: 0;
+}
+
+.gamify-level-node-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+}
+
+.gamify-level-node.completed .gamify-level-node-icon {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+}
+
+.gamify-level-node.current .gamify-level-node-icon {
+    border-color: #FFD700;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
+    animation: currentLevelPulse 2s ease-in-out infinite;
+}
+
+.gamify-level-node.locked .gamify-level-node-icon {
+    opacity: 0.5;
+}
+
+.gamify-level-node-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-white-secondary);
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.gamify-level-node.current .gamify-level-node-name {
+    color: #FFD700;
+}
+
+.gamify-level-node.locked .gamify-level-node-name {
+    opacity: 0.5;
+}
+
+.gamify-level-node-xp {
+    font-size: 9px;
+    color: var(--text-white-tertiary);
+}
+
+.gamify-level-node.locked .gamify-level-node-xp {
+    opacity: 0.5;
+}
+
+.gamify-level-connector {
+    flex: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-top: 20px;
+    min-width: 10px;
+}
+
+.gamify-level-connector.completed {
+    background: var(--accent-cyan);
+}
+
+@keyframes currentLevelPulse {
+    0%, 100% { box-shadow: 0 0 16px rgba(255, 215, 0, 0.5); }
+    50% { box-shadow: 0 0 24px rgba(255, 215, 0, 0.8); }
+}
+
 .gamify-stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
