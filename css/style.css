@@ -7525,7 +7525,7 @@ footer {
     z-index: 2;
 }
 
-/* === XP Message Card - Reason for points === */
+/* === XP Message - Floating text (no background) === */
 .xp-message-card {
     position: fixed;
     transform: translateY(-50%) translateX(20px);
@@ -7534,23 +7534,10 @@ footer {
     opacity: 0;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    /* 3D Glass card */
-    background:
-        radial-gradient(ellipse 80% 60% at 30% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-        linear-gradient(135deg,
-            rgba(30, 45, 65, 0.95) 0%,
-            rgba(20, 35, 55, 0.98) 50%,
-            rgba(15, 28, 45, 0.98) 100%);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 2px 8px rgba(0, 0, 0, 0.3),
-        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    gap: 10px;
+    padding: 0;
+    background: none;
+    border: none;
     transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -7581,15 +7568,15 @@ footer {
 }
 
 .xp-message-emoji {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 }
 
 .xp-message-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
 }
 
 .xp-message-title {
@@ -7597,14 +7584,20 @@ footer {
     font-weight: 700;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8),
+        0 2px 6px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 .xp-message-reason {
     font-size: 12px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.85);
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8),
+        0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* === Level Up - Spectacular Animation === */
