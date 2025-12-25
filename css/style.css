@@ -8051,6 +8051,63 @@ footer {
     opacity: 0.3;
 }
 
+/* Happy squishy bounce on hover! */
+.gamify-level-node-icon:hover {
+    cursor: pointer;
+    animation: levelNodeBounce 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes levelNodeBounce {
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        /* Squash down - wide and short */
+        transform: scaleX(1.15) scaleY(0.8);
+        filter: brightness(1.1);
+    }
+    30% {
+        /* Spring up - tall and thin */
+        transform: scaleX(0.85) scaleY(1.2);
+        filter: brightness(1.15);
+    }
+    45% {
+        /* Squash again */
+        transform: scaleX(1.1) scaleY(0.9);
+        filter: brightness(1.05);
+    }
+    60% {
+        /* Small overshoot */
+        transform: scaleX(0.95) scaleY(1.08);
+        filter: brightness(1.1);
+    }
+    75% {
+        /* Tiny squash */
+        transform: scaleX(1.03) scaleY(0.97);
+    }
+    90% {
+        transform: scaleX(0.99) scaleY(1.02);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* Locked nodes get a subtle wiggle instead */
+.gamify-level-node.locked .gamify-level-node-icon:hover {
+    animation: lockedNodeWiggle 0.4s ease-in-out;
+    cursor: not-allowed;
+}
+
+@keyframes lockedNodeWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-3deg); }
+    40% { transform: rotate(3deg); }
+    60% { transform: rotate(-2deg); }
+    80% { transform: rotate(2deg); }
+}
+
 .gamify-level-node-name {
     font-size: 9px;
     font-weight: 600;
