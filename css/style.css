@@ -7525,6 +7525,88 @@ footer {
     z-index: 2;
 }
 
+/* === XP Message Card - Reason for points === */
+.xp-message-card {
+    position: fixed;
+    transform: translateY(-50%) translateX(20px);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    /* 3D Glass card */
+    background:
+        radial-gradient(ellipse 80% 60% at 30% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg,
+            rgba(30, 45, 65, 0.95) 0%,
+            rgba(20, 35, 55, 0.98) 50%,
+            rgba(15, 28, 45, 0.98) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.xp-message-card.visible {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    animation: messageCardSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.xp-message-card.fading {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@keyframes messageCardSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(30px) scale(0.9);
+    }
+    50% {
+        transform: translateY(-50%) translateX(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0) scale(1);
+    }
+}
+
+.xp-message-emoji {
+    font-size: 28px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.xp-message-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.xp-message-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.xp-message-reason {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
 /* === Level Up - Spectacular Animation === */
 .user-avatar.level-up-glow {
     animation:

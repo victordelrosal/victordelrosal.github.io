@@ -11,7 +11,7 @@
     // AVATAR XP ANIMATION
     // ==========================================
 
-    function animateAvatarXP(amount) {
+    function animateAvatarXP(amount, reason) {
         const avatar = document.querySelector('.user-avatar');
         if (!avatar) return;
 
@@ -32,6 +32,37 @@
 
         document.body.appendChild(notification);
 
+        // Create the reason message card (to the left of avatar)
+        if (reason) {
+            const messageCard = document.createElement('div');
+            messageCard.className = 'xp-message-card';
+            messageCard.style.position = 'fixed';
+            messageCard.style.right = `${window.innerWidth - avatarRect.left + 12}px`;
+            messageCard.style.top = `${avatarRect.top + avatarRect.height / 2}px`;
+
+            // Get emoji based on reason
+            const emoji = getReasonEmoji(reason);
+            messageCard.innerHTML = `
+                <span class="xp-message-emoji">${emoji}</span>
+                <div class="xp-message-text">
+                    <span class="xp-message-title">+${amount} pts</span>
+                    <span class="xp-message-reason">${reason}</span>
+                </div>
+            `;
+
+            document.body.appendChild(messageCard);
+
+            requestAnimationFrame(() => {
+                messageCard.classList.add('visible');
+            });
+
+            // Remove message card after animation
+            setTimeout(() => {
+                messageCard.classList.add('fading');
+                setTimeout(() => messageCard.remove(), 400);
+            }, 2500);
+        }
+
         // Trigger animation after append
         requestAnimationFrame(() => {
             notification.classList.add('visible');
@@ -47,6 +78,18 @@
             notification.classList.add('fading');
             setTimeout(() => notification.remove(), 400);
         }, 2200);
+    }
+
+    function getReasonEmoji(reason) {
+        const lowerReason = reason.toLowerCase();
+        if (lowerReason.includes('wave') || lowerReason.includes('read') || lowerReason.includes('view')) return '🌊';
+        if (lowerReason.includes('share')) return '🚀';
+        if (lowerReason.includes('comment')) return '💬';
+        if (lowerReason.includes('reaction') || lowerReason.includes('gave')) return '👋';
+        if (lowerReason.includes('subscribe')) return '📧';
+        if (lowerReason.includes('streak')) return '🔥';
+        if (lowerReason.includes('first')) return '⭐';
+        return '✨';
     }
 
     function animateLevelUp(newLevel) {
@@ -303,9 +346,9 @@
     // ==========================================
 
     function setupEventListeners() {
-        // XP gained - animate avatar
+        // XP gained - animate avatar and show reason
         window.addEventListener('gamify:xp-gained', (e) => {
-            animateAvatarXP(e.detail.amount);
+            animateAvatarXP(e.detail.amount, e.detail.reason);
         });
 
         // Level up - special animation
