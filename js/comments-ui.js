@@ -58,12 +58,7 @@ const CommentsUI = {
           </button>
         </div>
 
-        <div id="signed-in-section" class="user-section" style="display: none;">
-          <div class="user-info">
-            <img id="user-avatar" src="" alt="" class="user-avatar">
-            <span id="user-name" class="user-name"></span>
-          </div>
-        </div>
+        <div id="signed-in-section" style="display: none;"></div>
       </div>
 
       <!-- Comment Form -->
