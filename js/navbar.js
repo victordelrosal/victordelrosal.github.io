@@ -304,6 +304,85 @@ const Navbar = {
     },
 
     /**
+     * Show delete account confirmation modal
+     */
+    showDeleteConfirmModal() {
+        // Create modal
+        const modal = document.createElement('div');
+        modal.className = 'delete-modal-overlay';
+        modal.innerHTML = `
+            <div class="delete-modal">
+                <div class="delete-modal-icon">⚠️</div>
+                <h2>Delete Account?</h2>
+                <p>This will permanently delete your account, all your XP, achievements, and progress. This action <strong>cannot be undone</strong>.</p>
+                <div class="delete-modal-buttons">
+                    <button class="delete-modal-cancel" id="delete-cancel-btn">Cancel</button>
+                    <button class="delete-modal-confirm" id="delete-confirm-btn">Delete My Account</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        document.body.classList.add('modal-open');
+
+        // Animate in
+        requestAnimationFrame(() => {
+            modal.classList.add('visible');
+        });
+
+        // Cancel button
+        document.getElementById('delete-cancel-btn').addEventListener('click', () => {
+            modal.classList.remove('visible');
+            setTimeout(() => {
+                modal.remove();
+                document.body.classList.remove('modal-open');
+            }, 300);
+        });
+
+        // Confirm delete button
+        document.getElementById('delete-confirm-btn').addEventListener('click', async () => {
+            const confirmBtn = document.getElementById('delete-confirm-btn');
+            confirmBtn.textContent = 'Deleting...';
+            confirmBtn.disabled = true;
+
+            try {
+                await window.SupabaseClient.deleteAccount();
+                modal.remove();
+                document.body.classList.remove('modal-open');
+            } catch (err) {
+                console.error('Failed to delete account', err);
+                confirmBtn.textContent = 'Delete My Account';
+                confirmBtn.disabled = false;
+                alert('Failed to delete account. Please try again.');
+            }
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('visible');
+                setTimeout(() => {
+                    modal.remove();
+                    document.body.classList.remove('modal-open');
+                }, 300);
+            }
+        });
+
+        // ESC to close
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('visible');
+                setTimeout(() => {
+                    modal.remove();
+                    document.body.classList.remove('modal-open');
+                }, 300);
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    },
+
+    /**
      * Update Auth UI based on user state
      */
     updateAuthUI(user) {
@@ -521,15 +600,8 @@ const Navbar = {
             // Delete account
             const deleteBtn = document.getElementById('delete-account-btn');
             if (deleteBtn) {
-                deleteBtn.addEventListener('click', async () => {
-                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                        try {
-                            await window.SupabaseClient.deleteAccount();
-                        } catch (err) {
-                            console.error('Failed to delete account', err);
-                            alert('Failed to delete account. Please try again.');
-                        }
-                    }
+                deleteBtn.addEventListener('click', () => {
+                    this.showDeleteConfirmModal();
                 });
             }
 
