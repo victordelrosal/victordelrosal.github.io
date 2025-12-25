@@ -59,7 +59,7 @@ const CommentsUI = {
         </div>
 
         <div id="signed-in-section" class="user-section" style="display: none;">
-          <div class="user-info">
+          <div class="user-info" style="display: none;">
             <img id="user-avatar" src="" alt="" class="user-avatar">
             <span id="user-name" class="user-name"></span>
           </div>
