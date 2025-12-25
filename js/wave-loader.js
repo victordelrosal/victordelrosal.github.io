@@ -341,21 +341,24 @@
 
                 const shareText = `${post.title} by Victor del Rosal`;
 
+                // Share button delay so users can see +pts animation
+                const SHARE_DELAY = 800;
+
                 document.getElementById('share-whatsapp').addEventListener('click', () => {
-                    window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
                     if (window.Gamification) window.Gamification.trackShare('WhatsApp');
+                    setTimeout(() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank'), SHARE_DELAY);
                 });
                 document.getElementById('share-linkedin').addEventListener('click', () => {
-                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank');
                     if (window.Gamification) window.Gamification.trackShare('LinkedIn');
+                    setTimeout(() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank'), SHARE_DELAY);
                 });
                 document.getElementById('share-x').addEventListener('click', () => {
-                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank');
                     if (window.Gamification) window.Gamification.trackShare('X');
+                    setTimeout(() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank'), SHARE_DELAY);
                 });
                 document.getElementById('share-bluesky').addEventListener('click', () => {
-                    window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
                     if (window.Gamification) window.Gamification.trackShare('Bluesky');
+                    setTimeout(() => window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank'), SHARE_DELAY);
                 });
                 document.getElementById('share-copy').addEventListener('click', async (e) => {
                     const btn = e.currentTarget;
@@ -546,6 +549,7 @@
 
                 // Sticky footer functionality
                 (function() {
+                    const SHARE_DELAY = 800; // Delay so users can see +pts animation
                     const stickyFooter = document.getElementById('sticky-footer');
                     const stickyWaveBtn = document.getElementById('sticky-wave-btn');
                     const stickyWaveEmoji = stickyWaveBtn.querySelector('.wave-emoji');
@@ -576,16 +580,20 @@
                     });
 
                     document.getElementById('sticky-share-whatsapp').addEventListener('click', () => {
-                        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
+                        if (window.Gamification) window.Gamification.trackShare('WhatsApp');
+                        setTimeout(() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank'), SHARE_DELAY);
                     });
                     document.getElementById('sticky-share-linkedin').addEventListener('click', () => {
-                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank');
+                        if (window.Gamification) window.Gamification.trackShare('LinkedIn');
+                        setTimeout(() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank'), SHARE_DELAY);
                     });
                     document.getElementById('sticky-share-x').addEventListener('click', () => {
-                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank');
+                        if (window.Gamification) window.Gamification.trackShare('X');
+                        setTimeout(() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank'), SHARE_DELAY);
                     });
                     document.getElementById('sticky-share-bluesky').addEventListener('click', () => {
-                        window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank');
+                        if (window.Gamification) window.Gamification.trackShare('Bluesky');
+                        setTimeout(() => window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(shareText + '\n' + postUrl)}`, '_blank'), SHARE_DELAY);
                     });
                     document.getElementById('sticky-share-copy').addEventListener('click', async (e) => {
                         const btn = e.currentTarget;
