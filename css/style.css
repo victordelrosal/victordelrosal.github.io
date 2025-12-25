@@ -7280,17 +7280,22 @@ footer {
     z-index: 10001;
     pointer-events: none;
     opacity: 0;
-    /* Perfect circle */
-    width: 48px;
-    height: 48px;
+    /* PERFECT CIRCLE - locked dimensions */
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-radius: 50% !important;
+    /* Centering content */
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: linear-gradient(135deg,
-        #00D4FF 0%,
-        #00FF88 100%);
-    border: 3px solid rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    /* Styling */
+    background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+    border: 3px solid rgba(255, 255, 255, 0.9);
     box-shadow:
         0 6px 24px rgba(0, 212, 255, 0.6),
         0 0 40px rgba(0, 255, 136, 0.4),
@@ -7337,14 +7342,11 @@ footer {
 
 /* Points earned - centered in circle */
 .xp-earned {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     color: #fff;
-    text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.4),
-        0 0 15px rgba(255, 255, 255, 0.4);
-    letter-spacing: -0.5px;
-    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    line-height: 1;
 }
 
 /* Level up glow effect */
