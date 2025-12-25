@@ -309,19 +309,18 @@
 
             const xp = getStoredData(STORAGE_KEYS.xp, 0);
             const stats = getStoredData(STORAGE_KEYS.stats, { reads: 0, waves: 0, comments: 0, shares: 0, postsRead: [] });
+            const displayName = localStorage.getItem(STORAGE_KEYS.anonName) || anonymousName || 'Guest';
 
-            const { error } = await supabase.rpc('update_anonymous_xp', {
+            // Use upsert function to sync current state
+            const { error } = await supabase.rpc('sync_anonymous_user', {
                 p_anon_id: anonymousId,
-                p_xp_to_add: 0, // We're not adding, we're just syncing current state
+                p_display_name: displayName,
+                p_xp: xp,
                 p_stats: stats
             });
 
-            // Actually update the XP directly since the RPC adds to existing
-            if (!error) {
-                await supabase
-                    .from('anonymous_users')
-                    .update({ xp, stats, last_seen: new Date().toISOString() })
-                    .eq('anon_id', anonymousId);
+            if (error) {
+                console.error('[Gamification] Anonymous sync error:', error);
             }
         } catch (e) {
             console.error('[Gamification] Anonymous sync error:', e);
