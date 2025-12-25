@@ -7270,14 +7270,12 @@ footer {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    /* 3D Deep Ocean Drop - rich navy to cyan with backlight */
+    /* 3D Deep Ocean Drop - rich navy to indigo */
     background:
         /* Primary specular highlight - bright spot where light hits */
         radial-gradient(ellipse 40% 30% at 28% 22%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 25%, transparent 50%),
         /* Secondary highlight - softer spread */
         radial-gradient(ellipse 50% 40% at 32% 28%, rgba(200, 230, 255, 0.35) 0%, transparent 40%),
-        /* Backlight glow from bottom - cyan rim */
-        radial-gradient(ellipse 100% 50% at 50% 95%, rgba(0, 220, 255, 0.5) 0%, rgba(0, 180, 255, 0.2) 40%, transparent 70%),
         /* Core deep ocean gradient - navy to indigo */
         radial-gradient(ellipse 130% 130% at 40% 35%,
             rgba(30, 60, 120, 1) 0%,
@@ -7288,17 +7286,11 @@ footer {
     /* No border - pure sphere */
     border: none;
     box-shadow:
-        /* Backlight glow - cyan from behind */
-        0 0 25px rgba(0, 220, 255, 0.7),
-        0 0 50px rgba(0, 180, 255, 0.4),
-        0 0 80px rgba(0, 150, 255, 0.25),
         /* Ground shadow for 3D depth */
-        0 8px 20px rgba(5, 10, 30, 0.6),
-        0 15px 35px rgba(5, 10, 30, 0.4),
+        0 8px 20px rgba(5, 10, 30, 0.5),
+        0 15px 35px rgba(5, 10, 30, 0.3),
         /* Top rim highlight */
         inset 0 2px 5px rgba(255, 255, 255, 0.4),
-        /* Bottom backlight rim - cyan edge */
-        inset 0 -3px 8px rgba(0, 200, 255, 0.5),
         /* Deep ocean interior shadow */
         inset 0 -10px 25px rgba(5, 10, 35, 0.7);
 }
@@ -7321,21 +7313,19 @@ footer {
     transform: rotate(-25deg);
 }
 
-/* Reflected light from below - environmental bounce light (cyan theme) */
+/* Reflected light from below - subtle white bounce */
 .xp-notification::after {
     content: '';
     position: absolute;
-    bottom: 9px;
-    right: 10px;
-    width: 12px;
-    height: 7px;
+    bottom: 10px;
+    right: 12px;
+    width: 10px;
+    height: 6px;
     background: radial-gradient(ellipse,
-        rgba(0, 220, 255, 0.4) 0%,
-        rgba(0, 200, 255, 0.2) 50%,
-        transparent 100%);
+        rgba(255, 255, 255, 0.2) 0%,
+        transparent 70%);
     border-radius: 50%;
     filter: blur(2px);
-    transform: rotate(20deg);
 }
 
 .xp-notification.visible {
@@ -7392,19 +7382,14 @@ footer {
     }
 }
 
-/* Points earned text - glowing cyan on dark sphere */
+/* Points earned text - clean white on dark sphere */
 .xp-earned {
     font-size: 16px;
     font-weight: 800;
     color: #fff;
     text-shadow:
-        /* Crisp shadow for depth */
-        0 1px 2px rgba(0, 0, 0, 0.8),
-        0 2px 4px rgba(0, 0, 0, 0.5),
-        /* Cyan glow to match theme */
-        0 0 12px rgba(0, 220, 255, 0.9),
-        0 0 25px rgba(0, 200, 255, 0.6),
-        0 0 40px rgba(0, 180, 255, 0.4);
+        0 1px 2px rgba(0, 0, 0, 0.6),
+        0 2px 4px rgba(0, 0, 0, 0.4);
     letter-spacing: -0.3px;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Rounded', sans-serif;
     position: relative;
