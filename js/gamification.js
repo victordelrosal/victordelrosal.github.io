@@ -552,16 +552,17 @@
 
     function trackPageView(slug) {
         const stats = getStats();
+        const isFirstRead = stats.reads === 0;
+        const isNewPost = !stats.postsRead.includes(slug);
 
-        // Only award XP for unique post reads
-        if (!stats.postsRead.includes(slug)) {
-            const isFirstRead = stats.reads === 0;
-            updateStats('reads', slug);
-            addXP(XP_CONFIG.pageView, 'Reading a wave');
+        // Always award XP for viewing a wave
+        updateStats('reads', slug);
+        addXP(XP_CONFIG.pageView, 'Viewing a wave');
 
-            // Check reading achievements
-            if (isFirstRead) unlockAchievement('first_read');
+        // Check reading achievements (based on unique posts read)
+        if (isFirstRead) unlockAchievement('first_read');
 
+        if (isNewPost) {
             const newStats = getStats();
             if (newStats.postsRead.length >= 10 && !hasAchievement('deep_diver')) {
                 unlockAchievement('deep_diver');

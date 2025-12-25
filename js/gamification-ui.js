@@ -15,13 +15,10 @@
         const avatar = document.querySelector('.user-avatar');
         if (!avatar) return;
 
-        // Get current total XP for balance display
-        const totalXP = window.Gamification ? window.Gamification.getXP() : 0;
-
         // Add happy dance animation
         avatar.classList.add('xp-dance');
 
-        // Create the XP notification container
+        // Create the XP notification bubble
         const notification = document.createElement('div');
         notification.className = 'xp-notification';
 
@@ -31,12 +28,7 @@
         notification.style.left = `${avatarRect.left + avatarRect.width / 2}px`;
         notification.style.top = `${avatarRect.top + avatarRect.height / 2}px`;
 
-        notification.innerHTML = `
-            <div class="xp-notification-inner">
-                <span class="xp-balance">${totalXP.toLocaleString()} pts</span>
-                <span class="xp-earned">+${amount} pts</span>
-            </div>
-        `;
+        notification.innerHTML = `<span class="xp-earned">+${amount}</span>`;
 
         document.body.appendChild(notification);
 
