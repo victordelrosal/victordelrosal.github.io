@@ -21,16 +21,17 @@
         firstWave: 25     // Bonus for first ever wave
     };
 
-    // Ocean-themed levels
+    // Ocean-themed levels (quadratic progression: ~50 × (level-1)^2.1)
+    // Designed for ~50-75 XP/day engagement rate
     const LEVELS = [
         { name: 'Droplet', minXP: 0, icon: '💧', color: '#87CEEB' },
-        { name: 'Ripple', minXP: 100, icon: '🌊', color: '#4FC3F7' },
-        { name: 'Wave', minXP: 300, icon: '🌊', color: '#29B6F6' },
-        { name: 'Current', minXP: 600, icon: '🌀', color: '#03A9F4' },
-        { name: 'Surge', minXP: 1000, icon: '⚡', color: '#0288D1' },
-        { name: 'Tide', minXP: 1500, icon: '🌙', color: '#0277BD' },
+        { name: 'Ripple', minXP: 50, icon: '🌊', color: '#4FC3F7' },
+        { name: 'Wave', minXP: 200, icon: '🌊', color: '#29B6F6' },
+        { name: 'Current', minXP: 500, icon: '🌀', color: '#03A9F4' },
+        { name: 'Surge', minXP: 950, icon: '⚡', color: '#0288D1' },
+        { name: 'Tide', minXP: 1600, icon: '🌙', color: '#0277BD' },
         { name: 'Tsunami', minXP: 2500, icon: '🌊', color: '#01579B' },
-        { name: 'Ocean Master', minXP: 5000, icon: '🔱', color: '#004D73' }
+        { name: 'Ocean Master', minXP: 3700, icon: '🔱', color: '#004D73' }
     ];
 
     // Achievement definitions
