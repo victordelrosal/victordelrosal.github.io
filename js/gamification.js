@@ -21,17 +21,19 @@
         firstWave: 25     // Bonus for first ever wave
     };
 
-    // Ocean-themed levels (quadratic progression: ~50 × (level-1)^2.1)
+    // Ocean-themed levels - Rainbow spectrum + precious metals
     // Designed for ~50-75 XP/day engagement rate
     const LEVELS = [
-        { name: 'Droplet', minXP: 0, icon: '💧', color: '#87CEEB' },
-        { name: 'Ripple', minXP: 50, icon: '🌊', color: '#4FC3F7' },
-        { name: 'Wave', minXP: 200, icon: '🌊', color: '#29B6F6' },
-        { name: 'Current', minXP: 500, icon: '🌀', color: '#03A9F4' },
-        { name: 'Surge', minXP: 950, icon: '⚡', color: '#0288D1' },
-        { name: 'Tide', minXP: 1600, icon: '🌙', color: '#0277BD' },
-        { name: 'Tsunami', minXP: 2500, icon: '🌊', color: '#01579B' },
-        { name: 'Ocean Master', minXP: 3700, icon: '🔱', color: '#004D73' }
+        { name: 'Droplet', minXP: 0, icon: '💧', color: '#87CEEB', borderClass: 'level-droplet' },
+        { name: 'Ripple', minXP: 50, icon: '🌊', color: '#00CED1', borderClass: 'level-ripple' },
+        { name: 'Wave', minXP: 200, icon: '🌊', color: '#00E676', borderClass: 'level-wave' },
+        { name: 'Current', minXP: 500, icon: '🌀', color: '#FFEB3B', borderClass: 'level-current' },
+        { name: 'Surge', minXP: 950, icon: '⚡', color: '#FF9800', borderClass: 'level-surge' },
+        { name: 'Tide', minXP: 1600, icon: '🔥', color: '#F44336', borderClass: 'level-tide' },
+        { name: 'Tsunami', minXP: 2500, icon: '🌀', color: '#E040FB', borderClass: 'level-tsunami' },
+        { name: 'Silver', minXP: 3700, icon: '🥈', color: '#C0C0C0', borderClass: 'level-silver' },
+        { name: 'Gold', minXP: 5200, icon: '🥇', color: '#FFD700', borderClass: 'level-gold' },
+        { name: 'Diamond', minXP: 7500, icon: '💎', color: '#B9F2FF', borderClass: 'level-diamond' }
     ];
 
     // Achievement definitions
@@ -657,6 +659,31 @@
     }
 
     // ==========================================
+    // AVATAR BORDER - Level-based colors
+    // ==========================================
+
+    function updateAvatarBorder() {
+        const avatar = document.querySelector('.user-avatar');
+        if (!avatar) return;
+
+        const xp = getXP();
+        const levelProgress = getLevelProgress(xp);
+        const currentLevel = levelProgress.current;
+
+        // Remove all level classes
+        LEVELS.forEach(level => {
+            if (level.borderClass) {
+                avatar.classList.remove(level.borderClass);
+            }
+        });
+
+        // Add current level class
+        if (currentLevel && currentLevel.borderClass) {
+            avatar.classList.add(currentLevel.borderClass);
+        }
+    }
+
+    // ==========================================
     // PUBLIC API
     // ==========================================
 
@@ -680,6 +707,7 @@
         trackShare,
         trackSubscription,
         updateStreak,
+        updateAvatarBorder,
 
         // Config access
         LEVELS,
@@ -687,9 +715,17 @@
         XP_CONFIG
     };
 
-    // Initialize streak on page load
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
         updateStreak();
+        // Delay avatar border update to ensure avatar is rendered
+        setTimeout(updateAvatarBorder, 500);
     });
+
+    // Update avatar border after sync
+    window.addEventListener('gamify:synced', updateAvatarBorder);
+
+    // Update avatar border after level up
+    window.addEventListener('gamify:level-up', updateAvatarBorder);
 
 })();
