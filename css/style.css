@@ -6710,6 +6710,46 @@ footer {
     z-index: 20;
 }
 
+/* Anonymous user game button */
+.anon-game-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(0, 180, 212, 0.15) 0%, rgba(0, 100, 150, 0.25) 100%);
+    border: 1px solid rgba(0, 180, 212, 0.4);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.anon-game-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 180, 212, 0.25) 0%, rgba(0, 100, 150, 0.35) 100%);
+    border-color: rgba(0, 212, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.anon-game-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.anon-game-xp {
+    color: rgba(0, 212, 255, 0.95);
+}
+
+.anon-game-streak {
+    font-size: 12px;
+}
+
 .login-btn {
     display: flex;
     align-items: center;
@@ -7822,6 +7862,86 @@ footer {
 .gamify-panel-body::-webkit-scrollbar-thumb {
     background: rgba(0, 212, 255, 0.3);
     border-radius: 3px;
+}
+
+/* === Anonymous User Warning === */
+.gamify-anon-warning {
+    background: linear-gradient(135deg, rgba(255, 170, 0, 0.15) 0%, rgba(255, 100, 0, 0.1) 100%);
+    border: 1px solid rgba(255, 170, 0, 0.3);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.gamify-anon-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.gamify-anon-icon {
+    font-size: 28px;
+}
+
+.gamify-anon-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gamify-anon-text strong {
+    color: #fff;
+    font-size: 14px;
+}
+
+.gamify-anon-text span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+
+.gamify-signin-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #3c4043;
+    border: none;
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.gamify-signin-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.gamify-leaderboard-btn {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(0, 180, 212, 0.2) 0%, rgba(0, 100, 150, 0.3) 100%);
+    border: 1px solid rgba(0, 180, 212, 0.4);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: rgba(0, 212, 255, 0.95);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+.gamify-leaderboard-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 180, 212, 0.3) 0%, rgba(0, 100, 150, 0.4) 100%);
+    border-color: rgba(0, 212, 255, 0.6);
 }
 
 /* === Stats Section - Premium Card === */

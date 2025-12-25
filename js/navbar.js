@@ -552,8 +552,25 @@ const Navbar = {
             });
 
         } else {
-            // User is logged out
+            // User is logged out - show anonymous game button + sign in
+            let anonGameHTML = '';
+            if (window.Gamification) {
+                const xp = window.Gamification.getXP();
+                const levelProgress = window.Gamification.getLevelProgress(xp);
+                const anonName = window.Gamification.getAnonDisplayName?.() || 'Guest';
+                const streak = window.Gamification.getStreak();
+
+                anonGameHTML = `
+                    <button id="anon-game-btn" class="anon-game-btn" title="Your progress as ${anonName}">
+                        <span class="anon-game-icon" style="background: ${levelProgress.current.color}">${levelProgress.current.icon}</span>
+                        <span class="anon-game-xp">${xp} XP</span>
+                        ${streak.count > 1 ? `<span class="anon-game-streak">🔥${streak.count}</span>` : ''}
+                    </button>
+                `;
+            }
+
             container.innerHTML = `
+                ${anonGameHTML}
                 <button id="login-btn" class="login-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -564,6 +581,16 @@ const Navbar = {
                     <span>Sign in</span>
                 </button>
             `;
+
+            // Anonymous game button - opens journey/leaderboard panel
+            const anonGameBtn = document.getElementById('anon-game-btn');
+            if (anonGameBtn) {
+                anonGameBtn.addEventListener('click', () => {
+                    if (window.GamificationUI) {
+                        window.GamificationUI.toggleAchievementsPanel();
+                    }
+                });
+            }
 
             const loginBtn = document.getElementById('login-btn');
             loginBtn.addEventListener('click', () => {
@@ -598,21 +625,20 @@ function loadGamification() {
     }
 
     // Load gamification.js first, then gamification-ui.js
-    const cacheBust = 'v2';
+    const cacheBust = 'v3';
     const gamificationScript = document.createElement('script');
     gamificationScript.src = `/js/gamification.js?${cacheBust}`;
     gamificationScript.onload = () => {
         const uiScript = document.createElement('script');
         uiScript.src = `/js/gamification-ui.js?${cacheBust}`;
-        document.head.appendChild(uiScript);
-
-        // Re-render auth UI to include gamification section
-        if (window.SupabaseClient && window.Navbar) {
-            const user = window.SupabaseClient.getCurrentUser?.();
-            if (user) {
+        uiScript.onload = () => {
+            // Re-render auth UI to include gamification section (for both logged in AND anonymous users)
+            if (window.Navbar) {
+                const user = window.SupabaseClient?.getCurrentUser?.();
                 window.Navbar.updateAuthUI(user);
             }
-        }
+        };
+        document.head.appendChild(uiScript);
     };
     document.head.appendChild(gamificationScript);
 }
