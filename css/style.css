@@ -8734,6 +8734,33 @@ body.bg-light .gamify-xp-bar {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Leaderboard toggle in panel */
+.leaderboard-toggle-container {
+    padding: 12px 20px;
+    background: rgba(0, 212, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leaderboard-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.leaderboard-toggle-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00d4ff;
+    cursor: pointer;
+}
+
+.leaderboard-toggle-label span {
+    user-select: none;
+}
+
 /* Mobile responsive */
 @media (max-width: 480px) {
     .leaderboard-entry {

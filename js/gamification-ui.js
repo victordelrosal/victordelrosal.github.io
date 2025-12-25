@@ -428,12 +428,19 @@
         const panel = document.createElement('div');
         panel.className = 'gamify-panel leaderboard-panel';
         panel.id = 'leaderboard-panel';
+        const showOnLeaderboard = window.Gamification?.getShowOnLeaderboard?.() ?? true;
         panel.innerHTML = `
             <div class="gamify-panel-backdrop"></div>
             <div class="gamify-panel-content">
                 <button class="gamify-panel-close">&times;</button>
                 <div class="gamify-panel-header">
                     <h2>🏆 Leaderboard</h2>
+                </div>
+                <div class="leaderboard-toggle-container">
+                    <label class="leaderboard-toggle-label">
+                        <input type="checkbox" id="leaderboard-panel-toggle" ${showOnLeaderboard ? 'checked' : ''}>
+                        <span>Show me on leaderboard</span>
+                    </label>
                 </div>
                 <div class="gamify-panel-body">
                     <div class="leaderboard-list" id="leaderboard-list">
@@ -446,6 +453,24 @@
         // Close handlers
         panel.querySelector('.gamify-panel-backdrop').addEventListener('click', closeLeaderboardPanel);
         panel.querySelector('.gamify-panel-close').addEventListener('click', closeLeaderboardPanel);
+
+        // Toggle handler
+        panel.querySelector('#leaderboard-panel-toggle').addEventListener('change', async (e) => {
+            const isChecked = e.target.checked;
+            try {
+                if (window.Gamification) {
+                    await window.Gamification.setShowOnLeaderboard(isChecked);
+                    // Also update the settings dropdown checkbox if it exists
+                    const settingsCheckbox = document.getElementById('leaderboard-checkbox');
+                    if (settingsCheckbox) settingsCheckbox.checked = isChecked;
+                    // Refresh leaderboard to reflect change
+                    setTimeout(() => renderLeaderboardPanel(), 500);
+                }
+            } catch (err) {
+                console.error('Failed to update leaderboard visibility', err);
+                e.target.checked = !isChecked;
+            }
+        });
 
         // ESC key to close
         document.addEventListener('keydown', (e) => {
@@ -512,6 +537,11 @@
         if (panel.classList.contains('visible')) {
             closeLeaderboardPanel();
         } else {
+            // Update toggle state before showing
+            const toggle = panel.querySelector('#leaderboard-panel-toggle');
+            if (toggle && window.Gamification) {
+                toggle.checked = window.Gamification.getShowOnLeaderboard();
+            }
             renderLeaderboardPanel();
             panel.classList.add('visible');
             document.body.style.overflow = 'hidden';

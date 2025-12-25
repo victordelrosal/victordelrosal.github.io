@@ -691,7 +691,8 @@
 
     function getShowOnLeaderboard() {
         const stored = localStorage.getItem(LEADERBOARD_KEY);
-        return stored === 'true';
+        // Default to true (opt-out model)
+        return stored !== 'false';
     }
 
     async function setShowOnLeaderboard(value) {
