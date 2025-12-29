@@ -11,6 +11,11 @@ on:
   # Allow manual trigger for testing
   workflow_dispatch:
 
+# Required to trigger other workflows (daily-ai-news-scan, build-waves)
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -343,3 +348,25 @@ jobs:
           fi
 
           echo "================================================"
+
+      # ========================================
+      # FAIL-SAFE: Emergency alert if workflow fails
+      # ========================================
+      - name: "Fail-safe: Send emergency alert if verification failed"
+        if: failure()
+        run: |
+          echo "🚨 EMERGENCY: Verify DAINS workflow failed!"
+          echo "Sending emergency alert via curl..."
+
+          # Send alert via Resend API directly (no node dependencies needed)
+          curl -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer ${RESEND_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"from\": \"DAINS Alert <alerts@victordelrosal.com>\",
+              \"to\": \"${ALERT_EMAIL}\",
+              \"subject\": \"🚨 EMERGENCY: DAINS Verification Failed - ${{ steps.date.outputs.date }}\",
+              \"html\": \"<h1>DAINS Verification Failed</h1><p>The verification workflow crashed before completing. This is a critical failure that requires immediate attention.</p><p><strong>Date:</strong> ${{ steps.date.outputs.date }}</p><p><strong>Workflow run:</strong> <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View logs</a></p><p><strong>Possible causes:</strong></p><ul><li>Invalid API keys (Anthropic, Supabase)</li><li>Permission issues</li><li>Network failures</li></ul><p>Please check the workflow logs and fix immediately.</p>\"
+            }"
+
+          echo "Emergency alert sent!"
