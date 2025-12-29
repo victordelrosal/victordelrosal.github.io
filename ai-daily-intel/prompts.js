@@ -69,8 +69,9 @@ Important:
 - Do NOT include source counts like "(X sources)" anywhere - we removed this
 - Output ONLY valid HTML, no markdown
 - If fewer than 10 stories, adjust sections (min 5 stories)
-- EVERY story (Top, Notable, Also Noted) MUST have a clickable source link
-- Source link should be primary source when available
+- EVERY story MUST have a clickable source link using the **USE THIS URL** provided
+- Use EXACTLY the URL from **USE THIS URL** - do not use "#" or placeholder URLs
+- Use the **SOURCE NAME** as the link text
 - For "Also Noted" stories, explain WHY each story matters to AI practitioners`;
 }
 
@@ -79,20 +80,42 @@ export function formatStoriesForPrompt(stories, isNewsletterRanked) {
     const hitCount = story.hits ? story.hits.length : 0;
     const newsletters = story.hits ? story.hits.map(h => h.newsletter).join(', ') : 'RSS only';
 
-    const primarySource = story.primarySource
-      ? `PRIMARY SOURCE: ${story.primarySource.publisher} - ${story.primarySource.url}`
-      : 'PRIMARY SOURCE: Not identified';
-
     // Get best summary from hits or use story summary
     const summaries = story.hits && story.hits.length > 0
       ? story.hits.map(h => h.summary).filter(Boolean).join(' | ')
       : story.summary || 'No summary available';
 
+    // Determine the SINGLE best URL for this story (priority: primarySource > newsletter URL)
+    let bestUrl = null;
+    let bestSource = null;
+
+    // Priority 1: Primary source from RSS match
+    if (story.primarySource && story.primarySource.url) {
+      bestUrl = story.primarySource.url;
+      bestSource = story.primarySource.publisher;
+    }
+    // Priority 2: First valid URL from newsletter hits
+    else if (story.hits && story.hits.length > 0) {
+      for (const hit of story.hits) {
+        if (hit.source_url) {
+          bestUrl = hit.source_url;
+          bestSource = hit.newsletter;
+          break;
+        }
+      }
+    }
+
+    // If still no URL, use first newsletter as source name
+    if (!bestSource && story.hits && story.hits.length > 0) {
+      bestSource = story.hits[0].newsletter;
+    }
+
     return `---STORY ${index + 1}---
 HEADLINE: ${story.headline}
 HIT COUNT: ${hitCount} newsletters
 NEWSLETTERS: ${newsletters}
-${primarySource}
+**USE THIS URL**: ${bestUrl || 'NO URL AVAILABLE - use # as href'}
+**SOURCE NAME**: ${bestSource || 'Unknown'}
 ENTITIES: ${(story.entities || []).join(', ') || 'None identified'}
 SUMMARIES: ${summaries}
 `;
