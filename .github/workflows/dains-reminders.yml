@@ -1,0 +1,64 @@
+name: DAINS Reminders
+
+on:
+  schedule:
+    # 6-month API key rotation reminder
+    # Runs on June 29, 2025 at 10am Dublin time
+    - cron: '0 10 29 6 *'
+
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'What to do'
+        required: true
+        default: 'test-alert'
+        type: choice
+        options:
+          - test-alert
+          - rotation-reminder
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    env:
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+
+    steps:
+      - name: Send test alert
+        if: inputs.action == 'test-alert'
+        run: |
+          echo "Sending test alert email..."
+
+          curl -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer ${RESEND_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "from": "DAINS Alert <alerts@victordelrosal.com>",
+              "to": "'"${ALERT_EMAIL}"'",
+              "subject": "✅ DAINS Alert System Test - Working!",
+              "html": "<h1>DAINS Alert System Test</h1><p>This is a test of the DAINS alert system.</p><p><strong>If you received this email, the alert system is working correctly.</strong></p><p>You will receive alerts when:</p><ul><li>The Anthropic API key is invalid (daily 5pm check)</li><li>DAINS fails and cannot be recovered</li><li>The verification workflow crashes</li></ul><p>No news = good news. You only get emails when action is needed.</p>"
+            }'
+
+          echo "Test alert sent!"
+
+      - name: Send rotation reminder
+        if: inputs.action == 'rotation-reminder' || github.event_name == 'schedule'
+        run: |
+          echo "Sending API key rotation reminder..."
+
+          # Calculate next reminder date (6 months from now)
+          NEXT_DATE=$(date -d "+6 months" "+%B %d, %Y" 2>/dev/null || date -v+6m "+%B %d, %Y")
+
+          curl -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer ${RESEND_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "from": "DAINS Alert <alerts@victordelrosal.com>",
+              "to": "'"${ALERT_EMAIL}"'",
+              "subject": "🔑 DAINS: Time to Rotate Your Anthropic API Key",
+              "html": "<h1>API Key Rotation Reminder</h1><p>It has been <strong>6 months</strong> since you last rotated your Anthropic API key.</p><p><strong>Action required:</strong></p><ol><li>Go to <a href=\"https://console.anthropic.com/settings/keys\">Anthropic Console</a></li><li>Create a new API key</li><li>Update the GitHub secret: <a href=\"https://github.com/victordelrosal/victordelrosal.github.io/settings/secrets/actions\">Repository Secrets → ANTHROPIC_API_KEY</a></li><li>Delete the old key from Anthropic Console</li></ol><p>This reminder will repeat in 6 months.</p>"
+            }'
+
+          echo "Rotation reminder sent!"
