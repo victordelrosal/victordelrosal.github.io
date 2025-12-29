@@ -661,17 +661,18 @@
     // EVENT LISTENERS
     // ==========================================
 
+    // CRITICAL: Set up XP and level-up listeners IMMEDIATELY on script load
+    // This prevents race conditions where XP events fire before init() completes
+    // These animations don't require full initialization - they just need DOM elements
+    window.addEventListener('gamify:xp-gained', (e) => {
+        animateAvatarXP(e.detail.amount, e.detail.reason);
+    });
+
+    window.addEventListener('gamify:level-up', (e) => {
+        animateLevelUp(e.detail.newLevel);
+    });
+
     function setupEventListeners() {
-        // XP gained - animate avatar and show reason
-        window.addEventListener('gamify:xp-gained', (e) => {
-            animateAvatarXP(e.detail.amount, e.detail.reason);
-        });
-
-        // Level up - special animation
-        window.addEventListener('gamify:level-up', (e) => {
-            animateLevelUp(e.detail.newLevel);
-        });
-
         // Achievement unlocked
         window.addEventListener('gamify:achievement-unlocked', (e) => {
             showToast('achievement', e.detail);
