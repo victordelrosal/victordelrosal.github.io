@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Tuesday, December 2, 2025</span></p>
+                <h1 id="post-title" class="post-title">COMPASS</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,8 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><h1>Introducing 🧭 COMPASS: Coding Operations Manual &amp; Protocol for AI System Standards (beta)</h1><img src="https://media.licdn.com/dms/image/v2/D4E22AQF-ljQ0GU0rEQ/feedshare-shrink_1280/B4EZqH6usRIUAs-/0/1763216912188?e=1766016000&amp;v=beta&amp;t=DJRYTw_bdg7TVWuuy5jytv6XvwzY_9686Ey0FMnk5ck"><p>I've been coding with AI agents (mostly Claude Code, ChatGPT Codex, GitHub Copilot) and while I think they're fantastic tools (almost magical) I've seen a number of issues: coding agents can over-engineer, reinvent established patterns, hallucinate dependencies or APIs, skip input validation, create monolithic codebases, ignore error handling, bypass testing, hardcode secrets, skip null checks, and crucially, lead to a range of security risks.</p><p>So I was wondering: what might be the equivalent of having a senior dev always guiding the agent?</p><p>To answer this I curated well-established software engineering frameworks into a single resource: COMPASS (Coding Operations Manual &amp; Protocol for AI System Standards). It's my small (hopefully useful) open source (MIT license) contribution to the growing community of AI-augmented coders, shared as-is.</p><p>Think of it as "true north" for AI coding agents based on best practice to help keep code secure, predictable, and maintainable, drawing from well-established software engineering guidelines and protocols including:</p><p>✔️ OWASP for secure-by-default design<br>✔️ SOLID for architecture<br>✔️ Test-Driven Development for reliability<br>✔️ YAGNI for simplicity<br>✔️ defensive programming for robustness, and<br>✔️ systematic debugging protocols</p><p>This is essentially the accumulated wisdom of modern software engineering in one framework. It works alongside project-specific guidelines such as CLAUDE.md or .cursorrules, acting as a base layer of universal dev standards.</p><p>The idea is straightforward: keep the assistant grounded in proven patterns, ensure it slows down where it should, and give it a simple protocol for testing, debugging, and making safe decisions instead of improvising.</p><p>If you’re using any AI coding agents or coding directly in an LLM, you can install COMPASS by adding the markdown files to your project or assistant configuration.</p><p>GitHub repository available here:</p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/victordelrosal/COMPASS">https://github.com/victordelrosal/COMPASS</a></p><p>It comes with COMPASS-MINI.md (just ~1,200 tokens, a tiny fraction of modern context windows) which provides persistent instructions throughout your coding sessions. I've added universal instructions on how to configure in Claude Code, Codex, Cursor, GitHub Copilot.</p><p>NB. AI coding frameworks are not security guarantees and require humans in the loop; AI models may still confabulate, misinterpret guidelines, or introduce vulnerabilities.</p><p>Let me know if it improves your workflow or if you have any suggestions.</p><p>Comment below or on LinkedIn:</p><p>https://www.linkedin.com/feed/update/urn:li:activity:7395467753865809920/</p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

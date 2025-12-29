@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Wednesday, November 26, 2025</span></p>
+                <h1 id="post-title" class="post-title">Hello, World!</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,8 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/HelloWorld.svg/2560px-HelloWorld.svg.png"><p>Welcome to victordelrosal.com!</p><p>This is the start of an exciting journey sharing ideas and... umm... unfinished thoughts! :)</p><p></p><p></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

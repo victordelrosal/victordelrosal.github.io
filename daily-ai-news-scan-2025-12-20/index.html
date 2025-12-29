@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Saturday, December 20, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Saturday, December 20, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,45 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>OpenAI pursues massive $100B funding round at $830B valuation while Yann LeCun confirms his new "world model" startup seeking $5B+ valuation. Meanwhile, Resolve AI achieves unicorn status and Google Cloud releases its 2026 AI Agent Trends Report. Chinese scammers exploit AI-generated imagery for ecommerce fraud, highlighting emerging misuse patterns as the technology matures.</p>
+
+<h2>Key Developments</h2>
+
+<h3>OpenAI Seeks $100B Funding Round at Record Valuation</h3>
+<p>OpenAI is reportedly attempting to raise $100 billion at an $830 billion valuation by the end of Q1 2026, potentially involving sovereign wealth funds. This would represent one of the largest private funding rounds in tech history, signaling continued massive capital requirements for AI development.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/openai-is-reportedly-trying-to-raise-100b-at-an-830b-valuation/">TechCrunch AI</a></p>
+
+<h3>Yann LeCun Confirms New "World Model" Startup</h3>
+<p>AI pioneer Yann LeCun officially confirmed his new startup focused on world models, reportedly seeking a $5+ billion valuation. LeCun clarified he will not serve as CEO of the company, which represents a significant move by one of AI's most influential researchers into the startup ecosystem.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/yann-lecun-confirms-his-new-world-model-startup-reportedly-seeks-5b-valuation/">TechCrunch AI</a></p>
+
+<h3>Resolve AI Achieves $1B Valuation in Series A</h3>
+<p>The startup founded by former Splunk executives reached unicorn status in its Series A round led by Lightspeed Venture Partners. This rapid valuation growth reflects continued investor appetite for AI-focused enterprise solutions, particularly from teams with proven track records in data analytics.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/ex-splunk-execs-startup-resolve-ai-hits-1-billion-valuation-with-series-a/">TechCrunch AI</a></p>
+
+<h3>Meta Develops New Multi-Modal AI Model for 2026</h3>
+<p>Meta is reportedly working on an advanced image and video model slated for 2026 release, focusing on improved coding capabilities and world models that can understand visual information. The development suggests Meta's continued investment in multi-modal AI to compete with OpenAI and Google's offerings.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/meta-is-developing-a-new-image-and-video-model-for-a-2026-release-report-says/">TechCrunch AI</a></p>
+
+<h3>Chinese Scammers Exploit AI-Generated Images for Refunds</h3>
+<p>Fraudsters in China are using AI-generated images and videos showing fake damaged products to obtain refunds from ecommerce platforms. This emerging fraud pattern demonstrates how readily available AI tools are being weaponized for financial crimes, creating new challenges for online marketplaces.</p>
+<p><strong>Source:</strong> <a href="https://www.wired.com/story/scammers-in-china-are-using-ai-generated-images-to-get-refunds/">Wired AI</a></p>
+
+<h3>OpenAI Implements New Teen Safety Guidelines</h3>
+<p>OpenAI updated ChatGPT's guidelines for interactions with users under 18 and published new AI literacy resources for teens and parents. The move comes as lawmakers consider AI standards for minors, though questions remain about implementation effectiveness.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/openai-adds-new-teen-safety-rules-to-models-as-lawmakers-weigh-ai-standards-for-minors/">TechCrunch AI</a></p>
+
+<h3>Cursor Expands Through Graphite Acquisition</h3>
+<p>AI code editor Cursor continued its acquisition strategy by acquiring Graphite, an AI code review assistant previously valued at $290 million. This consolidation reflects the competitive dynamics in AI-powered development tools as companies seek to build comprehensive coding ecosystems.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/19/cursor-continues-acquisition-spree-with-graphite-deal/">TechCrunch AI</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

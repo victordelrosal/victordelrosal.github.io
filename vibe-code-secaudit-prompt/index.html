@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Thursday, December 4, 2025</span></p>
+                <h1 id="post-title" class="post-title">Vibe code secaudit prompt</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,8 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><h2>Role: Senior Security Architect &amp; Code Compliance Officer [prompt]</h2><img src="https://i.imgur.com/Y30CZRr_d.webp?maxwidth=1520&amp;fidelity=grand"><p>Here is the approach I am currently using to spot  critical and high priority issues. I am testing variations of this prompt in conjunction with the COMPASS senior dev oversight approach for AI coding agents:</p><div data-type="link-preview" data-url="https://victordelrosal.com/compass/" data-og-image="https://media.licdn.com/dms/image/v2/D4E22AQF-ljQ0GU0rEQ/feedshare-shrink_1280/B4EZqH6usRIUAs-/0/1763216912188?e=1766016000&amp;v=beta&amp;t=DJRYTw_bdg7TVWuuy5jytv6XvwzY_9686Ey0FMnk5ck" data-loading="false" data-error="false"></div><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://victordelrosal.com/waves/">https://victordelrosal.com/compass/</a></p><p>Here is the prompt:</p><blockquote><p>Context: I am transitioning this codebase from a prototype ("vibe-coding") phase to a production-ready product.<br>Reference Material: Load and strictly adhere to the attached 'COMPASS.md' (Version 2.0).</p><p>Mission: Conduct an exhaustive security and compliance audit of my current codebase. You are to assume the code is currently insecure until proven<br>otherwise.</p><p>Instructions:</p><ol><li><p>REVIEW STANDARDS: Internalize 'COMPASS.md', specifically focusing on:</p><ul><li><p>Section I.1: Security Requirements (Input Validation, Auth, Data<br>Protection)</p></li><li><p>Section I.2: Data Operation Safety</p></li><li><p>Section V.17: Hallucinated Dependencies &amp; Supply Chain Security</p></li></ul></li><li><p>EXECUTE AUDIT: Scan the provided code files for the following<br>vulnerabilities:</p><ul><li><p>Input Validation: Search for direct string concatenation in queries<br>(SQL/Shell) and lack of type checking.</p></li><li><p>Secrets: Identify any hardcoded API keys, tokens, or credentials.</p></li><li><p>Data Safety: Flag any destructive data operations that lack backup<br>warnings or rollback plans.</p></li><li><p>Auth: Identify endpoints or functions missing authorization checks<br>(Insecure Direct Object References).</p></li><li><p>Dependencies: Verify imported packages are standard/real and not<br>hallucinated or typosquatted.</p></li></ul></li><li><p>REPORT FORMAT: Generate a "Security Vulnerability Report" table with the<br>following columns:</p><ul><li><p>Severity (CRITICAL/HIGH/MEDIUM/LOW)</p></li><li><p>File &amp; Line Number</p></li><li><p>Vulnerability Type (e.g., "SQL Injection", "Hardcoded Secret")</p></li><li><p>The COMPASS Violation (e.g., "Violates Section I.1: NEVER concatenate<br>user input")</p></li><li><p>Remediation Plan (A specific instruction on how to fix it using COMPASS<br>patterns)</p></li></ul></li><li><p>IMMEDIATE ACTION:</p><ul><li><p>After generating the report, ask me which CRITICAL issue you should fix<br>first.</p></li><li><p>Do not generate fix code yet; wait for my approval on the priority<br>order.,</p></li></ul></li></ol><ul><li><p>Get COMPASS from:</p><ul><li><p>[local path] or <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/victordelrosal/COMPASS">https://github.com/victordelrosal/COMPASS</a></p></li></ul></li></ul></blockquote><p></p><p>#prompt</p><p></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

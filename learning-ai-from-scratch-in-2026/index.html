@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Saturday, December 13, 2025</span></p>
+                <h1 id="post-title" class="post-title">Learning AI from Scratch in 2026</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,8 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><h1><strong>Learning AI from Scratch in 2026</strong></h1><img src="https://victordelrosal.com/img/learning-AI-2026.png"><p>If I were starting from zero with generative AI today, where would I begin?</p><p>Not with tools. Tools change every six months. I'd start with a mindset shift, then I'd experiment. A lot.</p><p>Here's what I'd tell myself:</p><h2><strong>1. Orientation: Reset how you see this</strong></h2><p>Before touching any AI, write one sentence: "What am I actually trying to achieve?" This moves you from tool-thinking to outcome-thinking. You're not using AI. You're directing intelligence.</p><h2><strong>2. Intent discipline: Stop vague prompts</strong></h2><p>State three things every time: Objective. Success criteria. Constraints. "My goal is X. Good looks like Y. Don't do Z." You stop fishing for outputs and start briefing. Asking questions becomes giving instructions.</p><h2><strong>3. Interaction: Change how you talk to it</strong></h2><p>Always include: "Challenge my assumptions" or "Point out where this could be wrong." You break the illusion that the model is the authority. You are. Remember you are managing AI agents, you are directing intelligence.</p><h2><strong>4. Iteration: Kill one-shot usage</strong></h2><p>Never stop at the first response. Ask: "What's missing? What would an expert disagree with? Improve this by 20%." Think in loops, not prompts.</p><h2><strong>5. Structure before content</strong></h2><p>Ask for frameworks, decision trees, trade-offs before asking for text. Less fluff, more solid outputs that add value.</p><h2><strong>6. Verification: Built in, not bolted on</strong></h2><p>For anything that matters: "What assumptions does this rely on? What would invalidate it? Where should I check externally?" You audit reasoning, not just accept outputs.</p><h2><strong>7. Don't reinvent the wheel</strong></h2><p>Build reusable templates: one for ideation, one for critique, one for decisions, one for synthesis. Stop reinventing your thinking process every session.</p><h2><strong>8. Work hard, play harder!</strong></h2><p>It's important to pick one problem with actual stakes, e.g., teaching, writing, product, doing business, and use AI daily to add value.</p><p>However, I always say to students: if you only use AI for work, you'll probably get sick of it. Use it for your own pet projects, experiment and have <strong>fun</strong>!</p><h2><strong>9. Know when to lead, when to follow</strong></h2><p>Sometimes draft first, then bring the model in. Sometimes let it open. Build the instinct for which is which. It's a partnership.</p><h2><strong>10. Ethics: stay accountable</strong></h2><p>If this output goes out with your name on it, you own it. Not the model. Ask: "Am I prepared to defend this?" If you can't explain the reasoning, don't ship it.</p><h2><strong>Key insight</strong></h2><h3>Use AI to clarify intent, structure thinking, run critique loops, and build systems; <strong>not to avoid thinking</strong>.</h3><p></p><h2>Closing thoughts</h2><p>I used to think this wave of AI was about learning tools.</p><p>Three years in, I see it's about human-machine partnership.</p><p>It's about using AI to boost cognitive abilities, not replace them.</p><p>But it goes beyond being "productive"; it is giving myself permission to attempt more, learning like mad in the process.</p><p>I'd say to myself that it is the best thing to happen to curious minds in a long time.</p><p>So, if I were starting to learn AI, I would honestly say to myself: stay curious and keep experimenting, always.</p><p></p><p>#brainwave</p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

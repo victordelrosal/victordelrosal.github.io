@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Sunday, November 30, 2025</span></p>
+                <h1 id="post-title" class="post-title">First Wave</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,8 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/the-first-signal.png"><p><br>You're reading this because of a conversation.<br><br>Not a conversation in the traditional sense, no boardroom, no whiteboard, no six-month roadmap. Just me, an idea that wouldn't let go, and Claude, my AI collaborator.<br><br>The idea was simple: What if I could write something in my personal workspace and, with a single click, share it with the world?<br><br>Two hours ago, that button didn't exist. Now it does.<br><br>What you're looking at, this page, this blog, this entire "Waves" section was a small dream. It was designed, architected, and built in a single Claude Code session: <br><br>Human dreams, AI implements.<br><br>This is what I've been teaching about for the last three years. This is what I wrote about in <em>HUMANLIKE</em>. And experiencing it firsthand never gets old: watching an idea transform into working reality at the speed of conversation does feel like a superpower. Humans augmented by AI, taking imagination out of the ether into the real world.<br><br>The gap between intention and implementation is collapsing: A scholar (or anyone) becomes a builder. "I wish I could..." becomes "I just did."<br><br>This is the first wave. A few more to come.</p><p>Feel free to click on 👋 below.</p><p>-VdR</p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

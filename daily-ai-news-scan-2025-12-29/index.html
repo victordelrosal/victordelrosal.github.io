@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Monday, December 29, 2025</span></p>
+                <h1 id="post-title" class="post-title">Google Partners with Energy Dome for CO2 Batteries</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,55 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+<p class="subtitle">Daily AI News Scan — Sunday, December 29, 2024</p>
+
+<h2>Executive Summary</h2>
+<p>Google's partnership with Energy Dome for thermodynamic energy storage highlights the infrastructure challenges facing AI data centers as energy demands surge. Meanwhile, AI research advances with debates over general intelligence and new techniques for accelerating symbolic solvers and improving system performance through automated code optimization.</p>
+
+<h2>Top Stories</h2>
+
+<div class="story story-top">
+<h3>1. Google Partners with Energy Dome for CO2 Batteries</h3>
+<p>Google has partnered with Energy Dome to deploy a thermodynamic energy storage system specifically designed to provide continuous power for AI data centers. The collaboration addresses the growing energy demands of AI infrastructure, which require reliable power sources to maintain operations. This represents a significant shift toward sustainable energy solutions for data centers as AI workloads continue to scale exponentially. The partnership underscores the critical importance of energy infrastructure in supporting the AI industry's rapid growth.</p>
+<p class="attribution"><strong>Source:</strong> <a href="https://energydome.com/energy-dome-inks-a-strategic-commercial-agreement-with-google/">Energy Dome</a></p>
+</div>
+
+<div class="story story-top">
+<h3>2. AI Researchers Debate General Intelligence</h3>
+<p>A public dispute has emerged between prominent AI researchers Yann LeCun and Demis Hassabis regarding the nature and existence of general intelligence. The debate centers on fundamental questions about what constitutes artificial general intelligence and whether current AI systems are approaching this milestone. This disagreement reflects broader uncertainties within the AI research community about the trajectory and definition of AGI. The discussion is particularly significant given both researchers' influential positions in shaping AI development at major institutions.</p>
+<p class="attribution"><strong>Source:</strong> <a href="https://the-decoder.com/yann-lecun-calls-general-intelligence-complete-bs-and-deepmind-ceo-hassabis-fires-back-publicly/">The Decoder</a></p>
+</div>
+
+<div class="story story-top">
+<h3>3. LLMs Speed Up Symbolic Solvers</h3>
+<p>Researchers have discovered that large language models can significantly improve constraint solving by generating additional constraints to help symbolic solvers work more efficiently. This breakthrough demonstrates how LLMs can augment traditional computational methods rather than simply replacing them. The finding suggests new hybrid approaches where language models enhance existing algorithmic frameworks. This development could have broad applications in optimization problems, formal verification, and automated reasoning systems.</p>
+<p class="attribution"><strong>Source:</strong> <a href="https://techxplore.com/news/2025-12-ai-problems-doesnt.html">TechXplore</a></p>
+</div>
+
+<h2>Notable</h2>
+
+<p><strong>4. The Universal Weight Subspace Hypothesis</strong> — New research claims that many separately trained neural networks, including Vision Transformers, actually use the same small set of weight directions across model layers, suggesting fundamental commonalities in learned representations. <a href="https://substack.com/redirect/fc0deb8c-0904-4daf-bdc5-11270622226e">The Rundown AI</a></p>
+
+<p><strong>5. LLaDA2.0: Scaling Up Diffusion Language Models to 100B</strong> — Researchers have successfully converted a standard large language model into a diffusion model that generates text faster by filling multiple blanks simultaneously, scaling the approach to 100 billion parameters. <a href="https://substack.com/redirect/29dcdd7c-eca2-4ba5-9cbf-2e6a1e21efd4">The Rundown AI</a></p>
+
+<p><strong>6. Let the Barbarians In: How AI Can Accelerate Systems Performance Research</strong> — UC Berkeley paper demonstrates that AI can automatically improve real systems code through iterative generate-test-fix cycles, potentially revolutionizing software optimization processes. <a href="https://substack.com/redirect/c2e23e5d-3b7c-4948-a5c7-b4a6281256ed">The Rundown AI</a></p>
+
+<p><strong>7. FaithLens: Detecting and Explaining Faithfulness Hallucination</strong> — A new model has been developed that can both detect when large language models make unsupported claims and provide explanations for why these hallucinations occur. <a href="https://substack.com/redirect/d0dd3bf8-a0f9-4dd9-9c64-6be5459cae2f">The Rundown AI</a></p>
+
+<h2>Also Noted</h2>
+
+<p><strong>8. Memory in the Age of AI Agents</strong> — This comprehensive survey on AI agent memory systems provides crucial insights for practitioners building autonomous systems that need to store, retrieve, and update information across different contexts and timescales. <a href="https://substack.com/redirect/e0017922-839b-4fa9-8fce-b1a9396972cd">The Rundown AI</a></p>
+
+<p><strong>9. Scientists build device to harvest electricity from Earth's spin</strong> — Princeton's tabletop device that generates voltage from Earth's rotation could influence future data center power strategies and distributed computing infrastructure for AI systems. <a href="https://www.earth.com/news/scientists-build-device-pulls-electricity-directly-from-the-earths-rotation/">Earth.com</a></p>
+
+<p><strong>10. Paraplegic engineer shatters space accessibility in world-first</strong> — Michaela Benthaus's historic spaceflight demonstrates how AI-assisted systems and accessibility technology can expand human capabilities in extreme environments, relevant for AI safety and human-machine collaboration research. <a href="https://www.nytimes.com/2025/12/21/us/spacex-blue-origin-wheelchair-user.html">New York Times</a></p>
+
+<hr>
+<p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="https://victordelrosal.com/daily-ai-news-scan-about/">How this works</a></em></p>
+</div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Friday, December 26, 2025</span></p>
+                <h1 id="post-title" class="post-title">I Tried OpenCode. Here&#39;s What I Learned.</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,12 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://opencode.ai/social-share.png"><p>So I've been messing around with OpenCode lately. And honestly? It kind of caught me off guard.</p><p>If you haven't heard of it, OpenCode is an open-source agentic coding tool. Think Claude Code, but open, MIT licensed. No lock-in. You can peek under the hood, fork it, run it locally. The whole thing.</p><p>But here's the thing that tripped me up initially. I kept asking myself: does this thing actually work on its own? Or do I need to bring my own API keys for Claude or OpenAI or whatever?</p><p>Turns out, it's both. And that's actually pretty interesting.</p><p><strong>The Brain Question</strong></p><p>When I first installed OpenCode and ran <code>opencode models</code>, I expected to see nothing. Maybe an error asking for credentials.</p><p>Instead I got this:</p><pre><code>opencode/big-pickle
+opencode/glm-4.7-free
+opencode/gpt-5-nano
+opencode/grok-code
+</code></pre><p>Wait. OpenCode has its own models?</p><p>Basically, yes. The OpenCode team hosts or brokers access to a handful of models through what they call "Zen." Some of them are free. GLM-4.7 is the big one right now, and it's genuinely capable. Benchmarks put it close to Claude Sonnet 4.5 for coding tasks. That's not nothing.</p><p>So you can install OpenCode and start coding immediately. No API keys needed. No subscriptions. Just the tool and a brain that's already wired up.</p><p>But here's the nuance: these aren't <em>your</em> models. You don't control them. You don't know exactly what's running underneath. They're convenience brains. Good enough to get started, probably not what you'd bet a production system on.</p><p>The real design philosophy is this: OpenCode is the body. The brain is swappable. You can plug in Claude, GPT-4, Gemini, local models, whatever you want. The built-in models just mean you're not dead on arrival.</p><p><strong>How It Compares to Claude Code</strong></p><p>I've been using Claude Code for a while now. Love it. Fast, reliable, great at following instructions. So naturally I wanted to know: is OpenCode better? Worse? Different?</p><p>Honestly, they're pretty similar in terms of capability. Both can plan, edit files, run shell commands, iterate on errors. Both are genuinely agentic, not just fancy autocomplete.</p><p>The difference is philosophy.</p><p>Claude Code is a product. Polished. Integrated. Works beautifully with Anthropic's models. But it's closed. You can't see the prompts. You can't tweak the tool logic. You're locked into Claude.</p><p>OpenCode is a platform. Rougher around the edges, maybe. But you can swap models mid-task. You can inspect everything. You can run it fully offline with a local LLM if you want. The code is right there on GitHub. 42,000 stars and counting.</p><p>For me, the appeal is the flexibility. Some days Claude is perfect. Other days I want to try Gemini for its huge context window, or Grok for speed, or a cheap local model for quick iterations. OpenCode lets me do all of that without switching tools.</p><p><strong>What About Copilot and Gemini?</strong></p><p>Copilot is a different beast. It's an assistant, not an agent. Really good at autocomplete. Really good at suggesting the next line. But it won't go run your tests, see what failed, and fix the bug for you. That's not what it's designed for.</p><p>OpenCode will do that. You give it a goal. It makes a plan. It acts. It observes the result. It adjusts. That loop is the whole point of agentic coding.</p><p>Gemini is interesting because it's free and it's powerful. Huge context window. Fast output. But from what I've read (and a bit of what I've seen), it's kind of... unruly? It'll make changes you didn't ask for. It doesn't always follow instructions cleanly. The potential is massive, but right now it feels like a wild stallion compared to Claude's calm workhorse.</p><p>Again, OpenCode's approach here is smart. Use Gemini when it's strong (big refactors, UI generation). Switch to Claude when you need reliability. Mix and match. You're not married to any one model.</p><p><strong>The Terminal Thing</strong></p><p>One thing I really like: OpenCode lives in the terminal.</p><p>There's a TUI with split panes, vim keybindings, the works. It's built by people who clearly spend their days in the terminal. And that matters. The whole workflow feels native to how developers actually work.</p><p>You can also use it with VS Code or JetBrains if you want. But the heart of it is the CLI. Which, honestly, is kind of refreshing in a world of web dashboards and chat interfaces.</p><p><strong>What I'm Still Figuring Out</strong></p><p>Look, I'm still learning this tool. There's a lot to explore. Custom agents. Subagents. Skills. The whole permission system for controlling what the AI can and can't do.</p><p>And I'm not sure yet how it'll hold up for bigger, more complex projects. The free models are impressive, but they're still new. GLM-4.7 might have rough edges. Big Pickle is literally called "stealth mode" because nobody really knows what it is.</p><p>But that's kind of the fun of it. It's a tool you can grow into. And because it's open source, it's evolving fast. Hundreds of contributors. Frequent releases. The community is active.</p><p><strong>The Bottom Line</strong></p><p>If you're already happy with Claude Code or Cursor or Copilot, you might not need OpenCode. Those tools work great.</p><p>But if you want more control, or you're curious about open-source alternatives, or you just like the idea of swapping models like you swap guitar pedals... OpenCode is worth a look.</p><p>It's not trying to be the slickest product. It's trying to be the most flexible platform. And for the way AI development is going, where models keep getting better and cheaper, that flexibility might matter a lot.</p><p>Anyway. I'll keep poking at it. Probably break a few things. That's how you learn.</p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

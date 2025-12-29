@@ -101,6 +101,27 @@ function encodeHTMLEntities(str) {
 }
 
 /**
+ * Format date for display
+ */
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+/**
+ * Strip the first element (usually duplicated title) from HTML content
+ */
+function stripFirstElement(html) {
+    // Remove the first HTML element (usually an h1 that duplicates the title)
+    return html.replace(/^<[^>]+>[^<]*<\/[^>]+>\s*/, '');
+}
+
+/**
  * Generate HTML for a wave page
  */
 function generateWaveHTML(post) {
@@ -111,6 +132,10 @@ function generateWaveHTML(post) {
     // Encode title and excerpt for safe use in HTML attributes
     const safeTitle = encodeHTMLEntities(post.title);
     const safeExcerpt = encodeHTMLEntities(excerpt);
+
+    // Pre-render content for crawlers (strip first element to avoid duplicate title)
+    const preRenderedContent = stripFirstElement(post.content);
+    const formattedDate = formatDate(post.published_at);
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -169,8 +194,8 @@ function generateWaveHTML(post) {
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -182,8 +207,8 @@ function generateWaveHTML(post) {
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -208,8 +233,8 @@ function generateWaveHTML(post) {
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">${formattedDate}</span></p>
+                <h1 id="post-title" class="post-title">${safeTitle}</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -224,7 +249,8 @@ function generateWaveHTML(post) {
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content">${preRenderedContent}</div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

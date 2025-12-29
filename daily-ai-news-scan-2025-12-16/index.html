@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Tuesday, December 16, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Tuesday, December 16, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,45 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>NVIDIA acquires SchedMD, the developer behind the widely-used Slurm workload management system, strengthening open-source HPC infrastructure. Google releases an AI playbook for corporate sustainability reporting, while new research explores causal reasoning capabilities in LLMs and introduces novel architectures for AI memory governance. Several studies examine AI applications in specialized domains including medical imaging and game strategy.</p>
+
+<h2>Key Developments</h2>
+
+<h3>NVIDIA Acquires Open-Source HPC Workload Management Leader SchedMD</h3>
+<p>NVIDIA has acquired SchedMD, the leading developer of Slurm, an open-source workload management system for high-performance computing and AI workloads. The company pledges to continue developing and distributing Slurm as open-source, vendor-neutral software to support researchers, developers and enterprises.</p>
+<p><strong>Source:</strong> <a href="https://blogs.nvidia.com/blog/nvidia-acquires-schedmd/">NVIDIA AI Blog</a></p>
+
+<h3>Google Publishes AI Sustainability Reporting Playbook</h3>
+<p>Google has released a practical playbook to help organizations streamline and enhance sustainability reporting using AI. The initiative addresses corporate transparency challenges by providing guidance on navigating fragmented reporting requirements with AI-powered solutions.</p>
+<p><strong>Source:</strong> <a href="https://blog.google/outreach-initiatives/sustainability/ai-playbook-sustainability-reporting/">Google AI Blog</a></p>
+
+<h3>New Research Proposes Monad-Based Architecture for LLM Memory Governance</h3>
+<p>Researchers have developed an engineering-oriented framework using Leibniz's philosophical monads to impose law-like constraints on LLM memory and control systems. The approach builds on the Artificial Age Score (AAS) metric and demonstrates bounded, interpretable behavior through six minimal Python implementations across different operational bundles.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.11835">arXiv cs.AI</a></p>
+
+<h3>Study Examines Causal Reasoning Alignment Between LLMs and Humans</h3>
+<p>New research evaluates over 20 large language models on causal reasoning tasks using collider graph structures, comparing their performance to human reasoning patterns. The study employs leaky noisy-OR causal Bayes networks to model judgments and explores whether LLMs exhibit distinct reasoning signatures from humans.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.11909">arXiv cs.AI</a></p>
+
+<h3>Researchers Introduce Structured Personalization Framework for LLM Agents</h3>
+<p>A new method addresses the trade-off between task utility and data disclosure in personalizing LLM agents by modeling constraints as laminar matroids. The approach transforms user knowledge graphs with dependencies into macro-facets, enabling greedy selection algorithms with constant-factor guarantees for hierarchical and quota-based constraints.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.11907">arXiv cs.AI</a></p>
+
+<h3>One-Step Diffusion Models Achieve New State-of-the-Art Performance</h3>
+<p>Researchers have developed a common design framework for shortcut diffusion models, achieving a new state-of-the-art FID50k of 2.85 on ImageNet-256x256. The approach requires no pre-training, distillation, or curriculum learning, potentially lowering barriers to innovation in rapid image generation.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.11831">arXiv cs.LG</a></p>
+
+<h3>AI Game Strategy Research Introduces Mirror Mode for Player Challenge</h3>
+<p>A study using Fire Emblem Heroes demonstrates Mirror Mode, where enemy AI mimics player strategies using combined Generative Adversarial Imitation Learning, Behavioral Cloning, and Proximal Policy Optimization. Player tests showed good imitation of defensive behaviors and higher satisfaction with the adaptive challenge system.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.11902">arXiv cs.AI</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

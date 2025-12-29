@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Thursday, December 18, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Thursday, December 18, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,45 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>OpenAI launches an Academy for News Organizations in partnership with journalism institutes to train newsrooms on AI adoption. Google releases Gemini 3 Flash, positioning it as frontier intelligence optimized for speed and cost efficiency. Multiple research papers explore transformer reasoning mechanisms through vector-symbolic architectures, while NVIDIA advances physical AI systems for autonomous vehicles. Academic researchers examine AI applications from agriculture to healthcare, revealing both capabilities and limitations in specialized domains.</p>
+
+<h2>Key Developments</h2>
+
+<h3>OpenAI Academy Launches for News Organizations</h3>
+<p>OpenAI unveiled the OpenAI Academy for News Organizations, a learning hub developed with the American Journalism Project and The Lenfest Institute. The Academy provides training, practical use cases, and responsible-use guidance to help journalists, editors, and publishers integrate AI into their reporting and operations.</p>
+<p><strong>Source:</strong> <a href="https://openai.com/index/openai-academy-for-news-organizations">OpenAI Blog</a></p>
+
+<h3>Google DeepMind Releases Gemini 3 Flash</h3>
+<p>Google DeepMind announced Gemini 3 Flash, described as offering "frontier intelligence built for speed at a fraction of the cost." The model appears positioned as a faster, more cost-effective alternative for high-performance AI applications, though specific benchmarks and capabilities were not detailed in the brief announcement.</p>
+<p><strong>Source:</strong> <a href="https://deepmind.google/blog/gemini-3-flash-frontier-intelligence-built-for-speed/">Google DeepMind Blog</a></p>
+
+<h3>Vector-Symbolic Architecture Analysis of Transformer Reasoning</h3>
+<p>New research proposes interpreting transformer self-attention and residual streams as implementing Vector Symbolic Architecture (VSA), where attention performs soft unbinding operations. The paper suggests this perspective explains failure modes like variable confusion and proposes architectural improvements including explicit binding/unbinding heads and hyperdimensional memory layers.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.14709">arXiv cs.AI</a></p>
+
+<h3>NVIDIA Advances Physical AI Safety for Autonomous Vehicles</h3>
+<p>NVIDIA detailed developments in OpenUSD and NVIDIA Halos technologies for improving safety in robotaxis and physical AI systems. The blog post highlights the transition of physical AI from research environments into real-world applications, focusing on systems that must reliably sense, reason, and act in unpredictable conditions.</p>
+<p><strong>Source:</strong> <a href="https://blogs.nvidia.com/blog/openusd-halos-safety-robotaxi-physical-ai/">NVIDIA AI Blog</a></p>
+
+<h3>Chess AI Evaluation Reveals Accuracy-Stability Paradox</h3>
+<p>Researchers analyzed six state-of-the-art LLMs including GPT-5.1 and Claude Sonnet 4.5 on chess evaluation tasks, revealing significant performance degradation under geometric transformations like board rotation. While models like GPT-5.1 achieved near-optimal accuracy on standard positions, error rates surged over 600% under rotation tasks, suggesting reliance on pattern matching rather than spatial reasoning.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.15033">arXiv cs.AI</a></p>
+
+<h3>Multi-Agent Agricultural AI System Addresses Climate Adaptation</h3>
+<p>Researchers presented AgroAskAI, a multi-agent reasoning system designed to support climate adaptation decisions for vulnerable agricultural communities. The system features role-specialized agents, multilingual support, and governance mechanisms to mitigate hallucination while providing locally relevant strategies for smallholder farmers globally.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.14910">arXiv cs.AI</a></p>
+
+<h3>LLM-Generated Neural Architecture Search for Image Captioning</h3>
+<p>UC researchers demonstrated NN-Caption, an LLM-guided neural architecture search pipeline that generates runnable image-captioning models by composing CNN encoders with sequence decoders. Using DeepSeek-R1 as the generator, over half of the generated models successfully trained and produced meaningful captions, though challenges remain with code hallucinations and API compliance.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.14706">arXiv cs.LG</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

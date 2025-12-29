@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Wednesday, December 17, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Wednesday, December 17, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,45 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>OpenAI launched FrontierScience, a new benchmark for evaluating AI's scientific research capabilities, while also introducing a framework for measuring AI's ability to accelerate biological research using GPT-5. The company rolled back ChatGPT's model router system for most users following user complaints. Meanwhile, research advances emerged in medical AI for clinical data extraction and distributed AI coordination strategies.</p>
+
+<h2>Key Developments</h2>
+
+<h3>OpenAI Introduces Scientific Research Benchmarks</h3>
+<p>OpenAI released FrontierScience, a benchmark designed to test AI reasoning capabilities in physics, chemistry, and biology to measure progress toward autonomous scientific research. The company also introduced a real-world evaluation framework examining how AI can accelerate biological research in wet lab environments, using GPT-5 to optimize molecular cloning protocols.</p>
+<p><strong>Source:</strong> <a href="https://openai.com/index/frontierscience">OpenAI Blog</a></p>
+
+<h3>OpenAI Rolls Back ChatGPT Router Feature</h3>
+<p>OpenAI removed the model router system from ChatGPT's free tier following user complaints that contributed to last summer's user revolt. The rollback suggests OpenAI is prioritizing user experience improvements as it works to enhance ChatGPT's overall performance.</p>
+<p><strong>Source:</strong> <a href="https://www.wired.com/story/openai-router-relaunch-gpt-5-sam-altman/">Wired AI</a></p>
+
+<h3>AI Framework for Clinical Data Extraction Achieves High Accuracy</h3>
+<p>Researchers developed a secure framework using locally deployed LLMs to extract structured data from unstructured electronic health records, achieving high accuracy compared to expert annotations. The system integrates retrieval augmented generation and structured response methods while maintaining HIPAA compliance for clinical research applications.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.13700">arXiv cs.AI</a></p>
+
+<h3>Mixed Training Strategy Prevents Catastrophic Forgetting in Math Models</h3>
+<p>Researchers demonstrated that interleaving mathematical and general language examples during fine-tuning completely eliminates catastrophic forgetting while maintaining specialized performance. The balanced 1:1 ratio achieved equivalent mathematical accuracy to math-only training while preserving 86.2% of general language capabilities, compared to a 64.5 percentage point drop with specialized training alone.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.13706">arXiv cs.LG</a></p>
+
+<h3>New Benchmark Tests AI Coordination in Distributed Systems</h3>
+<p>LoopBench, a new benchmark for evaluating LLM reasoning in distributed symmetry breaking, shows that advanced reasoning models like O3 can devise strategies to escape deadlocks that trap standard LLMs and classical heuristics. The benchmark focuses on coloring odd cycle graphs with limited colors to study emergent distributed algorithms based on language reasoning.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.13713">arXiv cs.AI</a></p>
+
+<h3>Enterprise AI Adoption Faces Cultural Challenges</h3>
+<p>Analysis suggests that implementing enterprise AI requires addressing both technical complexity and cultural conditions for employee adoption. Creating psychological safety emerges as crucial for maximizing AI value, with fear and ambiguity potentially stalling momentum of promising AI implementations in organizations.</p>
+<p><strong>Source:</strong> <a href="https://www.technologyreview.com/2025/12/16/1125899/creating-psychological-safety-in-the-ai-era/">MIT Technology Review AI</a></p>
+
+<h3>Physics-Guided Deep Learning Improves Heat Pump Monitoring</h3>
+<p>A novel Physics-Guided Deep Neural Network achieved 78.1% accuracy in heat pump stress detection using the When2Heat dataset with 131,483 samples across 26 European countries. The approach demonstrated significant improvements over baseline methods by integrating physics-guided feature selection with deep learning architectures for energy system monitoring.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.13696">arXiv cs.LG</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

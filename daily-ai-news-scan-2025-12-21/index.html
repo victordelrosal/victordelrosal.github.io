@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Sunday, December 21, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Sunday, December 21, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,41 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>New York Governor Kathy Hochul signed the RAISE Act requiring AI safety disclosures and incident reporting, as regulatory tensions mount with Trump's incoming administration signaling plans to preempt state AI laws. Meanwhile, OpenAI launched user controls for ChatGPT's conversational style, and industry debates continue over whether generalists or specialists will dominate in the AI era.</p>
+
+<h2>Key Developments</h2>
+
+<h3>New York Enacts Major AI Safety Regulation</h3>
+<p>Governor Kathy Hochul signed the RAISE Act, requiring large AI developers to publish safety protocols and report incidents to the state within 72 hours. The legislation represents significant state-level AI regulation as federal oversight remains limited.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/20/new-york-governor-kathy-hochul-signs-raise-act-to-regulate-ai-safety/">TechCrunch</a></p>
+
+<h3>OpenAI Adds ChatGPT Personality Controls</h3>
+<p>Users can now directly adjust ChatGPT's warmth, enthusiasm, and emoji usage through new interface controls. The feature allows customization of the chatbot's conversational style to match user preferences.</p>
+<p><strong>Source:</strong> <a href="https://techcrunch.com/2025/12/20/openai-allows-users-to-directly-adjust-chatgpts-warmth-and-enthusiasm/">TechCrunch</a></p>
+
+<h3>Trump Administration Plans to Override State AI Laws</h3>
+<p>Incoming President Trump's planned executive orders aim to preempt state AI regulations, creating potential conflict with New York's new RAISE Act and other state-level initiatives. AI czar David Sacks is reportedly causing concern within the industry about the direction of federal AI policy.</p>
+<p><strong>Source:</strong> <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5Yam1iQW5ocGdUREl5OHhVVXBnYjNoa2FvY1lmMXBqTkNhazBkV0ZJTTl5a3gzMkJWRndKamw4R1RpaWJ0OE5GTUg4bjR4LWhESjlIY2dzZ1h6d1NWcDJISFJOby1rN182eEsw?oc=5">Mashable</a></p>
+
+<h3>Industry Shift Toward AI Generalists Over Specialists</h3>
+<p>A CTO argues that AI's rapid evolution favors hiring generalists who can adapt quickly across multiple domains rather than deep specialists. The pace of AI advancement makes traditional expertise models obsolete as new technologies emerge and mature within months.</p>
+<p><strong>Source:</strong> <a href="https://venturebeat.com/ai/hiring-specialists-made-sense-before-ai-now-generalists-win">VentureBeat</a></p>
+
+<h3>Google Launches Gemini 3 Flash as Default Model</h3>
+<p>Google has released Gemini 3 Flash and made it the default AI model in the Gemini app. The update represents Google's continued efforts to compete in the consumer AI assistant market.</p>
+<p><strong>Source:</strong> <a href="https://news.google.com/rss/articles/CBMiywFBVV95cUxPV21NVWRaOVJzOE52X3p3a1I5OWk4WVJWUkJMVFZTZmNtN2JBOC1Kc3JrdEp4U3VuZVNPVkQ0aUFFSmpBT1dqbDFTTUkxb0wxMW45SklONGF5S1pXOHBfVS0zcDJ3enV4eHJUaG5FRnBkek5aYm1SK185NkxpM1puRVhqb0FhUjd2am9La2ZjQ0ZCOC0tZDNoQnkxUnFiR1pHZmxxbHJKQ2hrekx1VTVaOFh3LW1kZjB0SUliak1qVW5UWEd6TUNZa3N5TQ?oc=5">MSN</a></p>
+
+<h3>Commentary on Open Source AI's Market Impact</h3>
+<p>Industry analysts suggest that open source AI models could disrupt the current AI market bubble by providing free alternatives to premium services. This development could significantly impact the valuations and business models of major AI companies.</p>
+<p><strong>Source:</strong> <a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxQcDBNZEhyYm9DZWpMejZveUM5Q1ZEQW9BY0lWVER0N0xubmk0QkRUbE5VMGhIdy1qenppUlF4QXhMdTJKUXVWUVR3NGpNM3JGOENFVnE3Ymc0c1Fac2xpR3I2bF8wYlBJUlZZX2NaeEY5YzM5bWpFUjBiTkhxRGdzNDJ2ejNQZElFZU5HMDRsN3ctcFRHclo4blgzSWpVdXZsUHc?oc=5">CNA</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

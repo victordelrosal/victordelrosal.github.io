@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Wednesday, December 24, 2025</span></p>
+                <h1 id="post-title" class="post-title">OpenAI Admits Prompt Injection May Never Be Fully Solved</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,54 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+<p class="subtitle">Daily AI News Scan — Tuesday, December 24, 2025</p>
+
+<h2>Executive Summary</h2>
+<p>OpenAI acknowledges fundamental security limitations in AI systems, admitting that prompt injection vulnerabilities in their ChatGPT Atlas browser may be unsolvable. Meanwhile, YouTube launches an AI-powered game creation tool using Gemini 3, and Z.AI releases GLM-4.7, a new open-source model showing strong performance in coding benchmarks. Today's developments highlight both the expanding capabilities and persistent security challenges facing AI deployment.</p>
+
+<h2>Top Stories</h2>
+
+<div class="story story-top">
+<h3>1. OpenAI Admits Prompt Injection May Never Be Fully Solved</h3>
+<p>OpenAI has openly acknowledged that prompt injection attacks represent a persistent vulnerability in AI systems that may be impossible to fully resolve. The admission came as the company launched its ChatGPT Atlas browser, which faces inherent security challenges when processing web content. This represents a significant acknowledgment from a leading AI company about fundamental limitations in current AI security architectures. The revelation underscores ongoing concerns about deploying AI systems in environments where malicious prompts could compromise intended functionality.</p>
+<p class="attribution"><strong>Source:</strong> <a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxOWWR4THBCMnlEaGt1YlhST2F6c05kYmQ4bk5iLXdxWUc4NDdJcFphOVpSVlUxOHpvdVRzQ2FjTEVxaVI4VEJfbU5weDhvVEh1RGJhY1p6S3lSZUdLZlVVTzdxdy1vdTJRYkVFYldZZHNsWjVXVUxLMTV2ZW1SWDBhNjhHQm5lMlVWT3U2Yk90dUFGYzRpYUdON3RoLWJKdTJ6?oc=5">Google News</a></p>
+</div>
+
+<div class="story story-top">
+<h3>2. YouTube Gaming Releases Playables Builder</h3>
+<p>YouTube has launched a beta web application powered by Google's Gemini 3 that enables creators to build playable games using simple text, video, or image prompts. The tool represents a significant expansion of AI-generated content capabilities, allowing non-technical users to create interactive gaming experiences through natural language instructions. This move positions YouTube to compete in the growing AI-generated gaming space while providing creators with new monetization opportunities. The integration of Gemini 3 suggests Google is leveraging its latest AI models for practical content creation applications.</p>
+<p class="attribution"><strong>Source:</strong> <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQRFlDQlI1YzB1bGlXZ1dWa3AxdjM4VXJYcjZHd3JoREM4dGxpbWhqXzRlM1ZpLWM2VkM4cFBvVk9BZGNRUkZvdndOaFlIVy1CM19XTXVmdDUwWDQ2bHducGhfLXVzRG9FeDJKVFlPaUU2RXRKbS1TVl9OZHByRGgxelY2c3hCTVI3X25HeGpvd2FfOThONzFNUjg4LU8xc2Q4ZDBiNg?oc=5">Google News</a></p>
+</div>
+
+<div class="story story-top">
+<h3>3. Z.AI Releases GLM-4.7 Open Model</h3>
+<p>Z.AI has launched GLM-4.7, a new open-source AI model specifically optimized for coding and agent development tasks. The model demonstrates impressive benchmark performance, achieving 73.8% on Software Engineering bench evaluations and showing significant improvements in reasoning capabilities. This release adds to the growing ecosystem of specialized open-source models, providing developers with powerful alternatives to proprietary coding assistants. The focus on agent development suggests growing industry recognition of AI agents as a key application area requiring specialized model architectures.</p>
+<p class="attribution"><strong>Source:</strong> Multiple newsletters</p>
+</div>
+
+<h2>Notable</h2>
+
+<p><strong>4. Jeff Dean Publishes Performance Tuning Guide</strong> — Google's Chief Scientist released an updated comprehensive guide for predicting code performance through analysis of cache misses, locks, and I/O operations.</p>
+
+<p><strong>5. Microsoft Plans to Replace C and C++ with Rust by 2030</strong> — Microsoft announced an ambitious plan to eliminate all C and C++ code from its systems by 2030, using AI and algorithmic tools to automatically rewrite codebases in Rust for improved memory safety.</p>
+
+<p><strong>6. GLM-4.7 Tops Open-Source Coding Model Benchmarks</strong> — The newly released GLM-4.7 model achieved leading performance across multiple coding benchmarks, establishing new standards for open-source programming assistance models.</p>
+
+<p><strong>7. Anthropic's New Bloom Framework Reinvents How AI Behaviors Are Measured and Compared</strong> — Anthropic open-sourced a framework that reduces AI model evaluation time from weeks to days by dynamically generating behavioral test scenarios.</p>
+
+<h2>Also Noted</h2>
+
+<p><strong>8. Research Shows Junk Social Media Training Degrades LLM Performance</strong> — Critical for AI practitioners as it demonstrates how training data quality directly impacts model capabilities, particularly reasoning and safety features.</p>
+
+<p><strong>9. OpenAI Reveals Browser Prompt Injection Vulnerabilities</strong> — Highlights ongoing security challenges that AI developers must address when deploying models in web-facing applications and browser environments.</p>
+
+<p><strong>10. NVIDIA Launches NitroGen AI Gaming Model</strong> — Represents advancement in AI learning from visual data, with potential applications beyond gaming for robotics and autonomous systems training.</p>
+
+<hr>
+<p><em>Compiled from 14 newsletters + 24 RSS sources at 07:00 GMT. <a href="https://victordelrosal.com/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">

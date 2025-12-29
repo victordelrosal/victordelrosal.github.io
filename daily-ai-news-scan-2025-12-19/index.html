@@ -55,8 +55,8 @@
             </svg>
         </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading">
+        <!-- Loading State (hidden for pre-rendered pages) -->
+        <div id="loading" class="loading" style="display: none;">
             <div class="loading-spinner"></div>
             <p>Loading...</p>
         </div>
@@ -68,8 +68,8 @@
             <a href="/">Back to Home</a>
         </div>
 
-        <!-- Post Content -->
-        <article id="post" class="post">
+        <!-- Post Content (visible by default for pre-rendered pages) -->
+        <article id="post" class="post visible">
             <a href="/waves/" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -94,8 +94,8 @@
             <div class="wave-thumbnails" id="wave-thumbnails"></div>
 
             <header class="post-header">
-                <p class="post-meta"><span id="post-date"></span></p>
-                <h1 id="post-title" class="post-title"></h1>
+                <p class="post-meta"><span id="post-date">Friday, December 19, 2025</span></p>
+                <h1 id="post-title" class="post-title">Daily AI News Scan — Friday, December 19, 2025</h1>
             </header>
 
             <!-- Font Size Control -->
@@ -110,7 +110,45 @@
             <!-- View Count - centered below font controls -->
             <div id="view-count-container" class="view-count-top"></div>
 
-            <div id="post-content" class="post-content"></div>
+            <!-- Pre-rendered content for crawlers/NotebookLM (JS will replace this) -->
+            <div id="post-content" class="post-content"><img src="https://victordelrosal.com/img/daily-ai-news-scan.png" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">
+
+
+<h2>Executive Summary</h2>
+<p>OpenAI introduces new monitoring frameworks for AI reasoning chains and strengthens teen safety protections, while expanding collaboration with the U.S. Department of Energy. Google enhances content verification tools for AI-generated videos. NVIDIA announces major partnerships with the U.S. government through the Genesis Mission and releases new high-memory Blackwell GPUs. Research advances include multi-agent systems for quantum optics experiments and novel approaches to AI ethics and assembly instruction generation.</p>
+
+<h2>Key Developments</h2>
+
+<h3>OpenAI Introduces Chain-of-Thought Monitoring Framework</h3>
+<p>OpenAI released a new evaluation framework for monitoring AI models' internal reasoning processes, covering 13 evaluations across 24 environments. The research demonstrates that monitoring a model's chain-of-thought reasoning is significantly more effective than monitoring outputs alone, offering a potential path toward scalable AI control as systems become more capable.</p>
+<p><strong>Source:</strong> <a href="https://openai.com/index/evaluating-chain-of-thought-monitorability">OpenAI Blog</a></p>
+
+<h3>OpenAI Strengthens Teen Safety Protections</h3>
+<p>OpenAI updated its Model Spec with new Under-18 Principles that define how ChatGPT should support teenagers with age-appropriate guidance based on developmental science. The company also released AI literacy resources to help teens and parents use ChatGPT safely and thoughtfully, including expert-vetted tips for responsible use and healthy boundaries.</p>
+<p><strong>Source:</strong> <a href="https://openai.com/index/updating-model-spec-with-teen-protections">OpenAI Blog</a></p>
+
+<h3>NVIDIA Partners with U.S. Government on Genesis Mission</h3>
+<p>NVIDIA joined the U.S. Department of Energy's Genesis Mission as a private industry partner to strengthen American AI leadership globally. This initiative, part of an Executive Order signed by President Trump, aims to boost AI infrastructure and research investments through public-private collaboration across three key areas.</p>
+<p><strong>Source:</strong> <a href="https://blogs.nvidia.com/blog/nvidia-us-government-to-boost-ai-infrastructure-and-rd-investments/">NVIDIA AI Blog</a></p>
+
+<h3>Google Expands AI Content Verification Tools</h3>
+<p>Google introduced video verification capabilities in the Gemini app, allowing users to check if videos were created or edited with Google AI tools. This expansion of content transparency tools aims to help users more easily identify AI-generated content as synthetic media becomes increasingly sophisticated.</p>
+<p><strong>Source:</strong> <a href="https://blog.google/technology/ai/verify-google-ai-videos-gemini-app/">Google AI Blog</a></p>
+
+<h3>NVIDIA RTX PRO 5000 72GB GPU Now Available</h3>
+<p>NVIDIA made generally available its RTX PRO 5000 72GB Blackwell GPU, featuring the company's Blackwell architecture designed for desktop agentic AI applications. The high-memory configuration expands options for professionals requiring robust generative AI capabilities on desktop systems.</p>
+<p><strong>Source:</strong> <a href="https://blogs.nvidia.com/blog/rtx-pro-5000-72gb-blackwell-gpu/">NVIDIA AI Blog</a></p>
+
+<h3>Multi-Agent AI System for Quantum Optics Research</h3>
+<p>Researchers introduced Anubuddhi, a multi-agent AI system that designs and simulates quantum optics experiments from natural language prompts without requiring specialized programming knowledge. The system achieved design-simulation alignment scores of 8-9/10 across 13 complex experiments, demonstrating potential to democratize computational experiment design for research and education.</p>
+<p><strong>Source:</strong> <a href="https://arxiv.org/abs/2512.15736">arXiv cs.AI</a></p>
+
+<h3>OpenAI-DOE Collaboration Framework Established</h3>
+<p>OpenAI and the U.S. Department of Energy signed a memorandum of understanding to deepen collaboration on AI and advanced computing for scientific discovery. The agreement builds on existing work with national laboratories and establishes a framework for applying AI to high-impact research across the DOE ecosystem.</p>
+<p><strong>Source:</strong> <a href="https://openai.com/index/us-department-of-energy-collaboration">OpenAI Blog</a></p>
+
+<hr>
+<p><em>This scan is automatically generated at 05:00 GMT daily. Sources are fetched, deduplicated, and synthesized by AI. No human editorial review. <a href="/daily-ai-news-scan-about/">How this works</a></em></p></div>
 
             <!-- Engagement Row: Wave, Share -->
             <div class="share-section">
