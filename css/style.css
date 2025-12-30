@@ -4163,42 +4163,49 @@ body.waves-page {
 }
 
 /* ===== DAINS GENTLE WAVES ===== */
-/* Super subtle wave animation adapted from navbar */
+/* Subtle wave animation adapted from navbar with electric blue accent */
 
 .dains-waves {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 80px;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
     border-radius: 0 0 24px 24px;
+    /* Gradient overlay for depth */
+    background: linear-gradient(
+        to top,
+        rgba(14, 165, 233, 0.12) 0%,
+        rgba(59, 130, 246, 0.06) 40%,
+        transparent 100%
+    );
 }
 
 .dains-wave {
     position: absolute;
     left: 0;
     width: 200%;
-    height: 60px;
+    height: 80px;
     bottom: 0;
 }
 
 .dains-wave-deep {
-    fill: rgba(30, 58, 95, 0.15);
-    bottom: -6px;
+    fill: rgba(30, 64, 110, 0.35);
+    bottom: -8px;
     animation: dainsWaveFlow 25s ease-in-out infinite;
 }
 
 .dains-wave-mid {
-    fill: rgba(59, 130, 246, 0.08);
-    bottom: -3px;
+    fill: rgba(59, 130, 246, 0.2);
+    bottom: -4px;
     animation: dainsWaveFlow 20s ease-in-out infinite reverse;
 }
 
 .dains-wave-surface {
-    fill: rgba(96, 165, 250, 0.05);
+    fill: rgba(14, 165, 233, 0.12);
     bottom: 0;
     animation: dainsWaveFlow 15s ease-in-out infinite;
 }
