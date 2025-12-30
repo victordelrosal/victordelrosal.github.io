@@ -836,6 +836,18 @@
 
                 return `
                     <a href="/waves/#daily-ai-news-scan" id="daily-ai-news-scan" class="wave-entry wave-entry--dains-stack" data-wave-style="dains">
+                        <!-- Super gentle waves at bottom -->
+                        <div class="dains-waves">
+                            <svg class="dains-wave dains-wave-deep" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                                <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,320 L0,320 Z"></path>
+                            </svg>
+                            <svg class="dains-wave dains-wave-mid" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                                <path d="M0,200 C240,140 480,260 720,200 C960,140 1200,260 1440,200 L1440,320 L0,320 Z"></path>
+                            </svg>
+                            <svg class="dains-wave dains-wave-surface" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                                <path d="M0,240 C180,200 360,280 540,240 C720,200 900,280 1080,240 C1260,200 1350,280 1440,240 L1440,320 L0,320 Z"></path>
+                            </svg>
+                        </div>
                         <div class="dains-stack-header">
                             <span class="wave-type">📰 Daily News</span>
                             <span class="dains-stack-count">${totalCount} updates</span>
