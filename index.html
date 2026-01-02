@@ -1016,27 +1016,26 @@
 
         const username = 'victordelrosal';
 
-        // Fetch contribution data from GitHub's public calendar
+        // Fetch contribution data - try local JSON first, then fallback to API
         async function fetchContributions() {
+            // Try local JSON file first (updated weekly by GitHub Action)
+            try {
+                const response = await fetch('/data/github-contributions.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.contributions && data.contributions.length > 0) {
+                        return data.contributions;
+                    }
+                }
+            } catch (e) {
+                console.log('Local contribution data not available, trying API...');
+            }
+
+            // Fallback to public API
             try {
                 const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
-                if (!response.ok) throw new Error('Failed to fetch');
                 const data = await response.json();
-
-                // API returns { contributions: [ {date, count, level}, ... ] }
-                // Flatten if nested by year
-                if (data.contributions && Array.isArray(data.contributions)) {
-                    return data.contributions;
-                }
-                // Handle nested format {total: {}, contributions: {2024: [...], 2025: [...]}}
-                if (data.contributions && typeof data.contributions === 'object') {
-                    let allContribs = [];
-                    Object.keys(data.contributions).sort().forEach(year => {
-                        allContribs = allContribs.concat(data.contributions[year]);
-                    });
-                    return allContribs;
-                }
-                return [];
+                return data.contributions || [];
             } catch (error) {
                 console.error('GitHub API error:', error);
                 return null;
@@ -1057,7 +1056,7 @@
             const weeks = [];
             let currentWeek = [];
             let monthPositions = [];
-            let currentMonth = -1;
+            let lastMonth = -1;
 
             // Pad the first week with empty days if needed
             const firstDate = new Date(contributions[0].date);
@@ -1071,16 +1070,24 @@
                 const dayOfWeek = date.getDay();
                 const month = date.getMonth();
 
-                // Track month positions
-                if (month !== currentMonth) {
-                    currentMonth = month;
-                    monthPositions.push({
-                        name: date.toLocaleDateString('en-US', { month: 'short' }),
-                        weekIndex: weeks.length
-                    });
+                // Track month start positions
+                if (month !== lastMonth) {
+                    lastMonth = month;
+                    // Only add if it's near the start of a week
+                    if (currentWeek.length <= 1 || weeks.length === 0) {
+                        monthPositions.push({
+                            name: date.toLocaleDateString('en-US', { month: 'short' }),
+                            weekIndex: weeks.length + (currentWeek.length > 0 ? 1 : 0)
+                        });
+                    } else {
+                        monthPositions.push({
+                            name: date.toLocaleDateString('en-US', { month: 'short' }),
+                            weekIndex: weeks.length + 1
+                        });
+                    }
                 }
 
-                // Start new week after Saturday
+                // Start new week on Sunday
                 if (dayOfWeek === 0 && currentWeek.length > 0) {
                     weeks.push(currentWeek);
                     currentWeek = [];
@@ -1097,7 +1104,7 @@
             // Render month labels
             monthsContainer.innerHTML = '';
             const cellWidth = 15; // 12px cell + 3px gap
-            monthPositions.forEach((mp, idx) => {
+            monthPositions.forEach((mp) => {
                 const span = document.createElement('span');
                 span.textContent = mp.name;
                 span.style.position = 'absolute';
