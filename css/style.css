@@ -1423,17 +1423,17 @@ section {
 }
 
 .github-graph-months {
-    display: flex;
-    padding-left: 32px;
+    position: relative;
+    height: 16px;
+    margin-left: 32px;
     margin-bottom: 8px;
     font-size: 11px;
     color: var(--text-white-secondary);
-    gap: 0;
 }
 
 .github-graph-months span {
-    flex: 1;
-    min-width: 50px;
+    position: absolute;
+    white-space: nowrap;
 }
 
 .github-graph-wrapper {
@@ -2263,7 +2263,7 @@ section {
 
     .github-graph-months {
         font-size: 10px;
-        padding-left: 26px;
+        margin-left: 26px;
     }
 }
 
