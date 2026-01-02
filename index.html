@@ -195,6 +195,38 @@
                     </p>
                 </div>
 
+                <!-- GitHub Activity Graph -->
+                <div class="github-activity reveal reveal-delay-2">
+                    <h3 class="github-activity-title">GitHub Activity</h3>
+                    <div class="github-graph-container">
+                        <div class="github-graph-months" id="github-months"></div>
+                        <div class="github-graph-wrapper">
+                            <div class="github-graph-days">
+                                <span></span>
+                                <span>Mon</span>
+                                <span></span>
+                                <span>Wed</span>
+                                <span></span>
+                                <span>Fri</span>
+                                <span></span>
+                            </div>
+                            <div class="github-graph" id="github-graph"></div>
+                        </div>
+                    </div>
+                    <div class="github-legend">
+                        <span class="github-legend-label">Less</span>
+                        <div class="github-legend-colors">
+                            <span class="github-legend-box" data-level="0"></span>
+                            <span class="github-legend-box" data-level="1"></span>
+                            <span class="github-legend-box" data-level="2"></span>
+                            <span class="github-legend-box" data-level="3"></span>
+                            <span class="github-legend-box" data-level="4"></span>
+                        </div>
+                        <span class="github-legend-label">More</span>
+                    </div>
+                    <div class="github-tooltip" id="github-tooltip"></div>
+                </div>
+
                 <!-- Builder Stats -->
                 <div class="builder-stats reveal reveal-delay-3">
                     <div class="builder-stat">
@@ -971,6 +1003,156 @@
         } catch (error) {
             console.error('Error loading hero thumbnails:', error);
         }
+    })();
+    </script>
+
+    <!-- GitHub Activity Graph -->
+    <script>
+    (async function initGitHubActivity() {
+        const graphContainer = document.getElementById('github-graph');
+        const monthsContainer = document.getElementById('github-months');
+        const tooltip = document.getElementById('github-tooltip');
+        if (!graphContainer) return;
+
+        const username = 'victordelrosal';
+
+        // Fetch contribution data from GitHub's public calendar
+        async function fetchContributions() {
+            try {
+                const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+                return data.contributions || [];
+            } catch (error) {
+                console.error('GitHub API error:', error);
+                return null;
+            }
+        }
+
+        // Generate fallback data if API fails
+        function generateFallbackData() {
+            const contributions = [];
+            const today = new Date();
+            const oneYearAgo = new Date(today);
+            oneYearAgo.setFullYear(today.getFullYear() - 1);
+
+            for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+                contributions.push({
+                    date: d.toISOString().split('T')[0],
+                    count: 0,
+                    level: 0
+                });
+            }
+            return contributions;
+        }
+
+        // Render the graph
+        function renderGraph(contributions) {
+            if (!contributions || contributions.length === 0) {
+                contributions = generateFallbackData();
+            }
+
+            // Group by weeks
+            const weeks = [];
+            let currentWeek = [];
+            const months = new Map();
+
+            contributions.forEach((day, index) => {
+                const date = new Date(day.date);
+                const dayOfWeek = date.getDay();
+
+                // Track months
+                const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+                if (!months.has(monthKey)) {
+                    months.set(monthKey, {
+                        name: date.toLocaleDateString('en-US', { month: 'short' }),
+                        weekIndex: weeks.length
+                    });
+                }
+
+                // Start new week on Sunday
+                if (dayOfWeek === 0 && currentWeek.length > 0) {
+                    weeks.push(currentWeek);
+                    currentWeek = [];
+                }
+
+                currentWeek.push(day);
+            });
+
+            if (currentWeek.length > 0) {
+                weeks.push(currentWeek);
+            }
+
+            // Render months
+            monthsContainer.innerHTML = '';
+            let lastMonthWeek = -1;
+            months.forEach((monthData, key) => {
+                if (monthData.weekIndex > lastMonthWeek + 2) {
+                    const span = document.createElement('span');
+                    span.textContent = monthData.name;
+                    span.style.marginLeft = `${(monthData.weekIndex - lastMonthWeek - 1) * 15}px`;
+                    monthsContainer.appendChild(span);
+                    lastMonthWeek = monthData.weekIndex;
+                }
+            });
+
+            // Render weeks
+            graphContainer.innerHTML = '';
+            weeks.forEach(week => {
+                const weekDiv = document.createElement('div');
+                weekDiv.className = 'github-week';
+
+                // Pad start of first week
+                if (weeks.indexOf(week) === 0) {
+                    const firstDay = new Date(week[0].date).getDay();
+                    for (let i = 0; i < firstDay; i++) {
+                        const emptyDay = document.createElement('div');
+                        emptyDay.className = 'github-day';
+                        emptyDay.style.visibility = 'hidden';
+                        weekDiv.appendChild(emptyDay);
+                    }
+                }
+
+                week.forEach(day => {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'github-day';
+                    dayDiv.setAttribute('data-level', day.level || 0);
+                    dayDiv.setAttribute('data-date', day.date);
+                    dayDiv.setAttribute('data-count', day.count || 0);
+
+                    dayDiv.addEventListener('mouseenter', (e) => {
+                        const count = day.count || 0;
+                        const date = new Date(day.date);
+                        const dateStr = date.toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                        });
+                        tooltip.innerHTML = `<strong>${count} contribution${count !== 1 ? 's' : ''}</strong> on ${dateStr}`;
+                        tooltip.classList.add('visible');
+                    });
+
+                    dayDiv.addEventListener('mousemove', (e) => {
+                        const rect = graphContainer.closest('.github-activity').getBoundingClientRect();
+                        tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+                        tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+                    });
+
+                    dayDiv.addEventListener('mouseleave', () => {
+                        tooltip.classList.remove('visible');
+                    });
+
+                    weekDiv.appendChild(dayDiv);
+                });
+
+                graphContainer.appendChild(weekDiv);
+            });
+        }
+
+        // Initialize
+        const contributions = await fetchContributions();
+        renderGraph(contributions);
     })();
     </script>
 </body>
