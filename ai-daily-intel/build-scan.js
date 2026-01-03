@@ -390,7 +390,7 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
 
   const response = await anthropic.messages.create({
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 3000,
+    max_tokens: 4500,  // Increased from 3000 to prevent truncation (Jan 3, 2026 incident)
     system: SYSTEM_PROMPT,
     messages: [
       { role: 'user', content: userPrompt }
@@ -400,6 +400,21 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
   const content = response.content[0];
   if (content.type !== 'text') {
     throw new Error('Unexpected response type from Claude');
+  }
+
+  // Truncation detection (Jan 3, 2026 incident)
+  // Check if Claude hit the token limit
+  if (response.stop_reason === 'max_tokens') {
+    console.error('\n⚠️  WARNING: Claude hit max_tokens limit - output may be truncated!');
+  }
+
+  // Validate output ends with expected footer
+  const expectedFooterPattern = /How this works<\/a><\/em><\/p>\s*$/;
+  if (!expectedFooterPattern.test(content.text)) {
+    console.error('\n⚠️  WARNING: Output appears truncated - missing expected footer!');
+    console.error('    Expected ending: "How this works</a></em></p>"');
+    console.error('    Actual ending: "...' + content.text.slice(-100) + '"');
+    throw new Error('DAINS output truncated - missing footer. Aborting to prevent publishing incomplete content.');
   }
 
   // Insert header image AFTER the <h1> tag

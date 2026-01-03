@@ -4,6 +4,45 @@
 
 ---
 
+## Incident: January 3, 2026 — Content Truncation
+
+### What Happened
+DAINS published successfully but with truncated content. The "Also Noted" section was cut off mid-sentence:
+```
+8. AI Driving Dynamic DRAM Memory Supercycle — AI datacenter demand consuming 20% of global DRAM capacity in
+```
+Items 9, 10, and the footer were missing entirely.
+
+### Root Cause
+**`max_tokens: 3000` in `build-scan.js:393` is insufficient for the full 10-story format.**
+
+When Claude generates DAINS with:
+- H1 headline + subtitle
+- Executive Summary (70-100 words)
+- 3 Top Stories (full paragraphs + attribution divs)
+- 4 Notable stories (one-liners)
+- 3 Also Noted stories
+- Footer with compilation metadata
+
+...the output regularly exceeds 3000 tokens, especially when:
+- Headlines are long
+- Google News URLs are extremely long (300+ chars each)
+- Summaries are detailed
+
+Claude hit the token limit and stopped generating mid-sentence.
+
+### Resolution
+1. **Corrective**: Manually completed items 8, 9, 10 in Supabase
+2. **Preventive**: Increased `max_tokens` from 3000 to 4500 in `build-scan.js`
+3. **Detective**: Added truncation detection that validates output ends with expected footer before publishing
+
+### Lessons
+- Token limits are silent failures — Claude doesn't warn when approaching the limit
+- Always validate LLM output structure before publishing
+- The "Also Noted" section (being at the end) is most vulnerable to truncation
+
+---
+
 ## Incident: December 29, 2025
 
 ### What Happened
