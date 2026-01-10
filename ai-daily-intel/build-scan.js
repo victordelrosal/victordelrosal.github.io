@@ -374,14 +374,18 @@ function deduplicateItems(items) {
 async function synthesizeBriefing(stories, isNewsletterRanked) {
   const today = new Date();
   const dateString = today.toISOString().split('T')[0];
-  // Use explicit UTC timezone to ensure consistent day-of-week calculation
-  const formattedDate = today.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+
+  // Parse the dateString directly to ensure day-of-week matches the date in the slug
+  // This prevents any timezone/timing mismatch between dateString and formattedDate
+  const [year, month, day] = dateString.split('-').map(Number);
+  const utcDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); // noon UTC to avoid edge cases
+
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const dayOfWeek = dayNames[utcDate.getUTCDay()];
+  const monthName = monthNames[utcDate.getUTCMonth()];
+  const formattedDate = `${dayOfWeek}, ${monthName} ${day}, ${year}`;
 
   const formattedStories = formatStoriesForPrompt(stories, isNewsletterRanked);
   const userPrompt = getUserPrompt(dateString, formattedDate, formattedStories, isNewsletterRanked);
