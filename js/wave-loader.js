@@ -31,7 +31,10 @@
                 function stripFirstLine(html) {
                     const temp = document.createElement('div');
                     temp.innerHTML = html;
-                    if (temp.firstElementChild) temp.removeChild(temp.firstElementChild);
+                    // Only strip if first element is an h1 (title), preserve images and other content
+                    if (temp.firstElementChild && temp.firstElementChild.tagName === 'H1') {
+                        temp.removeChild(temp.firstElementChild);
+                    }
                     return temp.innerHTML.trim();
                 }
 
