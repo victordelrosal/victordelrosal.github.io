@@ -1,0 +1,190 @@
+:root {
+    --bg-human: #fafafa;
+    --text-human: #1a1a1a;
+    --accent-human: #2563eb;
+    --card-human: #ffffff;
+
+    --bg-agent: #0d1117;
+    --text-agent: #c9d1d9;
+    --accent-agent: #58a6ff;
+    --card-agent: #161b22;
+
+    --transition: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    line-height: 1.7;
+    background: var(--bg-human);
+    color: var(--text-human);
+    transition: background var(--transition), color var(--transition);
+}
+
+body.agent-mode {
+    background: var(--bg-agent);
+    color: var(--text-agent);
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    margin-bottom: 2rem;
+}
+
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.toggle-btn {
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--accent-human);
+    background: transparent;
+    color: var(--accent-human);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.toggle-btn.active {
+    background: var(--accent-human);
+    color: white;
+}
+
+body.agent-mode .toggle-btn {
+    border-color: var(--accent-agent);
+    color: var(--accent-agent);
+}
+
+body.agent-mode .toggle-btn.active {
+    background: var(--accent-agent);
+    color: var(--bg-agent);
+}
+
+.view-content {
+    display: none;
+}
+
+.view-content.active {
+    display: block;
+}
+
+section {
+    background: var(--card-human);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background var(--transition), box-shadow var(--transition);
+}
+
+body.agent-mode section {
+    background: var(--card-agent);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--accent-human);
+}
+
+body.agent-mode h2 {
+    color: var(--accent-agent);
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+ul {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.75rem;
+}
+
+li:last-child {
+    margin-bottom: 0;
+}
+
+strong {
+    font-weight: 600;
+}
+
+pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+body:not(.agent-mode) pre {
+    background: #f4f4f4;
+    color: #333;
+}
+
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(128,128,128,0.2);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+footer a {
+    color: inherit;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    section {
+        padding: 1rem;
+    }
+}
