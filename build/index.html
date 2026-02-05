@@ -518,6 +518,19 @@
             font-size: 1.2rem;
             color: var(--deep-space);
             margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-logo:hover {
+            background: var(--warm-amber);
+            box-shadow: 0 0 20px rgba(255, 179, 71, 0.6), 0 0 40px rgba(255, 179, 71, 0.3);
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .sidebar-nav {
