@@ -489,6 +489,50 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        /* Page Views Counter */
+        .page-views {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .page-views-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .page-views-inner:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.25);
+        }
+
+        .page-views-count {
+            color: var(--electric-cyan);
+            font-weight: 500;
+        }
+
+        .page-views-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--electric-cyan);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
         /* Sidebar */
         .sidebar {
             position: fixed;
@@ -926,14 +970,14 @@
         </div>
     </section>
 
-    <!-- Nobody's Coming -->
+    <!-- You Have Agency -->
     <section class="nobodys-coming">
-        <h2>NOBODY IS COMING TO SAVE YOU.</h2>
+        <h2>YOU HAVE MORE AGENCY THAN YOU THINK.</h2>
         <p style="max-width: 600px; margin: 0 auto; color: rgba(255,255,255,0.8);">
-            No teacher, parent, or government is going to hand you a meaningful life. You have to build it yourself.
+            A meaningful life isn't handed to you. It's something you build, one decision at a time.
         </p>
 
-        <h2 class="but">BUT NOBODY IS COMING TO STOP YOU, EITHER.</h2>
+        <h2 class="but">AND NOTHING IS STOPPING YOU FROM STARTING TODAY.</h2>
 
         <div class="callout">
             <p>The barriers to entry have never been lower.<br>
@@ -1084,7 +1128,7 @@
                 <p>"If you outsource the struggle, you outsource the growth."</p>
             </div>
             <div class="quote-card">
-                <p>"Nobody is coming to save you. But nobody is coming to stop you, either."</p>
+                <p>"You have more agency than you think. And nothing is stopping you from starting today."</p>
             </div>
             <div class="quote-card">
                 <p>"The skill isn't 'using ChatGPT.' The skill is thinking clearly."</p>
@@ -1164,6 +1208,13 @@
             National College of Ireland<br>
             February 2026
         </p>
+
+        <div class="page-views">
+            <div class="page-views-inner">
+                <span class="page-views-dot"></span>
+                <span><span class="page-views-count" id="view-count">...</span> views</span>
+            </div>
+        </div>
     </footer>
 
     <!-- PDF.js Library -->
@@ -1290,6 +1341,26 @@
             section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(section);
         });
+    </script>
+
+    <!-- Page Views Counter -->
+    <script>
+        (function() {
+            const countEl = document.getElementById('view-count');
+            const namespace = 'victordelrosal-build';
+            const key = 'pageviews';
+
+            // Hit the counter API
+            fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+                .then(response => response.json())
+                .then(data => {
+                    countEl.textContent = data.value.toLocaleString();
+                })
+                .catch(() => {
+                    // Fallback: hide counter on error
+                    countEl.parentElement.parentElement.style.display = 'none';
+                });
+        })();
     </script>
 </body>
 </html>
