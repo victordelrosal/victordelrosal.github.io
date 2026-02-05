@@ -60,6 +60,8 @@ yarn-error.log*
 # Build outputs (if any)
 # =============================================
 dist/
+# Note: /build/ is a content page (victordelrosal.com/build), not a build artifact
+# build/
 .cache/
 
 # =============================================
