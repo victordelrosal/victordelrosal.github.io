@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUILD SOMETHING. | Victor del Rosal</title>
+    <meta name="description" content="A guide for the first generation where the tools think back. Resources from Victor del Rosal's talk at NCI Young Future Leaders Programme.">
+    <meta property="og:title" content="BUILD SOMETHING.">
+    <meta property="og:description" content="A guide for the first generation where the tools think back.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://victordelrosal.com/build">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-space: #0a1628;
+            --electric-cyan: #00d4ff;
+            --warm-amber: #ffb347;
+            --white: #ffffff;
+            --charcoal: #1a1a1a;
+            --soft-grey: #f5f5f0;
+            --mid-grey: #d0d0d0;
+            --grid-color: rgba(0, 212, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--deep-space);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        .grid-bg {
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .hero h1 .bracket {
+            color: var(--electric-cyan);
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .hero .author {
+            font-size: 1rem;
+            color: var(--electric-cyan);
+            margin-top: 2rem;
+        }
+
+        .hero .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .section-title .bracket {
+            color: var(--electric-cyan);
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--electric-cyan);
+            padding: 2rem;
+            margin: 3rem 0;
+            font-size: 1.25rem;
+        }
+
+        .quote-block.amber {
+            border-left-color: var(--warm-amber);
+            background: rgba(255, 179, 71, 0.05);
+        }
+
+        /* Core Message */
+        .core-message {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .core-message .big-text {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .core-message .highlight {
+            color: var(--warm-amber);
+        }
+
+        .core-message .struck {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Three Things */
+        .three-things {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .thing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .thing-card::before {
+            content: attr(data-number);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--electric-cyan);
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .thing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--electric-cyan);
+        }
+
+        .thing-card p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .thing-card .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--warm-amber);
+        }
+
+        /* Two Paths */
+        .two-paths {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .two-paths {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .path {
+            padding: 3rem;
+        }
+
+        .path.passenger {
+            background: var(--mid-grey);
+            color: var(--charcoal);
+        }
+
+        .path.pilot {
+            background: var(--deep-space);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .path h3 {
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+
+        .path h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .path.pilot h2 {
+            color: var(--electric-cyan);
+        }
+
+        .path ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .path li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .path li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--electric-cyan);
+        }
+
+        .path.passenger li::before {
+            color: var(--charcoal);
+            opacity: 0.4;
+        }
+
+        .path .outcome {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .path.pilot .outcome {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--electric-cyan);
+        }
+
+        .paths-footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warm-amber);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        /* Light Section */
+        .light-section {
+            background: var(--soft-grey);
+            color: var(--charcoal);
+            padding: 6rem 2rem;
+        }
+
+        .light-section .section-title {
+            color: var(--charcoal);
+        }
+
+        .light-section .bracket {
+            color: var(--electric-cyan);
+        }
+
+        /* Five Innovators */
+        .innovators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            margin: 3rem 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .innovator {
+            flex: 1;
+            min-width: 200px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .innovator:nth-child(1) { background: #FFB347; color: var(--charcoal); }
+        .innovator:nth-child(2) { background: #FF6B6B; }
+        .innovator:nth-child(3) { background: #4A90D9; }
+        .innovator:nth-child(4) { background: #4CAF50; }
+        .innovator:nth-child(5) { background: #9B59B6; }
+
+        .innovator .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .innovator h3 {
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .innovator .superpower {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .innovator .one-liner {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        /* Key Quotes */
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .quote-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1.5rem;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .quote-card::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--electric-cyan);
+            opacity: 0.2;
+            position: absolute;
+            top: -0.5rem;
+            left: 0.5rem;
+            font-family: Georgia, serif;
+        }
+
+        .quote-card p {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cosmic Section */
+        .cosmic-section {
+            text-align: center;
+            padding: 8rem 2rem;
+            background: linear-gradient(180deg, var(--deep-space) 0%, #0f2744 50%, var(--deep-space) 100%);
+            position: relative;
+        }
+
+        .cosmic-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .cosmic-section .lead-in {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cosmic-section .big-question {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 700;
+            color: var(--warm-amber);
+            margin-top: 2rem;
+        }
+
+        /* Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--electric-cyan);
+            transform: translateY(-2px);
+        }
+
+        .resource-card h4 {
+            color: var(--electric-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        footer .author-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        footer .links {
+            margin-top: 1.5rem;
+        }
+
+        footer .links a {
+            color: var(--electric-cyan);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .links a:hover {
+            color: var(--warm-amber);
+        }
+
+        footer .event-info {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Permission Section */
+        .permission {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .permission h2 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+        }
+
+        .checklist {
+            list-style: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .checklist li {
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .checklist li::before {
+            content: '[ ]';
+            margin-right: 1rem;
+            color: var(--electric-cyan);
+        }
+
+        .permission-slip {
+            display: inline-block;
+            background: var(--electric-cyan);
+            color: var(--deep-space);
+            padding: 1rem 2rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Nobody's Coming */
+        .nobodys-coming {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .nobodys-coming h2 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .nobodys-coming .but {
+            color: var(--warm-amber);
+            margin-top: 2rem;
+        }
+
+        .nobodys-coming .callout {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid var(--electric-cyan);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .nobodys-coming .callout p {
+            color: var(--electric-cyan);
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Hero -->
+    <header class="hero">
+        <h1 class="fade-in"><span class="bracket">[</span> BUILD SOMETHING. <span class="bracket">]</span></h1>
+        <p class="subtitle fade-in" style="animation-delay: 0.2s">A guide for the first generation where the tools think back.</p>
+        <p class="author fade-in" style="animation-delay: 0.4s">Victor del Rosal</p>
+        <div class="scroll-indicator fade-in" style="animation-delay: 0.6s">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Core Message -->
+    <section class="core-message">
+        <p class="big-text">
+            You came from stars. You are here for a blink.<br>
+            And right now, you hold the most powerful tools in history.
+        </p>
+        <p class="big-text">
+            <span class="struck">The question isn't "Will AI take my job?"</span>
+        </p>
+        <p class="big-text">
+            <span class="highlight">The real question is: What are you going to build?</span>
+        </p>
+    </section>
+
+    <!-- Three Things -->
+    <section>
+        <h2 class="section-title"><span class="bracket">[</span> THREE THINGS TO DO IMMEDIATELY <span class="bracket">]</span></h2>
+
+        <div class="three-things">
+            <div class="thing-card" data-number="01">
+                <h3>BUILD SOMETHING</h3>
+                <p>Don't just consume content — create it. A website. An app. A small business. A zine. Anything.</p>
+                <p style="margin-top: 1rem; color: var(--warm-amber);">When you build, you learn things you cannot learn any other way. You shift from being a person things happen TO, to a person who makes things happen.</p>
+            </div>
+
+            <div class="thing-card" data-number="02">
+                <h3>THINK HARDER</h3>
+                <p>AI doesn't replace thinking — it rewards it.</p>
+                <div class="code-block">
+                    LAZY QUESTION = GARBAGE ANSWER<br>
+                    SHARP QUESTION = USEFUL ANSWER
+                </div>
+                <p>The skill isn't "using ChatGPT." The skill is thinking clearly.</p>
+            </div>
+
+            <div class="thing-card" data-number="03">
+                <h3>STAY CURIOUS</h3>
+                <p>Curiosity is the only un-automatable skill. It cannot be outsourced.</p>
+                <p style="margin-top: 1rem; color: var(--warm-amber);">School rewards compliance. The world rewards curiosity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two Paths -->
+    <section style="max-width: 100%; padding: 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 6rem 2rem 3rem;">
+            <h2 class="section-title"><span class="bracket">[</span> THE TWO PATHS <span class="bracket">]</span></h2>
+        </div>
+
+        <div class="two-paths">
+            <div class="path passenger">
+                <h3>PATH A:</h3>
+                <h2>THE PASSENGER</h2>
+                <ul>
+                    <li>Lets AI do the thinking</li>
+                    <li>Uses tech to avoid effort</li>
+                    <li>Curiosity atrophies</li>
+                    <li>Becomes dependent</li>
+                </ul>
+                <span class="outcome">Outcome: [Dependency]</span>
+            </div>
+
+            <div class="path pilot">
+                <h3>PATH B:</h3>
+                <h2>THE PILOT</h2>
+                <ul>
+                    <li>Thinks WITH the machine</li>
+                    <li>Uses tech to extend capability</li>
+                    <li>Curiosity expands</li>
+                    <li>Becomes more capable</li>
+                </ul>
+                <span class="outcome">Outcome: [Amplification]</span>
+            </div>
+        </div>
+
+        <div class="paths-footer">
+            The technology is the same. The difference is your intent.
+        </div>
+    </section>
+
+    <!-- Nobody's Coming -->
+    <section class="nobodys-coming">
+        <h2>NOBODY IS COMING TO SAVE YOU.</h2>
+        <p style="max-width: 600px; margin: 0 auto; color: rgba(255,255,255,0.8);">
+            No teacher, parent, or government is going to hand you a meaningful life. You have to build it yourself.
+        </p>
+
+        <h2 class="but">BUT NOBODY IS COMING TO STOP YOU, EITHER.</h2>
+
+        <div class="callout">
+            <p>The barriers to entry have never been lower.<br>
+            The tools are free. The knowledge is accessible.<br>
+            If you want to build something, you can start today.</p>
+        </div>
+    </section>
+
+    <!-- The Real Risk -->
+    <section>
+        <h2 class="section-title"><span class="bracket">[</span> THE REAL RISK <span class="bracket">]</span></h2>
+
+        <p style="font-size: 1.25rem; color: rgba(255,255,255,0.5); text-decoration: line-through; margin-bottom: 1rem;">
+            Risk: AI takes your job.
+        </p>
+
+        <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+            <strong>Real risk:</strong> You stop developing the things that make you hard to replace.
+        </p>
+
+        <div style="max-width: 500px;">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span style="width: 200px;">Curiosity</span>
+                <div style="flex: 1; height: 24px; background: var(--electric-cyan);"></div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span style="width: 200px;">Critical Thinking</span>
+                <div style="flex: 1; height: 24px; background: linear-gradient(90deg, var(--electric-cyan) 70%, transparent);"></div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span style="width: 200px;">Creativity</span>
+                <div style="flex: 1; height: 24px; background: linear-gradient(90deg, var(--electric-cyan) 40%, transparent);"></div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span style="width: 200px;">The Ability to Care</span>
+                <div style="flex: 1; height: 24px; background: linear-gradient(90deg, var(--warm-amber) 20%, transparent);"></div>
+            </div>
+        </div>
+
+        <div class="quote-block amber" style="margin-top: 3rem;">
+            <p>If you outsource the struggle, you outsource the growth.</p>
+        </div>
+    </section>
+
+    <!-- Five Innovators -->
+    <section class="light-section">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 class="section-title"><span class="bracket">[</span> THE FIVE INNOVATORS <span class="bracket">]</span></h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem;">Every successful project needs five types of thinking. Which one are you?</p>
+
+            <div class="innovators">
+                <div class="innovator">
+                    <div class="icon">🔬</div>
+                    <h3>SCIENTIST</h3>
+                    <div class="superpower">Deep Thinking</div>
+                    <div class="one-liner">"Identifies opportunities"</div>
+                </div>
+                <div class="innovator">
+                    <div class="icon">🎨</div>
+                    <h3>DESIGNER</h3>
+                    <div class="superpower">Artistry</div>
+                    <div class="one-liner">"Creates solutions"</div>
+                </div>
+                <div class="innovator">
+                    <div class="icon">🔧</div>
+                    <h3>MAKER</h3>
+                    <div class="superpower">Craftsmanship</div>
+                    <div class="one-liner">"Builds products"</div>
+                </div>
+                <div class="innovator">
+                    <div class="icon">📢</div>
+                    <h3>COMMUNICATOR</h3>
+                    <div class="superpower">Persuasion</div>
+                    <div class="one-liner">"Gets customers"</div>
+                </div>
+                <div class="innovator">
+                    <div class="icon">🧭</div>
+                    <h3>MANAGER</h3>
+                    <div class="superpower">Leadership</div>
+                    <div class="one-liner">"Runs the business"</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem; font-size: 1.1rem; text-align: center;">
+                <strong>The secret:</strong> You don't have to be all five. But you need to know which ones you are — and find collaborators who complement your strengths.
+            </p>
+        </div>
+    </section>
+
+    <!-- Permission -->
+    <section class="permission">
+        <h2>YOU DO NOT NEED PERMISSION.</h2>
+
+        <ul class="checklist">
+            <li>A DEGREE</li>
+            <li>APPROVAL</li>
+            <li>TO FEEL "READY"</li>
+        </ul>
+
+        <p style="max-width: 500px; margin: 0 auto;">
+            The only thing standing between you and making something that matters is the decision to start.
+        </p>
+
+        <div class="permission-slip">Consider this your permission slip.</div>
+    </section>
+
+    <!-- Key Quotes -->
+    <section>
+        <h2 class="section-title"><span class="bracket">[</span> KEY QUOTES <span class="bracket">]</span></h2>
+
+        <div class="quotes-grid">
+            <div class="quote-card">
+                <p>"The technology is the same. The difference is you."</p>
+            </div>
+            <div class="quote-card">
+                <p>"School rewards compliance. The world rewards curiosity."</p>
+            </div>
+            <div class="quote-card">
+                <p>"If you outsource the struggle, you outsource the growth."</p>
+            </div>
+            <div class="quote-card">
+                <p>"Nobody is coming to save you. But nobody is coming to stop you, either."</p>
+            </div>
+            <div class="quote-card">
+                <p>"The skill isn't 'using ChatGPT.' The skill is thinking clearly."</p>
+            </div>
+            <div class="quote-card">
+                <p>"Stop being a person things happen to. Become a person who makes things happen."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cosmic Closing -->
+    <section class="cosmic-section">
+        <p class="lead-in">
+            You came from stars — literally, chemically, actually.<br>
+            You're here for a blink in cosmic terms.
+        </p>
+        <p class="lead-in">
+            And right now, at this exact moment in history,<br>
+            the tools to build things have never been more powerful.
+        </p>
+        <p class="big-question">WHAT ARE YOU GOING TO BUILD?</p>
+    </section>
+
+    <!-- Resources -->
+    <section>
+        <h2 class="section-title"><span class="bracket">[</span> GO DEEPER <span class="bracket">]</span></h2>
+
+        <div class="resources-grid">
+            <a href="https://humanlikebook.com" target="_blank" class="resource-card">
+                <h4>HUMANLIKE</h4>
+                <p>Being human in the age of AI — Victor's latest book</p>
+            </a>
+            <a href="https://vdr.me/disruption" target="_blank" class="resource-card">
+                <h4>DISRUPTION</h4>
+                <p>How technology transforms industries</p>
+            </a>
+            <a href="https://victordelrosal.com/waves" target="_blank" class="resource-card">
+                <h4>WAVES</h4>
+                <p>Victor's blog on AI, technology, and building things</p>
+            </a>
+            <a href="https://pentaborgs.com" target="_blank" class="resource-card">
+                <h4>FIVE INNOVATORS</h4>
+                <p>The framework for building teams</p>
+            </a>
+        </div>
+
+        <div class="quote-block" style="margin-top: 3rem; text-align: center;">
+            <p>But remember: the most important thing isn't reading my books.<br>
+            <strong style="color: var(--warm-amber);">It's building your stuff.</strong></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="author-name">Victor del Rosal</div>
+        <p>NCI Lecturer | Author | Builder</p>
+
+        <div class="links">
+            <a href="https://victordelrosal.com">victordelrosal.com</a>
+            <a href="https://twitter.com/victordelrosal">@victordelrosal</a>
+        </div>
+
+        <p class="event-info">
+            Young Future Leaders Programme<br>
+            National College of Ireland<br>
+            February 2026
+        </p>
+    </footer>
+
+    <script>
+        // Simple scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
