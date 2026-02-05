@@ -1009,44 +1009,124 @@
         <h2 class="section-title"><span class="bracket">[</span> THE SLIDES <span class="bracket">]</span></h2>
 
         <!-- PDF Viewer -->
-        <div id="pdf-container" style="position: relative; max-width: 1000px; margin: 0 auto 2rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); background: #1a1a1a;">
+        <div id="pdf-container" style="position: relative; max-width: 1000px; margin: 0 auto 2rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); background: var(--deep-space);">
             <!-- Controls bar -->
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.5); border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
-                <button onclick="toggleFullscreen()" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--electric-cyan); border-radius: 6px; color: var(--electric-cyan); cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-                    </svg>
-                    Fullscreen
-                </button>
-                <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--warm-amber); border: none; border-radius: 6px; color: var(--deep-space); text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Download PDF
-                </a>
+            <div id="pdf-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.6); border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
+                <!-- Navigation -->
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button id="prev-btn" onclick="prevPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                    </button>
+                    <span id="page-info" style="font-family: 'JetBrains Mono', monospace; color: var(--white); font-size: 0.9rem;">1 / 1</span>
+                    <button id="next-btn" onclick="nextPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Actions -->
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="toggleFullscreen()" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--electric-cyan); border-radius: 6px; color: var(--electric-cyan); cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
+                        <span class="btn-text">Fullscreen</span>
+                    </button>
+                    <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--warm-amber); border: none; border-radius: 6px; color: var(--deep-space); text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span class="btn-text">Download</span>
+                    </a>
+                </div>
             </div>
-            <!-- PDF embed -->
-            <iframe
-                id="pdf-viewer"
-                src="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf"
-                style="width: 100%; height: 70vh; border: none; display: block;"
-                title="BUILD SOMETHING. Presentation Slides"
-            ></iframe>
+            <!-- Canvas for PDF rendering -->
+            <div id="canvas-container" style="display: flex; justify-content: center; align-items: center; background: #1a1a2e; min-height: 500px; position: relative;">
+                <canvas id="pdf-canvas" style="max-width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></canvas>
+                <div id="loading-indicator" style="position: absolute; color: var(--electric-cyan); font-size: 1rem;">Loading slides...</div>
+            </div>
         </div>
 
         <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 1rem;">
-            Scroll through the slides above, or download the PDF (7.5 MB) for offline viewing.
+            Use arrows to navigate slides, or download the PDF (7.5 MB) for offline viewing.
         </p>
     </section>
 
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
+        // PDF.js setup
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        const canvas = document.getElementById('pdf-canvas');
+        const ctx = canvas.getContext('2d');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        function renderPage(num) {
+            pageRendering = true;
+            pdfDoc.getPage(num).then(function(page) {
+                // Calculate scale to fit container while maintaining aspect ratio
+                const container = document.getElementById('canvas-container');
+                const containerWidth = container.clientWidth - 40; // padding
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = Math.min(containerWidth / viewport.width, 2); // max scale 2x
+                const scaledViewport = page.getViewport({ scale: scale });
+
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: scaledViewport
+                };
+
+                page.render(renderContext).promise.then(function() {
+                    pageRendering = false;
+                    loadingIndicator.style.display = 'none';
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+
+            document.getElementById('page-info').textContent = num + ' / ' + pdfDoc.numPages;
+        }
+
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        function prevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+
+        function nextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+
         function toggleFullscreen() {
             const container = document.getElementById('pdf-container');
             if (!document.fullscreenElement) {
-                container.requestFullscreen().catch(err => {
-                    // Fallback: open PDF in new tab
+                container.requestFullscreen().then(() => {
+                    setTimeout(() => queueRenderPage(pageNum), 100);
+                }).catch(err => {
                     window.open('assets/Victor_del_Rosal_YFLP_5Feb2026.pdf', '_blank');
                 });
             } else {
@@ -1054,14 +1134,32 @@
             }
         }
 
-        // Adjust PDF viewer height in fullscreen
         document.addEventListener('fullscreenchange', () => {
-            const viewer = document.getElementById('pdf-viewer');
+            const container = document.getElementById('canvas-container');
             if (document.fullscreenElement) {
-                viewer.style.height = 'calc(100vh - 50px)';
+                container.style.minHeight = 'calc(100vh - 60px)';
             } else {
-                viewer.style.height = '70vh';
+                container.style.minHeight = '500px';
             }
+            setTimeout(() => queueRenderPage(pageNum), 100);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                prevPage();
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                nextPage();
+            }
+        });
+
+        // Load PDF
+        pdfjsLib.getDocument('assets/Victor_del_Rosal_YFLP_5Feb2026.pdf').promise.then(function(pdf) {
+            pdfDoc = pdf;
+            renderPage(pageNum);
+        }).catch(function(error) {
+            loadingIndicator.textContent = 'Error loading PDF. Please try downloading instead.';
+            console.error('PDF load error:', error);
         });
     </script>
 
