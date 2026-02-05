@@ -780,6 +780,58 @@
         </div>
     </header>
 
+    <!-- The Slides - PDF Viewer -->
+    <section id="download" style="text-align: center; padding: 4rem 2rem;">
+        <h2 class="section-title"><span class="bracket">[</span> THE SLIDES <span class="bracket">]</span></h2>
+
+        <!-- PDF Viewer -->
+        <div id="pdf-container" style="position: relative; width: 80%; max-width: 1400px; margin: 0 auto 2rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); background: var(--deep-space);">
+            <!-- Controls bar -->
+            <div id="pdf-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.6); border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
+                <!-- Navigation -->
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button id="prev-btn" onclick="prevPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                    </button>
+                    <span id="page-info" style="font-family: 'JetBrains Mono', monospace; color: var(--white); font-size: 0.9rem;">1 / 1</span>
+                    <button id="next-btn" onclick="nextPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Actions -->
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="toggleFullscreen()" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--electric-cyan); border-radius: 6px; color: var(--electric-cyan); cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
+                        <span class="btn-text">Fullscreen</span>
+                    </button>
+                    <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--warm-amber); border: none; border-radius: 6px; color: var(--deep-space); text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span class="btn-text">Download</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Canvas for PDF rendering -->
+            <div id="canvas-container" style="display: flex; justify-content: center; align-items: center; background: #1a1a2e; min-height: 500px; position: relative;">
+                <canvas id="pdf-canvas" style="max-width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></canvas>
+                <div id="loading-indicator" style="position: absolute; color: var(--electric-cyan); font-size: 1rem;">Loading slides...</div>
+            </div>
+        </div>
+
+        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 1rem;">
+            Use arrow keys to navigate, or download the PDF (7.5 MB) for offline viewing.
+        </p>
+    </section>
+
     <!-- Core Message -->
     <section class="core-message">
         <p class="big-text">
@@ -1042,57 +1094,63 @@
         <p class="big-question">WHAT ARE YOU GOING TO BUILD?</p>
     </section>
 
-    <!-- Download Slides -->
-    <section id="download" style="text-align: center;">
-        <h2 class="section-title"><span class="bracket">[</span> THE SLIDES <span class="bracket">]</span></h2>
+    <!-- Resources -->
+    <section id="resources">
+        <h2 class="section-title"><span class="bracket">[</span> GO DEEPER <span class="bracket">]</span></h2>
 
-        <!-- PDF Viewer -->
-        <div id="pdf-container" style="position: relative; max-width: 1000px; margin: 0 auto 2rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); background: var(--deep-space);">
-            <!-- Controls bar -->
-            <div id="pdf-controls" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.6); border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
-                <!-- Navigation -->
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <button id="prev-btn" onclick="prevPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="15 18 9 12 15 6"/>
-                        </svg>
-                    </button>
-                    <span id="page-info" style="font-family: 'JetBrains Mono', monospace; color: var(--white); font-size: 0.9rem;">1 / 1</span>
-                    <button id="next-btn" onclick="nextPage()" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; color: var(--electric-cyan); cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="9 18 15 12 9 6"/>
-                        </svg>
-                    </button>
-                </div>
-                <!-- Actions -->
-                <div style="display: flex; gap: 0.5rem;">
-                    <button onclick="toggleFullscreen()" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--electric-cyan); border-radius: 6px; color: var(--electric-cyan); cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-                        </svg>
-                        <span class="btn-text">Fullscreen</span>
-                    </button>
-                    <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--warm-amber); border: none; border-radius: 6px; color: var(--deep-space); text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        <span class="btn-text">Download</span>
-                    </a>
-                </div>
-            </div>
-            <!-- Canvas for PDF rendering -->
-            <div id="canvas-container" style="display: flex; justify-content: center; align-items: center; background: #1a1a2e; min-height: 500px; position: relative;">
-                <canvas id="pdf-canvas" style="max-width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></canvas>
-                <div id="loading-indicator" style="position: absolute; color: var(--electric-cyan); font-size: 1rem;">Loading slides...</div>
-            </div>
+        <div class="resources-grid">
+            <a href="https://humanlikebook.com" target="_blank" class="resource-card">
+                <h4>HUMANLIKE</h4>
+                <p>Being human in the age of AI — Victor's latest book</p>
+            </a>
+            <a href="https://vdr.me/disruption" target="_blank" class="resource-card">
+                <h4>DISRUPTION</h4>
+                <p>How technology transforms industries</p>
+            </a>
+            <a href="https://victordelrosal.com/waves" target="_blank" class="resource-card">
+                <h4>WAVES</h4>
+                <p>Victor's blog on AI, technology, and building things</p>
+            </a>
+            <a href="https://victordelrosal.com/fiveinnovators" target="_blank" class="resource-card">
+                <h4>FIVE INNOVATORS</h4>
+                <p>The framework for building teams</p>
+            </a>
         </div>
 
-        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 1rem;">
-            Use arrows to navigate slides, or download the PDF (7.5 MB) for offline viewing.
-        </p>
+        <div class="quote-block" style="margin-top: 3rem; text-align: center;">
+            <p>But remember: the most important thing isn't reading my books.<br>
+            <strong style="color: var(--warm-amber);">It's building your stuff.</strong></p>
+        </div>
     </section>
+
+    <!-- NCI Thank You -->
+    <section style="text-align: center; padding: 4rem 2rem; background: rgba(0, 212, 255, 0.05);">
+        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">This talk was delivered as part of</p>
+        <a href="https://www.ncirl.ie/Young-Future-Leaders-Programme-for-TY-Students" target="_blank" style="display: inline-block; text-decoration: none; max-width: 600px;">
+            <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                <img src="https://www.ncirl.ie/Portals/0/Images/1600x500-Banner-Landing/Young%20Future%20Leader%20Programme%20%20NCI%20Website%20banner%201.jpg" alt="Young Future Leaders Programme for TY Students" style="width: 100%; display: block;">
+            </div>
+            <p style="color: var(--electric-cyan); font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">National College of Ireland</p>
+        </a>
+        <p style="color: rgba(255,255,255,0.7); margin-top: 1rem; font-size: 0.95rem;">Thank you to Kate O'Brien and Andrea Leyden at NCI for the invitation.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="author-name">Victor del Rosal</div>
+        <p>NCI Lecturer | Author | Builder</p>
+
+        <div class="links">
+            <a href="https://victordelrosal.com">victordelrosal.com</a>
+            <a href="https://twitter.com/victordelrosal">@victordelrosal</a>
+        </div>
+
+        <p class="event-info">
+            Young Future Leaders Programme<br>
+            National College of Ireland<br>
+            February 2026
+        </p>
+    </footer>
 
     <!-- PDF.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -1115,7 +1173,7 @@
                 const container = document.getElementById('canvas-container');
                 const containerWidth = container.clientWidth - 40; // padding
                 const viewport = page.getViewport({ scale: 1 });
-                const scale = Math.min(containerWidth / viewport.width, 2); // max scale 2x
+                const scale = Math.min(containerWidth / viewport.width, 2.5); // max scale 2.5x for larger display
                 const scaledViewport = page.getViewport({ scale: scale });
 
                 canvas.height = scaledViewport.height;
@@ -1200,64 +1258,6 @@
             console.error('PDF load error:', error);
         });
     </script>
-
-    <!-- Resources -->
-    <section id="resources">
-        <h2 class="section-title"><span class="bracket">[</span> GO DEEPER <span class="bracket">]</span></h2>
-
-        <div class="resources-grid">
-            <a href="https://humanlikebook.com" target="_blank" class="resource-card">
-                <h4>HUMANLIKE</h4>
-                <p>Being human in the age of AI — Victor's latest book</p>
-            </a>
-            <a href="https://vdr.me/disruption" target="_blank" class="resource-card">
-                <h4>DISRUPTION</h4>
-                <p>How technology transforms industries</p>
-            </a>
-            <a href="https://victordelrosal.com/waves" target="_blank" class="resource-card">
-                <h4>WAVES</h4>
-                <p>Victor's blog on AI, technology, and building things</p>
-            </a>
-            <a href="https://victordelrosal.com/fiveinnovators" target="_blank" class="resource-card">
-                <h4>FIVE INNOVATORS</h4>
-                <p>The framework for building teams</p>
-            </a>
-        </div>
-
-        <div class="quote-block" style="margin-top: 3rem; text-align: center;">
-            <p>But remember: the most important thing isn't reading my books.<br>
-            <strong style="color: var(--warm-amber);">It's building your stuff.</strong></p>
-        </div>
-    </section>
-
-    <!-- NCI Thank You -->
-    <section style="text-align: center; padding: 4rem 2rem; background: rgba(0, 212, 255, 0.05);">
-        <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">This talk was delivered as part of</p>
-        <a href="https://www.ncirl.ie/Young-Future-Leaders-Programme-for-TY-Students" target="_blank" style="display: inline-block; text-decoration: none; max-width: 600px;">
-            <div style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-                <img src="https://www.ncirl.ie/Portals/0/Images/1600x500-Banner-Landing/Young%20Future%20Leader%20Programme%20%20NCI%20Website%20banner%201.jpg" alt="Young Future Leaders Programme for TY Students" style="width: 100%; display: block;">
-            </div>
-            <p style="color: var(--electric-cyan); font-weight: 600; font-size: 1.1rem; margin-top: 1rem;">National College of Ireland</p>
-        </a>
-        <p style="color: rgba(255,255,255,0.7); margin-top: 1rem; font-size: 0.95rem;">Thank you to Kate O'Brien and Andrea Leyden at NCI for the invitation.</p>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="author-name">Victor del Rosal</div>
-        <p>NCI Lecturer | Author | Builder</p>
-
-        <div class="links">
-            <a href="https://victordelrosal.com">victordelrosal.com</a>
-            <a href="https://twitter.com/victordelrosal">@victordelrosal</a>
-        </div>
-
-        <p class="event-info">
-            Young Future Leaders Programme<br>
-            National College of Ireland<br>
-            February 2026
-        </p>
-    </footer>
 
     <script>
         // Simple scroll animation
