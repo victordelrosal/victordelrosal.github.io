@@ -1345,18 +1345,16 @@
     <script>
         (function() {
             const countEl = document.getElementById('view-count');
-            const namespace = 'victordelrosal-build';
-            const key = 'pageviews';
 
-            // Hit the counter API
-            fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+            // Use counterapi.dev - reliable free counter service
+            fetch('https://api.counterapi.dev/v1/victordelrosal.com-build/visits/up')
                 .then(response => response.json())
                 .then(data => {
-                    countEl.textContent = data.value.toLocaleString();
+                    countEl.textContent = data.count.toLocaleString();
                 })
                 .catch(() => {
-                    // Fallback: hide counter on error
-                    countEl.parentElement.parentElement.style.display = 'none';
+                    // Fallback: show a subtle indicator instead of hiding
+                    countEl.textContent = '—';
                 });
         })();
     </script>
