@@ -1006,28 +1006,64 @@
 
     <!-- Download Slides -->
     <section id="download" style="text-align: center;">
-        <h2 class="section-title"><span class="bracket">[</span> DOWNLOAD SLIDES <span class="bracket">]</span></h2>
+        <h2 class="section-title"><span class="bracket">[</span> THE SLIDES <span class="bracket">]</span></h2>
 
-        <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="text-decoration: none; display: inline-block;">
-            <div style="background: rgba(0, 212, 255, 0.1); border: 2px solid var(--electric-cyan); border-radius: 12px; padding: 2rem; max-width: 500px; margin: 0 auto; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'; this.style.transform='translateY(0)';">
-                <svg width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1rem;">
-                    <path d="M6 0C2.686 0 0 2.686 0 6V50C0 53.314 2.686 56 6 56H42C45.314 56 48 53.314 48 50V16L32 0H6Z" fill="#E53935"/>
-                    <path d="M32 0V12C32 14.209 33.791 16 36 16H48L32 0Z" fill="#FFCDD2"/>
-                    <text x="24" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">PDF</text>
-                </svg>
-                <p style="color: var(--electric-cyan); font-weight: 600; margin-bottom: 0.5rem;">BUILD SOMETHING. Slides</p>
-                <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">Click to download presentation (PDF, 7.5 MB)</p>
-                <div style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--warm-amber); font-size: 0.85rem;">
+        <!-- PDF Viewer -->
+        <div id="pdf-container" style="position: relative; max-width: 1000px; margin: 0 auto 2rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 212, 255, 0.3); background: #1a1a1a;">
+            <!-- Controls bar -->
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.5); border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
+                <button onclick="toggleFullscreen()" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--electric-cyan); border-radius: 6px; color: var(--electric-cyan); cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s ease;" onmouseover="this.style.background='rgba(0, 212, 255, 0.2)'" onmouseout="this.style.background='rgba(0, 212, 255, 0.1)'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                    </svg>
+                    Fullscreen
+                </button>
+                <a href="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--warm-amber); border: none; border-radius: 6px; color: var(--deep-space); text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="7 10 12 15 17 10"/>
                         <line x1="12" y1="15" x2="12" y2="3"/>
                     </svg>
-                    Download Now
-                </div>
+                    Download PDF
+                </a>
             </div>
-        </a>
+            <!-- PDF embed -->
+            <iframe
+                id="pdf-viewer"
+                src="assets/Victor_del_Rosal_YFLP_5Feb2026.pdf"
+                style="width: 100%; height: 70vh; border: none; display: block;"
+                title="BUILD SOMETHING. Presentation Slides"
+            ></iframe>
+        </div>
+
+        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 1rem;">
+            Scroll through the slides above, or download the PDF (7.5 MB) for offline viewing.
+        </p>
     </section>
+
+    <script>
+        function toggleFullscreen() {
+            const container = document.getElementById('pdf-container');
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    // Fallback: open PDF in new tab
+                    window.open('assets/Victor_del_Rosal_YFLP_5Feb2026.pdf', '_blank');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Adjust PDF viewer height in fullscreen
+        document.addEventListener('fullscreenchange', () => {
+            const viewer = document.getElementById('pdf-viewer');
+            if (document.fullscreenElement) {
+                viewer.style.height = 'calc(100vh - 50px)';
+            } else {
+                viewer.style.height = '70vh';
+            }
+        });
+    </script>
 
     <!-- Resources -->
     <section id="resources">
