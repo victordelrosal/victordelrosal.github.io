@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Five Innovators | Victor del Rosal</title>
+    <meta name="description" content="A framework for identifying your natural strengths and finding the collaborators you need. The skills every builder needs.">
+    <meta property="og:title" content="The Five Innovators">
+    <meta property="og:description" content="Which one are you? A framework for building teams that actually ship.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://victordelrosal.com/fiveinnovators">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --scientist: #FFB347;
+            --designer: #FF6B6B;
+            --maker: #4A90D9;
+            --communicator: #4CAF50;
+            --manager: #9B59B6;
+            --charcoal: #1a1a1a;
+            --light-bg: #f8f7f4;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--light-bg);
+            color: var(--charcoal);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: #666;
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* Five Color Cards in Hero */
+        .hero-cards {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .hero-card {
+            width: clamp(50px, 10vw, 100px);
+            height: clamp(80px, 15vw, 150px);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .hero-card:nth-child(1) { background: var(--scientist); }
+        .hero-card:nth-child(2) { background: var(--designer); }
+        .hero-card:nth-child(3) { background: var(--maker); }
+        .hero-card:nth-child(4) { background: var(--communicator); }
+        .hero-card:nth-child(5) { background: var(--manager); }
+
+        /* Section Base */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: var(--white);
+            padding: 6rem 2rem;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .problem-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-text p {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .problem-text .quote {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-style: italic;
+            margin-top: 1.5rem;
+        }
+
+        .problem-visual {
+            text-align: center;
+        }
+
+        .solo-vs-team {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .solo-struggle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px dashed #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .team-arrows {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .team-arrow {
+            height: 8px;
+            border-radius: 4px;
+            width: 80px;
+        }
+
+        .team-arrow:nth-child(1) { background: var(--scientist); }
+        .team-arrow:nth-child(2) { background: var(--designer); }
+        .team-arrow:nth-child(3) { background: var(--maker); }
+        .team-arrow:nth-child(4) { background: var(--communicator); }
+        .team-arrow:nth-child(5) { background: var(--manager); }
+
+        /* Innovator Cards */
+        .innovators-section {
+            padding: 6rem 2rem;
+        }
+
+        .innovator-card {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            margin-bottom: 4rem;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 768px) {
+            .innovator-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .innovator-card:nth-child(even) {
+            direction: rtl;
+        }
+
+        .innovator-card:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .innovator-visual {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            min-height: 300px;
+        }
+
+        .innovator-visual.scientist { background: var(--scientist); color: var(--charcoal); }
+        .innovator-visual.designer { background: var(--designer); }
+        .innovator-visual.maker { background: var(--maker); }
+        .innovator-visual.communicator { background: var(--communicator); }
+        .innovator-visual.manager { background: var(--manager); }
+
+        .innovator-visual .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .innovator-visual h3 {
+            font-size: 1.5rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            letter-spacing: 0.1em;
+        }
+
+        .innovator-content {
+            padding: 3rem;
+        }
+
+        .innovator-content h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .innovator-content .tagline {
+            font-size: 1.25rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .innovator-content .detail {
+            margin-bottom: 1rem;
+        }
+
+        .innovator-content .detail strong {
+            display: inline-block;
+            width: 140px;
+            color: #333;
+        }
+
+        .innovator-content .loves-hates {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .innovator-content .loves-hates div {
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--light-bg);
+        }
+
+        .innovator-content .loves-hates strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            width: auto;
+        }
+
+        /* Wavy Divider Overview */
+        .wavy-overview {
+            padding: 4rem 2rem;
+            background: var(--white);
+            overflow: hidden;
+        }
+
+        .wavy-container {
+            display: flex;
+            height: 400px;
+            max-width: 1200px;
+            margin: 3rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .wavy-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 2rem 1rem;
+            position: relative;
+            clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%, 15% 50%);
+            margin-left: -5%;
+        }
+
+        .wavy-section:first-child {
+            clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
+            margin-left: 0;
+        }
+
+        .wavy-section:last-child {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 15% 50%);
+        }
+
+        .wavy-section.scientist { background: var(--scientist); color: var(--charcoal); }
+        .wavy-section.designer { background: var(--designer); }
+        .wavy-section.maker { background: var(--maker); }
+        .wavy-section.communicator { background: var(--communicator); }
+        .wavy-section.manager { background: var(--manager); }
+
+        .wavy-section .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .wavy-section h4 {
+            font-size: 0.9rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .wavy-section .role {
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .wavy-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .wavy-section {
+                clip-path: none;
+                margin-left: 0;
+                padding: 2rem;
+            }
+            .wavy-section h4 {
+                writing-mode: horizontal-tb;
+                transform: none;
+            }
+        }
+
+        /* Matrix Section */
+        .matrix-section {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .matrix-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        .matrix-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .matrix-table th {
+            padding: 1rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .matrix-table th:nth-child(2) { background: var(--scientist); color: var(--charcoal); }
+        .matrix-table th:nth-child(3) { background: var(--designer); }
+        .matrix-table th:nth-child(4) { background: var(--maker); }
+        .matrix-table th:nth-child(5) { background: var(--communicator); }
+        .matrix-table th:nth-child(6) { background: var(--manager); }
+
+        .matrix-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .matrix-table td:first-child {
+            font-weight: 600;
+            text-align: left;
+            background: var(--light-bg);
+        }
+
+        /* Flow Section */
+        .flow-section {
+            padding: 6rem 2rem;
+        }
+
+        .flow-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+
+        .flow-step {
+            text-align: center;
+        }
+
+        .flow-step .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 0.5rem;
+            color: white;
+        }
+
+        .flow-step:nth-child(1) .icon-circle { background: var(--scientist); color: var(--charcoal); }
+        .flow-step:nth-child(3) .icon-circle { background: var(--designer); }
+        .flow-step:nth-child(5) .icon-circle { background: var(--maker); }
+        .flow-step:nth-child(7) .icon-circle { background: var(--communicator); }
+        .flow-step:nth-child(9) .icon-circle { background: var(--manager); }
+
+        .flow-step .label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .flow-step .role-name {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: #ccc;
+        }
+
+        .flow-warning {
+            text-align: center;
+            max-width: 700px;
+            margin: 2rem auto 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Team Sport Section */
+        .team-section {
+            padding: 6rem 2rem;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .team-section .big-quote {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.3;
+        }
+
+        .team-section .sub-quote {
+            font-size: 1.25rem;
+            color: #666;
+        }
+
+        .team-tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 3rem auto 0;
+            text-align: left;
+        }
+
+        .team-tip {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .team-tip strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Which One Section */
+        .which-one {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .which-one h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .which-one .subtitle {
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .driver-list {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .driver-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+        }
+
+        .driver-item .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .driver-item:nth-child(1) .color-dot { background: var(--scientist); }
+        .driver-item:nth-child(2) .color-dot { background: var(--designer); }
+        .driver-item:nth-child(3) .color-dot { background: var(--maker); }
+        .driver-item:nth-child(4) .color-dot { background: var(--communicator); }
+        .driver-item:nth-child(5) .color-dot { background: var(--manager); }
+
+        .driver-item strong {
+            color: #333;
+        }
+
+        .which-one .cta {
+            margin-top: 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .which-one .cta-sub {
+            color: #666;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--scientist) 0%, var(--designer) 25%, var(--maker) 50%, var(--communicator) 75%, var(--manager) 100%);
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--charcoal);
+            color: white;
+        }
+
+        footer .author {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        footer .links a {
+            color: var(--scientist);
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        footer .links a:hover {
+            text-decoration: underline;
+        }
+
+        footer .rainbow-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--scientist), var(--designer), var(--maker), var(--communicator), var(--manager));
+            margin: 2rem auto;
+            max-width: 300px;
+            border-radius: 2px;
+        }
+
+        footer .credit {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 1rem;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <header class="hero">
+        <h1 class="fade-in">THE FIVE INNOVATORS</h1>
+        <p class="subtitle fade-in" style="animation-delay: 0.2s">The skills every builder needs. Which one are you?</p>
+        <div class="hero-cards fade-in" style="animation-delay: 0.4s">
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+        </div>
+    </header>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="problem-grid">
+            <div class="problem-text">
+                <h2>You Don't Have to Be Everything</h2>
+                <p>The myth of the solo genius is dangerous. Great projects require five distinct types of thinking. Most founders try to master all five and burn out.</p>
+                <div class="quote">
+                    "The secret to building isn't doing it all yourself—it's knowing your natural strength and finding the others."
+                </div>
+            </div>
+            <div class="problem-visual">
+                <div class="solo-vs-team">
+                    <div class="solo-struggle">The Solo<br>Struggle</div>
+                    <div style="font-size: 2rem; color: #ccc;">vs</div>
+                    <div class="team-arrows">
+                        <div class="team-arrow"></div>
+                        <div class="team-arrow"></div>
+                        <div class="team-arrow"></div>
+                        <div class="team-arrow"></div>
+                        <div class="team-arrow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wavy Overview -->
+    <section class="wavy-overview">
+        <h2 class="section-title">Innovation Requires Five Types of Thinking</h2>
+        <p class="section-subtitle">Every successful project navigates from the "as is" to the "to be"—from idea to reality, from product to business.</p>
+
+        <div class="wavy-container">
+            <div class="wavy-section scientist">
+                <span class="icon">🔬</span>
+                <h4>SCIENTIST</h4>
+                <span class="role">Identifies<br>opportunities</span>
+            </div>
+            <div class="wavy-section designer">
+                <span class="icon">🎨</span>
+                <h4>DESIGNER</h4>
+                <span class="role">Creates<br>solutions</span>
+            </div>
+            <div class="wavy-section maker">
+                <span class="icon">🔧</span>
+                <h4>MAKER</h4>
+                <span class="role">Builds<br>products</span>
+            </div>
+            <div class="wavy-section communicator">
+                <span class="icon">📢</span>
+                <h4>COMMUNICATOR</h4>
+                <span class="role">Gets<br>customers</span>
+            </div>
+            <div class="wavy-section manager">
+                <span class="icon">🧭</span>
+                <h4>MANAGER</h4>
+                <span class="role">Runs the<br>business</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Individual Innovator Cards -->
+    <section class="innovators-section">
+        <!-- Scientist -->
+        <div class="innovator-card">
+            <div class="innovator-visual scientist">
+                <span class="icon">🔬</span>
+                <h3>SCIENTIST</h3>
+            </div>
+            <div class="innovator-content">
+                <h2>The Scientist</h2>
+                <p class="tagline">Identifies Opportunities — The "As Is" Thinker</p>
+
+                <div class="detail"><strong>Superpower:</strong> Deep Thinking</div>
+                <div class="detail"><strong>Focus:</strong> The "As Is" (Current Reality)</div>
+                <div class="detail"><strong>Driven By:</strong> Curiosity and a genuine thirst to explore and discover</div>
+                <div class="detail"><strong>Great At:</strong> Quantitative & qualitative analysis, understanding root causes</div>
+                <div class="detail"><strong>Key Insight:</strong> They figure out what is really going on before anyone else does. They dig for root causes.</div>
+
+                <div class="loves-hates">
+                    <div><strong>Loves</strong>Facts, evidence, and data</div>
+                    <div><strong>Hates</strong>Faulty data</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Designer -->
+        <div class="innovator-card">
+            <div class="innovator-visual designer">
+                <span class="icon">🎨</span>
+                <h3>DESIGNER</h3>
+            </div>
+            <div class="innovator-content">
+                <h2>The Designer</h2>
+                <p class="tagline">Creates Solutions — The "To Be" Thinker</p>
+
+                <div class="detail"><strong>Superpower:</strong> Artistry</div>
+                <div class="detail"><strong>Focus:</strong> The "To Be" (Future State)</div>
+                <div class="detail"><strong>Driven By:</strong> Creativity, imagination, possibility, and the urge to make things better</div>
+                <div class="detail"><strong>Great At:</strong> Brainstorming new ideas and connecting the dots</div>
+                <div class="detail"><strong>Key Insight:</strong> They bridge the gap between what is and what could be. They connect the dots.</div>
+
+                <div class="loves-hates">
+                    <div><strong>Loves</strong>Beautiful design</div>
+                    <div><strong>Hates</strong>Clunky design</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Maker -->
+        <div class="innovator-card">
+            <div class="innovator-visual maker">
+                <span class="icon">🔧</span>
+                <h3>MAKER</h3>
+            </div>
+            <div class="innovator-content">
+                <h2>The Maker</h2>
+                <p class="tagline">Builds Products — The Pragmatic Builder</p>
+
+                <div class="detail"><strong>Superpower:</strong> Craftsmanship</div>
+                <div class="detail"><strong>Focus:</strong> Making things work</div>
+                <div class="detail"><strong>Driven By:</strong> Transforming ideas into tangible reality</div>
+                <div class="detail"><strong>Great At:</strong> Trial and error, prototyping, and actually building the thing</div>
+                <div class="detail"><strong>Key Insight:</strong> Ideas are cheap; Makers turn them into things you can touch. They excel at prototyping.</div>
+
+                <div class="loves-hates">
+                    <div><strong>Loves</strong>Functionality</div>
+                    <div><strong>Hates</strong>Bugs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communicator -->
+        <div class="innovator-card">
+            <div class="innovator-visual communicator">
+                <span class="icon">📢</span>
+                <h3>COMMUNICATOR</h3>
+            </div>
+            <div class="innovator-content">
+                <h2>The Communicator</h2>
+                <p class="tagline">Gets Customers — The Evangelist</p>
+
+                <div class="detail"><strong>Superpower:</strong> Persuasion</div>
+                <div class="detail"><strong>Focus:</strong> Selling</div>
+                <div class="detail"><strong>Driven By:</strong> Customer engagement and sales conversion</div>
+                <div class="detail"><strong>Great At:</strong> Product evangelism, explaining why it matters, and selling</div>
+                <div class="detail"><strong>Key Insight:</strong> The best product dies if no one knows why it matters. They explain the 'why'.</div>
+
+                <div class="loves-hates">
+                    <div><strong>Loves</strong>Connecting with people</div>
+                    <div><strong>Hates</strong>Inaction</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manager -->
+        <div class="innovator-card">
+            <div class="innovator-visual manager">
+                <span class="icon">🧭</span>
+                <h3>MANAGER</h3>
+            </div>
+            <div class="innovator-content">
+                <h2>The Manager</h2>
+                <p class="tagline">Runs the Business — The Steward</p>
+
+                <div class="detail"><strong>Superpower:</strong> Leadership</div>
+                <div class="detail"><strong>Focus:</strong> Value & Profitability</div>
+                <div class="detail"><strong>Driven By:</strong> Stakeholder success and responsibility</div>
+                <div class="detail"><strong>Great At:</strong> Planning, organizing, strategy, and keeping everything moving</div>
+                <div class="detail"><strong>Key Insight:</strong> They are the glue. They handle planning, finance, and strategy to keep stakeholders happy.</div>
+
+                <div class="loves-hates">
+                    <div><strong>Loves</strong>Taking ownership</div>
+                    <div><strong>Hates</strong>Indifference</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Matrix Section -->
+    <section class="matrix-section">
+        <h2 class="section-title">Comparative Matrix</h2>
+
+        <div class="matrix-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Scientist</th>
+                        <th>Designer</th>
+                        <th>Maker</th>
+                        <th>Communicator</th>
+                        <th>Manager</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Superpower</td>
+                        <td>Deep Thinking</td>
+                        <td>Artistry</td>
+                        <td>Craftsmanship</td>
+                        <td>Persuasion</td>
+                        <td>Leadership</td>
+                    </tr>
+                    <tr>
+                        <td>Focus</td>
+                        <td>The "As Is"</td>
+                        <td>The "To Be"</td>
+                        <td>Functionality</td>
+                        <td>Selling</td>
+                        <td>Value & Profit</td>
+                    </tr>
+                    <tr>
+                        <td>Key Driver</td>
+                        <td>Discovery</td>
+                        <td>Imagination</td>
+                        <td>Reality</td>
+                        <td>Connection</td>
+                        <td>Responsibility</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Flow Section -->
+    <section class="flow-section">
+        <h2 class="section-title">The Organic Flow of Value</h2>
+
+        <div class="flow-container">
+            <div class="flow-step">
+                <div class="icon-circle">🔬</div>
+                <div class="label">Opportunity</div>
+                <div class="role-name">Scientist</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="icon-circle">🎨</div>
+                <div class="label">Solution</div>
+                <div class="role-name">Designer</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="icon-circle">🔧</div>
+                <div class="label">Reality</div>
+                <div class="role-name">Maker</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="icon-circle">📢</div>
+                <div class="label">Market</div>
+                <div class="role-name">Communicator</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="icon-circle">🧭</div>
+                <div class="label">Value</div>
+                <div class="role-name">Manager</div>
+            </div>
+        </div>
+
+        <p class="flow-warning">If you skip a step, the chain breaks. A product built without a Scientist solves no real problem. A product without a Manager creates no sustainable value.</p>
+    </section>
+
+    <!-- Team Sport Section -->
+    <section class="team-section">
+        <h2 class="section-title">Innovation is a Team Sport</h2>
+
+        <p class="big-quote">"You don't have to be all five. But you need to know which one you are—and find collaborators who complement your strengths."</p>
+
+        <p class="sub-quote">That's how real things get built.</p>
+
+        <div class="team-tips">
+            <div class="team-tip">
+                <strong>Stuck in the "As Is"?</strong>
+                Find a Designer who can envision what could be.
+            </div>
+            <div class="team-tip">
+                <strong>Great product but no users?</strong>
+                Find a Communicator who can explain why it matters.
+            </div>
+            <div class="team-tip">
+                <strong>Ideas but no execution?</strong>
+                Find a Maker who can turn concepts into reality.
+            </div>
+        </div>
+    </section>
+
+    <!-- Which One Are You -->
+    <section class="which-one">
+        <h2>Which One Are You?</h2>
+        <p class="subtitle">Identify your starting point.</p>
+
+        <div class="driver-list">
+            <div class="driver-item">
+                <div class="color-dot"></div>
+                <span>Are you driven by <strong>Discovery</strong>? → Scientist</span>
+            </div>
+            <div class="driver-item">
+                <div class="color-dot"></div>
+                <span>Are you driven by <strong>Possibility</strong>? → Designer</span>
+            </div>
+            <div class="driver-item">
+                <div class="color-dot"></div>
+                <span>Are you driven by <strong>Reality</strong>? → Maker</span>
+            </div>
+            <div class="driver-item">
+                <div class="color-dot"></div>
+                <span>Are you driven by <strong>Connection</strong>? → Communicator</span>
+            </div>
+            <div class="driver-item">
+                <div class="color-dot"></div>
+                <span>Are you driven by <strong>Ownership</strong>? → Manager</span>
+            </div>
+        </div>
+
+        <p class="cta">Find your superpower.</p>
+        <p class="cta-sub">Respect the others. Build together.</p>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>That's how real things get built.</h2>
+        <p>You just have to know what you bring, and who you need.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="author">Victor del Rosal</div>
+        <div class="links">
+            <a href="https://victordelrosal.com">victordelrosal.com</a>
+            <a href="https://victordelrosal.com/build">BUILD SOMETHING</a>
+            <a href="https://humanlikebook.com">HUMANLIKE</a>
+        </div>
+        <div class="rainbow-bar"></div>
+        <div class="credit">The Five Innovators Framework</div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.innovator-card, section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
