@@ -569,6 +569,30 @@
                         <span class="tag">Ship Early, Iterate Often</span>
                     </div>
                 </div>
+
+                <!-- SmallBets Portfolio -->
+                <section class="smallbets-section reveal" id="smallbets">
+                    <div class="section-header">
+                        <span class="section-eyebrow">Builder Portfolio</span>
+                        <h3 class="section-title">SmallBets</h3>
+                        <p class="section-subtitle">Ship fast, learn faster. 55 projects across AI, education, games, tools, and more.</p>
+                    </div>
+
+                    <div class="sb-filters" id="sbFilters">
+                        <button class="sb-filter-pill active" data-sb-category="all">All <span class="pill-count">55</span></button>
+                    </div>
+
+                    <div class="sb-grid" id="sbGrid"></div>
+
+                    <div class="sb-actions">
+                        <button class="sb-toggle-btn" id="sbToggle" style="display:none;">Show all projects</button>
+                        <a href="/smallBets/" class="sb-portfolio-link">See full portfolio →</a>
+                    </div>
+
+                    <div class="sb-fallback" id="sbFallback" style="display:none;">
+                        <p>Explore all 55 projects in the <a href="/smallBets/">SmallBets portfolio</a>.</p>
+                    </div>
+                </section>
             </section>
         </div>
 
@@ -1176,6 +1200,116 @@
         // Initialize
         const contributions = await fetchContributions();
         renderGraph(contributions);
+    })();
+    </script>
+
+    <!-- SmallBets Portfolio Loader -->
+    <script>
+    (function() {
+        const PROJECTS_URL = '/smallBets/projects.json';
+        const INITIAL_COUNT = 12;
+        let allProjects = [];
+        let activeCategory = 'all';
+        let showAll = false;
+
+        const grid = document.getElementById('sbGrid');
+        const filtersEl = document.getElementById('sbFilters');
+        const toggleBtn = document.getElementById('sbToggle');
+        const fallback = document.getElementById('sbFallback');
+        const section = document.getElementById('smallbets');
+
+        if (!grid || !filtersEl) return;
+
+        async function loadProjects() {
+            try {
+                const res = await fetch(PROJECTS_URL);
+                if (!res.ok) throw new Error('Fetch failed');
+                const data = await res.json();
+                allProjects = data.projects || [];
+
+                // Build filter pills from category metadata
+                const categories = data.meta?.categories || [];
+                categories.forEach(cat => {
+                    const pill = document.createElement('button');
+                    pill.className = 'sb-filter-pill';
+                    pill.dataset.sbCategory = cat.id;
+                    pill.innerHTML = cat.name + ' <span class="pill-count">' + cat.count + '</span>';
+                    filtersEl.appendChild(pill);
+                });
+
+                // Attach filter events
+                filtersEl.querySelectorAll('.sb-filter-pill').forEach(pill => {
+                    pill.addEventListener('click', function() {
+                        filtersEl.querySelectorAll('.sb-filter-pill').forEach(p => p.classList.remove('active'));
+                        this.classList.add('active');
+                        activeCategory = this.dataset.sbCategory;
+                        showAll = false;
+                        renderCards();
+                    });
+                });
+
+                toggleBtn.addEventListener('click', function() {
+                    showAll = !showAll;
+                    renderCards();
+                });
+
+                renderCards();
+            } catch (e) {
+                // Graceful fallback: hide grid, show link
+                grid.style.display = 'none';
+                filtersEl.style.display = 'none';
+                toggleBtn.style.display = 'none';
+                if (fallback) fallback.style.display = 'block';
+            }
+        }
+
+        function renderCards() {
+            grid.innerHTML = '';
+            const filtered = activeCategory === 'all'
+                ? allProjects
+                : allProjects.filter(p => p.category === activeCategory);
+
+            const visible = showAll ? filtered : filtered.slice(0, INITIAL_COUNT);
+
+            visible.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'sb-card sb-visible';
+
+                const statusClass = 'sb-status-' + project.status;
+                const statusLabel = project.status.charAt(0).toUpperCase() + project.status.slice(1);
+
+                card.innerHTML =
+                    '<div class="sb-card-header">' +
+                        '<div class="sb-card-icon" style="background:' + project.gradient + ';">' + project.icon + '</div>' +
+                        '<span class="sb-status ' + statusClass + '">' + statusLabel + '</span>' +
+                    '</div>' +
+                    '<h4>' + escapeHtml(project.name) + '</h4>' +
+                    '<p>' + escapeHtml(project.description) + '</p>' +
+                    '<div class="sb-card-tags">' +
+                        project.tags.map(t => '<span class="sb-card-tag">' + escapeHtml(t) + '</span>').join('') +
+                    '</div>';
+
+                grid.appendChild(card);
+            });
+
+            // Toggle button visibility
+            if (filtered.length > INITIAL_COUNT) {
+                toggleBtn.style.display = '';
+                toggleBtn.textContent = showAll
+                    ? 'Show fewer'
+                    : 'Show all ' + filtered.length + ' projects';
+            } else {
+                toggleBtn.style.display = 'none';
+            }
+        }
+
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        loadProjects();
     })();
     </script>
 </body>
