@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DELIGHT.md: A recursive protocol for human kindness. Notice someone. Ask what they need. Do the thing. Feel it. Pass it on.">
+    <title>DELIGHT.md | Victor del Rosal</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Victor del Rosal">
+    <meta property="og:url" content="https://victordelrosal.com/delight">
+    <meta property="og:title" content="DELIGHT.md">
+    <meta property="og:description" content="A recursive protocol for human kindness. No base case. It never terminates. That's the point.">
+    <meta property="og:image" content="https://victordelrosal.com/favicon.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DELIGHT.md">
+    <meta name="twitter:description" content="A recursive protocol for human kindness. No base case. It never terminates. That's the point.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --bg-code: #12121a;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text: #e8e8ed;
+            --text-dim: rgba(255, 255, 255, 0.5);
+            --text-mid: rgba(255, 255, 255, 0.7);
+            --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.15);
+            --green: #4ade80;
+            --green-glow: rgba(74, 222, 128, 0.1);
+            --purple: #a78bfa;
+            --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            --mono: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Ambient background glow */
+        .ambient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .ambient::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 222, 128, 0.04) 0%, transparent 70%);
+            animation: pulse 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 80px 24px 120px;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 60px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-family: var(--mono);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent-glow);
+            margin-bottom: 8px;
+        }
+
+        .hero .file-ext {
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        .hero .tagline {
+            font-size: 15px;
+            color: var(--text-dim);
+            font-family: var(--mono);
+            margin-top: 16px;
+        }
+
+        /* One-liner */
+        .one-liner {
+            background: var(--bg-code);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .one-liner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.4;
+        }
+
+        .one-liner .label {
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .one-liner code {
+            font-family: var(--mono);
+            font-size: clamp(13px, 2.5vw, 16px);
+            color: var(--green);
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .one-liner code .keyword {
+            color: var(--purple);
+        }
+
+        .one-liner code .string {
+            color: var(--accent);
+        }
+
+        .one-liner code .op {
+            color: var(--text-mid);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        /* The Prompt */
+        .prompt-block {
+            background: var(--bg-code);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 32px;
+            overflow: hidden;
+        }
+
+        .prompt-step {
+            display: grid;
+            grid-template-columns: 72px 1fr;
+            gap: 0;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .prompt-step:last-child {
+            border-bottom: none;
+        }
+
+        .prompt-cmd {
+            font-family: var(--mono);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .prompt-desc {
+            font-size: 16px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Acceptance Criteria */
+        .criteria-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .criteria-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 16px;
+            color: var(--text-mid);
+        }
+
+        .criteria-list li:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-top: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .checkbox.checked {
+            border-color: var(--green);
+            background: var(--green-glow);
+        }
+
+        .checkbox.checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 6px;
+            height: 10px;
+            border: solid var(--green);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox.checked + span {
+            color: var(--text);
+        }
+
+        /* Algorithm */
+        .algo-block {
+            background: var(--bg-code);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 28px 28px;
+            overflow-x: auto;
+        }
+
+        .algo-block pre {
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .algo-block .kw { color: var(--purple); }
+        .algo-block .fn { color: var(--accent); }
+        .algo-block .cm { color: rgba(255, 255, 255, 0.3); font-style: italic; }
+        .algo-block .st { color: #fbbf24; }
+        .algo-block .bi { color: var(--green); }
+
+        /* Recursive proof */
+        .proof-block {
+            background: var(--bg-code);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .proof-block pre {
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-mid);
+        }
+
+        .proof-block .fn { color: var(--accent); }
+
+        .proof-note {
+            font-size: 17px;
+            color: var(--text);
+            margin-top: 24px;
+            font-style: italic;
+        }
+
+        /* ECHO5 Map */
+        .echo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        .echo-table thead th {
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            text-align: left;
+            padding: 0 12px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .echo-table tbody td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: top;
+        }
+
+        .echo-table .step-name {
+            font-family: var(--mono);
+            font-weight: 600;
+            color: var(--green);
+            white-space: nowrap;
+        }
+
+        .echo-table .action {
+            color: var(--text);
+        }
+
+        .echo-table .echo5-ref {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .echo-table .echo5-desc {
+            color: var(--text-mid);
+        }
+
+        /* Properties */
+        .properties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .prop-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .prop-number {
+            font-family: var(--mono);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .prop-label {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        /* The Only Rule */
+        .the-rule {
+            text-align: center;
+            padding: 48px 24px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        .the-rule h2 {
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .the-rule p {
+            font-size: 20px;
+            color: var(--text);
+            max-width: 480px;
+            margin: 0 auto 32px;
+            line-height: 1.5;
+        }
+
+        .the-rule .cta {
+            font-family: var(--mono);
+            font-size: 15px;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 40px 24px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .page-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .page-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 60px 16px 80px;
+            }
+
+            .prompt-step {
+                grid-template-columns: 64px 1fr;
+            }
+
+            .properties {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .prop-card {
+                padding: 16px;
+            }
+
+            .prop-number {
+                font-size: 2rem;
+            }
+
+            .echo-table {
+                font-size: 13px;
+            }
+
+            .echo-table thead th,
+            .echo-table tbody td {
+                padding: 10px 8px;
+            }
+
+            .algo-block, .proof-block {
+                padding: 20px 16px;
+            }
+
+            .algo-block pre, .proof-block pre {
+                font-size: 12px;
+            }
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient"></div>
+
+    <div class="container">
+        <a href="/" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            victordelrosal.com
+        </a>
+
+        <!-- Hero -->
+        <div class="hero fade-in">
+            <h1>DELIGHT<span class="file-ext">.md</span></h1>
+            <div class="tagline">a recursive protocol for human kindness</div>
+        </div>
+
+        <!-- The One-Liner -->
+        <div class="one-liner fade-in">
+            <div class="label">The One-Liner</div>
+            <code><span class="keyword">while</span> alive<span class="op">;</span> <span class="keyword">do</span> cat <span class="string">DELIGHT.md</span> <span class="op">|</span> human <span class="op">;</span> <span class="keyword">done</span></code>
+        </div>
+
+        <!-- The Prompt -->
+        <div class="section fade-in">
+            <div class="section-title">The Prompt</div>
+            <div class="prompt-block">
+                <div class="prompt-step">
+                    <span class="prompt-cmd">NOTICE</span>
+                    <span class="prompt-desc">someone in your world today.</span>
+                </div>
+                <div class="prompt-step">
+                    <span class="prompt-cmd">ASK</span>
+                    <span class="prompt-desc">what would make their day unexpectedly better?</span>
+                </div>
+                <div class="prompt-step">
+                    <span class="prompt-cmd">DO</span>
+                    <span class="prompt-desc">that thing. However small.</span>
+                </div>
+                <div class="prompt-step">
+                    <span class="prompt-cmd">FEEL</span>
+                    <span class="prompt-desc">what happens inside you when you do.</span>
+                </div>
+                <div class="prompt-step">
+                    <span class="prompt-cmd">PASS</span>
+                    <span class="prompt-desc">this file to one person.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acceptance Criteria -->
+        <div class="section fade-in">
+            <div class="section-title">Acceptance Criteria</div>
+            <ul class="criteria-list">
+                <li>
+                    <div class="checkbox" role="checkbox" aria-checked="false" tabindex="0"></div>
+                    <span>One specific person (not "people")</span>
+                </li>
+                <li>
+                    <div class="checkbox" role="checkbox" aria-checked="false" tabindex="0"></div>
+                    <span>One specific act (not "be nicer")</span>
+                </li>
+                <li>
+                    <div class="checkbox" role="checkbox" aria-checked="false" tabindex="0"></div>
+                    <span>You did it (not "planned to")</span>
+                </li>
+                <li>
+                    <div class="checkbox" role="checkbox" aria-checked="false" tabindex="0"></div>
+                    <span>You felt something (the hook that runs the loop again)</span>
+                </li>
+                <li>
+                    <div class="checkbox" role="checkbox" aria-checked="false" tabindex="0"></div>
+                    <span>One other person now has DELIGHT.md</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- The Algorithm -->
+        <div class="section fade-in">
+            <div class="section-title">The Algorithm</div>
+            <div class="algo-block">
+                <pre><span class="kw">def</span> <span class="fn">delight</span>(human):
+    someone = human.<span class="fn">notice</span>()         <span class="cm"># Encourage: see them</span>
+    need = someone.<span class="fn">real_need</span>()        <span class="cm"># Enlighten: understand, don't assume</span>
+    human.<span class="fn">act</span>(need)                   <span class="cm"># Empower: do the thing</span>
+    human.<span class="fn">feel</span>()                      <span class="cm"># Equip: the feeling is the tool</span>
+    someone.<span class="fn">receive</span>(<span class="st">DELIGHT_MD</span>)       <span class="cm"># Envision: they see it, they want it</span>
+
+<span class="cm"># The loop</span>
+<span class="kw">while</span> <span class="bi">True</span>:
+    <span class="fn">delight</span>(you)
+    <span class="cm"># that's it. there is no step 2.</span></pre>
+            </div>
+        </div>
+
+        <!-- The Recursive Proof -->
+        <div class="section fade-in">
+            <div class="section-title">The Recursive Proof</div>
+            <div class="proof-block">
+                <pre><span class="fn">delight</span>(A):
+    A delights B
+    B.receive(DELIGHT.md)
+    <span class="fn">delight</span>(B):
+        B delights C
+        C.receive(DELIGHT.md)
+        <span class="fn">delight</span>(C):
+            ...</pre>
+            </div>
+            <p class="proof-note">No base case. It never terminates. That's the point.</p>
+        </div>
+
+        <!-- How It Maps to ECHO5 -->
+        <div class="section fade-in">
+            <div class="section-title">How It Maps to ECHO5</div>
+            <div style="overflow-x: auto;">
+                <table class="echo-table">
+                    <thead>
+                        <tr>
+                            <th>Step</th>
+                            <th>Action</th>
+                            <th>ECHO5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="step-name">NOTICE</td>
+                            <td class="action">See someone in your world</td>
+                            <td><span class="echo5-ref">Encourage:</span> <span class="echo5-desc">acknowledge their existence</span></td>
+                        </tr>
+                        <tr>
+                            <td class="step-name">ASK</td>
+                            <td class="action">Understand their real need</td>
+                            <td><span class="echo5-ref">Enlighten:</span> <span class="echo5-desc">see clearly, don't assume</span></td>
+                        </tr>
+                        <tr>
+                            <td class="step-name">DO</td>
+                            <td class="action">Act on it</td>
+                            <td><span class="echo5-ref">Empower:</span> <span class="echo5-desc">transfer agency through action</span></td>
+                        </tr>
+                        <tr>
+                            <td class="step-name">FEEL</td>
+                            <td class="action">Let the feeling land</td>
+                            <td><span class="echo5-ref">Equip:</span> <span class="echo5-desc">the feeling is the tool that sustains the loop</span></td>
+                        </tr>
+                        <tr>
+                            <td class="step-name">PASS</td>
+                            <td class="action">Give someone else the prompt</td>
+                            <td><span class="echo5-ref">Envision:</span> <span class="echo5-desc">they see the future where they do this too</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Properties -->
+        <div class="section fade-in">
+            <div class="section-title">Properties</div>
+            <div class="properties">
+                <div class="prop-card">
+                    <div class="prop-number">12</div>
+                    <div class="prop-label">lines of code express the entire movement</div>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-number">5</div>
+                    <div class="prop-label">acceptance criteria keep it real and observable</div>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-number">1</div>
+                    <div class="prop-label">transmission mechanism makes it viral</div>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-number">0</div>
+                    <div class="prop-label">infrastructure required to start</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Only Rule -->
+        <div class="the-rule fade-in">
+            <h2>The Only Rule</h2>
+            <p>Delight is not a vibe. It's a practice with observable outcomes.</p>
+            <div class="cta">Run the loop. Pass the file.</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="page-footer">
+            <a href="/">victordelrosal.com</a> &middot; <a href="/echo5">ECHO5</a>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+
+        // Interactive checkboxes
+        document.querySelectorAll('.checkbox').forEach(function(cb) {
+            cb.addEventListener('click', function() {
+                this.classList.toggle('checked');
+                var isChecked = this.classList.contains('checked');
+                this.setAttribute('aria-checked', isChecked);
+            });
+            cb.addEventListener('keydown', function(e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
