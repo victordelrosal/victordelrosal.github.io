@@ -198,6 +198,7 @@
                 <!-- GitHub Activity Graph -->
                 <div class="github-activity reveal reveal-delay-2">
                     <h3 class="github-activity-title">GitHub Activity</h3>
+                    <p class="github-total-contributions" id="github-total" style="color: var(--text-white-secondary); text-align: center; font-size: 0.9rem; margin: 0 0 0.5rem 0; opacity: 0; transition: opacity 0.3s;"></p>
                     <div class="github-graph-container">
                         <div class="github-graph-months" id="github-months"></div>
                         <div class="github-graph-wrapper">
@@ -1016,14 +1017,20 @@
 
         const username = 'victordelrosal';
 
+        const totalEl = document.getElementById('github-total');
+
         // Fetch contribution data - try local JSON first, then fallback to API
         async function fetchContributions() {
-            // Try local JSON file first (updated weekly by GitHub Action)
+            // Try local JSON file first (updated weekly by GitHub Action, includes private contributions)
             try {
                 const response = await fetch('/data/github-contributions.json');
                 if (response.ok) {
                     const data = await response.json();
                     if (data.contributions && data.contributions.length > 0) {
+                        if (data.total && totalEl) {
+                            totalEl.textContent = `${data.total.toLocaleString()} contributions in the last year`;
+                            totalEl.style.opacity = '1';
+                        }
                         return data.contributions;
                     }
                 }
@@ -1031,10 +1038,14 @@
                 console.log('Local contribution data not available, trying API...');
             }
 
-            // Fallback to public API
+            // Fallback to public API (note: only shows public contributions)
             try {
                 const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
                 const data = await response.json();
+                if (data.total && totalEl) {
+                    totalEl.textContent = `${Object.values(data.total).reduce((a,b) => a+b, 0).toLocaleString()} contributions in the last year`;
+                    totalEl.style.opacity = '1';
+                }
                 return data.contributions || [];
             } catch (error) {
                 console.error('GitHub API error:', error);

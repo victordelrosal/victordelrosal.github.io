@@ -17,26 +17,46 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_CONTRIBUTION_TOKEN }}
         run: |
+          # Validate token exists
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::GH_CONTRIBUTION_TOKEN secret is not set. Create a PAT with read:user scope and add it as a repo secret."
+            exit 1
+          fi
+
           # Fetch contribution data via GitHub GraphQL API
-          curl -s -H "Authorization: bearer $GH_TOKEN" \
+          HTTP_STATUS=$(curl -s -o /tmp/github-response.json -w "%{http_code}" \
+            -H "Authorization: bearer $GH_TOKEN" \
             -X POST \
             -d '{"query":"query { user(login: \"victordelrosal\") { contributionsCollection { contributionCalendar { totalContributions weeks { contributionDays { contributionCount date contributionLevel } } } } } }"}' \
-            https://api.github.com/graphql > /tmp/github-response.json
+            https://api.github.com/graphql)
+
+          echo "API response status: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::GitHub GraphQL API returned HTTP $HTTP_STATUS. Token may be expired or have insufficient scopes."
+            cat /tmp/github-response.json
+            exit 1
+          fi
 
           # Parse and transform the data
           cat > /tmp/parse.js << 'SCRIPT'
           const fs = require('fs');
-          const response = JSON.parse(fs.readFileSync('/tmp/github-response.json', 'utf8'));
+          const raw = fs.readFileSync('/tmp/github-response.json', 'utf8');
+          const response = JSON.parse(raw);
 
           if (response.errors) {
-            console.error('GraphQL errors:', response.errors);
+            console.error('GraphQL errors:', JSON.stringify(response.errors, null, 2));
+            process.exit(1);
+          }
+
+          if (!response.data || !response.data.user) {
+            console.error('Unexpected response structure:', raw.substring(0, 500));
             process.exit(1);
           }
 
           const calendar = response.data.user.contributionsCollection.contributionCalendar;
           const contributions = [];
 
-          // Map contribution levels to numeric values
           const levelMap = {
             'NONE': 0,
             'FIRST_QUARTILE': 1,
@@ -62,7 +82,7 @@ jobs:
           };
 
           fs.writeFileSync('data/github-contributions.json', JSON.stringify(output, null, 2));
-          console.log(`Updated: ${calendar.totalContributions} total contributions`);
+          console.log(`Updated: ${calendar.totalContributions} total contributions, ${contributions.length} days`);
           SCRIPT
 
           mkdir -p data
