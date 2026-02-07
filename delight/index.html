@@ -294,6 +294,45 @@
             padding: 0 24px 24px;
         }
 
+        /* Toggle-all control */
+        .toggle-all {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .toggle-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            color: var(--text-dim);
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+
+        .toggle-all-btn:hover {
+            color: var(--accent);
+            border-color: rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .toggle-all-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toggle-all-btn.collapsed svg {
+            transform: rotate(180deg);
+        }
+
         /* The Prompt */
         .prompt-block {
             background: var(--bg-code);
@@ -629,6 +668,14 @@
             <code><span class="keyword">while</span> alive<span class="op">;</span> <span class="keyword">do</span> cat <span class="string">DELIGHT.md</span> <span class="op">|</span> human <span class="op">;</span> <span class="keyword">done</span></code>
         </div>
 
+        <!-- Expand / Collapse All -->
+        <div class="toggle-all fade-in">
+            <button class="toggle-all-btn" id="toggleAllBtn" aria-label="Collapse all sections">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14l5-5 5 5"/></svg>
+                <span>Collapse all</span>
+            </button>
+        </div>
+
         <!-- The Prompt -->
         <div class="toggle open fade-in">
             <div class="toggle-header" role="button" tabindex="0" aria-expanded="true">
@@ -864,15 +911,48 @@
             observer.observe(el);
         });
 
+        // Toggle-all button
+        var toggleAllBtn = document.getElementById('toggleAllBtn');
+        var allToggles = document.querySelectorAll('.toggle');
+
+        function updateToggleAllBtn() {
+            var openCount = document.querySelectorAll('.toggle.open').length;
+            var allOpen = openCount === allToggles.length;
+            var label = toggleAllBtn.querySelector('span');
+            if (allOpen) {
+                label.textContent = 'Collapse all';
+                toggleAllBtn.classList.remove('collapsed');
+                toggleAllBtn.setAttribute('aria-label', 'Collapse all sections');
+            } else {
+                label.textContent = 'Expand all';
+                toggleAllBtn.classList.add('collapsed');
+                toggleAllBtn.setAttribute('aria-label', 'Expand all sections');
+            }
+        }
+
+        toggleAllBtn.addEventListener('click', function() {
+            var openCount = document.querySelectorAll('.toggle.open').length;
+            var shouldOpen = openCount < allToggles.length;
+            allToggles.forEach(function(t) {
+                if (shouldOpen) {
+                    t.classList.add('open');
+                } else {
+                    t.classList.remove('open');
+                }
+                t.querySelector('.toggle-header').setAttribute('aria-expanded', shouldOpen);
+            });
+            updateToggleAllBtn();
+        });
+
         // Toggle sections
         document.querySelectorAll('.toggle-header').forEach(function(header) {
             header.addEventListener('click', function(e) {
-                // Don't toggle if clicking a checkbox inside
                 if (e.target.closest('.checkbox')) return;
                 var toggle = this.closest('.toggle');
                 var isOpen = toggle.classList.contains('open');
                 toggle.classList.toggle('open');
                 this.setAttribute('aria-expanded', !isOpen);
+                updateToggleAllBtn();
             });
             header.addEventListener('keydown', function(e) {
                 if (e.key === ' ' || e.key === 'Enter') {
