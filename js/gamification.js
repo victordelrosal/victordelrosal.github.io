@@ -273,7 +273,10 @@
                     });
 
                     if (error) {
-                        console.error('[Gamification] Error initializing anonymous user:', error);
+                        // PGRST202 = function not found; expected until DB function is created
+                        if (error.code !== 'PGRST202') {
+                            console.error('[Gamification] Error initializing anonymous user:', error);
+                        }
                     } else if (data) {
                         // Merge server data with local data
                         const serverXP = data.xp || 0;
