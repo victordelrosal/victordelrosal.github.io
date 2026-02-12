@@ -465,6 +465,11 @@ async function publishToSupabase(briefing) {
   // Using 'ai-intel-' prefix to distinguish from Flux notes
   const noteId = `ai-intel-${briefing.dateString.replace(/-/g, '')}070000.md`;
 
+  // For backfills, use 7am on the target date; otherwise use now
+  const publishedAt = DATE_OVERRIDE
+    ? new Date(DATE_OVERRIDE + 'T07:00:00Z').toISOString()
+    : new Date().toISOString();
+
   console.log(`\nPublishing to Supabase: ${slug}`);
 
   // Check if already exists
@@ -475,14 +480,14 @@ async function publishToSupabase(briefing) {
     .single();
 
   if (existing) {
-    console.log('  Scan already exists for today, updating...');
+    console.log('  Scan already exists, updating...');
     const { error } = await supabase
       .from('published_posts')
       .update({
         title,
         content: briefing.html,
         image: HEADER_IMAGE_URL,
-        published_at: new Date().toISOString(),
+        published_at: publishedAt,
       })
       .eq('slug', slug);
 
@@ -496,7 +501,7 @@ async function publishToSupabase(briefing) {
         title,
         content: briefing.html,
         image: HEADER_IMAGE_URL,
-        published_at: new Date().toISOString(),
+        published_at: publishedAt,
       });
 
     if (error) throw error;
