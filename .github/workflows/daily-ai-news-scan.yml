@@ -42,6 +42,7 @@ jobs:
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node build-scan.js ${{ inputs.force == true && '--force' || '' }}
         working-directory: ai-daily-intel
         # Note: build-waves.yml runs every 30 minutes on schedule,
