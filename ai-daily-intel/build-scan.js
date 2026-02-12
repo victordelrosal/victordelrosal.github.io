@@ -22,6 +22,7 @@ const __dirname = dirname(__filename);
 // Configuration
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE_REGENERATE = process.argv.includes('--force');
+const DATE_OVERRIDE = process.argv.find(a => a.startsWith('--date='))?.split('=')[1] || null;
 const HOURS_LOOKBACK = 24;
 const MAX_ITEMS_PER_SOURCE = 10;
 const MIN_ITEMS_REQUIRED = 3;
@@ -136,11 +137,22 @@ async function fetchNewsAPI(source) {
 async function fetchNewsletterItems() {
   console.log('  Fetching newsletter items from Supabase...');
 
-  const { data, error } = await supabase
+  let query = supabase
     .from('newsletter_items')
-    .select('*')
-    .is('processed_at', null)
-    .order('email_received_at', { ascending: false });
+    .select('*');
+
+  if (DATE_OVERRIDE) {
+    // For backfill: get all items from that date (processed or not)
+    const nextDay = new Date(DATE_OVERRIDE + 'T00:00:00Z');
+    nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+    query = query
+      .gte('email_received_at', DATE_OVERRIDE + 'T00:00:00Z')
+      .lt('email_received_at', nextDay.toISOString().split('T')[0] + 'T00:00:00Z');
+  } else {
+    query = query.is('processed_at', null);
+  }
+
+  const { data, error } = await query.order('email_received_at', { ascending: false });
 
   if (error) {
     console.error(`    Error fetching newsletter items: ${error.message}`);
@@ -374,7 +386,7 @@ function deduplicateItems(items) {
  */
 async function synthesizeBriefing(stories, isNewsletterRanked) {
   const today = new Date();
-  const dateString = today.toISOString().split('T')[0];
+  const dateString = DATE_OVERRIDE || today.toISOString().split('T')[0];
 
   // Parse the dateString directly to ensure day-of-week matches the date in the slug
   // This prevents any timezone/timing mismatch between dateString and formattedDate
@@ -513,7 +525,8 @@ async function main() {
 
   // Check if today's scan already exists (for DST dual-schedule)
   const today = new Date();
-  const todaySlug = `daily-ai-news-scan-${today.toISOString().split('T')[0]}`;
+  const targetDate = DATE_OVERRIDE || today.toISOString().split('T')[0];
+  const todaySlug = `daily-ai-news-scan-${targetDate}`;
 
   const { data: existingToday } = await supabase
     .from('published_posts')
@@ -615,8 +628,8 @@ async function main() {
   // Publish
   const slug = await publishToSupabase(briefing);
 
-  // Mark newsletter items as processed
-  if (isNewsletterRanked) {
+  // Mark newsletter items as processed (skip for backfills to avoid altering state)
+  if (isNewsletterRanked && !DATE_OVERRIDE) {
     await markItemsProcessed(clusters.slice(0, TARGET_STORIES), slug);
   }
 

@@ -16,6 +16,10 @@ on:
         required: false
         default: 'false'
         type: boolean
+      date:
+        description: 'Backfill a specific date (YYYY-MM-DD format)'
+        required: false
+        type: string
 
 jobs:
   build-scan:
@@ -43,7 +47,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node build-scan.js ${{ inputs.force == true && '--force' || '' }}
+        run: node build-scan.js ${{ inputs.force == true && '--force' || '' }} ${{ inputs.date && format('--date={0}', inputs.date) || '' }}
         working-directory: ai-daily-intel
         # Note: build-waves.yml runs every 30 minutes on schedule,
         # so no explicit trigger needed. The static page will be
