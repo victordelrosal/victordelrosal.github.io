@@ -22,23 +22,28 @@ function getSupabaseConfig() {
 }
 
 /**
- * Fetch all published posts
+ * Fetch published posts with optional pagination
+ * @param {Object} options - Fetch options
+ * @param {number} [options.limit] - Max posts to return
+ * @param {number} [options.offset] - Number of posts to skip
  * @returns {Promise<Array>} Array of published posts
  */
-async function fetchPosts() {
+async function fetchPosts(options = {}) {
   const config = getSupabaseConfig();
   if (!config) return [];
 
+  const { limit, offset } = options;
+  let url = `${config.url}/rest/v1/published_posts?select=*&order=published_at.desc`;
+  if (limit) url += `&limit=${limit}`;
+  if (offset) url += `&offset=${offset}`;
+
   try {
-    const response = await fetch(
-      `${config.url}/rest/v1/published_posts?select=*&order=published_at.desc`,
-      {
-        headers: {
-          'apikey': config.key,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await fetch(url, {
+      headers: {
+        'apikey': config.key,
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

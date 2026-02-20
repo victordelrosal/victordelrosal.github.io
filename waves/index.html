@@ -1213,7 +1213,8 @@
             }
         }
 
-        // Fetch and render waves
+        // Fetch and render waves with progressive loading
+        // Fetches recent posts first (fast), then loads older posts in background
         (async function () {
             try {
                 console.log('[waves] Starting initialization...');
@@ -1221,7 +1222,6 @@
                 // Initialize Supabase client only (auth handled by navbar)
                 if (window.SupabaseClient) {
                     window.SupabaseClient.initSupabase();
-                    // Auth is now handled by navbar.js with deduplication - don't call here
                     console.log('[waves] Supabase client initialized');
                 }
 
@@ -1229,36 +1229,38 @@
                 const loading = document.getElementById('loading');
                 const emptyState = document.getElementById('empty-state');
 
-                // Fetch posts with timeout (primary content - fail fast if unavailable)
-                const FETCH_TIMEOUT = 5000; // 5 seconds max
-                console.log('[waves] Fetching posts...');
-                const posts = await withTimeout(
-                    window.PostsAPI.fetchPosts(),
+                const FETCH_TIMEOUT = 15000;
+                const INITIAL_BATCH = 50;
+
+                // PHASE 1: Fetch most recent posts first (small payload, fast)
+                console.log('[waves] Fetching initial batch...');
+                const initialPosts = await withTimeout(
+                    window.PostsAPI.fetchPosts({ limit: INITIAL_BATCH }),
                     FETCH_TIMEOUT,
                     []
                 );
-                console.log('[waves] Posts fetched:', posts.length);
+                console.log('[waves] Initial batch:', initialPosts.length, 'posts');
 
                 loading.style.display = 'none';
 
-                if (posts.length === 0) {
+                if (initialPosts.length === 0) {
                     emptyState.style.display = 'block';
                     return;
                 }
 
-                // PHASE 1: Render posts immediately with zero counts
-                // This ensures content is visible within ~1 second
-                const slugs = posts.map(p => p.slug);
-                console.log('[waves] Rendering posts immediately (counts loading in background)...');
-                renderWaves(posts, {}, {}, {});
+                // Render initial batch immediately
+                let allPosts = initialPosts;
+                renderWaves(allPosts, {}, {}, {});
 
-                // PHASE 2: Fetch all counts IN PARALLEL (not sequentially!)
-                // Max wait is now 5s total instead of 15s
-                console.log('[waves] Fetching all counts in parallel...');
-                const [viewCounts, waveCounts, commentCounts] = await Promise.all([
+                // PHASE 2: Fetch counts + remaining posts IN PARALLEL
+                console.log('[waves] Fetching counts and remaining posts...');
+                const slugs = allPosts.map(p => p.slug);
+                const COUNTS_TIMEOUT = 10000;
+
+                const [viewCounts, waveCounts, commentCounts, remainingPosts] = await Promise.all([
                     withTimeout(
                         window.PageViews?.getViewCounts(slugs) || Promise.resolve({}),
-                        FETCH_TIMEOUT,
+                        COUNTS_TIMEOUT,
                         {}
                     ),
                     withTimeout(
@@ -1283,28 +1285,76 @@
                                 return {};
                             }
                         })(),
-                        FETCH_TIMEOUT,
+                        COUNTS_TIMEOUT,
                         {}
                     ),
                     withTimeout(
                         window.Comments?.getCommentCounts(slugs) || Promise.resolve({}),
-                        FETCH_TIMEOUT,
+                        COUNTS_TIMEOUT,
                         {}
+                    ),
+                    // Fetch remaining posts in parallel (generous timeout for large posts)
+                    withTimeout(
+                        window.PostsAPI.fetchPosts({ limit: 1000, offset: INITIAL_BATCH }),
+                        30000,
+                        []
                     )
                 ]);
-                console.log('[waves] All counts fetched');
 
                 // Store counts globally for search/filter
                 viewCountsData = viewCounts;
                 waveCountsData = waveCounts;
                 commentCountsData = commentCounts;
 
-                // PHASE 3: Re-render with counts (progressive enhancement)
-                // Only re-render if we got any counts
-                if (Object.keys(viewCounts).length || Object.keys(waveCounts).length || Object.keys(commentCounts).length) {
-                    console.log('[waves] Updating with counts...');
-                    renderWaves(posts, viewCounts, waveCounts, commentCounts);
+                // Merge remaining posts if any
+                if (remainingPosts.length > 0) {
+                    allPosts = [...initialPosts, ...remainingPosts];
+                    console.log('[waves] Loaded remaining', remainingPosts.length, 'posts. Total:', allPosts.length);
                 }
+
+                // Fetch counts for remaining posts too
+                if (remainingPosts.length > 0) {
+                    const remainingSlugs = remainingPosts.map(p => p.slug);
+                    const [remViews, remWaves, remComments] = await Promise.all([
+                        withTimeout(
+                            window.PageViews?.getViewCounts(remainingSlugs) || Promise.resolve({}),
+                            COUNTS_TIMEOUT,
+                            {}
+                        ),
+                        withTimeout(
+                            (async () => {
+                                const supabase = window.SupabaseClient?.getClient();
+                                if (!supabase) return {};
+                                try {
+                                    const { data, error } = await supabase
+                                        .from('wave_reaction_counts')
+                                        .select('post_slug, wave_count')
+                                        .in('post_slug', remainingSlugs);
+                                    if (!error && data) {
+                                        const counts = {};
+                                        data.forEach(item => { counts[item.post_slug] = item.wave_count; });
+                                        return counts;
+                                    }
+                                    return {};
+                                } catch (e) { return {}; }
+                            })(),
+                            COUNTS_TIMEOUT,
+                            {}
+                        ),
+                        withTimeout(
+                            window.Comments?.getCommentCounts(remainingSlugs) || Promise.resolve({}),
+                            COUNTS_TIMEOUT,
+                            {}
+                        )
+                    ]);
+                    Object.assign(viewCountsData, remViews);
+                    Object.assign(waveCountsData, remWaves);
+                    Object.assign(commentCountsData, remComments);
+                }
+
+                // Re-render with all posts and counts
+                console.log('[waves] Final render with all data...');
+                renderWaves(allPosts, viewCountsData, waveCountsData, commentCountsData);
 
                 console.log('[waves] Initialization complete');
             } catch (error) {
