@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Demo: The Creative Pipeline</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -270,33 +271,124 @@
   }
   .dropdown-item .emoji { font-size: 1.3rem; }
 
-  /* Spin All Button */
-  .spin-all-btn {
-    padding: 14px 40px;
-    background: linear-gradient(135deg, var(--accent), #5e35b1);
-    border: none;
-    border-radius: 14px;
-    color: #fff;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 700;
+  /* Casino Lever */
+  .lever-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     cursor: pointer;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition: all 0.3s;
-    box-shadow: 0 4px 24px rgba(124, 77, 255, 0.3);
+    user-select: none;
     position: relative;
-    overflow: hidden;
   }
-  .spin-all-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(124, 77, 255, 0.4);
-  }
-  .spin-all-btn:active { transform: translateY(0); }
-  .spin-all-btn:disabled {
+  .lever-wrapper.disabled {
+    pointer-events: none;
     opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+  }
+  .lever-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    transition: color 0.3s;
+  }
+  .lever-wrapper:hover .lever-label {
+    color: var(--text);
+  }
+
+  .lever-housing {
+    width: 48px;
+    height: 120px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* The base/mount plate */
+  .lever-base {
+    position: absolute;
+    bottom: 0;
+    width: 48px;
+    height: 24px;
+    background: linear-gradient(180deg, #4a4a5a, #2a2a3a);
+    border-radius: 6px 6px 10px 10px;
+    border: 1px solid #555;
+    border-top: 1px solid #666;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  /* The slot/track */
+  .lever-track {
+    position: absolute;
+    bottom: 20px;
+    width: 8px;
+    height: 90px;
+    background: linear-gradient(90deg, #1a1a24, #2a2a3a, #1a1a24);
+    border-radius: 4px;
+    border: 1px solid #333;
+  }
+
+  /* The arm that moves */
+  .lever-arm {
+    position: absolute;
+    bottom: 20px;
+    width: 6px;
+    height: 80px;
+    background: linear-gradient(90deg, #888, #ccc 40%, #aaa 60%, #777);
+    border-radius: 3px;
+    transform-origin: bottom center;
+    transition: none;
+    box-shadow: 1px 0 4px rgba(0,0,0,0.3);
+  }
+  .lever-arm.pulled {
+    animation: leverPull 0.9s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes leverPull {
+    0%   { transform: translateY(0); }
+    30%  { transform: translateY(55px); }
+    45%  { transform: translateY(55px); }
+    70%  { transform: translateY(-8px); }
+    85%  { transform: translateY(3px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* The ball/knob on top */
+  .lever-knob {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, #ff4444, #cc0000 50%, #880000 90%);
+    border: 2px solid #aa0000;
+    box-shadow:
+      0 0 12px rgba(255, 50, 50, 0.4),
+      0 3px 8px rgba(0,0,0,0.4),
+      inset 0 2px 4px rgba(255,150,150,0.4),
+      inset 0 -2px 4px rgba(80,0,0,0.4);
+    transition: box-shadow 0.3s;
+  }
+  .lever-wrapper:hover .lever-knob {
+    box-shadow:
+      0 0 20px rgba(255, 50, 50, 0.6),
+      0 3px 8px rgba(0,0,0,0.4),
+      inset 0 2px 4px rgba(255,150,150,0.4),
+      inset 0 -2px 4px rgba(80,0,0,0.4);
+  }
+  /* Glossy highlight on knob */
+  .lever-knob::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 20%; right: 30%;
+    height: 35%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.5), transparent);
+    border-radius: 50%;
   }
 
   /* GO Button */
@@ -553,9 +645,16 @@
     <div class="slots-grid" id="slotsGrid"></div>
   </div>
 
-  <button class="spin-all-btn" id="spinAllBtn" onclick="spinAll()">
-    🎰&ensp;Spin All
-  </button>
+  <div class="lever-wrapper" id="leverWrapper" onclick="pullLever()">
+    <div class="lever-housing">
+      <div class="lever-track"></div>
+      <div class="lever-arm" id="leverArm">
+        <div class="lever-knob"></div>
+      </div>
+      <div class="lever-base"></div>
+    </div>
+    <div class="lever-label">Pull</div>
+  </div>
 
   <div class="go-section" id="goSection">
     <div class="selections-preview" id="selectionsPreview"></div>
@@ -1268,13 +1367,26 @@ function selectManual(catIdx, itemIdx) {
   checkAllSelected();
 }
 
+function pullLever() {
+  if (spinning) return;
+  const arm = document.getElementById('leverArm');
+  const wrapper = document.getElementById('leverWrapper');
+
+  // Animate the pull
+  arm.classList.remove('pulled');
+  void arm.offsetWidth; // reflow
+  arm.classList.add('pulled');
+
+  // Start reels after the lever reaches the bottom (300ms into animation)
+  setTimeout(() => spinAll(), 300);
+}
+
 function spinAll() {
   if (spinning) return;
   spinning = true;
 
-  const btn = document.getElementById('spinAllBtn');
-  btn.disabled = true;
-  btn.textContent = 'Spinning...';
+  const wrapper = document.getElementById('leverWrapper');
+  wrapper.classList.add('disabled');
 
   document.getElementById('goSection').classList.remove('visible');
 
@@ -1319,8 +1431,7 @@ function spinAll() {
       // If last reel, finalize
       if (ci === CATEGORIES.length - 1) {
         spinning = false;
-        btn.disabled = false;
-        btn.innerHTML = '🎰&ensp;Spin All';
+        wrapper.classList.remove('disabled');
         checkAllSelected();
       }
     }, duration * 1000 + 100);
