@@ -1670,7 +1670,20 @@ function generateBrief(country, fruit, animal, action, surprise) {
   @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 210mm; height: 297mm; font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  body { padding: 28mm 24mm 20mm 24mm; display: flex; flex-direction: column; }
+  body { padding: 28mm 24mm 20mm 24mm; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  body::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 580px; height: 580px;
+    transform: translate(-50%, -50%);
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%231a1a2e'%3E%3Cpath d='M176 464h160a16 16 0 0 1 0 32H176a16 16 0 0 1 0-32zm16-48h128a16 16 0 0 1 0 32H192a16 16 0 0 1 0-32zm137.6-80C367 306 400 261.7 400 208c0-79.5-64.5-144-144-144S112 128.5 112 208c0 53.7 33 98 79.4 128H192v48h128v-48h-14.4zM256 0c132.5 0 208 93.7 208 208 0 75.2-36.9 141.7-93.4 182.6V416a32 32 0 0 1-32 32H173.4a32 32 0 0 1-32-32v-25.4C84.9 349.7 48 283.2 48 208 48 93.7 123.5 0 256 0z'/%3E%3Cpath d='M272 96v80h80a16 16 0 0 1 0 32h-80v16a16 16 0 0 1-32 0v-16h-80a16 16 0 0 1 0-32h80V96a16 16 0 0 1 32 0z' opacity='.3'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 
   .topbar { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #7c4dff, #00e676); }
 
