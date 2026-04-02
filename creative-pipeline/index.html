@@ -317,50 +317,101 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @keyframes candyPulse {
+    0%, 100% { box-shadow:
+      0 0 30px rgba(0, 230, 118, 0.4),
+      0 0 60px rgba(0, 230, 118, 0.15),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    }
+    50% { box-shadow:
+      0 0 50px rgba(0, 230, 118, 0.55),
+      0 0 90px rgba(0, 230, 118, 0.25),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    }
+  }
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+
   .go-btn {
     width: 340px;
-    height: 90px;
-    border-radius: 22px;
-    border: none;
+    height: 96px;
+    border-radius: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 3px solid rgba(0, 50, 20, 0.5);
     cursor: pointer;
     font-family: inherit;
-    font-size: 2.2rem;
+    font-size: 2.6rem;
     font-weight: 900;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: #fff;
-    background: linear-gradient(145deg, #00e676 0%, #00c853 30%, #00a152 60%, #005a2e 100%);
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.2) 0%, transparent 50%),
+      linear-gradient(180deg, #4cff91 0%, #00e676 15%, #00c853 40%, #00a152 70%, #007a3d 100%);
     box-shadow:
-      0 0 40px rgba(0, 230, 118, 0.3),
-      0 0 80px rgba(0, 230, 118, 0.12),
-      0 4px 20px rgba(0, 0, 0, 0.4),
-      inset 0 1px 1px rgba(255, 255, 255, 0.2),
-      inset 0 -2px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+      0 0 30px rgba(0, 230, 118, 0.4),
+      0 0 60px rgba(0, 230, 118, 0.15),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    transition: all 0.15s ease;
     position: relative;
     text-transform: uppercase;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    text-shadow:
+      0 2px 4px rgba(0, 60, 20, 0.6),
+      0 0 20px rgba(0, 230, 118, 0.4);
     overflow: hidden;
+    animation: candyPulse 2.5s ease-in-out infinite;
   }
+  /* Glossy top highlight */
   .go-btn::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 45%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, transparent 100%);
-    border-radius: 22px 22px 50% 50%;
+    top: 3px; left: 12%; right: 12%;
+    height: 38%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
+    border-radius: 40px 40px 50% 50%;
     pointer-events: none;
   }
+  /* Shimmer sweep */
+  .go-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.2) 48%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.2) 52%, transparent 70%);
+    pointer-events: none;
+    animation: shimmer 3s ease-in-out infinite;
+  }
   .go-btn:hover {
-    transform: translateY(-3px) scale(1.03);
+    transform: translateY(-4px) scale(1.04);
     box-shadow:
-      0 0 60px rgba(0, 230, 118, 0.45),
-      0 0 120px rgba(0, 230, 118, 0.18),
-      0 8px 30px rgba(0, 0, 0, 0.4),
-      inset 0 1px 1px rgba(255, 255, 255, 0.2),
-      inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+      0 0 60px rgba(0, 230, 118, 0.6),
+      0 0 120px rgba(0, 230, 118, 0.25),
+      0 12px 0 #006b2b,
+      0 14px 30px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.4),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    animation: none;
   }
   .go-btn:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(4px) scale(0.97);
+    box-shadow:
+      0 0 20px rgba(0, 230, 118, 0.3),
+      0 0 40px rgba(0, 230, 118, 0.1),
+      0 2px 0 #006b2b,
+      0 3px 8px rgba(0, 0, 0, 0.4),
+      inset 0 3px 6px rgba(0, 40, 15, 0.5),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.2);
+    animation: none;
   }
 
   .selections-preview {
@@ -479,7 +530,7 @@
     .slot-window { height: 130px; }
     .slot-item { font-size: 1.6rem; height: 46px; }
     .slot-window .center-line { height: 46px; }
-    .go-btn { width: 160px; height: 160px; font-size: 1.8rem; }
+    .go-btn { width: 240px; height: 72px; font-size: 1.8rem; border-radius: 36px; }
     .selections-preview { font-size: 2rem; }
   }
 
