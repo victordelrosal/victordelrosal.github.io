@@ -68,19 +68,21 @@
   /* Header */
   .header {
     text-align: center;
+    margin-top: -16px;
+    margin-bottom: -12px;
   }
   .header h1 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     background: linear-gradient(135deg, #fff 0%, #aaa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .header p {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: var(--text-dim);
     font-weight: 400;
   }
@@ -103,7 +105,7 @@
   }
 
   .slot-label {
-    font-size: 0.7rem;
+    font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -113,7 +115,7 @@
   /* Slot Window */
   .slot-window {
     width: 100%;
-    height: 160px;
+    height: 240px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -163,7 +165,7 @@
     top: 50%;
     left: -16px;
     right: -16px;
-    height: 62px;
+    height: 86px;
     transform: translateY(-50%);
     border: 1.5px solid rgba(124, 77, 255, 0.1);
     border-radius: 16px;
@@ -196,12 +198,12 @@
 
   .slot-item {
     width: 100%;
-    height: 56px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 2rem;
+    font-size: 3.5rem;
     user-select: none;
     transition: opacity 0.3s, filter 0.3s;
     opacity: 0.12;
@@ -219,12 +221,12 @@
   }
   .filter-input {
     width: 100%;
-    padding: 8px 10px;
+    padding: 12px 14px;
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 10px;
     color: var(--text);
-    font-size: 0.72rem;
+    font-size: 1.1rem;
     font-family: inherit;
     text-align: center;
     transition: all 0.2s;
@@ -772,8 +774,8 @@
       grid-template-columns: repeat(5, 1fr);
       gap: 6px;
     }
-    .slot-window { height: 130px; }
-    .slot-item { font-size: 1.6rem; height: 46px; }
+    .slot-window { height: 180px; }
+    .slot-item { font-size: 2.5rem; height: 60px; }
     .slot-window .center-line { height: 46px; }
     .go-btn { width: 240px; height: 72px; font-size: 1.8rem; border-radius: 36px; }
     .selections-preview { font-size: 2rem; }
@@ -1378,8 +1380,8 @@ function buildSlots() {
     col.appendChild(win);
 
     // Position reel between items so nothing is centered on load
-    const itemH = 56;
-    const winH = 160;
+    const itemH = 80;
+    const winH = 240;
     const offset = Math.floor(Math.random() * cat.items.length);
     const centerOffset = (winH / 2);
     reel.style.top = `${centerOffset - offset * itemH}px`;
