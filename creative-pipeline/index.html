@@ -629,7 +629,7 @@
       inset 0 -4px 8px rgba(0, 60, 20, 0.4);
     animation: none;
   }
-  .go-btn:active, .go-btn.pressed {
+  .go-btn:active {
     transform: translateY(6px) scale(0.96);
     box-shadow:
       0 0 15px rgba(0, 230, 118, 0.25),
@@ -639,7 +639,19 @@
       inset 0 4px 8px rgba(0, 40, 15, 0.6),
       inset 0 -1px 2px rgba(255, 255, 255, 0.15);
     animation: none;
-    transition: all 0.12s ease-in;
+    transition: all 0.08s ease-in;
+  }
+  .go-btn.pressed {
+    animation: goSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes goSpring {
+    0%   { transform: translateY(0) scale(1); }
+    12%  { transform: translateY(7px) scale(0.95, 0.92); }
+    28%  { transform: translateY(7px) scale(0.95, 0.92); }
+    48%  { transform: translateY(-6px) scale(1.04, 1.06); }
+    65%  { transform: translateY(2px) scale(0.99, 0.98); }
+    80%  { transform: translateY(-2px) scale(1.01, 1.02); }
+    100% { transform: translateY(0) scale(1); }
   }
 
   .selections-preview {
@@ -1643,7 +1655,7 @@ write a short story in a single paragraph.
     document.getElementById('promptBox').textContent = prompt;
     goBtn.classList.remove('pressed');
     goBtn.style.pointerEvents = '';
-  }, 400);
+  }, 650);
 }
 
 function copyPrompt() {
