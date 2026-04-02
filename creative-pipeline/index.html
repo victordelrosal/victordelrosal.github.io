@@ -1710,12 +1710,12 @@ function generateBrief(country, fruit, animal, action, surprise) {
   <div class="header">
     <div class="header-left">
       <h1>The Creative Pipeline</h1>
-      <div class="subtitle">AI-Powered Concept-to-Market Exercise</div>
+      <div class="subtitle">Concept-to-Market Challenge</div>
     </div>
     <div class="header-right">
       Date: ${new Date().toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
-      Format: Individual / Team of 2<br>
-      Tool: Claude Code (or equivalent AI assistant)
+      Format: Individual or Team of 2<br>
+      Tools: Your brain, Google, pen and paper,<br>any software you already know
     </div>
   </div>
 
@@ -1728,7 +1728,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
   </div>
 
   <div class="intro">
-    <strong>Objective:</strong> Starting from five random creative parameters, use an AI assistant to execute a full concept-to-market pipeline in a single session. Each step builds on the output of the previous one. You will move from a short story to a research question, a validated problem, a designed solution, a working prototype, a landing page, a pitch deck, and a published GitHub Page. The goal is not perfection; it is to experience the speed and depth of AI-augmented creative work.
+    <strong>Your challenge:</strong> Starting from five random creative parameters, execute a full concept-to-market pipeline. Each step builds on the output of the previous one. You will move from a short story to a research question, a validated problem, a designed solution, a working prototype, a landing page, and a pitch deck. Work through every step yourself. Estimate how long the entire exercise would take you, then write that estimate at the top of your submission.
   </div>
 
   <div class="steps">
@@ -1737,14 +1737,14 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-content">
         <div class="step-title">Short Story</div>
         <div class="step-desc">Write a single-paragraph story that weaves together all five parameters above. The story should be vivid, specific, and set in ${country.name}.</div>
-        <span class="step-tag tag-creative">Creative</span>
+        <span class="step-tag tag-creative">Creative Writing</span>
       </div>
     </div>
     <div class="step">
       <div class="step-marker">b</div>
       <div class="step-content">
         <div class="step-title">Research Question</div>
-        <div class="step-desc">Transform the story into a genuine research question suitable for a Masters dissertation. The question must be specific, researchable, and grounded in a real domain.</div>
+        <div class="step-desc">Transform your story into a genuine research question suitable for a Masters dissertation. It must be specific, researchable, and grounded in a real academic domain.</div>
         <span class="step-tag tag-research">Research</span>
       </div>
     </div>
@@ -1752,7 +1752,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-marker">c</div>
       <div class="step-content">
         <div class="step-title">Problem Statement</div>
-        <div class="step-desc">Conduct brief research to diagnose a real problem or opportunity. Output a clear problem statement that includes a narrow customer/user segment in any sector (public or private).</div>
+        <div class="step-desc">Research and diagnose a real problem or opportunity inspired by your question. Write a clear problem statement that identifies a narrow customer or user segment in any sector.</div>
         <span class="step-tag tag-research">Research</span>
       </div>
     </div>
@@ -1760,7 +1760,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-marker">d</div>
       <div class="step-content">
         <div class="step-title">Solution Design</div>
-        <div class="step-desc">Design a solution: physical product, service, or hybrid. Define the provider (startup, government agency, corporation, NGO, etc.) and describe the offering clearly.</div>
+        <div class="step-desc">Design a solution: a physical product, a service, or a hybrid. Define who the provider is (startup, government agency, corporation, NGO, etc.) and describe the offering in detail.</div>
         <span class="step-tag tag-build">Design</span>
       </div>
     </div>
@@ -1768,7 +1768,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-marker">e</div>
       <div class="step-content">
         <div class="step-title">Prototype + Design Specs</div>
-        <div class="step-desc">Build a prototype with complete design specifications: tech stack, data model, user flows, brand guidelines, and an MVP timeline.</div>
+        <div class="step-desc">Create a prototype with design specifications: features, architecture, user flows, brand guidelines, and an MVP development timeline.</div>
         <span class="step-tag tag-build">Build</span>
       </div>
     </div>
@@ -1776,7 +1776,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-marker">f</div>
       <div class="step-content">
         <div class="step-title">Landing Page</div>
-        <div class="step-desc">Create a world-class landing page (HTML) with real-world photos, professional design, and clear value proposition. Open it locally to verify.</div>
+        <div class="step-desc">Design and build a professional landing page for your solution. It should include real imagery, a clear value proposition, pricing, and a call to action. Deliver as a working HTML file.</div>
         <span class="step-tag tag-build">Build</span>
       </div>
     </div>
@@ -1784,23 +1784,23 @@ function generateBrief(country, fruit, animal, action, surprise) {
       <div class="step-marker">g</div>
       <div class="step-content">
         <div class="step-title">Business Plan + Investor Pitch Deck</div>
-        <div class="step-desc">Design a professional business plan and marketing campaign. Create HTML slides pitched to YCombinator, TechStars, Dogpatch Labs, and BlackRock Capital. Final slide: "Lessons Learned" with 6 or 7 reflective bullet points.</div>
+        <div class="step-desc">Write a business plan and marketing campaign. Create a slide deck (10 slides) as if pitching to investors from YCombinator, TechStars, Dogpatch Labs, and BlackRock Capital. Final slide: 6 or 7 bullet points reflecting on lessons learned.</div>
         <span class="step-tag tag-business">Business</span>
       </div>
     </div>
     <div class="step">
       <div class="step-marker">h</div>
       <div class="step-content">
-        <div class="step-title">Publish to GitHub Pages</div>
-        <div class="step-desc">Create a local project folder, commit all deliverables to a GitHub repository, and publish to a live GitHub Page. Open the live URL to confirm.</div>
+        <div class="step-title">Publish Online</div>
+        <div class="step-desc">Organise all deliverables into a project folder. Publish the landing page and pitch deck to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
         <span class="step-tag tag-deliver">Deliver</span>
       </div>
     </div>
   </div>
 
   <div class="footer">
-    <div class="footer-left">The Creative Pipeline &mdash; Generated ${new Date().toLocaleDateString('en-IE')}</div>
-    <div class="footer-right">"From five random emojis to a live startup in one session."</div>
+    <div class="footer-left">The Creative Pipeline &middot; ${new Date().toLocaleDateString('en-IE')}</div>
+    <div class="footer-right">"From five random emojis to a live startup. How long would it take you?"</div>
   </div>
 </body>
 </html>`;
@@ -1808,8 +1808,6 @@ function generateBrief(country, fruit, animal, action, surprise) {
   const briefWindow = window.open('', '_blank');
   briefWindow.document.write(briefHTML);
   briefWindow.document.close();
-  // Auto-trigger print dialog for PDF save after fonts load
-  setTimeout(() => { briefWindow.print(); }, 800);
 }
 
 function copyPrompt() {
