@@ -168,6 +168,27 @@ if (!window.SupabaseClient) {
     }
 
     /**
+     * Generate a random nonce for Google Sign-In / Supabase token exchange
+     */
+    function generateNonce() {
+      const array = new Uint8Array(32);
+      crypto.getRandomValues(array);
+      return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /**
+     * SHA-256 hash a string (returns hex)
+     */
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      return Array.from(new Uint8Array(hashBuffer), b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Store the current nonce so handleGoogleCredential can access it
+    let currentNonce = null;
+
+    /**
      * Handle Google credential response and exchange with Supabase
      */
     async function handleGoogleCredential(response) {
@@ -177,10 +198,16 @@ if (!window.SupabaseClient) {
       }
 
       try {
-        const { data, error } = await supabase.auth.signInWithIdToken({
+        const options = {
           provider: 'google',
           token: response.credential,
-        });
+        };
+        // Pass the raw nonce so Supabase can verify it against the hashed one in the token
+        if (currentNonce) {
+          options.nonce = currentNonce;
+        }
+
+        const { data, error } = await supabase.auth.signInWithIdToken(options);
 
         if (error) {
           console.error('Token exchange error:', error);
@@ -211,17 +238,15 @@ if (!window.SupabaseClient) {
         // Load Google Identity Services if not already loaded
         await loadGoogleScript();
 
-        // Use Google's OAuth2 popup flow
-        const client = google.accounts.oauth2.initTokenClient({
-          client_id: GOOGLE_CLIENT_ID,
-          scope: 'openid email profile',
-          callback: () => {}, // Will be overridden
-        });
+        // Generate nonce for secure token exchange
+        currentNonce = generateNonce();
+        const hashedNonce = await sha256(currentNonce);
 
-        // For ID token flow, use the ID client instead
+        // For ID token flow, use the ID client
         return new Promise((resolve, reject) => {
           google.accounts.id.initialize({
             client_id: GOOGLE_CLIENT_ID,
+            nonce: hashedNonce,
             use_fedcm_for_prompt: true,
             callback: async (response) => {
               try {
