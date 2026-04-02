@@ -629,16 +629,17 @@
       inset 0 -4px 8px rgba(0, 60, 20, 0.4);
     animation: none;
   }
-  .go-btn:active {
-    transform: translateY(4px) scale(0.97);
+  .go-btn:active, .go-btn.pressed {
+    transform: translateY(6px) scale(0.96);
     box-shadow:
-      0 0 20px rgba(0, 230, 118, 0.3),
-      0 0 40px rgba(0, 230, 118, 0.1),
-      0 2px 0 #006b2b,
-      0 3px 8px rgba(0, 0, 0, 0.4),
-      inset 0 3px 6px rgba(0, 40, 15, 0.5),
-      inset 0 -1px 2px rgba(255, 255, 255, 0.2);
+      0 0 15px rgba(0, 230, 118, 0.25),
+      0 0 30px rgba(0, 230, 118, 0.08),
+      0 1px 0 #006b2b,
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 4px 8px rgba(0, 40, 15, 0.6),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.15);
     animation: none;
+    transition: all 0.12s ease-in;
   }
 
   .selections-preview {
@@ -1631,9 +1632,18 @@ write a short story in a single paragraph.
 
 (h) Create a local project folder for all and commit to corresponding GitHub repository then publish to a live GitHub Page and open it. (Skip this step only if you do not have these skills or permissions).`;
 
-  document.getElementById('mainView').style.display = 'none';
-  document.getElementById('promptView').style.display = 'flex';
-  document.getElementById('promptBox').textContent = prompt;
+  // Press the button down, then transition
+  const goBtn = document.getElementById('goBtn');
+  goBtn.classList.add('pressed');
+  goBtn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('promptView').style.display = 'flex';
+    document.getElementById('promptBox').textContent = prompt;
+    goBtn.classList.remove('pressed');
+    goBtn.style.pointerEvents = '';
+  }, 400);
 }
 
 function copyPrompt() {
