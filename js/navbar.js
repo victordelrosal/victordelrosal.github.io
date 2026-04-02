@@ -71,6 +71,16 @@ const Navbar = {
             return `<li><a href="${href}"${isActive ? ' class="active"' : ''}>${link.label}</a></li>`;
         }).join('\n                    ');
 
+        // AI Badge promo link
+        const aiBadgeHTML = `
+            <li class="ai-badge-promo">
+                <a href="https://aibadge.com" target="_blank" rel="noopener">
+                    <img src="/img/ai-badge.png" alt="AI Badge" class="ai-badge-icon">
+                    <span class="ai-badge-tagline">level up your AI game</span>
+                </a>
+            </li>
+        `;
+
         // Full wave navbar with animated background
         return `
     <header class="wave-navbar" id="wave-navbar">
@@ -90,6 +100,7 @@ const Navbar = {
             <nav>
                 <ul class="wave-navbar-links">
                     ${linksHTML}
+                    ${aiBadgeHTML}
                 </ul>
             </nav>
             <div id="auth-container" class="auth-container">

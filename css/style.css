@@ -2824,6 +2824,78 @@ section {
     background: rgba(255, 255, 255, 0.15);
 }
 
+/* AI Badge promo in navbar */
+.ai-badge-promo {
+    margin-left: 8px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ai-badge-promo a {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px !important;
+    background: rgba(255, 215, 0, 0.12) !important;
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 20px !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.ai-badge-promo a:hover {
+    background: rgba(255, 215, 0, 0.22) !important;
+    border-color: rgba(255, 215, 0, 0.45);
+    transform: scale(1.04);
+}
+
+.ai-badge-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    animation: dangle 2.5s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.ai-badge-tagline {
+    font-size: 12px;
+    font-weight: 600;
+    color: #FFD700;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+
+@keyframes dangle {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(12deg); }
+    30% { transform: rotate(-10deg); }
+    45% { transform: rotate(8deg); }
+    60% { transform: rotate(-6deg); }
+    75% { transform: rotate(3deg); }
+    90% { transform: rotate(-1deg); }
+}
+
+/* Hide tagline on small screens, keep badge */
+@media (max-width: 768px) {
+    .ai-badge-tagline {
+        display: none;
+    }
+    .ai-badge-promo {
+        margin-left: 4px;
+        padding-left: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-badge-icon {
+        width: 22px;
+        height: 22px;
+    }
+    .ai-badge-promo a {
+        padding: 3px 8px !important;
+    }
+}
+
 /* Waves page tiled background - holographic blue effect */
 body.waves-page {
     background-color: #f0f7fa;
