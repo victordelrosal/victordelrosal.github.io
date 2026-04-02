@@ -159,21 +159,21 @@
   .center-bar {
     position: absolute;
     top: 50%;
-    left: -12px;
-    right: -12px;
+    left: -16px;
+    right: -16px;
     height: 62px;
     transform: translateY(-50%);
-    border: 1.5px solid rgba(124, 77, 255, 0.3);
+    border: 1.5px solid rgba(124, 77, 255, 0.35);
     border-radius: 16px;
-    z-index: 0;
+    z-index: 10;
     pointer-events: none;
-    background: rgba(124, 77, 255, 0.04);
+    background: rgba(124, 77, 255, 0.06);
     transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
   }
   .center-bar.all-locked {
-    border-color: rgba(0, 230, 118, 0.35);
-    background: rgba(0, 230, 118, 0.05);
-    box-shadow: 0 0 30px rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.4);
+    background: rgba(0, 230, 118, 0.06);
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.1);
   }
 
   /* Hide per-slot center lines */
