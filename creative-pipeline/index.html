@@ -1428,7 +1428,16 @@ function buildSlots() {
     input.addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      input.value = '';
+      input.classList.remove('has-selection');
+      filterDropdown(ci, '');
       dd.classList.add('open');
+    });
+
+    input.addEventListener('focus', () => {
+      input.value = '';
+      input.classList.remove('has-selection');
+      filterDropdown(ci, '');
     });
 
     input.addEventListener('input', (e) => {
