@@ -35,22 +35,115 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     min-height: 100vh;
     padding: 20px 20px 40px 20px;
     position: relative;
   }
 
-  /* Ambient glow */
-  body::before {
-    content: '';
+  /* Dynamic spotlight background */
+  @keyframes drift1 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    25%  { transform: translate(30%, 20%) scale(1.1); }
+    50%  { transform: translate(-10%, 40%) scale(0.95); }
+    75%  { transform: translate(-30%, -10%) scale(1.05); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift2 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    25%  { transform: translate(-25%, -30%) scale(1.15); }
+    50%  { transform: translate(20%, -10%) scale(0.9); }
+    75%  { transform: translate(10%, 30%) scale(1.1); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift3 {
+    0%   { transform: translate(0%, 0%) scale(1.05); }
+    30%  { transform: translate(20%, -25%) scale(0.95); }
+    60%  { transform: translate(-20%, 15%) scale(1.1); }
+    100% { transform: translate(0%, 0%) scale(1.05); }
+  }
+  @keyframes drift4 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    35%  { transform: translate(-15%, 25%) scale(1.08); }
+    65%  { transform: translate(25%, -20%) scale(0.92); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift5 {
+    0%   { transform: translate(0%, 0%) scale(0.95); }
+    20%  { transform: translate(15%, -15%) scale(1.1); }
+    45%  { transform: translate(-25%, 10%) scale(1); }
+    70%  { transform: translate(10%, 25%) scale(0.9); }
+    100% { transform: translate(0%, 0%) scale(0.95); }
+  }
+
+  .bg-spotlights {
     position: fixed;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(124, 77, 255, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(0, 230, 118, 0.04) 0%, transparent 50%);
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
     z-index: 0;
+  }
+  .bg-spotlights::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+  }
+
+  .spot {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+  }
+  /* Deep purple */
+  .spot-1 {
+    width: 50vw; height: 50vw;
+    top: -10%; left: -5%;
+    background: radial-gradient(circle, rgba(100, 40, 200, 0.12) 0%, transparent 70%);
+    animation: drift1 25s ease-in-out infinite;
+  }
+  /* Emerald green */
+  .spot-2 {
+    width: 45vw; height: 45vw;
+    bottom: -5%; right: -10%;
+    background: radial-gradient(circle, rgba(0, 200, 100, 0.08) 0%, transparent 70%);
+    animation: drift2 30s ease-in-out infinite;
+  }
+  /* Royal dark blue */
+  .spot-3 {
+    width: 55vw; height: 55vw;
+    top: 20%; left: 30%;
+    background: radial-gradient(circle, rgba(15, 20, 80, 0.2) 0%, transparent 65%);
+    animation: drift3 35s ease-in-out infinite;
+  }
+  /* Mexican pink - subtle accent */
+  .spot-4 {
+    width: 30vw; height: 30vw;
+    top: 60%; left: 10%;
+    background: radial-gradient(circle, rgba(220, 50, 120, 0.06) 0%, transparent 70%);
+    animation: drift4 22s ease-in-out infinite;
+  }
+  /* Pink highlight - top right */
+  .spot-5 {
+    width: 25vw; height: 25vw;
+    top: 5%; right: 15%;
+    background: radial-gradient(circle, rgba(230, 70, 140, 0.05) 0%, transparent 70%);
+    animation: drift5 28s ease-in-out infinite;
+  }
+  /* Purple-pink accent - mid */
+  .spot-6 {
+    width: 35vw; height: 35vw;
+    top: 40%; right: -5%;
+    background: radial-gradient(circle, rgba(140, 50, 180, 0.07) 0%, transparent 70%);
+    animation: drift1 32s ease-in-out infinite reverse;
+  }
+  /* Deep green whisper - bottom left */
+  .spot-7 {
+    width: 40vw; height: 40vw;
+    bottom: 10%; left: -10%;
+    background: radial-gradient(circle, rgba(0, 150, 80, 0.05) 0%, transparent 70%);
+    animation: drift5 27s ease-in-out infinite reverse;
   }
 
   .container {
@@ -65,11 +158,15 @@
     gap: 36px;
   }
 
-  /* Header */
+  /* Header - fixed at top */
   .header {
+    position: fixed;
+    top: 16px;
+    left: 0;
+    right: 0;
     text-align: center;
-    margin-top: 4px;
-    margin-bottom: -8px;
+    z-index: 100;
+    pointer-events: none;
   }
   .header h1 {
     font-size: clamp(2.6rem, 5vw, 4.2rem);
@@ -112,47 +209,109 @@
     color: var(--text-dim);
   }
 
-  /* Slot Window */
+  /* Slot Window - 3D Odometer Style */
   .slot-window {
     width: 100%;
     height: 240px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: linear-gradient(
+      180deg,
+      #0d0d14 0%,
+      #15151f 8%,
+      #1a1a26 15%,
+      #1e1e2c 30%,
+      #202030 50%,
+      #1e1e2c 70%,
+      #1a1a26 85%,
+      #15151f 92%,
+      #0d0d14 100%
+    );
+    border: 1px solid rgba(60, 60, 80, 0.5);
+    border-radius: 24px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
     transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow:
+      inset 0 8px 20px rgba(0, 0, 0, 0.6),
+      inset 0 -8px 20px rgba(0, 0, 0, 0.6),
+      inset 4px 0 12px rgba(0, 0, 0, 0.3),
+      inset -4px 0 12px rgba(0, 0, 0, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      0 0 1px rgba(255, 255, 255, 0.05);
   }
   .slot-window:hover {
-    border-color: rgba(124, 77, 255, 0.4);
-    box-shadow: 0 0 20px rgba(124, 77, 255, 0.1);
+    border-color: rgba(124, 77, 255, 0.35);
+    box-shadow:
+      inset 0 8px 20px rgba(0, 0, 0, 0.6),
+      inset 0 -8px 20px rgba(0, 0, 0, 0.6),
+      inset 4px 0 12px rgba(0, 0, 0, 0.3),
+      inset -4px 0 12px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(124, 77, 255, 0.12);
   }
   .slot-window.spinning {
-    border-color: var(--green);
-    box-shadow: 0 0 30px var(--green-glow);
+    border-color: rgba(0, 230, 118, 0.4);
+    box-shadow:
+      inset 0 8px 20px rgba(0, 0, 0, 0.6),
+      inset 0 -8px 20px rgba(0, 0, 0, 0.6),
+      inset 4px 0 12px rgba(0, 0, 0, 0.3),
+      inset -4px 0 12px rgba(0, 0, 0, 0.3),
+      0 0 30px var(--green-glow);
   }
   .slot-window.locked {
-    border-color: var(--green);
-    box-shadow: 0 0 20px var(--green-glow);
+    border-color: rgba(0, 230, 118, 0.35);
+    box-shadow:
+      inset 0 8px 20px rgba(0, 0, 0, 0.6),
+      inset 0 -8px 20px rgba(0, 0, 0, 0.6),
+      inset 4px 0 12px rgba(0, 0, 0, 0.3),
+      inset -4px 0 12px rgba(0, 0, 0, 0.3),
+      0 0 20px var(--green-glow);
   }
 
-  /* Fade edges */
+  /* 3D curved horizon effect - top and bottom fade into darkness */
   .slot-window::before, .slot-window::after {
     content: '';
     position: absolute;
     left: 0; right: 0;
-    height: 40px;
     z-index: 2;
     pointer-events: none;
   }
   .slot-window::before {
     top: 0;
-    background: linear-gradient(to bottom, var(--surface), transparent);
+    height: 70px;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 8, 14, 0.95) 0%,
+      rgba(10, 10, 16, 0.8) 25%,
+      rgba(14, 14, 22, 0.5) 50%,
+      rgba(18, 18, 28, 0.2) 75%,
+      transparent 100%
+    );
+    border-radius: 24px 24px 0 0;
   }
   .slot-window::after {
     bottom: 0;
-    background: linear-gradient(to top, var(--surface), transparent);
+    height: 70px;
+    background: linear-gradient(
+      to top,
+      rgba(8, 8, 14, 0.95) 0%,
+      rgba(10, 10, 16, 0.8) 25%,
+      rgba(14, 14, 22, 0.5) 50%,
+      rgba(18, 18, 28, 0.2) 75%,
+      transparent 100%
+    );
+    border-radius: 0 0 24px 24px;
+  }
+
+  /* Specular highlight - subtle curved light reflection */
+  .slot-window-inner {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 20% at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 100%),
+      radial-gradient(ellipse 60% 15% at 50% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
   }
 
   /* Center line - now a single continuous bar behind slots-grid */
@@ -789,6 +948,17 @@
 </head>
 <body>
 
+<!-- Dynamic spotlight background -->
+<div class="bg-spotlights">
+  <div class="spot spot-1"></div>
+  <div class="spot spot-2"></div>
+  <div class="spot spot-3"></div>
+  <div class="spot spot-4"></div>
+  <div class="spot spot-5"></div>
+  <div class="spot spot-6"></div>
+  <div class="spot spot-7"></div>
+</div>
+
 <div class="container" id="mainView">
   <div class="header">
     <h1>The Creative Pipeline</h1>
@@ -1360,6 +1530,11 @@ function buildSlots() {
     const centerLine = document.createElement('div');
     centerLine.className = 'center-line';
     win.appendChild(centerLine);
+
+    // 3D specular highlight overlay
+    const innerHighlight = document.createElement('div');
+    innerHighlight.className = 'slot-window-inner';
+    win.appendChild(innerHighlight);
 
     // Build reel: repeat items many times for scrolling
     const reel = document.createElement('div');
