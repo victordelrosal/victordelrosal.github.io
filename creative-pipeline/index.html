@@ -89,6 +89,8 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 12px;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
 
   .slot-col {
@@ -149,22 +151,33 @@
     background: linear-gradient(to top, var(--surface), transparent);
   }
 
-  /* Center line */
-  .slot-window .center-line {
+  /* Center line - now a single continuous bar behind slots-grid */
+  .slots-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .center-bar {
     position: absolute;
-    top: 50%; left: 8px; right: 8px;
-    height: 56px;
+    top: 50%;
+    left: -12px;
+    right: -12px;
+    height: 62px;
     transform: translateY(-50%);
-    border: 1px solid rgba(124, 77, 255, 0.25);
-    border-radius: 10px;
-    z-index: 3;
+    border: 1.5px solid rgba(124, 77, 255, 0.3);
+    border-radius: 16px;
+    z-index: 0;
     pointer-events: none;
     background: rgba(124, 77, 255, 0.04);
+    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
   }
-  .slot-window.locked .center-line {
+  .center-bar.all-locked {
     border-color: rgba(0, 230, 118, 0.35);
-    background: rgba(0, 230, 118, 0.06);
+    background: rgba(0, 230, 118, 0.05);
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.08);
   }
+
+  /* Hide per-slot center lines */
+  .slot-window .center-line { display: none; }
 
   .slot-reel {
     position: absolute;
@@ -484,7 +497,10 @@
     <p>Select your ingredients or spin the reels. Then hit Go.</p>
   </div>
 
-  <div class="slots-grid" id="slotsGrid"></div>
+  <div class="slots-wrapper" id="slotsWrapper">
+    <div class="center-bar" id="centerBar"></div>
+    <div class="slots-grid" id="slotsGrid"></div>
+  </div>
 
   <button class="spin-all-btn" id="spinAllBtn" onclick="spinAll()">
     🎰&ensp;Spin All
@@ -527,24 +543,202 @@ const CATEGORIES = [
   {
     key: 'country', label: 'Country',
     items: [
-      { emoji: '🇳🇿', name: 'New Zealand' },
-      { emoji: '🇯🇵', name: 'Japan' },
-      { emoji: '🇧🇷', name: 'Brazil' },
-      { emoji: '🇮🇪', name: 'Ireland' },
-      { emoji: '🇰🇪', name: 'Kenya' },
-      { emoji: '🇮🇳', name: 'India' },
-      { emoji: '🇮🇸', name: 'Iceland' },
-      { emoji: '🇲🇽', name: 'Mexico' },
-      { emoji: '🇹🇭', name: 'Thailand' },
-      { emoji: '🇳🇴', name: 'Norway' },
-      { emoji: '🇵🇪', name: 'Peru' },
-      { emoji: '🇬🇭', name: 'Ghana' },
-      { emoji: '🇵🇭', name: 'Philippines' },
-      { emoji: '🇨🇦', name: 'Canada' },
-      { emoji: '🇪🇬', name: 'Egypt' },
+      { emoji: '🇦🇫', name: 'Afghanistan' },
+      { emoji: '🇦🇱', name: 'Albania' },
+      { emoji: '🇩🇿', name: 'Algeria' },
+      { emoji: '🇦🇩', name: 'Andorra' },
+      { emoji: '🇦🇴', name: 'Angola' },
+      { emoji: '🇦🇬', name: 'Antigua & Barbuda' },
+      { emoji: '🇦🇷', name: 'Argentina' },
+      { emoji: '🇦🇲', name: 'Armenia' },
       { emoji: '🇦🇺', name: 'Australia' },
+      { emoji: '🇦🇹', name: 'Austria' },
+      { emoji: '🇦🇿', name: 'Azerbaijan' },
+      { emoji: '🇧🇸', name: 'Bahamas' },
+      { emoji: '🇧🇭', name: 'Bahrain' },
+      { emoji: '🇧🇩', name: 'Bangladesh' },
+      { emoji: '🇧🇧', name: 'Barbados' },
+      { emoji: '🇧🇾', name: 'Belarus' },
+      { emoji: '🇧🇪', name: 'Belgium' },
+      { emoji: '🇧🇿', name: 'Belize' },
+      { emoji: '🇧🇯', name: 'Benin' },
+      { emoji: '🇧🇹', name: 'Bhutan' },
+      { emoji: '🇧🇴', name: 'Bolivia' },
+      { emoji: '🇧🇦', name: 'Bosnia & Herzegovina' },
+      { emoji: '🇧🇼', name: 'Botswana' },
+      { emoji: '🇧🇷', name: 'Brazil' },
+      { emoji: '🇧🇳', name: 'Brunei' },
+      { emoji: '🇧🇬', name: 'Bulgaria' },
+      { emoji: '🇧🇫', name: 'Burkina Faso' },
+      { emoji: '🇧🇮', name: 'Burundi' },
+      { emoji: '🇨🇻', name: 'Cabo Verde' },
+      { emoji: '🇰🇭', name: 'Cambodia' },
+      { emoji: '🇨🇲', name: 'Cameroon' },
+      { emoji: '🇨🇦', name: 'Canada' },
+      { emoji: '🇨🇫', name: 'Central African Republic' },
+      { emoji: '🇹🇩', name: 'Chad' },
       { emoji: '🇨🇱', name: 'Chile' },
+      { emoji: '🇨🇳', name: 'China' },
+      { emoji: '🇨🇴', name: 'Colombia' },
+      { emoji: '🇰🇲', name: 'Comoros' },
+      { emoji: '🇨🇬', name: 'Congo' },
+      { emoji: '🇨🇩', name: 'Congo (DRC)' },
+      { emoji: '🇨🇷', name: 'Costa Rica' },
+      { emoji: '🇭🇷', name: 'Croatia' },
+      { emoji: '🇨🇺', name: 'Cuba' },
+      { emoji: '🇨🇾', name: 'Cyprus' },
+      { emoji: '🇨🇿', name: 'Czechia' },
+      { emoji: '🇩🇰', name: 'Denmark' },
+      { emoji: '🇩🇯', name: 'Djibouti' },
+      { emoji: '🇩🇲', name: 'Dominica' },
+      { emoji: '🇩🇴', name: 'Dominican Republic' },
+      { emoji: '🇪🇨', name: 'Ecuador' },
+      { emoji: '🇪🇬', name: 'Egypt' },
+      { emoji: '🇸🇻', name: 'El Salvador' },
+      { emoji: '🇬🇶', name: 'Equatorial Guinea' },
+      { emoji: '🇪🇷', name: 'Eritrea' },
+      { emoji: '🇪🇪', name: 'Estonia' },
+      { emoji: '🇸🇿', name: 'Eswatini' },
+      { emoji: '🇪🇹', name: 'Ethiopia' },
+      { emoji: '🇫🇯', name: 'Fiji' },
+      { emoji: '🇫🇮', name: 'Finland' },
+      { emoji: '🇫🇷', name: 'France' },
+      { emoji: '🇬🇦', name: 'Gabon' },
+      { emoji: '🇬🇲', name: 'Gambia' },
+      { emoji: '🇬🇪', name: 'Georgia' },
+      { emoji: '🇩🇪', name: 'Germany' },
+      { emoji: '🇬🇭', name: 'Ghana' },
+      { emoji: '🇬🇷', name: 'Greece' },
+      { emoji: '🇬🇩', name: 'Grenada' },
+      { emoji: '🇬🇹', name: 'Guatemala' },
+      { emoji: '🇬🇳', name: 'Guinea' },
+      { emoji: '🇬🇼', name: 'Guinea-Bissau' },
+      { emoji: '🇬🇾', name: 'Guyana' },
+      { emoji: '🇭🇹', name: 'Haiti' },
+      { emoji: '🇭🇳', name: 'Honduras' },
+      { emoji: '🇭🇺', name: 'Hungary' },
+      { emoji: '🇮🇸', name: 'Iceland' },
+      { emoji: '🇮🇳', name: 'India' },
+      { emoji: '🇮🇩', name: 'Indonesia' },
+      { emoji: '🇮🇷', name: 'Iran' },
+      { emoji: '🇮🇶', name: 'Iraq' },
+      { emoji: '🇮🇪', name: 'Ireland' },
+      { emoji: '🇮🇱', name: 'Israel' },
+      { emoji: '🇮🇹', name: 'Italy' },
+      { emoji: '🇨🇮', name: 'Ivory Coast' },
+      { emoji: '🇯🇲', name: 'Jamaica' },
+      { emoji: '🇯🇵', name: 'Japan' },
+      { emoji: '🇯🇴', name: 'Jordan' },
+      { emoji: '🇰🇿', name: 'Kazakhstan' },
+      { emoji: '🇰🇪', name: 'Kenya' },
+      { emoji: '🇰🇮', name: 'Kiribati' },
+      { emoji: '🇰🇼', name: 'Kuwait' },
+      { emoji: '🇰🇬', name: 'Kyrgyzstan' },
+      { emoji: '🇱🇦', name: 'Laos' },
+      { emoji: '🇱🇻', name: 'Latvia' },
+      { emoji: '🇱🇧', name: 'Lebanon' },
+      { emoji: '🇱🇸', name: 'Lesotho' },
+      { emoji: '🇱🇷', name: 'Liberia' },
+      { emoji: '🇱🇾', name: 'Libya' },
+      { emoji: '🇱🇮', name: 'Liechtenstein' },
+      { emoji: '🇱🇹', name: 'Lithuania' },
+      { emoji: '🇱🇺', name: 'Luxembourg' },
+      { emoji: '🇲🇬', name: 'Madagascar' },
+      { emoji: '🇲🇼', name: 'Malawi' },
+      { emoji: '🇲🇾', name: 'Malaysia' },
+      { emoji: '🇲🇻', name: 'Maldives' },
+      { emoji: '🇲🇱', name: 'Mali' },
+      { emoji: '🇲🇹', name: 'Malta' },
+      { emoji: '🇲🇭', name: 'Marshall Islands' },
+      { emoji: '🇲🇷', name: 'Mauritania' },
+      { emoji: '🇲🇺', name: 'Mauritius' },
+      { emoji: '🇲🇽', name: 'Mexico' },
+      { emoji: '🇫🇲', name: 'Micronesia' },
+      { emoji: '🇲🇩', name: 'Moldova' },
+      { emoji: '🇲🇨', name: 'Monaco' },
+      { emoji: '🇲🇳', name: 'Mongolia' },
+      { emoji: '🇲🇪', name: 'Montenegro' },
+      { emoji: '🇲🇦', name: 'Morocco' },
+      { emoji: '🇲🇿', name: 'Mozambique' },
+      { emoji: '🇲🇲', name: 'Myanmar' },
+      { emoji: '🇳🇦', name: 'Namibia' },
+      { emoji: '🇳🇷', name: 'Nauru' },
+      { emoji: '🇳🇵', name: 'Nepal' },
+      { emoji: '🇳🇱', name: 'Netherlands' },
+      { emoji: '🇳🇿', name: 'New Zealand' },
+      { emoji: '🇳🇮', name: 'Nicaragua' },
+      { emoji: '🇳🇪', name: 'Niger' },
+      { emoji: '🇳🇬', name: 'Nigeria' },
+      { emoji: '🇰🇵', name: 'North Korea' },
+      { emoji: '🇲🇰', name: 'North Macedonia' },
+      { emoji: '🇳🇴', name: 'Norway' },
+      { emoji: '🇴🇲', name: 'Oman' },
+      { emoji: '🇵🇰', name: 'Pakistan' },
+      { emoji: '🇵🇼', name: 'Palau' },
+      { emoji: '🇵🇸', name: 'Palestine' },
+      { emoji: '🇵🇦', name: 'Panama' },
+      { emoji: '🇵🇬', name: 'Papua New Guinea' },
+      { emoji: '🇵🇾', name: 'Paraguay' },
+      { emoji: '🇵🇪', name: 'Peru' },
+      { emoji: '🇵🇭', name: 'Philippines' },
+      { emoji: '🇵🇱', name: 'Poland' },
+      { emoji: '🇵🇹', name: 'Portugal' },
+      { emoji: '🇶🇦', name: 'Qatar' },
+      { emoji: '🇷🇴', name: 'Romania' },
+      { emoji: '🇷🇺', name: 'Russia' },
+      { emoji: '🇷🇼', name: 'Rwanda' },
+      { emoji: '🇰🇳', name: 'Saint Kitts & Nevis' },
+      { emoji: '🇱🇨', name: 'Saint Lucia' },
+      { emoji: '🇻🇨', name: 'Saint Vincent' },
+      { emoji: '🇼🇸', name: 'Samoa' },
+      { emoji: '🇸🇲', name: 'San Marino' },
+      { emoji: '🇸🇹', name: 'Sao Tome & Principe' },
+      { emoji: '🇸🇦', name: 'Saudi Arabia' },
+      { emoji: '🇸🇳', name: 'Senegal' },
+      { emoji: '🇷🇸', name: 'Serbia' },
+      { emoji: '🇸🇨', name: 'Seychelles' },
+      { emoji: '🇸🇱', name: 'Sierra Leone' },
+      { emoji: '🇸🇬', name: 'Singapore' },
+      { emoji: '🇸🇰', name: 'Slovakia' },
+      { emoji: '🇸🇮', name: 'Slovenia' },
+      { emoji: '🇸🇧', name: 'Solomon Islands' },
+      { emoji: '🇸🇴', name: 'Somalia' },
+      { emoji: '🇿🇦', name: 'South Africa' },
+      { emoji: '🇰🇷', name: 'South Korea' },
+      { emoji: '🇸🇸', name: 'South Sudan' },
+      { emoji: '🇪🇸', name: 'Spain' },
+      { emoji: '🇱🇰', name: 'Sri Lanka' },
+      { emoji: '🇸🇩', name: 'Sudan' },
+      { emoji: '🇸🇷', name: 'Suriname' },
+      { emoji: '🇸🇪', name: 'Sweden' },
+      { emoji: '🇨🇭', name: 'Switzerland' },
+      { emoji: '🇸🇾', name: 'Syria' },
+      { emoji: '🇹🇼', name: 'Taiwan' },
+      { emoji: '🇹🇯', name: 'Tajikistan' },
+      { emoji: '🇹🇿', name: 'Tanzania' },
+      { emoji: '🇹🇭', name: 'Thailand' },
+      { emoji: '🇹🇱', name: 'Timor-Leste' },
+      { emoji: '🇹🇬', name: 'Togo' },
+      { emoji: '🇹🇴', name: 'Tonga' },
+      { emoji: '🇹🇹', name: 'Trinidad & Tobago' },
+      { emoji: '🇹🇳', name: 'Tunisia' },
+      { emoji: '🇹🇷', name: 'Turkey' },
+      { emoji: '🇹🇲', name: 'Turkmenistan' },
+      { emoji: '🇹🇻', name: 'Tuvalu' },
+      { emoji: '🇺🇬', name: 'Uganda' },
+      { emoji: '🇺🇦', name: 'Ukraine' },
+      { emoji: '🇦🇪', name: 'UAE' },
+      { emoji: '🇬🇧', name: 'United Kingdom' },
+      { emoji: '🇺🇸', name: 'United States' },
+      { emoji: '🇺🇾', name: 'Uruguay' },
+      { emoji: '🇺🇿', name: 'Uzbekistan' },
+      { emoji: '🇻🇺', name: 'Vanuatu' },
+      { emoji: '🇻🇦', name: 'Vatican City' },
+      { emoji: '🇻🇪', name: 'Venezuela' },
       { emoji: '🇻🇳', name: 'Vietnam' },
+      { emoji: '🇾🇪', name: 'Yemen' },
+      { emoji: '🇿🇲', name: 'Zambia' },
+      { emoji: '🇿🇼', name: 'Zimbabwe' },
     ]
   },
   {
@@ -726,6 +920,18 @@ function buildSlots() {
 
   // Initial highlight
   updateAllInView();
+  positionCenterBar();
+}
+
+function positionCenterBar() {
+  const wrapper = document.getElementById('slotsWrapper');
+  const firstWin = document.querySelector('.slot-window');
+  if (!firstWin || !wrapper) return;
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const winRect = firstWin.getBoundingClientRect();
+  const bar = document.getElementById('centerBar');
+  const winCenterY = winRect.top + winRect.height / 2 - wrapperRect.top;
+  bar.style.top = `${winCenterY}px`;
 }
 
 function updateInView(ci) {
@@ -839,7 +1045,9 @@ function spinAll() {
 }
 
 function checkAllSelected() {
-  if (selections.every(s => s !== null)) {
+  const allDone = selections.every(s => s !== null);
+  document.getElementById('centerBar').classList.toggle('all-locked', allDone);
+  if (allDone) {
     const goSection = document.getElementById('goSection');
     goSection.classList.add('visible');
 
@@ -921,10 +1129,12 @@ function resetAll() {
     btn.classList.remove('has-selection');
   });
   updateAllInView();
+  document.getElementById('centerBar').classList.remove('all-locked');
 }
 
 // Init
 buildSlots();
+window.addEventListener('resize', positionCenterBar);
 </script>
 </body>
 </html>
