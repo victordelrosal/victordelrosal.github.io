@@ -74,7 +74,7 @@ const Navbar = {
         // AI Badge promo link
         const aiBadgeHTML = `
             <li class="ai-badge-promo">
-                <a href="https://aibadge.com" target="_blank" rel="noopener">
+                <a href="https://aibadge.fiveinnolabs.com/" target="_blank" rel="noopener">
                     <img src="/img/ai-badge.png" alt="AI Badge" class="ai-badge-icon">
                     <span class="ai-badge-tagline">level up your AI game</span>
                 </a>
