@@ -1655,7 +1655,161 @@ write a short story in a single paragraph.
     document.getElementById('promptBox').textContent = prompt;
     goBtn.classList.remove('pressed');
     goBtn.style.pointerEvents = '';
+    generateBrief(country, fruit, animal, action, surprise);
   }, 650);
+}
+
+function generateBrief(country, fruit, animal, action, surprise) {
+  const briefHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Creative Pipeline Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 210mm; height: 297mm; font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  body { padding: 28mm 24mm 20mm 24mm; display: flex; flex-direction: column; }
+
+  .topbar { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #7c4dff, #00e676); }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 2px solid #1a1a2e; }
+  .header-left h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
+  .header-left .subtitle { font-size: 10px; color: #666; font-weight: 400; margin-top: 2px; }
+  .header-right { text-align: right; font-size: 9px; color: #888; line-height: 1.6; }
+
+  .params-row { display: flex; gap: 8px; margin-bottom: 18px; }
+  .param-chip { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 6px; background: #f5f5fa; border: 1px solid #e0e0ea; border-radius: 8px; }
+  .param-emoji { font-size: 22px; }
+  .param-text { font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: #555; }
+
+  .intro { font-size: 10px; line-height: 1.65; color: #333; margin-bottom: 16px; }
+
+  .steps { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .step-marker { width: 22px; height: 22px; border-radius: 50%; background: #1a1a2e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 10px; font-weight: 700; margin-bottom: 1px; }
+  .step-desc { font-size: 9px; color: #444; line-height: 1.5; }
+  .step-tag { display: inline-block; font-size: 7px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 3px; margin-top: 2px; }
+  .tag-creative { background: #f0e6ff; color: #7c4dff; }
+  .tag-research { background: #e3f2fd; color: #1565c0; }
+  .tag-build { background: #e8f5e9; color: #2e7d32; }
+  .tag-business { background: #fff3e0; color: #e65100; }
+  .tag-deliver { background: #fce4ec; color: #c62828; }
+
+  .footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-size: 8px; color: #999; }
+  .footer-right { font-size: 8px; color: #999; font-style: italic; }
+</style>
+</head>
+<body>
+  <div class="topbar"></div>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>The Creative Pipeline</h1>
+      <div class="subtitle">AI-Powered Concept-to-Market Exercise</div>
+    </div>
+    <div class="header-right">
+      Date: ${new Date().toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
+      Format: Individual / Team of 2<br>
+      Tool: Claude Code (or equivalent AI assistant)
+    </div>
+  </div>
+
+  <div class="params-row">
+    <div class="param-chip"><span class="param-emoji">${country.emoji}</span><span class="param-text">${country.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${fruit.emoji}</span><span class="param-text">${fruit.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${animal.emoji}</span><span class="param-text">${animal.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${action.emoji}</span><span class="param-text">${action.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${surprise.emoji}</span><span class="param-text">${surprise.name}</span></div>
+  </div>
+
+  <div class="intro">
+    <strong>Objective:</strong> Starting from five random creative parameters, use an AI assistant to execute a full concept-to-market pipeline in a single session. Each step builds on the output of the previous one. You will move from a short story to a research question, a validated problem, a designed solution, a working prototype, a landing page, a pitch deck, and a published GitHub Page. The goal is not perfection; it is to experience the speed and depth of AI-augmented creative work.
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-marker">a</div>
+      <div class="step-content">
+        <div class="step-title">Short Story</div>
+        <div class="step-desc">Write a single-paragraph story that weaves together all five parameters above. The story should be vivid, specific, and set in ${country.name}.</div>
+        <span class="step-tag tag-creative">Creative</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">b</div>
+      <div class="step-content">
+        <div class="step-title">Research Question</div>
+        <div class="step-desc">Transform the story into a genuine research question suitable for a Masters dissertation. The question must be specific, researchable, and grounded in a real domain.</div>
+        <span class="step-tag tag-research">Research</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">c</div>
+      <div class="step-content">
+        <div class="step-title">Problem Statement</div>
+        <div class="step-desc">Conduct brief research to diagnose a real problem or opportunity. Output a clear problem statement that includes a narrow customer/user segment in any sector (public or private).</div>
+        <span class="step-tag tag-research">Research</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">d</div>
+      <div class="step-content">
+        <div class="step-title">Solution Design</div>
+        <div class="step-desc">Design a solution: physical product, service, or hybrid. Define the provider (startup, government agency, corporation, NGO, etc.) and describe the offering clearly.</div>
+        <span class="step-tag tag-build">Design</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">e</div>
+      <div class="step-content">
+        <div class="step-title">Prototype + Design Specs</div>
+        <div class="step-desc">Build a prototype with complete design specifications: tech stack, data model, user flows, brand guidelines, and an MVP timeline.</div>
+        <span class="step-tag tag-build">Build</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">f</div>
+      <div class="step-content">
+        <div class="step-title">Landing Page</div>
+        <div class="step-desc">Create a world-class landing page (HTML) with real-world photos, professional design, and clear value proposition. Open it locally to verify.</div>
+        <span class="step-tag tag-build">Build</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">g</div>
+      <div class="step-content">
+        <div class="step-title">Business Plan + Investor Pitch Deck</div>
+        <div class="step-desc">Design a professional business plan and marketing campaign. Create HTML slides pitched to YCombinator, TechStars, Dogpatch Labs, and BlackRock Capital. Final slide: "Lessons Learned" with 6 or 7 reflective bullet points.</div>
+        <span class="step-tag tag-business">Business</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">h</div>
+      <div class="step-content">
+        <div class="step-title">Publish to GitHub Pages</div>
+        <div class="step-desc">Create a local project folder, commit all deliverables to a GitHub repository, and publish to a live GitHub Page. Open the live URL to confirm.</div>
+        <span class="step-tag tag-deliver">Deliver</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">The Creative Pipeline &mdash; Generated ${new Date().toLocaleDateString('en-IE')}</div>
+    <div class="footer-right">"From five random emojis to a live startup in one session."</div>
+  </div>
+</body>
+</html>`;
+
+  const briefWindow = window.open('', '_blank');
+  briefWindow.document.write(briefHTML);
+  briefWindow.document.close();
+  // Auto-trigger print dialog for PDF save after fonts load
+  setTimeout(() => { briefWindow.print(); }, 800);
 }
 
 function copyPrompt() {
