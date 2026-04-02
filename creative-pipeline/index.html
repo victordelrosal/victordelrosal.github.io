@@ -1372,11 +1372,11 @@ function buildSlots() {
     win.appendChild(reel);
     col.appendChild(win);
 
-    // Position reel to show a random item centered
+    // Position reel between items so nothing is centered on load
     const itemH = 56;
     const winH = 160;
     const offset = Math.floor(Math.random() * cat.items.length);
-    const centerOffset = (winH / 2) - (itemH / 2);
+    const centerOffset = (winH / 2);
     reel.style.top = `${centerOffset - offset * itemH}px`;
 
     // Click on slot window to open dropdown
