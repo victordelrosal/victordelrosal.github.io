@@ -206,32 +206,32 @@
     filter: none;
   }
 
-  /* Manual selector dropdown */
+  /* Search filter input */
   .manual-select {
     width: 100%;
     position: relative;
   }
-  .manual-btn {
+  .filter-input {
     width: 100%;
     padding: 8px 10px;
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    color: var(--text-dim);
+    color: var(--text);
     font-size: 0.72rem;
     font-family: inherit;
-    cursor: pointer;
     text-align: center;
     transition: all 0.2s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    outline: none;
   }
-  .manual-btn:hover {
+  .filter-input::placeholder {
+    color: var(--text-dim);
+  }
+  .filter-input:focus {
     border-color: var(--accent);
-    color: var(--text);
+    box-shadow: 0 0 12px rgba(124, 77, 255, 0.15);
   }
-  .manual-btn.has-selection {
+  .filter-input.has-selection {
     color: var(--green);
     border-color: rgba(0, 230, 118, 0.3);
   }
@@ -1063,14 +1063,27 @@ function buildSlots() {
     const centerOffset = (winH / 2) - (itemH / 2);
     reel.style.top = `${centerOffset - offset * itemH}px`;
 
-    // Manual select
+    // Click on slot window to open dropdown
+    win.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      const dd = document.getElementById(`dropdown-${ci}`);
+      dd.classList.toggle('open');
+      const input = document.getElementById(`filter-${ci}`);
+      if (dd.classList.contains('open')) {
+        input.focus();
+      }
+    });
+
+    // Filter input + dropdown
     const manualDiv = document.createElement('div');
     manualDiv.className = 'manual-select';
 
-    const btn = document.createElement('button');
-    btn.className = 'manual-btn';
-    btn.textContent = 'Choose manually';
-    btn.id = `manual-btn-${ci}`;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'filter-input';
+    input.placeholder = `Search ${cat.label.toLowerCase()}...`;
+    input.id = `filter-${ci}`;
 
     const dd = document.createElement('div');
     dd.className = 'dropdown';
@@ -1079,23 +1092,39 @@ function buildSlots() {
     cat.items.forEach((item, ii) => {
       const opt = document.createElement('div');
       opt.className = 'dropdown-item';
+      opt.dataset.name = item.name.toLowerCase();
+      opt.dataset.index = ii;
       opt.innerHTML = `<span class="emoji">${item.emoji}</span> ${item.name}`;
       opt.addEventListener('click', (e) => {
         e.stopPropagation();
         selectManual(ci, ii);
         dd.classList.remove('open');
+        input.value = '';
+        filterDropdown(ci, '');
       });
       dd.appendChild(opt);
     });
 
-    btn.addEventListener('click', (e) => {
+    input.addEventListener('click', (e) => {
       e.stopPropagation();
-      // Close all other dropdowns
       document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
-      dd.classList.toggle('open');
+      dd.classList.add('open');
     });
 
-    manualDiv.appendChild(btn);
+    input.addEventListener('input', (e) => {
+      e.stopPropagation();
+      if (!dd.classList.contains('open')) dd.classList.add('open');
+      filterDropdown(ci, input.value);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dd.classList.remove('open');
+        input.blur();
+      }
+    });
+
+    manualDiv.appendChild(input);
     manualDiv.appendChild(dd);
     col.appendChild(manualDiv);
 
@@ -1144,6 +1173,19 @@ function updateAllInView() {
   reels.forEach((_, ci) => updateInView(ci));
 }
 
+function filterDropdown(ci, query) {
+  const dd = document.getElementById(`dropdown-${ci}`);
+  const items = dd.querySelectorAll('.dropdown-item');
+  const q = query.toLowerCase().trim();
+  items.forEach(item => {
+    if (!q || item.dataset.name.includes(q)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
 function selectManual(catIdx, itemIdx) {
   const cat = CATEGORIES[catIdx];
   const item = cat.items[itemIdx];
@@ -1160,9 +1202,9 @@ function selectManual(catIdx, itemIdx) {
   r.reel.style.top = `${targetTop}px`;
   r.win.classList.add('locked');
 
-  const btn = document.getElementById(`manual-btn-${catIdx}`);
-  btn.textContent = `${item.emoji} ${item.name}`;
-  btn.classList.add('has-selection');
+  const input = document.getElementById(`filter-${catIdx}`);
+  input.value = `${item.emoji} ${item.name}`;
+  input.classList.add('has-selection');
 
   setTimeout(() => {
     r.reel.style.transition = 'none';
@@ -1219,9 +1261,9 @@ function spinAll() {
       selections[ci] = cat.items[targets[ci]];
       updateInView(ci);
 
-      const mbtn = document.getElementById(`manual-btn-${ci}`);
-      mbtn.textContent = `${selections[ci].emoji} ${selections[ci].name}`;
-      mbtn.classList.add('has-selection');
+      const minput = document.getElementById(`filter-${ci}`);
+      minput.value = `${selections[ci].emoji} ${selections[ci].name}`;
+      minput.classList.add('has-selection');
 
       // If last reel, finalize
       if (ci === CATEGORIES.length - 1) {
@@ -1314,9 +1356,10 @@ function resetAll() {
     const centerOffset = (r.winH / 2) - (r.itemH / 2);
     r.reel.style.top = `${centerOffset - offset * r.itemH}px`;
 
-    const btn = document.getElementById(`manual-btn-${ci}`);
-    btn.textContent = 'Choose manually';
-    btn.classList.remove('has-selection');
+    const input = document.getElementById(`filter-${ci}`);
+    input.value = '';
+    input.classList.remove('has-selection');
+    filterDropdown(ci, '');
   });
   updateAllInView();
   document.getElementById('centerBar').classList.remove('all-locked');
