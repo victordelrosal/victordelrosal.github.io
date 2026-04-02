@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Demo: The Creative Pipeline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --green: #00e676;
+    --green-dark: #00a152;
+    --green-glow: rgba(0, 230, 118, 0.3);
+    --accent: #7c4dff;
+  }
+
+  html, body {
+    width: 100%; min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+  }
+
+  /* Ambient glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(124, 77, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(0, 230, 118, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+  }
+  .header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  /* Slot Machine Grid */
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+
+  .slot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slot-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+
+  /* Slot Window */
+  .slot-window {
+    width: 100%;
+    height: 160px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .slot-window:hover {
+    border-color: rgba(124, 77, 255, 0.4);
+    box-shadow: 0 0 20px rgba(124, 77, 255, 0.1);
+  }
+  .slot-window.spinning {
+    border-color: var(--green);
+    box-shadow: 0 0 30px var(--green-glow);
+  }
+  .slot-window.locked {
+    border-color: var(--green);
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  /* Fade edges */
+  .slot-window::before, .slot-window::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .slot-window::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--surface), transparent);
+  }
+  .slot-window::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--surface), transparent);
+  }
+
+  /* Center line */
+  .slot-window .center-line {
+    position: absolute;
+    top: 50%; left: 8px; right: 8px;
+    height: 56px;
+    transform: translateY(-50%);
+    border: 1px solid rgba(124, 77, 255, 0.25);
+    border-radius: 10px;
+    z-index: 3;
+    pointer-events: none;
+    background: rgba(124, 77, 255, 0.04);
+  }
+  .slot-window.locked .center-line {
+    border-color: rgba(0, 230, 118, 0.35);
+    background: rgba(0, 230, 118, 0.06);
+  }
+
+  .slot-reel {
+    position: absolute;
+    left: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: none;
+  }
+
+  .slot-item {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 2rem;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+
+  /* Manual selector dropdown */
+  .manual-select {
+    width: 100%;
+    position: relative;
+  }
+  .manual-btn {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .manual-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .manual-btn.has-selection {
+    color: var(--green);
+    border-color: rgba(0, 230, 118, 0.3);
+  }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    min-width: 180px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 100;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  }
+  .dropdown.open { display: block; }
+  .dropdown-item {
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dropdown-item:hover {
+    background: var(--surface2);
+  }
+  .dropdown-item .emoji { font-size: 1.3rem; }
+
+  /* Spin All Button */
+  .spin-all-btn {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--accent), #5e35b1);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(124, 77, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .spin-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(124, 77, 255, 0.4);
+  }
+  .spin-all-btn:active { transform: translateY(0); }
+  .spin-all-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* GO Button */
+  .go-section {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: fadeUp 0.6s ease-out;
+  }
+  .go-section.visible {
+    display: flex;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .go-btn {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 2.4rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: radial-gradient(circle at 40% 35%, #00e676, #00a152 60%, #005a2e);
+    box-shadow:
+      0 0 40px rgba(0, 230, 118, 0.3),
+      0 0 80px rgba(0, 230, 118, 0.15),
+      inset 0 -6px 20px rgba(0, 0, 0, 0.3),
+      inset 0 4px 12px rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .go-btn::before {
+    content: '';
+    position: absolute;
+    top: 8%; left: 15%;
+    width: 50%; height: 30%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .go-btn:hover {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 60px rgba(0, 230, 118, 0.45),
+      0 0 120px rgba(0, 230, 118, 0.2),
+      inset 0 -6px 20px rgba(0, 0, 0, 0.3),
+      inset 0 4px 12px rgba(255, 255, 255, 0.15);
+  }
+  .go-btn:active {
+    transform: scale(0.97);
+  }
+
+  .selections-preview {
+    display: flex;
+    gap: 16px;
+    font-size: 2.6rem;
+    padding: 12px 0;
+  }
+
+  /* Prompt Output */
+  .prompt-section {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeUp 0.5s ease-out;
+  }
+  .prompt-section.visible { display: flex; }
+
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .prompt-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  .copy-btn {
+    width: 40px; height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .copy-btn:hover {
+    border-color: var(--green);
+    background: rgba(0, 230, 118, 0.08);
+  }
+  .copy-btn svg { width: 18px; height: 18px; stroke: var(--text-dim); fill: none; stroke-width: 2; transition: stroke 0.25s; }
+  .copy-btn:hover svg { stroke: var(--green); }
+  .copy-btn.copied {
+    border-color: var(--green);
+    background: rgba(0, 230, 118, 0.12);
+  }
+  .copy-btn.copied svg { stroke: var(--green); }
+
+  .copy-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .copy-btn:hover .copy-tooltip { opacity: 1; }
+  .copy-btn.copied .copy-tooltip { color: var(--green); }
+
+  .prompt-box {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    font-family: 'Inter', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow-y: auto;
+    user-select: all;
+  }
+
+  /* Back / Reset */
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 24px;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover {
+    border-color: var(--text-dim);
+    color: var(--text);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .slots-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .slot-window { height: 130px; }
+    .slot-item { font-size: 1.6rem; height: 46px; }
+    .slot-window .center-line { height: 46px; }
+    .go-btn { width: 160px; height: 160px; font-size: 1.8rem; }
+    .selections-preview { font-size: 2rem; }
+  }
+
+  /* Scrollbar */
+  .dropdown::-webkit-scrollbar, .prompt-box::-webkit-scrollbar { width: 6px; }
+  .dropdown::-webkit-scrollbar-track, .prompt-box::-webkit-scrollbar-track { background: transparent; }
+  .dropdown::-webkit-scrollbar-thumb, .prompt-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="container" id="mainView">
+  <div class="header">
+    <h1>The Creative Pipeline</h1>
+    <p>Select your ingredients or spin the reels. Then hit Go.</p>
+  </div>
+
+  <div class="slots-grid" id="slotsGrid"></div>
+
+  <button class="spin-all-btn" id="spinAllBtn" onclick="spinAll()">
+    🎰&ensp;Spin All
+  </button>
+
+  <div class="go-section" id="goSection">
+    <div class="selections-preview" id="selectionsPreview"></div>
+    <button class="go-btn" id="goBtn" onclick="generatePrompt()">Go</button>
+  </div>
+</div>
+
+<div class="container" id="promptView" style="display:none;">
+  <div class="header">
+    <h1>Your Prompt</h1>
+    <p>Copy and paste this into Claude Code.</p>
+  </div>
+
+  <div class="prompt-section visible">
+    <div class="prompt-header">
+      <span class="prompt-title">Generated prompt</span>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+        <span class="copy-tooltip" id="copyTooltip">Copy to clipboard</span>
+        <svg id="copyIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        <svg id="checkIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="prompt-box" id="promptBox"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">Start Over</button>
+</div>
+
+<script>
+const CATEGORIES = [
+  {
+    key: 'country', label: 'Country',
+    items: [
+      { emoji: '🇳🇿', name: 'New Zealand' },
+      { emoji: '🇯🇵', name: 'Japan' },
+      { emoji: '🇧🇷', name: 'Brazil' },
+      { emoji: '🇮🇪', name: 'Ireland' },
+      { emoji: '🇰🇪', name: 'Kenya' },
+      { emoji: '🇮🇳', name: 'India' },
+      { emoji: '🇮🇸', name: 'Iceland' },
+      { emoji: '🇲🇽', name: 'Mexico' },
+      { emoji: '🇹🇭', name: 'Thailand' },
+      { emoji: '🇳🇴', name: 'Norway' },
+      { emoji: '🇵🇪', name: 'Peru' },
+      { emoji: '🇬🇭', name: 'Ghana' },
+      { emoji: '🇵🇭', name: 'Philippines' },
+      { emoji: '🇨🇦', name: 'Canada' },
+      { emoji: '🇪🇬', name: 'Egypt' },
+      { emoji: '🇦🇺', name: 'Australia' },
+      { emoji: '🇨🇱', name: 'Chile' },
+      { emoji: '🇻🇳', name: 'Vietnam' },
+    ]
+  },
+  {
+    key: 'fruit', label: 'Fruit',
+    items: [
+      { emoji: '🥭', name: 'Mango' },
+      { emoji: '🍇', name: 'Grapes' },
+      { emoji: '🍋', name: 'Lemon' },
+      { emoji: '🍓', name: 'Strawberry' },
+      { emoji: '🍑', name: 'Peach' },
+      { emoji: '🍌', name: 'Banana' },
+      { emoji: '🍍', name: 'Pineapple' },
+      { emoji: '🫐', name: 'Blueberry' },
+      { emoji: '🥥', name: 'Coconut' },
+      { emoji: '🍒', name: 'Cherry' },
+      { emoji: '🍉', name: 'Watermelon' },
+      { emoji: '🥝', name: 'Kiwi' },
+      { emoji: '🍊', name: 'Orange' },
+      { emoji: '🍐', name: 'Pear' },
+      { emoji: '🍎', name: 'Apple' },
+    ]
+  },
+  {
+    key: 'animal', label: 'Animal',
+    items: [
+      { emoji: '🦞', name: 'Lobster' },
+      { emoji: '🦉', name: 'Owl' },
+      { emoji: '🐙', name: 'Octopus' },
+      { emoji: '🦎', name: 'Lizard' },
+      { emoji: '🐋', name: 'Whale' },
+      { emoji: '🦅', name: 'Eagle' },
+      { emoji: '🐘', name: 'Elephant' },
+      { emoji: '🦊', name: 'Fox' },
+      { emoji: '🐧', name: 'Penguin' },
+      { emoji: '🦋', name: 'Butterfly' },
+      { emoji: '🐢', name: 'Turtle' },
+      { emoji: '🦩', name: 'Flamingo' },
+      { emoji: '🐝', name: 'Bee' },
+      { emoji: '🦈', name: 'Shark' },
+      { emoji: '🦜', name: 'Parrot' },
+    ]
+  },
+  {
+    key: 'action', label: 'Action',
+    items: [
+      { emoji: '🕺🏻', name: 'Dancing' },
+      { emoji: '🏄', name: 'Surfing' },
+      { emoji: '🧗', name: 'Climbing' },
+      { emoji: '🎤', name: 'Singing' },
+      { emoji: '🎨', name: 'Painting' },
+      { emoji: '🏃', name: 'Running' },
+      { emoji: '🧘', name: 'Meditating' },
+      { emoji: '🎸', name: 'Playing Guitar' },
+      { emoji: '📸', name: 'Photography' },
+      { emoji: '✍️', name: 'Writing' },
+      { emoji: '🤿', name: 'Diving' },
+      { emoji: '🛶', name: 'Canoeing' },
+      { emoji: '🎭', name: 'Acting' },
+      { emoji: '🪂', name: 'Skydiving' },
+      { emoji: '🏋️', name: 'Weightlifting' },
+    ]
+  },
+  {
+    key: 'surprise', label: 'Surprise',
+    items: [
+      { emoji: '🌋', name: 'Volcano' },
+      { emoji: '🎪', name: 'Circus' },
+      { emoji: '🔮', name: 'Crystal Ball' },
+      { emoji: '🚀', name: 'Rocket' },
+      { emoji: '⚡', name: 'Lightning' },
+      { emoji: '🌈', name: 'Rainbow' },
+      { emoji: '🎭', name: 'Masks' },
+      { emoji: '🏚️', name: 'Haunted House' },
+      { emoji: '🗿', name: 'Moai' },
+      { emoji: '🧊', name: 'Ice' },
+      { emoji: '🌸', name: 'Cherry Blossom' },
+      { emoji: '🎠', name: 'Carousel' },
+      { emoji: '💎', name: 'Diamond' },
+      { emoji: '🕰️', name: 'Clock' },
+      { emoji: '🪄', name: 'Magic Wand' },
+    ]
+  },
+];
+
+// State
+const selections = [null, null, null, null, null];
+const reels = [];
+let spinning = false;
+
+function buildSlots() {
+  const grid = document.getElementById('slotsGrid');
+  CATEGORIES.forEach((cat, ci) => {
+    const col = document.createElement('div');
+    col.className = 'slot-col';
+
+    const label = document.createElement('div');
+    label.className = 'slot-label';
+    label.textContent = cat.label;
+    col.appendChild(label);
+
+    // Slot window
+    const win = document.createElement('div');
+    win.className = 'slot-window';
+    win.id = `slot-${ci}`;
+
+    const centerLine = document.createElement('div');
+    centerLine.className = 'center-line';
+    win.appendChild(centerLine);
+
+    // Build reel: repeat items many times for scrolling
+    const reel = document.createElement('div');
+    reel.className = 'slot-reel';
+    reel.id = `reel-${ci}`;
+
+    const repeats = 8;
+    for (let r = 0; r < repeats; r++) {
+      cat.items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'slot-item';
+        div.textContent = item.emoji;
+        reel.appendChild(div);
+      });
+    }
+
+    win.appendChild(reel);
+    col.appendChild(win);
+
+    // Position reel to show a random item centered
+    const itemH = 56;
+    const winH = 160;
+    const offset = Math.floor(Math.random() * cat.items.length);
+    const centerOffset = (winH / 2) - (itemH / 2);
+    reel.style.top = `${centerOffset - offset * itemH}px`;
+
+    // Manual select
+    const manualDiv = document.createElement('div');
+    manualDiv.className = 'manual-select';
+
+    const btn = document.createElement('button');
+    btn.className = 'manual-btn';
+    btn.textContent = 'Choose manually';
+    btn.id = `manual-btn-${ci}`;
+
+    const dd = document.createElement('div');
+    dd.className = 'dropdown';
+    dd.id = `dropdown-${ci}`;
+
+    cat.items.forEach((item, ii) => {
+      const opt = document.createElement('div');
+      opt.className = 'dropdown-item';
+      opt.innerHTML = `<span class="emoji">${item.emoji}</span> ${item.name}`;
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectManual(ci, ii);
+        dd.classList.remove('open');
+      });
+      dd.appendChild(opt);
+    });
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      dd.classList.toggle('open');
+    });
+
+    manualDiv.appendChild(btn);
+    manualDiv.appendChild(dd);
+    col.appendChild(manualDiv);
+
+    grid.appendChild(col);
+    reels.push({ reel, win, itemCount: cat.items.length, itemH, winH });
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+  });
+}
+
+function selectManual(catIdx, itemIdx) {
+  const cat = CATEGORIES[catIdx];
+  const item = cat.items[itemIdx];
+  selections[catIdx] = item;
+
+  // Animate reel to that item
+  const r = reels[catIdx];
+  const centerOffset = (r.winH / 2) - (r.itemH / 2);
+  // Target position: center of reel, use 3rd repeat
+  const targetIdx = cat.items.length * 3 + itemIdx;
+  const targetTop = centerOffset - targetIdx * r.itemH;
+
+  r.reel.style.transition = 'top 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+  r.reel.style.top = `${targetTop}px`;
+  r.win.classList.add('locked');
+
+  const btn = document.getElementById(`manual-btn-${catIdx}`);
+  btn.textContent = `${item.emoji} ${item.name}`;
+  btn.classList.add('has-selection');
+
+  setTimeout(() => { r.reel.style.transition = 'none'; }, 700);
+
+  checkAllSelected();
+}
+
+function spinAll() {
+  if (spinning) return;
+  spinning = true;
+
+  const btn = document.getElementById('spinAllBtn');
+  btn.disabled = true;
+  btn.textContent = 'Spinning...';
+
+  document.getElementById('goSection').classList.remove('visible');
+
+  // Random target for each
+  const targets = CATEGORIES.map(cat => Math.floor(Math.random() * cat.items.length));
+
+  reels.forEach((r, ci) => {
+    const cat = CATEGORIES[ci];
+    r.win.classList.remove('locked');
+    r.win.classList.add('spinning');
+
+    // Animate: fast scroll, then decelerate to target
+    const centerOffset = (r.winH / 2) - (r.itemH / 2);
+    const targetIdx = cat.items.length * 5 + targets[ci];
+    const targetTop = centerOffset - targetIdx * r.itemH;
+
+    // Stagger stop times for each reel (casino feel)
+    const duration = 1.5 + ci * 0.5;
+
+    r.reel.style.transition = `top ${duration}s cubic-bezier(0.12, 0.8, 0.3, 1)`;
+    // Nudge to start spinning from wherever
+    requestAnimationFrame(() => {
+      r.reel.style.top = `${targetTop}px`;
+    });
+
+    setTimeout(() => {
+      r.win.classList.remove('spinning');
+      r.win.classList.add('locked');
+      r.reel.style.transition = 'none';
+
+      selections[ci] = cat.items[targets[ci]];
+
+      const mbtn = document.getElementById(`manual-btn-${ci}`);
+      mbtn.textContent = `${selections[ci].emoji} ${selections[ci].name}`;
+      mbtn.classList.add('has-selection');
+
+      // If last reel, finalize
+      if (ci === CATEGORIES.length - 1) {
+        spinning = false;
+        btn.disabled = false;
+        btn.innerHTML = '🎰&ensp;Spin All';
+        checkAllSelected();
+      }
+    }, duration * 1000 + 100);
+  });
+}
+
+function checkAllSelected() {
+  if (selections.every(s => s !== null)) {
+    const goSection = document.getElementById('goSection');
+    goSection.classList.add('visible');
+
+    const preview = document.getElementById('selectionsPreview');
+    preview.innerHTML = selections.map(s => s.emoji).join('  ');
+  }
+}
+
+function generatePrompt() {
+  const [country, fruit, animal, action, surprise] = selections;
+
+  const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one. (Create a new sBs folder for this project).
+
+(a) Based on these parameters:
+
+country ${country.emoji}
+fruit ${fruit.emoji}
+animal ${animal.emoji}
+action ${action.emoji}
+fifth parameter [surprise me, you choose this]${surprise.emoji}
+
+write a short story in a single paragraph.
+
+(b) Take that short story and transform it into a research question for a Masters dissertation.
+
+(c) Conduct brief research focused on diagnosing a problem or opportunity. The output here will be a clear problem statement that includes a narrow customer/user segment in any sector (public or private)
+
+(d) Design a solution for it. This offering could be a physical product, a service or a hybrid solution. Define who the provider is, e.g., a startup, a branch of government or agency, a corporation, a non-profit organisation, etc.
+
+(e) Build a prototype complete with its design specs.
+
+(f) Create a world-class landing page for it (output as html file). Ensure it has one to three real-world photos. Again the design must be top-notch. Open the html page when finished.
+
+(g) Design a very professional business plan and a marketing campaign. Pitch this to investors (including reps from YCombinator, Tech Stars, Dogpatch Labs, and Blackrock Capital). Create the slides for this (html) and open them in a style aligned with the landing page.
+
+(h) Write circa 350 words reflecting on your experience and render in-line.`;
+
+  document.getElementById('mainView').style.display = 'none';
+  document.getElementById('promptView').style.display = 'flex';
+  document.getElementById('promptBox').textContent = prompt;
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    const copyIcon = document.getElementById('copyIcon');
+    const checkIcon = document.getElementById('checkIcon');
+    const tooltip = document.getElementById('copyTooltip');
+
+    btn.classList.add('copied');
+    copyIcon.style.display = 'none';
+    checkIcon.style.display = 'block';
+    tooltip.textContent = 'Copied!';
+
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      copyIcon.style.display = 'block';
+      checkIcon.style.display = 'none';
+      tooltip.textContent = 'Copy to clipboard';
+    }, 2000);
+  });
+}
+
+function resetAll() {
+  selections.fill(null);
+  document.getElementById('mainView').style.display = 'flex';
+  document.getElementById('promptView').style.display = 'none';
+  document.getElementById('goSection').classList.remove('visible');
+
+  reels.forEach((r, ci) => {
+    r.win.classList.remove('locked', 'spinning');
+    const offset = Math.floor(Math.random() * CATEGORIES[ci].items.length);
+    const centerOffset = (r.winH / 2) - (r.itemH / 2);
+    r.reel.style.top = `${centerOffset - offset * r.itemH}px`;
+
+    const btn = document.getElementById(`manual-btn-${ci}`);
+    btn.textContent = 'Choose manually';
+    btn.classList.remove('has-selection');
+  });
+}
+
+// Init
+buildSlots();
+</script>
+</body>
+</html>
