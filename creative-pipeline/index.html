@@ -187,6 +187,10 @@
     flex-direction: column;
     align-items: center;
     transition: none;
+    visibility: hidden;
+  }
+  .slot-reel.visible {
+    visibility: visible;
   }
 
   .slot-item {
@@ -1509,6 +1513,7 @@ function selectManual(catIdx, itemIdx) {
 
   // Animate reel to that item
   const r = reels[catIdx];
+  r.reel.classList.add('visible');
   const centerOffset = (r.winH / 2) - (r.itemH / 2);
   // Target position: center of reel, use 3rd repeat
   const targetIdx = cat.items.length * 3 + itemIdx;
@@ -1562,6 +1567,7 @@ function spinAll() {
     const cat = CATEGORIES[ci];
     r.win.classList.remove('locked');
     r.win.classList.add('spinning');
+    r.reel.classList.add('visible');
 
     // Animate: fast scroll, then decelerate to target
     const centerOffset = (r.winH / 2) - (r.itemH / 2);
