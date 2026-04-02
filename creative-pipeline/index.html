@@ -184,7 +184,13 @@
     flex-shrink: 0;
     font-size: 2rem;
     user-select: none;
-    transition: opacity 0.2s;
+    transition: opacity 0.3s, filter 0.3s;
+    opacity: 0.12;
+    filter: grayscale(0.8) brightness(0.5);
+  }
+  .slot-item.in-view {
+    opacity: 1;
+    filter: none;
   }
 
   /* Manual selector dropdown */
@@ -299,46 +305,49 @@
   }
 
   .go-btn {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
+    width: 340px;
+    height: 90px;
+    border-radius: 22px;
     border: none;
     cursor: pointer;
     font-family: inherit;
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: #fff;
-    background: radial-gradient(circle at 40% 35%, #00e676, #00a152 60%, #005a2e);
+    background: linear-gradient(145deg, #00e676 0%, #00c853 30%, #00a152 60%, #005a2e 100%);
     box-shadow:
       0 0 40px rgba(0, 230, 118, 0.3),
-      0 0 80px rgba(0, 230, 118, 0.15),
-      inset 0 -6px 20px rgba(0, 0, 0, 0.3),
-      inset 0 4px 12px rgba(255, 255, 255, 0.15);
+      0 0 80px rgba(0, 230, 118, 0.12),
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2),
+      inset 0 -2px 6px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     position: relative;
     text-transform: uppercase;
     text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    overflow: hidden;
   }
   .go-btn::before {
     content: '';
     position: absolute;
-    top: 8%; left: 15%;
-    width: 50%; height: 30%;
-    background: radial-gradient(ellipse, rgba(255,255,255,0.25) 0%, transparent 70%);
-    border-radius: 50%;
+    top: 0; left: 0; right: 0;
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, transparent 100%);
+    border-radius: 22px 22px 50% 50%;
     pointer-events: none;
   }
   .go-btn:hover {
-    transform: scale(1.06);
+    transform: translateY(-3px) scale(1.03);
     box-shadow:
       0 0 60px rgba(0, 230, 118, 0.45),
-      0 0 120px rgba(0, 230, 118, 0.2),
-      inset 0 -6px 20px rgba(0, 0, 0, 0.3),
-      inset 0 4px 12px rgba(255, 255, 255, 0.15);
+      0 0 120px rgba(0, 230, 118, 0.18),
+      0 8px 30px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2),
+      inset 0 -2px 6px rgba(0, 0, 0, 0.2);
   }
   .go-btn:active {
-    transform: scale(0.97);
+    transform: translateY(1px) scale(0.98);
   }
 
   .selections-preview {
@@ -714,6 +723,29 @@ function buildSlots() {
   document.addEventListener('click', () => {
     document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
   });
+
+  // Initial highlight
+  updateAllInView();
+}
+
+function updateInView(ci) {
+  const r = reels[ci];
+  const reelTop = parseFloat(r.reel.style.top) || 0;
+  const centerY = r.winH / 2;
+  const items = r.reel.querySelectorAll('.slot-item');
+  items.forEach((el, i) => {
+    const itemCenterY = i * r.itemH + r.itemH / 2 + reelTop;
+    const dist = Math.abs(itemCenterY - centerY);
+    if (dist < r.itemH * 0.6) {
+      el.classList.add('in-view');
+    } else {
+      el.classList.remove('in-view');
+    }
+  });
+}
+
+function updateAllInView() {
+  reels.forEach((_, ci) => updateInView(ci));
 }
 
 function selectManual(catIdx, itemIdx) {
@@ -736,7 +768,13 @@ function selectManual(catIdx, itemIdx) {
   btn.textContent = `${item.emoji} ${item.name}`;
   btn.classList.add('has-selection');
 
-  setTimeout(() => { r.reel.style.transition = 'none'; }, 700);
+  setTimeout(() => {
+    r.reel.style.transition = 'none';
+    updateInView(catIdx);
+  }, 700);
+
+  // Immediate update too
+  requestAnimationFrame(() => updateInView(catIdx));
 
   checkAllSelected();
 }
@@ -773,12 +811,17 @@ function spinAll() {
       r.reel.style.top = `${targetTop}px`;
     });
 
+    // Update highlight during spin animation
+    const spinInterval = setInterval(() => updateInView(ci), 50);
+
     setTimeout(() => {
+      clearInterval(spinInterval);
       r.win.classList.remove('spinning');
       r.win.classList.add('locked');
       r.reel.style.transition = 'none';
 
       selections[ci] = cat.items[targets[ci]];
+      updateInView(ci);
 
       const mbtn = document.getElementById(`manual-btn-${ci}`);
       mbtn.textContent = `${selections[ci].emoji} ${selections[ci].name}`;
@@ -877,6 +920,7 @@ function resetAll() {
     btn.textContent = 'Choose manually';
     btn.classList.remove('has-selection');
   });
+  updateAllInView();
 }
 
 // Init
