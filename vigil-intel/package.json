@@ -1,0 +1,20 @@
+{
+  "name": "vigil-intel",
+  "version": "1.0.0",
+  "description": "VDISIP Phase 1: Daily AI frontier intelligence scanner for VIGIL",
+  "main": "build-intel.js",
+  "type": "module",
+  "scripts": {
+    "scan": "node build-intel.js",
+    "scan:dry": "node build-intel.js --dry-run",
+    "scan:force": "node build-intel.js --force"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@supabase/supabase-js": "^2.49.0",
+    "rss-parser": "^3.13.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "rss": [
+    {
+      "id": "anthropic-blog",
+      "name": "Anthropic Blog",
+      "url": "https://www.anthropic.com/rss.xml",
+      "priority": 1,
+      "enabled": false,
+      "weight": 1.0,
+      "note": "DISABLED 2026-04-09: RSS feed returns 404. Re-enable when Anthropic restores it."
+    },
+    {
+      "id": "simon-willison",
+      "name": "Simon Willison",
+      "url": "https://simonwillison.net/atom/everything/",
+      "priority": 1,
+      "enabled": true,
+      "weight": 1.0,
+      "note": "Deep Claude/LLM tooling analysis, practical patterns"
+    },
+    {
+      "id": "latent-space",
+      "name": "Latent Space",
+      "url": "https://www.latent.space/feed",
+      "priority": 2,
+      "enabled": true,
+      "weight": 0.8,
+      "note": "Agent architecture, AI engineering patterns"
+    },
+    {
+      "id": "the-batch",
+      "name": "The Batch (deeplearning.ai)",
+      "url": "https://www.deeplearning.ai/the-batch/feed/",
+      "priority": 3,
+      "enabled": false,
+      "weight": 0.6,
+      "note": "DISABLED 2026-04-09: Feed returns 404. Re-enable if restored."
+    },
+    {
+      "id": "mit-tech-review-ai",
+      "name": "MIT Technology Review AI",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+      "priority": 3,
+      "enabled": true,
+      "weight": 0.5,
+      "note": "Broader AI trends, occasionally actionable"
+    }
+  ],
+  "api": [
+    {
+      "id": "reddit-claudeai",
+      "name": "r/ClaudeAI",
+      "type": "reddit",
+      "subreddit": "ClaudeAI",
+      "limit": 25,
+      "priority": 1,
+      "enabled": true,
+      "weight": 1.0,
+      "note": "Community Claude Code skills, tricks, workflows"
+    },
+    {
+      "id": "reddit-localllama",
+      "name": "r/LocalLLaMA",
+      "type": "reddit",
+      "subreddit": "LocalLLaMA",
+      "limit": 15,
+      "priority": 2,
+      "enabled": true,
+      "weight": 0.7,
+      "note": "Agentic patterns, model comparisons, tooling"
+    },
+    {
+      "id": "hn-claude",
+      "name": "HN: Claude",
+      "type": "hackernews",
+      "query": "claude code",
+      "priority": 1,
+      "enabled": true,
+      "weight": 0.9,
+      "note": "Hacker News discourse about Claude Code"
+    },
+    {
+      "id": "hn-agents",
+      "name": "HN: AI Agents",
+      "type": "hackernews",
+      "query": "AI agents",
+      "priority": 2,
+      "enabled": true,
+      "weight": 0.7,
+      "note": "Agent tooling and architecture discussions"
+    },
+    {
+      "id": "gh-claude-code",
+      "name": "GitHub: anthropics/claude-code",
+      "type": "github-releases",
+      "repo": "anthropics/claude-code",
+      "priority": 1,
+      "enabled": true,
+      "weight": 1.0,
+      "note": "Official Claude Code releases and changelogs"
+    },
+    {
+      "id": "gh-trending",
+      "name": "GitHub Trending (AI)",
+      "type": "github-trending",
+      "priority": 2,
+      "enabled": true,
+      "weight": 0.6,
+      "note": "New AI tools and frameworks trending on GitHub"
+    }
+  ],
+  "crossref": [
+    {
+      "id": "dains-today",
+      "name": "DAINS (Today's Scan)",
+      "type": "supabase",
+      "table": "published_posts",
+      "enabled": true,
+      "note": "Cross-reference broad AI news for stack-specific relevance"
+    }
+  ]
+}
