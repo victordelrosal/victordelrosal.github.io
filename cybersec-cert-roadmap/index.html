@@ -893,19 +893,16 @@ if (localStorage.getItem('theme') === 'light') {
   function snapY(y) { return Math.round(y / (GRID * devicePixelRatio)) * (GRID * devicePixelRatio); }
 
   // Orb state
-  const orbs = [];
-  for (let i = 0; i < 3; i++) {
-    orbs.push({
-      x: snapX(Math.random() * W),
-      y: snapY(Math.random() * H),
-      tx: 0, ty: 0,
-      dir: Math.random() < 0.5 ? 'h' : 'v', // horizontal or vertical
-      speed: (1.2 + Math.random() * 0.8) * devicePixelRatio,
-      hue: [195, 180, 210][i],
-      trail: []
-    });
-    pickTarget(orbs[i]);
-  }
+  const orbs = [{
+    x: snapX(Math.random() * W),
+    y: snapY(Math.random() * H),
+    tx: 0, ty: 0,
+    dir: Math.random() < 0.5 ? 'h' : 'v',
+    speed: 1.4 * devicePixelRatio,
+    hue: 195,
+    trail: []
+  }];
+  pickTarget(orbs[0]);
 
   function pickTarget(orb) {
     const g = GRID * devicePixelRatio;
