@@ -14,22 +14,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f8fafb;
-  --surface: #ffffff;
-  --border: #e2e8f0;
-  --text: #1e293b;
-  --text-dim: #64748b;
-  --blue: #0a66c2;
-  --blue-light: #e8f0fe;
-  --blue-bg: #f0f6ff;
-  --green: #137333;
-  --green-bg: #e6f4ea;
-  --amber: #b06000;
-  --amber-bg: #fef7e0;
-  --red: #c41e3a;
-  --red-bg: #fef0f0;
-  --purple: #6b21a8;
-  --purple-bg: #f3e8ff;
+  --bg: #020a18;
+  --bg-grad: linear-gradient(170deg, #020a18 0%, #041028 40%, #06142e 70%, #020a18 100%);
+  --surface: rgba(8, 24, 56, 0.85);
+  --surface-hover: rgba(12, 32, 72, 0.95);
+  --border: rgba(0, 170, 255, 0.12);
+  --border-glow: rgba(0, 170, 255, 0.3);
+  --text: #d0e0f0;
+  --text-bright: #e8f0ff;
+  --text-dim: #6888aa;
+  --neon: #00aaff;
+  --neon-dim: rgba(0, 170, 255, 0.15);
+  --neon-faint: rgba(0, 170, 255, 0.06);
+  --cyan: #00e5ff;
+  --green: #00ff88;
+  --green-dim: rgba(0, 255, 136, 0.12);
+  --amber: #ffaa00;
+  --amber-dim: rgba(255, 170, 0, 0.12);
+  --red: #ff4466;
+  --red-dim: rgba(255, 68, 102, 0.1);
+  --purple: #aa66ff;
+  --purple-dim: rgba(170, 102, 255, 0.12);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -39,206 +44,407 @@ body {
   line-height: 1.65;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-a { color: var(--blue); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--neon); text-decoration: none; transition: color 0.2s, text-shadow 0.2s; }
+a:hover { color: var(--cyan); text-shadow: 0 0 8px rgba(0, 229, 255, 0.4); text-decoration: none; }
+
+/* Background effects */
+.bg-layer {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+  background: var(--bg-grad);
+}
+.grid-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,170,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,170,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Animated spotlight orbs */
+.spotlight {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(100px); opacity: 0.08;
+}
+.spotlight-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--neon), transparent 70%);
+  animation: orbit1 25s ease-in-out infinite;
+}
+.spotlight-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--cyan), transparent 70%);
+  animation: orbit2 30s ease-in-out infinite;
+}
+.spotlight-3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--purple), transparent 70%);
+  animation: orbit3 35s ease-in-out infinite;
+}
+@keyframes orbit1 {
+  0%   { top: -10%; left: -10%; }
+  25%  { top: 20%;  left: 70%;  }
+  50%  { top: 60%;  left: 50%;  }
+  75%  { top: 40%;  left: -5%;  }
+  100% { top: -10%; left: -10%; }
+}
+@keyframes orbit2 {
+  0%   { top: 80%;  left: 80%;  }
+  25%  { top: 50%;  left: 10%;  }
+  50%  { top: 10%;  left: 30%;  }
+  75%  { top: 60%;  left: 90%;  }
+  100% { top: 80%;  left: 80%;  }
+}
+@keyframes orbit3 {
+  0%   { top: 30%;  left: 50%;  }
+  25%  { top: 70%;  left: 20%;  }
+  50%  { top: 20%;  left: 80%;  }
+  75%  { top: 50%;  left: 40%;  }
+  100% { top: 30%;  left: 50%;  }
+}
+
+/* Content layer */
+.content-layer { position: relative; z-index: 1; }
 
 /* Container */
-.container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 880px; margin: 0 auto; padding: 0 20px; }
 
 /* Header */
 .header {
-  background: var(--surface);
+  background: rgba(4, 14, 34, 0.9);
   border-bottom: 1px solid var(--border);
   padding: 32px 0;
+  backdrop-filter: blur(20px);
 }
 .header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
 }
 .header-left { display: flex; align-items: center; gap: 14px; }
 .logo-icon {
-  width: 44px; height: 44px;
-  background: linear-gradient(135deg, #0a66c2, #0052a3);
-  border-radius: 10px;
+  width: 48px; height: 48px;
+  background: transparent;
+  border: 2px solid var(--neon);
+  border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  color: white; font-size: 18px; font-weight: 700; flex-shrink: 0;
+  color: var(--neon); font-size: 16px; font-weight: 700; flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.15), inset 0 0 20px rgba(0, 170, 255, 0.05);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
 }
-.header h1 { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.header h1 {
+  font-size: 22px; font-weight: 700; color: var(--text-bright); line-height: 1.3;
+  text-shadow: 0 0 20px rgba(0, 170, 255, 0.1);
+}
 .header-sub { font-size: 14px; color: var(--text-dim); margin-top: 2px; }
 .header-right { font-size: 13px; color: var(--text-dim); text-align: right; }
 
+/* TL;DR Hero */
+.hero {
+  margin: 32px 0 24px;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon), var(--cyan), var(--neon), transparent);
+  animation: scanline 4s linear infinite;
+}
+@keyframes scanline {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+.hero-label {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--neon); margin-bottom: 12px;
+  padding: 4px 12px; border: 1px solid var(--border-glow); border-radius: 4px;
+  background: var(--neon-faint);
+}
+.hero h2 {
+  font-size: 26px; font-weight: 700; color: var(--text-bright);
+  margin-bottom: 16px; line-height: 1.3;
+}
+.hero-points { list-style: none; }
+.hero-points li {
+  font-size: 15px; color: var(--text); line-height: 1.7;
+  padding: 4px 0 4px 24px; position: relative;
+}
+.hero-points li::before {
+  content: '\25B8'; position: absolute; left: 0; color: var(--neon);
+  font-size: 14px; top: 5px;
+}
+.hero-bottom {
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 14px; color: var(--text-dim);
+}
+.hero-bottom strong { color: var(--cyan); }
+
 /* Stats strip */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  margin: 24px 0;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 12px; margin: 0 0 32px;
 }
 @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 18px 14px;
   text-align: center;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-.stat-num { font-size: 26px; font-weight: 700; color: var(--blue); line-height: 1.2; }
+.stat-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.08);
+}
+.stat-num {
+  font-size: 26px; font-weight: 700; line-height: 1.2;
+  color: var(--neon);
+  text-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+}
 .stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-/* Section */
-section { margin-bottom: 32px; }
-.section-header {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 16px; padding-bottom: 10px;
-  border-bottom: 2px solid var(--border);
+/* Collapsible sections */
+.section-toggle {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  color: var(--text-bright);
+  font-family: inherit;
+  text-align: left;
 }
+.section-toggle:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 25px rgba(0, 170, 255, 0.06);
+  background: var(--surface-hover);
+}
+.section-toggle.active {
+  border-radius: 14px 14px 0 0;
+  border-bottom-color: transparent;
+  border-color: var(--border-glow);
+}
+.toggle-left { display: flex; align-items: center; gap: 14px; }
 .section-num {
-  width: 28px; height: 28px;
-  background: var(--blue); color: white;
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--neon);
+  color: var(--neon);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 600; flex-shrink: 0;
+  text-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
 }
-.section-header h2 { font-size: 20px; font-weight: 700; }
+.section-toggle h2 { font-size: 19px; font-weight: 700; }
+.toggle-icon {
+  width: 28px; height: 28px;
+  border: 1.5px solid var(--border-glow);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--neon);
+  transition: transform 0.3s, background 0.3s;
+  flex-shrink: 0;
+}
+.section-toggle.active .toggle-icon {
+  transform: rotate(45deg);
+  background: var(--neon-dim);
+}
+.section-body {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border-glow);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 24px;
+  margin-top: -16px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(12px);
+  animation: slideDown 0.3s ease-out;
+}
+.section-body.open { display: block; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* Cert cards */
 .cert-card {
-  background: var(--surface);
+  background: rgba(6, 18, 42, 0.7);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 12px;
   position: relative;
-  transition: box-shadow 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
-.cert-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-.cert-card.featured { border-color: var(--blue); border-width: 2px; }
+.cert-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.06);
+}
+.cert-card.featured { border-color: var(--neon); border-width: 1px; box-shadow: 0 0 15px rgba(0, 170, 255, 0.08); }
 .cert-card .badge {
   position: absolute; top: 12px; right: 12px;
-  font-size: 10px; font-weight: 600; padding: 3px 10px;
-  border-radius: 12px; letter-spacing: 0.5px;
+  font-size: 10px; font-weight: 700; padding: 3px 10px;
+  border-radius: 4px; letter-spacing: 1px; text-transform: uppercase;
 }
-.badge-blue { background: var(--blue-light); color: var(--blue); }
-.badge-green { background: var(--green-bg); color: var(--green); }
-.badge-amber { background: var(--amber-bg); color: var(--amber); }
-.badge-red { background: var(--red-bg); color: var(--red); }
-.badge-purple { background: var(--purple-bg); color: var(--purple); }
-.cert-name { font-size: 18px; font-weight: 600; margin-bottom: 6px; padding-right: 100px; }
+.badge-blue { background: var(--neon-dim); color: var(--neon); border: 1px solid rgba(0,170,255,0.2); }
+.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+.badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(255,170,0,0.2); }
+.badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,68,102,0.2); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(170,102,255,0.2); }
+.cert-name { font-size: 18px; font-weight: 600; margin-bottom: 6px; padding-right: 110px; color: var(--text-bright); }
 .cert-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-dim); margin-bottom: 8px; flex-wrap: wrap; }
-.cert-desc { font-size: 15px; color: #475569; line-height: 1.6; }
+.cert-desc { font-size: 15px; color: var(--text); line-height: 1.6; }
 
-/* Blue callout */
+/* Callout */
 .callout {
-  background: linear-gradient(135deg, #0a66c2, #0052a3);
-  color: white; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(0,170,255,0.12), rgba(0,229,255,0.06));
+  border: 1px solid var(--border-glow);
+  color: var(--text); border-radius: 12px;
   padding: 20px 24px; margin: 20px 0;
+  position: relative; overflow: hidden;
 }
-.callout strong { font-size: 17px; display: block; margin-bottom: 4px; }
-.callout p { font-size: 15px; opacity: 0.92; line-height: 1.6; }
-.callout a { color: #93c5fd; }
+.callout::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--neon), var(--cyan));
+}
+.callout strong { font-size: 17px; display: block; margin-bottom: 4px; color: var(--cyan); }
+.callout p { font-size: 15px; opacity: 0.9; line-height: 1.6; }
 
 /* Roadmap */
 .roadmap-phase {
-  background: var(--surface);
+  background: rgba(6, 18, 42, 0.7);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 12px;
   display: flex; gap: 20px; align-items: flex-start;
+  transition: border-color 0.3s;
 }
+.roadmap-phase:hover { border-color: var(--border-glow); }
 @media (max-width: 640px) { .roadmap-phase { flex-direction: column; gap: 8px; } }
 .phase-marker { flex-shrink: 0; text-align: center; width: 80px; }
-.phase-label { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; }
+.phase-label { font-size: 11px; font-weight: 700; color: var(--neon); text-transform: uppercase; letter-spacing: 1px; }
 .phase-months { font-size: 12px; color: var(--text-dim); }
 .phase-content { flex: 1; }
-.phase-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.phase-detail { font-size: 14px; color: #475569; line-height: 1.6; }
+.phase-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--text-bright); }
+.phase-detail { font-size: 14px; color: var(--text); line-height: 1.6; }
 .phase-tags { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
 .phase-tag {
   display: inline-block; font-size: 12px; font-weight: 600;
-  padding: 3px 10px; border-radius: 12px;
+  padding: 3px 10px; border-radius: 4px;
 }
 
 /* Table */
 .table-wrap {
-  background: var(--surface);
+  background: rgba(6, 18, 42, 0.7);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden; margin-bottom: 16px;
 }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 thead th {
-  background: #f1f5f9; font-weight: 600; padding: 12px 14px;
-  text-align: left; font-size: 12px; text-transform: uppercase;
-  letter-spacing: 0.5px; color: var(--text-dim);
-  border-bottom: 2px solid var(--border);
+  background: rgba(0, 170, 255, 0.06);
+  font-weight: 600; padding: 12px 14px;
+  text-align: left; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--neon);
+  border-bottom: 1px solid var(--border-glow);
 }
-tbody td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
-tbody tr:hover { background: #f8fafc; }
+tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+tbody tr:hover { background: rgba(0, 170, 255, 0.04); }
+tbody td strong { color: var(--text-bright); }
 
 /* Mini cards grid */
-.mini-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-}
+.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 640px) { .mini-grid { grid-template-columns: 1fr; } }
 .mini-card {
-  background: var(--surface);
+  background: rgba(6, 18, 42, 0.7);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 16px;
+  transition: border-color 0.3s;
 }
-.mini-card.warn { border-color: #fca5a5; background: #fff5f5; }
+.mini-card:hover { border-color: var(--border-glow); }
+.mini-card.warn { border-color: rgba(255, 68, 102, 0.2); background: rgba(255, 68, 102, 0.04); }
 .mc-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-.mc-name.blue { color: var(--blue); }
+.mc-name.blue { color: var(--neon); }
 .mc-name.red { color: var(--red); }
-.mc-desc { font-size: 14px; color: #475569; line-height: 1.55; }
+.mc-desc { font-size: 14px; color: var(--text); line-height: 1.55; }
 
 /* Three-col grid */
 .tri-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 @media (max-width: 640px) { .tri-grid { grid-template-columns: 1fr; } }
 
+/* Inner details (cert table) */
+.inner-details { margin-bottom: 12px; }
+.inner-details summary {
+  cursor: pointer; font-weight: 600; font-size: 15px; padding: 14px 20px;
+  background: rgba(6, 18, 42, 0.7);
+  border: 1px solid var(--border); border-radius: 10px;
+  list-style: none; display: flex; align-items: center; justify-content: space-between;
+  transition: border-color 0.3s; color: var(--text-bright);
+}
+.inner-details summary:hover { border-color: var(--border-glow); }
+.inner-details summary::after { content: '+'; font-size: 18px; color: var(--neon); font-weight: 400; }
+.inner-details[open] summary { border-radius: 10px 10px 0 0; border-bottom: none; }
+.inner-details[open] summary::after { content: '\2212'; }
+.inner-details .details-body {
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 10px 10px; padding: 16px 20px;
+  background: rgba(6, 18, 42, 0.5);
+}
+
 /* Footer */
 .footer {
-  background: var(--surface);
+  background: rgba(4, 14, 34, 0.9);
   border-top: 1px solid var(--border);
   padding: 24px 0;
   margin-top: 40px;
   font-size: 13px;
   color: var(--text-dim);
+  backdrop-filter: blur(20px);
 }
 .footer-inner {
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
 }
 .footer-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .footer-links a {
-  background: #f1f5f9; padding: 4px 10px; border-radius: 6px;
-  font-size: 12px; color: var(--text-dim);
+  background: rgba(0, 170, 255, 0.06); padding: 4px 10px; border-radius: 4px;
+  font-size: 12px; color: var(--text-dim); border: 1px solid var(--border);
+  transition: border-color 0.3s, color 0.3s;
 }
-.footer-links a:hover { background: var(--blue-light); color: var(--blue); text-decoration: none; }
+.footer-links a:hover { border-color: var(--border-glow); color: var(--neon); text-decoration: none; }
 
-/* Details/collapsibles */
-details { margin-bottom: 12px; }
-details summary {
-  cursor: pointer; font-weight: 600; font-size: 16px; padding: 14px 20px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-  list-style: none; display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.2s;
-}
-details summary:hover { background: #f8fafc; }
-details summary::after { content: '+'; font-size: 20px; color: var(--blue); font-weight: 400; }
-details[open] summary { border-radius: 10px 10px 0 0; border-bottom: none; }
-details[open] summary::after { content: '-'; }
-details .details-body {
-  background: var(--surface); border: 1px solid var(--border); border-top: none;
-  border-radius: 0 0 10px 10px; padding: 16px 20px;
-}
+/* Source note */
+.source-note { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 </style>
 </head>
 <body>
+
+<!-- Background effects -->
+<div class="bg-layer"></div>
+<div class="grid-overlay"></div>
+<div class="spotlight spotlight-1"></div>
+<div class="spotlight spotlight-2"></div>
+<div class="spotlight spotlight-3"></div>
+
+<div class="content-layer">
 
 <!-- HEADER -->
 <div class="header">
@@ -261,6 +467,22 @@ details .details-body {
 
 <div class="container">
 
+<!-- TL;DR HERO -->
+<div class="hero">
+  <div class="hero-label">TL;DR</div>
+  <h2>Three certs. &euro;543. Job-ready in 12 weeks.</h2>
+  <ul class="hero-points">
+    <li><strong>Start free:</strong> ISC2 CC (free exam + training) to build momentum</li>
+    <li><strong>Get hired:</strong> CompTIA Security+ (&euro;391) is in 70% of entry-level postings</li>
+    <li><strong>Specialise:</strong> Microsoft SC-200 (&euro;152) for cloud SOC skills (free training via Microsoft Learn)</li>
+    <li><strong>NIS2 tailwind:</strong> Ireland is expanding from ~450 to 6,000 regulated entities, creating 1,200+ new roles/year</li>
+    <li><strong>Skip:</strong> CEH (overpriced), CISSP (premature), Google Cyber Cert (not recognised), SANS (employer-funded only)</li>
+  </ul>
+  <div class="hero-bottom">
+    All training materials are available free online. Total cost for the full 5-cert stack stays under <strong>&euro;2,500</strong>.
+  </div>
+</div>
+
 <!-- STATS -->
 <div class="stats">
   <div class="stat-card"><div class="stat-num">8,000+</div><div class="stat-label">Cybersec pros in Ireland</div></div>
@@ -271,54 +493,53 @@ details .details-body {
 </div>
 
 <!-- SECTION 1: TOP 5 CERTS -->
-<section>
-  <div class="section-header"><span class="section-num">1</span><h2>The Five Certifications That Matter Most</h2></div>
-
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">1</span><h2>The Five Certifications That Matter Most</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="cert-card featured">
     <span class="badge badge-blue">PRIORITY #1</span>
     <div class="cert-name">CompTIA Security+ (SY0-701)</div>
     <div class="cert-meta"><span>&euro;391 exam</span><span>4-8 weeks study</span><span>In 70% of entry-level postings</span></div>
     <div class="cert-desc">The universal hiring filter. Required by EY Ireland's graduate programme. Listed by Smarttech247, Aer Lingus. Free prep via <a href="https://elearning.solas.ie/">SOLAS eCollege</a> (starting 20 Apr 2026) and Professor Messer (YouTube).</div>
   </div>
-
   <div class="cert-card featured">
     <span class="badge badge-blue">HIGHEST ROI</span>
     <div class="cert-name">Microsoft SC-200 (Security Operations Analyst)</div>
     <div class="cert-meta"><span>&euro;152 exam</span><span>6-10 weeks study</span><span>Free training via Microsoft Learn</span></div>
     <div class="cert-desc">Highest ROI cloud cert for Ireland. M365 ubiquitous in Irish enterprise. Updated April 2026 with Security Copilot AI integration. Validates Sentinel SIEM + Defender XDR skills. <a href="https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/">Free via Microsoft Learn</a>.</div>
   </div>
-
   <div class="cert-card">
     <span class="badge badge-green">100% FREE</span>
     <div class="cert-name">ISC2 Certified in Cybersecurity (CC)</div>
     <div class="cert-meta"><span>Free exam + training</span><span>2-4 weeks study</span></div>
     <div class="cert-desc">Free through the <a href="https://www.isc2.org/landing/1mcc">1MCC programme</a> (30,000 EU seats through Aug 2026). Zero financial risk. ISC2 brand carries weight as a stepping stone toward CISSP.</div>
   </div>
-
   <div class="cert-card">
     <span class="badge badge-purple">BLUE TEAM</span>
     <div class="cert-name">CompTIA CySA+ (CS0-003)</div>
     <div class="cert-meta"><span>&euro;391 exam</span><span>6-10 weeks study</span></div>
     <div class="cert-desc">Blue-team specialisation: threat detection, SIEM tools, log analysis, incident response. Bridges Security+ to advanced certs. Moves salary ceiling from &euro;45K to &euro;60-75K range. Best pursued 6-12 months after first role.</div>
   </div>
-
   <div class="cert-card">
     <span class="badge badge-amber">NIS2 WAVE</span>
     <div class="cert-name">ISO 27001 Lead Implementer</div>
     <div class="cert-meta"><span>&euro;450-1,000 (Skillnet subsidised)</span><span>4-8 weeks study</span><span>Covers ~70% of NIS2 requirements</span></div>
     <div class="cert-desc">The NIS2 differentiator. As Ireland transposes NIS2 into law (expected 2026), 6,000 organisations enter regulatory scope. ISO 27001 is the <a href="https://www.ncsc.gov.ie/nis2/">NCSC-recognised</a> compliance pathway. Best pursued once employed, ideally funded via <a href="https://www.skillnetireland.ie/">Skillnet Ireland</a>.</div>
   </div>
-
   <div class="callout">
     <strong>Total cost to become job-ready: ~&euro;543</strong>
     <p>ISC2 CC (free) + Security+ (&euro;391) + SC-200 (&euro;152) = three certifications covering entry-level, cloud security, and AI-augmented SOC skills. All training materials available free online. Full 5-cert stack stays under &euro;2,500.</p>
   </div>
-</section>
+</div>
 
 <!-- SECTION 2: ROADMAP -->
-<section>
-  <div class="section-header"><span class="section-num">2</span><h2>24-Month Roadmap: Graduate to &euro;60K+</h2></div>
-
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">2</span><h2>24-Month Roadmap: Graduate to &euro;60K+</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="roadmap-phase">
     <div class="phase-marker">
       <div class="phase-label">Get Hired</div>
@@ -328,12 +549,11 @@ details .details-body {
       <div class="phase-title">ISC2 CC (free) &rarr; Security+ &rarr; SC-900 (free) &rarr; Apply</div>
       <div class="phase-detail">Register for ISC2 1MCC. Enrol in SOLAS eCollege Security+ prep (free, 20 Apr 2026). Pass CC in week 3. Pass Security+ by week 10. Attend Cyber Ireland events. Apply for Junior SOC / Security Analyst roles.</div>
       <div class="phase-tags">
-        <span class="phase-tag" style="background: var(--green-bg); color: var(--green);">&euro;35-50K target</span>
-        <span class="phase-tag" style="background: var(--amber-bg); color: var(--amber);">Spend: &euro;391-467</span>
+        <span class="phase-tag" style="background: var(--green-dim); color: var(--green);">&euro;35-50K target</span>
+        <span class="phase-tag" style="background: var(--amber-dim); color: var(--amber);">Spend: &euro;391-467</span>
       </div>
     </div>
   </div>
-
   <div class="roadmap-phase">
     <div class="phase-marker">
       <div class="phase-label">Specialise</div>
@@ -343,12 +563,11 @@ details .details-body {
       <div class="phase-title">SC-200 &rarr; CySA+ (while employed as L1 SOC Analyst)</div>
       <div class="phase-detail">Study SC-200 via free Microsoft Learn. Pass by month 7. Build TryHackMe/Hack The Box portfolio. Begin CySA+ study. Pass by month 12. Target promotion to L2 SOC / Security Analyst.</div>
       <div class="phase-tags">
-        <span class="phase-tag" style="background: var(--green-bg); color: var(--green);">&euro;50-60K target</span>
-        <span class="phase-tag" style="background: var(--amber-bg); color: var(--amber);">Spend: &euro;543</span>
+        <span class="phase-tag" style="background: var(--green-dim); color: var(--green);">&euro;50-60K target</span>
+        <span class="phase-tag" style="background: var(--amber-dim); color: var(--amber);">Spend: &euro;543</span>
       </div>
     </div>
   </div>
-
   <div class="roadmap-phase">
     <div class="phase-marker">
       <div class="phase-label">Differentiate</div>
@@ -363,16 +582,19 @@ details .details-body {
         Begin CISSP study at month 20+ (exam when 5yr experience qualifies).
       </div>
       <div class="phase-tags">
-        <span class="phase-tag" style="background: var(--green-bg); color: var(--green);">&euro;60-70K+ target</span>
-        <span class="phase-tag" style="background: var(--amber-bg); color: var(--amber);">Spend: &euro;152-1,609</span>
+        <span class="phase-tag" style="background: var(--green-dim); color: var(--green);">&euro;60-70K+ target</span>
+        <span class="phase-tag" style="background: var(--amber-dim); color: var(--amber);">Spend: &euro;152-1,609</span>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- SECTION 3: SALARY TABLE -->
-<section>
-  <div class="section-header"><span class="section-num">3</span><h2>Irish Salary Benchmarks (2026)</h2></div>
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">3</span><h2>Irish Salary Benchmarks (2026)</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="table-wrap">
     <table>
       <thead><tr><th>Role</th><th>Junior (1-3 yrs)</th><th>Mid (3-6 yrs)</th><th>Contract /day</th><th>Key Certs</th></tr></thead>
@@ -384,12 +606,15 @@ details .details-body {
       </tbody>
     </table>
   </div>
-  <p style="font-size: 13px; color: var(--text-dim);">Source: <a href="https://itsearch.ie/resource/cyber-security-salary-guide-2026/">IT Search Cyber Security Salary Guide 2026</a> (633 respondents) &middot; <a href="https://www.cybersharkrecruitment.com/blog/irish-cybersecurity-salary-survey-2026">CyberShark Recruitment 2026</a></p>
-</section>
+  <p class="source-note">Source: <a href="https://itsearch.ie/resource/cyber-security-salary-guide-2026/">IT Search Cyber Security Salary Guide 2026</a> (633 respondents) &middot; <a href="https://www.cybersharkrecruitment.com/blog/irish-cybersecurity-salary-survey-2026">CyberShark Recruitment 2026</a></p>
+</div>
 
 <!-- SECTION 4: EMPLOYERS -->
-<section>
-  <div class="section-header"><span class="section-num">4</span><h2>Key Irish Employers &amp; Graduate Programmes</h2></div>
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">4</span><h2>Key Irish Employers &amp; Graduate Programmes</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="tri-grid">
     <div class="mini-card">
       <div class="mc-name blue">SOC / Defensive (80% of roles)</div>
@@ -404,11 +629,14 @@ details .details-body {
       <div class="mc-desc">PwC &middot; Deloitte &middot; EY &middot; KPMG &middot; <a href="https://www.forvismazars.com/ie/en">Forvis Mazars</a> (grad CISA Year 1, CISM Year 2) &middot; AIB &middot; Central Bank of Ireland &middot; Proofpoint Cork (250 roles)</div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- SECTION 5: FUNDING -->
-<section>
-  <div class="section-header"><span class="section-num">5</span><h2>Irish Funding Sources</h2></div>
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">5</span><h2>Irish Funding Sources</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="tri-grid">
     <div class="mini-card"><div class="mc-name blue"><a href="https://springboardcourses.ie/">Springboard+</a></div><div class="mc-desc">90-100% funded QQI Level 7-9 cybersecurity conversion courses. City Colleges Diploma aligns with Security+ content.</div></div>
     <div class="mini-card"><div class="mc-name blue"><a href="https://elearning.solas.ie/">SOLAS eCollege</a></div><div class="mc-desc">Free CompTIA Security+ prep (from 20 Apr 2026). Free ICDL Cyber Security Certificate also available.</div></div>
@@ -417,68 +645,75 @@ details .details-body {
     <div class="mini-card"><div class="mc-name blue"><a href="https://cyberskills.ie/">CyberSkills.ie</a></div><div class="mc-desc">HCI-funded via MTU + partners, up to 80% subsidised. Co-designed with Mastercard, Dell.</div></div>
     <div class="mini-card"><div class="mc-name blue"><a href="https://fit.ie/">FIT Apprenticeship</a></div><div class="mc-desc">2-year earn-while-you-learn: &euro;312-408/week. QQI Level 6 + Security+ content included.</div></div>
   </div>
-</section>
+</div>
 
-<!-- SECTION 6: WHAT TO AVOID (collapsible) -->
-<section>
-  <div class="section-header"><span class="section-num">6</span><h2>What to Avoid</h2></div>
+<!-- SECTION 6: WHAT TO AVOID -->
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">6</span><h2>What to Avoid</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="mini-grid">
     <div class="mini-card warn"><div class="mc-name red">CEH (&euro;874-2,500+)</div><div class="mc-desc">Overpriced, multiple-choice, theoretical. eJPT teaches more practical skill at 1/5th the cost. Only worthwhile if employer-funded.</div></div>
     <div class="mini-card warn"><div class="mc-name red">SANS/GIAC (&euro;8,700+ each)</div><div class="mc-desc">Excellent but a single cert exceeds the entire 24-month budget. Employer-funded only. Never self-fund as a graduate.</div></div>
     <div class="mini-card warn"><div class="mc-name red">CISSP (premature)</div><div class="mc-desc">Requires 5 years' experience. Listing it as a grad signals misalignment with the field. Study at year 3-4; sit the exam when qualified.</div></div>
     <div class="mini-card warn"><div class="mc-name red">Google Cyber Certificate</div><div class="mc-desc">Good learning tool, not a hiring credential. Irish recruiters don't treat it as equivalent to Security+. A CS grad already exceeds its scope.</div></div>
   </div>
-</section>
+</div>
 
 <!-- SECTION 7: AI + SECURITY -->
-<section>
-  <div class="section-header"><span class="section-num">7</span><h2>AI + Security: The Differentiator</h2></div>
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">7</span><h2>AI + Security: The Differentiator</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="mini-grid">
     <div class="mini-card"><div class="mc-name blue">SC-200 already covers AI</div><div class="mc-desc">April 2026 update includes Microsoft Security Copilot integration: AI-augmented triage, KQL query generation, automated investigation. No separate AI cert needed at entry level.</div></div>
     <div class="mini-card"><div class="mc-name blue">CompTIA SecAI+ (Feb 2026)</div><div class="mc-desc">First vendor-neutral AI+security cert. Requires 3-4 years' experience. Mid-career target, not entry-level. Covers AI threat detection and SOAR automation.</div></div>
     <div class="mini-card"><div class="mc-name blue">CAISP (Practical DevSecOps, &euro;1,241)</div><div class="mc-desc">Hands-on AI security: OWASP LLM Top 10, MITRE ATLAS, MLOps pipeline security. 6-hour practical exam. Not yet in Irish postings, but strong differentiator once employed.</div></div>
     <div class="mini-card"><div class="mc-name blue">ISC2 AI Integration</div><div class="mc-desc">ISC2 integrated AI concepts across all exam domains in April 2026. CC and CISSP candidates now encounter AI-security content automatically.</div></div>
   </div>
-</section>
+</div>
 
 <!-- SECTION 8: NIS2 -->
-<section>
-  <div class="section-header"><span class="section-num">8</span><h2>The NIS2 Opportunity</h2></div>
+<button class="section-toggle active" onclick="toggleSection(this)">
+  <div class="toggle-left"><span class="section-num">8</span><h2>The NIS2 Opportunity</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <div class="callout">
     <strong>Ireland's biggest structural tailwind in cybersecurity history</strong>
     <p>Ireland is expanding from ~450 regulated entities (NIS1) to 4,500-6,000 under NIS2. The <a href="https://www.ncsc.gov.ie/nis2/">NCSC's CyberFundamentals (CyFun) framework</a> will become the national assessment scheme, with self-registration expected July 2026 and first audits mid-2027. ISO 27001 covers approximately 70% of NIS2 requirements. Fines run up to &euro;10 million or 2% of global turnover. Candidates who combine technical certs (Security+, SC-200) with GRC credentials (ISO 27001, eventually CISM) sit at the intersection of the two largest hiring waves in Irish tech.</p>
   </div>
-</section>
+</div>
 
 <!-- FULL CERT TABLE (collapsible) -->
-<section>
-  <details>
-    <summary>Full Certification Comparison Table (14 certifications)</summary>
-    <div class="details-body">
-      <div class="table-wrap" style="margin-top: 0;">
-        <table>
-          <thead><tr><th>Certification</th><th>Cost</th><th>Study</th><th>Irish Salary Band</th><th>Irish Posting Frequency</th></tr></thead>
-          <tbody>
-            <tr><td><strong>ISC2 CC</strong></td><td>FREE</td><td>2-4 wks</td><td>&euro;35-45K (entry signal)</td><td>Low but growing</td></tr>
-            <tr><td><strong>CompTIA Security+</strong></td><td>&euro;391</td><td>4-8 wks</td><td>&euro;45-60K</td><td>Very high</td></tr>
-            <tr><td><strong>Microsoft SC-200</strong></td><td>&euro;152</td><td>6-10 wks</td><td>&euro;50-75K</td><td>High, rising</td></tr>
-            <tr><td><strong>CompTIA CySA+</strong></td><td>&euro;391</td><td>6-10 wks</td><td>&euro;55-75K</td><td>Low in Ireland</td></tr>
-            <tr><td><strong>Microsoft SC-100</strong></td><td>&euro;152</td><td>8-12 wks</td><td>&euro;75-100K</td><td>Medium</td></tr>
-            <tr><td><strong>AWS Security Specialty</strong></td><td>&euro;276</td><td>8-16 wks</td><td>&euro;65-90K</td><td>Medium-high</td></tr>
-            <tr><td><strong>eJPT (INE)</strong></td><td>&euro;229</td><td>4-8 wks</td><td>&euro;35-45K</td><td>Low</td></tr>
-            <tr><td><strong>OSCP</strong></td><td>&euro;1,609+</td><td>3-6 mo</td><td>&euro;55-100K+</td><td>Niche, premium</td></tr>
-            <tr><td><strong>CEH</strong></td><td>&euro;874-1,103</td><td>2-4 mo</td><td>&euro;50-70K</td><td>Medium</td></tr>
-            <tr><td><strong>CISM (ISACA)</strong></td><td>&euro;529-699</td><td>3-6 mo</td><td>&euro;80-120K+</td><td>High (GRC)</td></tr>
-            <tr><td><strong>ISO 27001 LI</strong></td><td>&euro;450-1,000</td><td>4-8 wks</td><td>&euro;65-95K</td><td>Rising (NIS2)</td></tr>
-            <tr><td><strong>CAISP</strong></td><td>&euro;1,241</td><td>4-8 wks</td><td>Emerging</td><td>Not yet in Ireland</td></tr>
-            <tr><td><strong>Google Cyber Cert</strong></td><td>&euro;135-272</td><td>6-10 wks</td><td>No uplift</td><td>Not recognised</td></tr>
-            <tr><td><strong>SANS GSEC/GCIH</strong></td><td>&euro;8,700+</td><td>8-12 wks</td><td>&euro;55-80K</td><td>Moderate</td></tr>
-          </tbody>
-        </table>
-      </div>
+<details class="inner-details">
+  <summary>Full Certification Comparison Table (14 certifications)</summary>
+  <div class="details-body">
+    <div class="table-wrap" style="margin-top: 0;">
+      <table>
+        <thead><tr><th>Certification</th><th>Cost</th><th>Study</th><th>Irish Salary Band</th><th>Irish Posting Frequency</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ISC2 CC</strong></td><td>FREE</td><td>2-4 wks</td><td>&euro;35-45K (entry signal)</td><td>Low but growing</td></tr>
+          <tr><td><strong>CompTIA Security+</strong></td><td>&euro;391</td><td>4-8 wks</td><td>&euro;45-60K</td><td>Very high</td></tr>
+          <tr><td><strong>Microsoft SC-200</strong></td><td>&euro;152</td><td>6-10 wks</td><td>&euro;50-75K</td><td>High, rising</td></tr>
+          <tr><td><strong>CompTIA CySA+</strong></td><td>&euro;391</td><td>6-10 wks</td><td>&euro;55-75K</td><td>Low in Ireland</td></tr>
+          <tr><td><strong>Microsoft SC-100</strong></td><td>&euro;152</td><td>8-12 wks</td><td>&euro;75-100K</td><td>Medium</td></tr>
+          <tr><td><strong>AWS Security Specialty</strong></td><td>&euro;276</td><td>8-16 wks</td><td>&euro;65-90K</td><td>Medium-high</td></tr>
+          <tr><td><strong>eJPT (INE)</strong></td><td>&euro;229</td><td>4-8 wks</td><td>&euro;35-45K</td><td>Low</td></tr>
+          <tr><td><strong>OSCP</strong></td><td>&euro;1,609+</td><td>3-6 mo</td><td>&euro;55-100K+</td><td>Niche, premium</td></tr>
+          <tr><td><strong>CEH</strong></td><td>&euro;874-1,103</td><td>2-4 mo</td><td>&euro;50-70K</td><td>Medium</td></tr>
+          <tr><td><strong>CISM (ISACA)</strong></td><td>&euro;529-699</td><td>3-6 mo</td><td>&euro;80-120K+</td><td>High (GRC)</td></tr>
+          <tr><td><strong>ISO 27001 LI</strong></td><td>&euro;450-1,000</td><td>4-8 wks</td><td>&euro;65-95K</td><td>Rising (NIS2)</td></tr>
+          <tr><td><strong>CAISP</strong></td><td>&euro;1,241</td><td>4-8 wks</td><td>Emerging</td><td>Not yet in Ireland</td></tr>
+          <tr><td><strong>Google Cyber Cert</strong></td><td>&euro;135-272</td><td>6-10 wks</td><td>No uplift</td><td>Not recognised</td></tr>
+          <tr><td><strong>SANS GSEC/GCIH</strong></td><td>&euro;8,700+</td><td>8-12 wks</td><td>&euro;55-80K</td><td>Moderate</td></tr>
+        </tbody>
+      </table>
     </div>
-  </details>
-</section>
+  </div>
+</details>
 
 </div><!-- /container -->
 
@@ -497,6 +732,23 @@ details .details-body {
     </div>
   </div>
 </div>
+
+</div><!-- /content-layer -->
+
+<script>
+function toggleSection(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+
+  if (isOpen) {
+    body.classList.remove('open');
+    btn.classList.remove('active');
+  } else {
+    body.classList.add('open');
+    btn.classList.add('active');
+  }
+}
+</script>
 
 </body>
 </html>
