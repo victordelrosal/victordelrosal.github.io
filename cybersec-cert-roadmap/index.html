@@ -433,6 +433,75 @@ tbody td strong { color: var(--text-bright); }
 
 /* Source note */
 .source-note { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+/* Toolbar */
+.toolbar {
+  display: flex; justify-content: flex-end; gap: 8px;
+  margin: 16px 0 0;
+}
+.tool-btn {
+  width: 38px; height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--neon);
+  font-size: 18px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  padding: 0; line-height: 1;
+}
+.tool-btn:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+}
+.tool-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Light mode */
+html.light {
+  --bg: #f4f6f9;
+  --bg-grad: linear-gradient(170deg, #f4f6f9 0%, #e8ecf2 40%, #f0f2f6 70%, #f4f6f9 100%);
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-hover: rgba(245, 248, 255, 0.98);
+  --border: rgba(0, 80, 160, 0.12);
+  --border-glow: rgba(0, 100, 200, 0.25);
+  --text: #1e293b;
+  --text-bright: #0f172a;
+  --text-dim: #64748b;
+  --neon: #0066cc;
+  --neon-dim: rgba(0, 102, 204, 0.1);
+  --neon-faint: rgba(0, 102, 204, 0.04);
+  --cyan: #0052a3;
+  --green: #137333;
+  --green-dim: rgba(19, 115, 51, 0.1);
+  --amber: #b06000;
+  --amber-dim: rgba(176, 96, 0, 0.1);
+  --red: #c41e3a;
+  --red-dim: rgba(196, 30, 58, 0.06);
+  --purple: #6b21a8;
+  --purple-dim: rgba(107, 33, 168, 0.08);
+}
+html.light .spotlight { opacity: 0.03; }
+html.light .grid-overlay { background-image:
+  linear-gradient(rgba(0,80,160,0.04) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(0,80,160,0.04) 1px, transparent 1px);
+}
+html.light .bg-layer { background: var(--bg-grad); }
+html.light .header { background: rgba(255,255,255,0.85); }
+html.light .footer { background: rgba(255,255,255,0.85); }
+html.light .cert-card,
+html.light .roadmap-phase,
+html.light .mini-card,
+html.light .table-wrap,
+html.light .inner-details .details-body { background: rgba(255,255,255,0.8); }
+html.light .mini-card.warn { background: rgba(255,240,240,0.8); border-color: rgba(196,30,58,0.2); }
+html.light .callout { background: linear-gradient(135deg, rgba(0,102,204,0.08), rgba(0,82,163,0.04)); }
+html.light .cert-card.featured { border-color: var(--neon); }
+html.light thead th { background: rgba(0,102,204,0.05); }
+html.light tbody tr:hover { background: rgba(0,102,204,0.03); }
+html.light .hero::before { background: linear-gradient(90deg, transparent, var(--neon), var(--cyan), var(--neon), transparent); }
+html.light .tool-btn { color: #0066cc; }
 </style>
 </head>
 <body>
@@ -466,6 +535,17 @@ tbody td strong { color: var(--text-bright); }
 </div>
 
 <div class="container">
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="tool-btn" id="collapseToggle" title="Collapse/Expand all" onclick="toggleAll()">
+    <svg viewBox="0 0 24 24"><path d="M4 8l4-4 4 4M4 16l4 4 4 4" transform="translate(4,0)"/></svg>
+  </button>
+  <button class="tool-btn" id="themeToggle" title="Light/Dark mode" onclick="toggleTheme()">
+    <svg id="iconMoon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+    <svg id="iconSun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+</div>
 
 <!-- TL;DR HERO -->
 <div class="hero">
@@ -739,7 +819,6 @@ tbody td strong { color: var(--text-bright); }
 function toggleSection(btn) {
   const body = btn.nextElementSibling;
   const isOpen = body.classList.contains('open');
-
   if (isOpen) {
     body.classList.remove('open');
     btn.classList.remove('active');
@@ -747,6 +826,48 @@ function toggleSection(btn) {
     body.classList.add('open');
     btn.classList.add('active');
   }
+  updateCollapseIcon();
+}
+
+function toggleAll() {
+  const btns = document.querySelectorAll('.section-toggle');
+  const anyOpen = [...btns].some(b => b.classList.contains('active'));
+  btns.forEach(btn => {
+    const body = btn.nextElementSibling;
+    if (anyOpen) {
+      body.classList.remove('open');
+      btn.classList.remove('active');
+    } else {
+      body.classList.add('open');
+      btn.classList.add('active');
+    }
+  });
+  updateCollapseIcon();
+}
+
+function updateCollapseIcon() {
+  const btns = document.querySelectorAll('.section-toggle');
+  const anyOpen = [...btns].some(b => b.classList.contains('active'));
+  const svg = document.querySelector('#collapseToggle svg');
+  if (anyOpen) {
+    svg.innerHTML = '<path d="M4 14l4 4 4-4M4 10l4-4 4 4" transform="translate(4,0)"/>';
+  } else {
+    svg.innerHTML = '<path d="M4 8l4-4 4 4M4 16l4 4 4 4" transform="translate(4,0)"/>';
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('iconMoon').style.display = isLight ? 'none' : 'block';
+  document.getElementById('iconSun').style.display = isLight ? 'block' : 'none';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+
+// Restore saved theme
+if (localStorage.getItem('theme') === 'light') {
+  document.documentElement.classList.add('light');
+  document.getElementById('iconMoon').style.display = 'none';
+  document.getElementById('iconSun').style.display = 'block';
 }
 </script>
 
