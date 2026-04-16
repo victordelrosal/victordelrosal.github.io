@@ -112,32 +112,33 @@ a:hover { color: var(--cyan); text-shadow: 0 0 8px rgba(0, 229, 255, 0.4); text-
 
 /* Header */
 .header {
-  background: rgba(4, 14, 34, 0.9);
+  background: rgba(4, 14, 34, 0.92);
   border-bottom: 1px solid var(--border);
-  padding: 32px 0;
+  padding: 18px 0;
   backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
 }
 .header-inner {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 20px; flex-wrap: wrap;
+  gap: 16px; flex-wrap: wrap;
 }
 .header-left { display: flex; align-items: center; gap: 14px; }
 .logo-icon {
-  width: 48px; height: 48px;
+  width: 42px; height: 42px;
   background: transparent;
   border: 2px solid var(--neon);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  color: var(--neon); font-size: 16px; font-weight: 700; flex-shrink: 0;
+  color: var(--neon); font-size: 15px; font-weight: 700; flex-shrink: 0;
   box-shadow: 0 0 20px rgba(0, 170, 255, 0.15), inset 0 0 20px rgba(0, 170, 255, 0.05);
   text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
 }
 .header h1 {
-  font-size: 22px; font-weight: 700; color: var(--text-bright); line-height: 1.3;
+  font-size: 20px; font-weight: 700; color: var(--text-bright); line-height: 1.3;
   text-shadow: 0 0 20px rgba(0, 170, 255, 0.1);
 }
-.header-sub { font-size: 14px; color: var(--text-dim); margin-top: 2px; }
-.header-right { font-size: 13px; color: var(--text-dim); text-align: right; }
+.header-sub { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
 
 /* TL;DR Hero */
 .hero {
@@ -434,29 +435,24 @@ tbody td strong { color: var(--text-bright); }
 /* Source note */
 .source-note { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
 
-/* Toolbar */
-.toolbar {
-  display: flex; justify-content: flex-end; gap: 8px;
-  margin: 16px 0 0;
-}
+/* Header tool buttons */
 .tool-btn {
-  width: 38px; height: 38px;
-  background: var(--surface);
+  width: 34px; height: 34px;
+  background: transparent;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   color: var(--neon);
-  font-size: 18px;
-  backdrop-filter: blur(12px);
-  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
   padding: 0; line-height: 1;
+  transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
 }
 .tool-btn:hover {
   border-color: var(--border-glow);
-  box-shadow: 0 0 15px rgba(0, 170, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 170, 255, 0.1);
+  background: var(--neon-faint);
 }
-.tool-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tool-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Light mode */
 html.light {
@@ -488,7 +484,7 @@ html.light .grid-overlay { background-image:
   linear-gradient(90deg, rgba(0,80,160,0.04) 1px, transparent 1px);
 }
 html.light .bg-layer { background: var(--bg-grad); }
-html.light .header { background: rgba(255,255,255,0.85); }
+html.light .header { background: rgba(255,255,255,0.92); }
 html.light .footer { background: rgba(255,255,255,0.85); }
 html.light .cert-card,
 html.light .roadmap-phase,
@@ -512,6 +508,7 @@ html.light .tool-btn { color: #0066cc; }
 <div class="spotlight spotlight-1"></div>
 <div class="spotlight spotlight-2"></div>
 <div class="spotlight spotlight-3"></div>
+<canvas id="tronOrb" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
 
 <div class="content-layer">
 
@@ -526,47 +523,50 @@ html.light .tool-btn { color: #0066cc; }
       </div>
     </div>
     <div class="header-right">
-      Based on Deep Research data<br>
-      <a href="https://itsearch.ie/resource/cyber-security-salary-guide-2026/">IT Search</a> &middot;
-      <a href="https://www.ncsc.gov.ie/nis2/">NCSC</a> &middot;
-      <a href="https://www.idaireland.com/latest-news/insights/cybersecurity-dublin">IDA Ireland</a>
+      <button class="tool-btn" id="collapseToggle" title="Collapse/Expand all" onclick="toggleAll()">
+        <svg viewBox="0 0 24 24"><polyline points="7 3 12 8 17 3"/><polyline points="7 21 12 16 17 21"/></svg>
+      </button>
+      <button class="tool-btn" id="themeToggle" title="Light/Dark mode" onclick="toggleTheme()">
+        <svg id="iconMoon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+        <svg id="iconSun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
     </div>
   </div>
 </div>
 
 <div class="container">
 
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <button class="tool-btn" id="collapseToggle" title="Collapse/Expand all" onclick="toggleAll()">
-    <svg viewBox="0 0 24 24"><path d="M4 8l4-4 4 4M4 16l4 4 4 4" transform="translate(4,0)"/></svg>
-  </button>
-  <button class="tool-btn" id="themeToggle" title="Light/Dark mode" onclick="toggleTheme()">
-    <svg id="iconMoon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
-    <svg id="iconSun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-  </button>
+<!-- INTRO / METHODOLOGY -->
+<div class="hero" style="margin-top: 24px;">
+  <div class="hero-label">ABOUT THIS REPORT</div>
+  <p style="font-size: 15px; line-height: 1.7; color: var(--text);">
+    This roadmap synthesises three independent Deep Research reports commissioned in April 2026: two from Claude (Anthropic) and one from ChatGPT (OpenAI). Each analysed 14 cybersecurity certifications against Irish job postings (LinkedIn, Indeed.ie, IrishJobs.ie), vendor pricing, pass rates, renewal terms, and salary benchmarks from IT Search (633 respondents) and CyberShark Recruitment. The reports cross-referenced NIS2 transposition timelines, NCSC guidance, Skillnet/Springboard+ funding, and employer graduate programmes (Integrity360, EY, Ekco, Forvis Mazars). Where the three sources agreed, we treated the finding as high-confidence. Where they diverged, we noted the range. LinkedIn data shows ~799 Dublin postings mentioning Security+ and ~22 for GCIH, confirming market weighting.
+  </p>
 </div>
 
-<!-- TL;DR HERO -->
-<div class="hero">
-  <div class="hero-label">TL;DR</div>
-  <h2>Three certs. &euro;543. Job-ready in 12 weeks.</h2>
+<!-- TL;DR HERO (collapsible) -->
+<button class="section-toggle active" onclick="toggleSection(this)" style="margin-top: 16px;">
+  <div class="toggle-left"><span class="section-num" style="font-size: 11px; width: 28px; height: 28px;">TL</span><h2>TL;DR: Three certs. &euro;543. Job-ready in 12 weeks.</h2></div>
+  <span class="toggle-icon">+</span>
+</button>
+<div class="section-body open">
   <ul class="hero-points">
-    <li><strong>Start free:</strong> ISC2 CC (free exam + training) to build momentum</li>
-    <li><strong>Get hired:</strong> CompTIA Security+ (&euro;391) is in 70% of entry-level postings</li>
-    <li><strong>Specialise:</strong> Microsoft SC-200 (&euro;152) for cloud SOC skills (free training via Microsoft Learn)</li>
-    <li><strong>NIS2 tailwind:</strong> Ireland is expanding from ~450 to 6,000 regulated entities, creating 1,200+ new roles/year</li>
-    <li><strong>Skip:</strong> CEH (overpriced), CISSP (premature), Google Cyber Cert (not recognised), SANS (employer-funded only)</li>
+    <li><strong>Start free:</strong> ISC2 CC (free exam + training, $50/yr maintenance) to build momentum</li>
+    <li><strong>Get hired:</strong> CompTIA Security+ (&euro;391) appears in ~799 Dublin postings; 70% of entry-level roles</li>
+    <li><strong>Specialise:</strong> Microsoft SC-200 (&euro;152, free annual renewal) for cloud SOC skills via free Microsoft Learn</li>
+    <li><strong>NIS2 tailwind:</strong> Ireland expanding from ~450 to 6,000 regulated entities, creating 1,200+ new roles/year</li>
+    <li><strong>Offensive option:</strong> eJPT (&euro;249, lifetime validity) then OSCP (&euro;1,600+); 13 current OSCP listings in Ireland</li>
+    <li><strong>Skip:</strong> CEH (overpriced, distrusted by top recruiters), CISSP (premature; requires 5 yrs), Google Cyber Cert (not recognised in Ireland), SANS (employer-funded only)</li>
   </ul>
   <div class="hero-bottom">
-    All training materials are available free online. Total cost for the full 5-cert stack stays under <strong>&euro;2,500</strong>.
+    All training materials available free online. Total cost for the full 5-cert stack stays under <strong>&euro;2,500</strong>. Three independent research reports agree on these rankings.
   </div>
 </div>
 
 <!-- STATS -->
 <div class="stats">
   <div class="stat-card"><div class="stat-num">8,000+</div><div class="stat-label">Cybersec pros in Ireland</div></div>
-  <div class="stat-card"><div class="stat-num">1,200+</div><div class="stat-label">New roles / year</div></div>
+  <div class="stat-card"><div class="stat-num">799</div><div class="stat-label">Dublin Sec+ postings</div></div>
   <div class="stat-card"><div class="stat-num">6,000</div><div class="stat-label">NIS2 entities</div></div>
   <div class="stat-card"><div class="stat-num">&euro;45-60K</div><div class="stat-label">Entry salary (Dublin)</div></div>
   <div class="stat-card"><div class="stat-num">&lt;&euro;1K</div><div class="stat-label">Cost to be job-ready</div></div>
@@ -581,14 +581,14 @@ html.light .tool-btn { color: #0066cc; }
   <div class="cert-card featured">
     <span class="badge badge-blue">PRIORITY #1</span>
     <div class="cert-name">CompTIA Security+ (SY0-701)</div>
-    <div class="cert-meta"><span>&euro;391 exam</span><span>4-8 weeks study</span><span>In 70% of entry-level postings</span></div>
-    <div class="cert-desc">The universal hiring filter. Required by EY Ireland's graduate programme. Listed by Smarttech247, Aer Lingus. Free prep via <a href="https://elearning.solas.ie/">SOLAS eCollege</a> (starting 20 Apr 2026) and Professor Messer (YouTube).</div>
+    <div class="cert-meta"><span>&euro;391 exam</span><span>4-8 weeks study</span><span>~799 Dublin LinkedIn postings</span><span>~70-75% pass rate</span></div>
+    <div class="cert-desc">The universal hiring filter. Required by EY Ireland's graduate programme. Listed by Smarttech247, Aer Lingus. Free prep via <a href="https://elearning.solas.ie/">SOLAS eCollege</a> (starting 20 Apr 2026) and Professor Messer (YouTube). Renews every 3 years (50 CEUs + $150).</div>
   </div>
   <div class="cert-card featured">
     <span class="badge badge-blue">HIGHEST ROI</span>
     <div class="cert-name">Microsoft SC-200 (Security Operations Analyst)</div>
-    <div class="cert-meta"><span>&euro;152 exam</span><span>6-10 weeks study</span><span>Free training via Microsoft Learn</span></div>
-    <div class="cert-desc">Highest ROI cloud cert for Ireland. M365 ubiquitous in Irish enterprise. Updated April 2026 with Security Copilot AI integration. Validates Sentinel SIEM + Defender XDR skills. <a href="https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/">Free via Microsoft Learn</a>.</div>
+    <div class="cert-meta"><span>&euro;152 exam</span><span>4-6 weeks study</span><span>Free annual renewal (no extra fee)</span></div>
+    <div class="cert-desc">Highest ROI cloud cert for Ireland. M365 ubiquitous in Irish enterprise. Updated April 2026 with Security Copilot AI integration. Validates Sentinel SIEM + Defender XDR skills. Ekco, ReliaQuest, and Microsoft SOC roles explicitly list SC-200. <a href="https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/">Free via Microsoft Learn</a>.</div>
   </div>
   <div class="cert-card">
     <span class="badge badge-green">100% FREE</span>
@@ -850,9 +850,11 @@ function updateCollapseIcon() {
   const anyOpen = [...btns].some(b => b.classList.contains('active'));
   const svg = document.querySelector('#collapseToggle svg');
   if (anyOpen) {
-    svg.innerHTML = '<path d="M4 14l4 4 4-4M4 10l4-4 4 4" transform="translate(4,0)"/>';
+    // arrows pointing inward (collapse)
+    svg.innerHTML = '<polyline points="7 3 12 8 17 3"/><polyline points="7 21 12 16 17 21"/>';
   } else {
-    svg.innerHTML = '<path d="M4 8l4-4 4 4M4 16l4 4 4 4" transform="translate(4,0)"/>';
+    // arrows pointing outward (expand)
+    svg.innerHTML = '<polyline points="7 8 12 3 17 8"/><polyline points="7 16 12 21 17 16"/>';
   }
 }
 
@@ -869,6 +871,113 @@ if (localStorage.getItem('theme') === 'light') {
   document.getElementById('iconMoon').style.display = 'none';
   document.getElementById('iconSun').style.display = 'block';
 }
+
+// Tron orb: tiny glowing dot that travels along grid lines
+(function() {
+  const canvas = document.getElementById('tronOrb');
+  const ctx = canvas.getContext('2d');
+  const GRID = 60;
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth * devicePixelRatio;
+    H = canvas.height = window.innerHeight * devicePixelRatio;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Snap to nearest grid intersection
+  function snapX(x) { return Math.round(x / (GRID * devicePixelRatio)) * (GRID * devicePixelRatio); }
+  function snapY(y) { return Math.round(y / (GRID * devicePixelRatio)) * (GRID * devicePixelRatio); }
+
+  // Orb state
+  const orbs = [];
+  for (let i = 0; i < 3; i++) {
+    orbs.push({
+      x: snapX(Math.random() * W),
+      y: snapY(Math.random() * H),
+      tx: 0, ty: 0,
+      dir: Math.random() < 0.5 ? 'h' : 'v', // horizontal or vertical
+      speed: (1.2 + Math.random() * 0.8) * devicePixelRatio,
+      hue: [195, 180, 210][i],
+      trail: []
+    });
+    pickTarget(orbs[i]);
+  }
+
+  function pickTarget(orb) {
+    const g = GRID * devicePixelRatio;
+    if (orb.dir === 'h') {
+      // Move horizontally to a new column
+      const cols = Math.floor(W / g);
+      orb.tx = (Math.floor(Math.random() * cols)) * g;
+      orb.ty = orb.y;
+    } else {
+      // Move vertically to a new row
+      const rows = Math.floor(H / g);
+      orb.tx = orb.x;
+      orb.ty = (Math.floor(Math.random() * rows)) * g;
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    const isLight = document.documentElement.classList.contains('light');
+
+    orbs.forEach(orb => {
+      // Move toward target
+      const dx = orb.tx - orb.x;
+      const dy = orb.ty - orb.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < orb.speed * 2) {
+        orb.x = orb.tx;
+        orb.y = orb.ty;
+        // Switch direction and pick new target
+        orb.dir = orb.dir === 'h' ? 'v' : 'h';
+        pickTarget(orb);
+      } else {
+        orb.x += (dx / dist) * orb.speed;
+        orb.y += (dy / dist) * orb.speed;
+      }
+
+      // Trail
+      orb.trail.push({ x: orb.x, y: orb.y, a: 1 });
+      if (orb.trail.length > 30) orb.trail.shift();
+
+      // Draw trail
+      orb.trail.forEach((p, i) => {
+        const alpha = (i / orb.trail.length) * (isLight ? 0.04 : 0.08);
+        const r = (1 + (i / orb.trail.length) * 2) * devicePixelRatio;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${orb.hue}, 100%, ${isLight ? '40%' : '65%'}, ${alpha})`;
+        ctx.fill();
+      });
+
+      // Draw orb
+      const glow = isLight ? 0.07 : 0.12;
+      ctx.beginPath();
+      ctx.arc(orb.x, orb.y, 3 * devicePixelRatio, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${orb.hue}, 100%, ${isLight ? '45%' : '70%'}, ${glow})`;
+      ctx.fill();
+
+      // Glow
+      ctx.beginPath();
+      ctx.arc(orb.x, orb.y, 8 * devicePixelRatio, 0, Math.PI * 2);
+      const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, 8 * devicePixelRatio);
+      grad.addColorStop(0, `hsla(${orb.hue}, 100%, ${isLight ? '45%' : '70%'}, ${glow * 0.5})`);
+      grad.addColorStop(1, `hsla(${orb.hue}, 100%, 70%, 0)`);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
 </script>
 
 </body>
