@@ -106,6 +106,35 @@
         .course-header .subtitle { color: var(--text-secondary); font-size: 1.05rem; max-width: 720px; margin: 0.6rem auto 0; }
         .meta-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
         .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; font-size: 0.78rem; font-weight: 500; border-radius: 999px; background: rgba(0, 212, 255, 0.08); color: var(--cyan); border: 1px solid rgba(0, 212, 255, 0.25); }
+        .eyebrow { display: inline-block; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 600; padding: 0.3rem 0.85rem; border-radius: 999px; background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.25); margin-bottom: 1rem; }
+        body.light-mode .eyebrow { background: rgba(0, 102, 204, 0.08); color: #0052a3; border-color: rgba(0, 102, 204, 0.25); }
+        .cta-row { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.4rem; }
+        .cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.3rem; border-radius: 10px; font-size: 0.92rem; font-weight: 600; text-decoration: none; border: 1px solid var(--border); color: var(--text-primary); background: var(--bg-elevated); transition: all 0.2s; }
+        .cta:hover { transform: translateY(-1px); border-color: var(--cyan); }
+        .cta.primary { background: linear-gradient(135deg, var(--electric), var(--cyan)); color: #000a2e; border-color: transparent; box-shadow: 0 8px 24px -8px rgba(0, 212, 255, 0.5); }
+        body.light-mode .cta.primary { color: #ffffff; box-shadow: 0 8px 24px -8px rgba(0, 102, 204, 0.4); }
+        .cta.primary:hover { filter: brightness(1.08); box-shadow: 0 12px 32px -8px rgba(0, 212, 255, 0.7); }
+
+        /* Hero essentials grid */
+        .hero-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin: 1.5rem 0 1rem; }
+        .hero-card { display: flex; flex-direction: column; padding: 1.4rem 1.5rem; border-radius: 14px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--card-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
+        .hero-card.linkcard:hover { transform: translateY(-3px); box-shadow: var(--card-hover-shadow); border-color: rgba(0, 212, 255, 0.45); }
+        .hero-card.primary { background: linear-gradient(135deg, rgba(0, 102, 255, 0.22), rgba(0, 212, 255, 0.06)); border-color: rgba(0, 212, 255, 0.45); grid-column: span 2; }
+        body.light-mode .hero-card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        body.light-mode .hero-card.primary { background: linear-gradient(135deg, rgba(0, 102, 204, 0.08), rgba(0, 102, 204, 0.02)); border-color: rgba(0, 102, 204, 0.35); }
+        body.light-mode .hero-card.linkcard:hover { border-color: var(--cyan); }
+        .hero-card h3 { font-size: 1.1rem; margin: 0.4rem 0 0.5rem; }
+        .hero-card p { font-size: 0.92rem; color: var(--text-tertiary); margin-bottom: 0.9rem; flex-grow: 1; }
+        .hero-card .links { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+        .hero-card .card-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+        .link-chip.strong { background: linear-gradient(135deg, rgba(0, 102, 255, 0.25), rgba(0, 212, 255, 0.12)); border-color: rgba(0, 212, 255, 0.45); color: var(--text-primary); font-weight: 600; }
+        body.light-mode .link-chip.strong { background: rgba(0, 102, 204, 0.1); border-color: rgba(0, 102, 204, 0.35); color: #0052a3; }
+        .link-chip.strong:hover { background: linear-gradient(135deg, rgba(0, 102, 255, 0.4), rgba(0, 212, 255, 0.2)); color: var(--text-primary); }
+        @media (max-width: 720px) { .hero-card.primary { grid-column: span 1; } }
+
+        .more-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1rem; color: var(--text-tertiary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; }
+        .more-divider::before, .more-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .more-divider span { white-space: nowrap; }
 
         /* Collapsible sections */
         .section { margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 14px; background: var(--bg-card); box-shadow: var(--card-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); overflow: hidden; }
@@ -188,90 +217,71 @@
 
     <main class="main">
         <section class="course-header">
-            <h1>Data Visualisation: Terminal Exam Hub</h1>
-            <p class="subtitle">Everything you need for the May terminal exam: theory guide, full mock paper calibrated slightly harder than the real thing, MCQ self-test, and a focused revision map keyed to LO1, LO2, and LO5.</p>
+            <span class="eyebrow">Terminal Exam · May 2026</span>
+            <h1>Your Data Visualisation Exam Prep, in One Place</h1>
+            <p class="subtitle">Mock paper, self-marking rubric, full theory guide, and an MCQ self-test. Calibrated for the 9DATAV terminal exam.</p>
             <div class="meta-row">
                 <span class="pill">9DATAV</span>
-                <span class="pill">MSc Business Analytics for Decision Makers</span>
+                <span class="pill">MSCBADM</span>
                 <span class="pill">Terminal Exam: 40%</span>
-                <span class="pill">2 hours</span>
-                <span class="pill">21 April 2026</span>
+                <span class="pill">2 hours · closed book</span>
+                <span class="pill">LO1 · LO2 · LO5</span>
+            </div>
+            <div class="cta-row">
+                <a class="cta primary" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" target="_blank" rel="noopener">Open Mock Exam (PDF)</a>
+                <a class="cta" href="guide/DV-THEORY-GUIDE.html" target="_blank" rel="noopener">Open Theory Guide</a>
             </div>
         </section>
 
-        <details class="section" open>
-            <summary><span class="num">01</span> Mock Exam (Practice Paper) <span class="chev">▶</span></summary>
-            <div class="section-body">
-                <p class="lead">Sit this under exam conditions. It is deliberately a notch harder than the May paper so the real thing feels manageable.</p>
-                <div class="grid grid-2">
-                    <div class="card featured">
-                        <span class="card-tag">Student Paper</span>
-                        <h3>DV Mock Exam: April 2026</h3>
-                        <p>Section A: 4 short-form questions (30 marks). Section B: pick 2 of 5 long-form scenarios (70 marks). Theory and Applied paths offered on selected questions.</p>
-                        <div class="links">
-                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" target="_blank" rel="noopener">View PDF</a>
-                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" download>Download PDF</a>
-                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.docx" download>Download DOCX</a>
-                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL-print.html" target="_blank" rel="noopener">Print HTML</a>
-                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL.md" target="_blank" rel="noopener">Markdown</a>
-                        </div>
-                    </div>
-                    <div class="card warn">
-                        <span class="card-tag">Self-Marking Reference</span>
-                        <h3>Mock Exam Answer Key &amp; Marking Rubric</h3>
-                        <p>Grade band rubrics for every Section B scenario, expected indicators per Section A item, target grade distribution, and full LO coverage matrix. Use it to self-mark <em>after</em> sitting the mock.</p>
-                        <div class="links">
-                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" target="_blank" rel="noopener">View PDF</a>
-                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" download>Download PDF</a>
-                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL-ANSWER-KEY-print.html" target="_blank" rel="noopener">HTML</a>
-                        </div>
-                    </div>
+        <section class="hero-grid" aria-label="Exam preparation essentials">
+            <div class="hero-card primary">
+                <span class="card-tag">Step 1 · Sit the Mock</span>
+                <h3>DV Mock Exam: April 2026</h3>
+                <p>Two hours, closed book. Section A: 4 short-form (30 marks). Section B: pick 2 of 5 long-form scenarios (70 marks). Calibrated slightly harder than the May terminal so the real paper feels manageable.</p>
+                <div class="links">
+                    <a class="link-chip strong" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" target="_blank" rel="noopener">View PDF</a>
+                    <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" download>Download PDF</a>
+                    <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.docx" download>Download DOCX</a>
                 </div>
             </div>
-        </details>
-
-        <details class="section" open>
-            <summary><span class="num">02</span> Self-Test &amp; Practice <span class="chev">▶</span></summary>
-            <div class="section-body">
-                <div class="grid grid-3">
-                    <a class="card" href="mock/exam.html" target="_blank" rel="noopener">
-                        <span class="card-tag">Interactive</span>
-                        <h3>Interactive Mock Exam</h3>
-                        <p>Browser-based mock with instant feedback. Best for active recall before the written sit-down.</p>
-                    </a>
-                    <a class="card" href="exam/DV-MOCK-EXAM-MC-APRIL.md" target="_blank" rel="noopener">
-                        <span class="card-tag">MCQ</span>
-                        <h3>33-Question MCQ Self-Test</h3>
-                        <p>Rapid-fire multiple choice covering perception, encoding choices, design integrity, and ethics.</p>
-                    </a>
-                    <a class="card" href="exam/DV-DUAL-PURPOSE-EXERCISES.html" target="_blank" rel="noopener">
-                        <span class="card-tag">Drills</span>
-                        <h3>Dual-Purpose Exercises</h3>
-                        <p>Short exercises that double as exam practice and DataVis Challenge sharpening reps.</p>
-                    </a>
+            <div class="hero-card">
+                <span class="card-tag">Step 2 · Self-Mark</span>
+                <h3>Answer Key &amp; Marking Rubric</h3>
+                <p>Grade band rubrics for every Section B scenario, expected indicators per Section A item, and a full LO coverage matrix. Open <em>after</em> sitting the mock under timed conditions.</p>
+                <div class="links">
+                    <a class="link-chip strong" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" target="_blank" rel="noopener">View PDF</a>
+                    <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" download>Download PDF</a>
                 </div>
             </div>
-        </details>
+            <a class="hero-card linkcard" href="guide/DV-THEORY-GUIDE.html" target="_blank" rel="noopener">
+                <span class="card-tag">Study · Reference</span>
+                <h3>DV Theory Guide</h3>
+                <p>The complete study guide: six pillars, perception and cognition, design principles, integrity, ethics, and worked examples. Dark and light mode.</p>
+                <span class="link-chip strong">Open Guide →</span>
+            </a>
+            <a class="hero-card linkcard" href="exam/DV-MOCK-EXAM-MC-APRIL.md" target="_blank" rel="noopener">
+                <span class="card-tag">Drill · MCQ</span>
+                <h3>33-Question MCQ Self-Test</h3>
+                <p>Rapid-fire multiple choice on perception, encoding, design integrity, and ethics. Best as a warm-up the night before.</p>
+                <span class="link-chip strong">Open MCQ →</span>
+            </a>
+            <a class="hero-card linkcard" href="mock/exam.html" target="_blank" rel="noopener">
+                <span class="card-tag">Interactive</span>
+                <h3>Interactive Mock Exam</h3>
+                <p>Browser-based mock with instant feedback. Use it for active recall reps before sitting the written paper.</p>
+                <span class="link-chip strong">Launch →</span>
+            </a>
+            <a class="hero-card linkcard" href="exam/DV-DUAL-PURPOSE-EXERCISES.html" target="_blank" rel="noopener">
+                <span class="card-tag">Drills</span>
+                <h3>Dual-Purpose Exercises</h3>
+                <p>Short exercises that double as exam prep and DataVis Challenge sharpening reps.</p>
+                <span class="link-chip strong">Open →</span>
+            </a>
+        </section>
 
-        <details class="section" open>
-            <summary><span class="num">03</span> Theory &amp; Reference <span class="chev">▶</span></summary>
-            <div class="section-body">
-                <div class="grid grid-2">
-                    <a class="card featured" href="guide/DV-THEORY-GUIDE.html" target="_blank" rel="noopener">
-                        <span class="card-tag">Primary Reference</span>
-                        <h3>DV Theory Guide</h3>
-                        <p>The full study guide: six pillars of data visualisation, perception and cognition, design principles, integrity and ethics, and worked examples. Dark and light mode.</p>
-                    </a>
-                    <a class="card" href="guide/DV-THEORY-SKELETON.md" target="_blank" rel="noopener">
-                        <span class="card-tag">Outline</span>
-                        <h3>Theory Skeleton (Markdown)</h3>
-                        <p>Compressed outline of the guide. Useful for last-mile revision and for mapping topics to your DataVis Challenge artefacts.</p>
-                    </a>
-                </div>
-            </div>
-        </details>
+        <div class="more-divider"><span>More: format, revision map, exam strategy</span></div>
 
-        <details class="section" open>
+        <details class="section">
             <summary><span class="num">04</span> Terminal Exam Format (May) <span class="chev">▶</span></summary>
             <div class="section-body">
                 <div class="panel">
@@ -292,7 +302,7 @@
             </div>
         </details>
 
-        <details class="section" open>
+        <details class="section">
             <summary><span class="num">05</span> What to Revise: LO1 / LO2 / LO5 Map <span class="chev">▶</span></summary>
             <div class="section-body">
                 <div class="grid grid-3">
@@ -333,7 +343,7 @@
             </div>
         </details>
 
-        <details class="section" open>
+        <details class="section">
             <summary><span class="num">06</span> Exam Strategy: 2-Hour Plan <span class="chev">▶</span></summary>
             <div class="section-body">
                 <div class="panel">
@@ -354,7 +364,7 @@
             </div>
         </details>
 
-        <details class="section" open>
+        <details class="section">
             <summary><span class="num">07</span> Common Failure Modes <span class="chev">▶</span></summary>
             <div class="section-body">
                 <div class="grid grid-2">
