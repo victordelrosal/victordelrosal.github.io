@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9DATAV: Data Visualisation Mock Examination</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: #080A12;
+  color: #fff;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════ */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spinReverse { to { transform: rotate(-360deg); } }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+@keyframes growIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes circleGrow {
+  from { stroke-dasharray: 0 553; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GRAIN OVERLAY
+   ═══════════════════════════════════════════════════════ */
+.grain {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.03; pointer-events: none; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREENS (Landing / Exam / Results)
+   ═══════════════════════════════════════════════════════ */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn 0.6s ease; }
+
+/* ═══════════════════════════════════════════════════════
+   LANDING SCREEN
+   ═══════════════════════════════════════════════════════ */
+#landing {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 40px 20px;
+}
+.landing-icon {
+  width: 60px; height: 60px; border-radius: 16px; margin-bottom: 32px;
+  background: linear-gradient(135deg, #E8B931 0%, #4ECDC4 50%, #A78BFA 100%);
+  display: flex; align-items: center; justify-content: center;
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 8px 32px rgba(232,185,49,0.2);
+  font-size: 28px;
+}
+.landing-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3em;
+  text-transform: uppercase; color: #E8B931; margin-bottom: 16px;
+  animation: slideUp 0.8s ease 0.2s both;
+}
+.landing-title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(32px, 5vw, 52px); font-weight: 300;
+  text-align: center; line-height: 1.2; max-width: 600; margin-bottom: 20px;
+  animation: slideUp 0.8s ease 0.4s both;
+}
+.landing-sub {
+  font-family: 'Newsreader', Georgia, serif; font-size: 17px;
+  color: rgba(255,255,255,0.4); text-align: center;
+  max-width: 440; line-height: 1.7; margin-bottom: 40px;
+  animation: slideUp 0.8s ease 0.6s both;
+}
+.landing-sections {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  max-width: 440; width: 100%; margin-bottom: 48px;
+  animation: slideUp 0.8s ease 0.8s both;
+}
+.landing-section-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; color: rgba(255,255,255,0.5);
+}
+.landing-section-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════ */
+.btn-gold {
+  padding: 20px 64px; border-radius: 100px;
+  background: linear-gradient(135deg, #E8B931, #D4A020);
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+  letter-spacing: 0.12em; color: #080A12;
+  transition: transform 0.2s, box-shadow 0.3s;
+  animation: slideUp 0.8s ease 1s both;
+}
+.btn-gold:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(232,185,49,0.35);
+}
+.btn-gold:active { transform: scale(0.98); }
+
+/* ═══════════════════════════════════════════════════════
+   TOP NAV
+   ═══════════════════════════════════════════════════════ */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,10,18,0.85); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 12px 20px; display: flex; align-items: center; gap: 12;
+}
+.topnav-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+  color: #E8B931; text-transform: uppercase; margin-right: auto; white-space: nowrap;
+}
+.topnav-dots {
+  display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; max-width: 460;
+}
+.qdot {
+  width: 18px; height: 18px; border-radius: 4px; cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; font-size: 8px; font-weight: 700;
+  color: rgba(255,255,255,0.2);
+}
+.qdot.answered { background: var(--sec-bg); border-color: var(--sec-color); color: var(--sec-color); }
+.topnav-count {
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4);
+  margin-left: auto; white-space: nowrap; transition: color 0.3s;
+}
+.topnav-count.complete { color: #4ECDC4; }
+
+/* ═══════════════════════════════════════════════════════
+   QUESTIONS CONTAINER
+   ═══════════════════════════════════════════════════════ */
+.questions-wrap {
+  max-width: 740px; margin: 0 auto; padding: 32px 20px 200px;
+}
+
+/* Section headers */
+.section-header {
+  margin-bottom: 32px; padding: 24px 0;
+  border-bottom: 2px solid var(--sec-border);
+}
+.section-header:not(:first-child) { margin-top: 56px; }
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--sec-color); margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 24px; font-weight: 300; color: rgba(255,255,255,0.8);
+}
+
+/* Question card */
+.q-card {
+  margin-bottom: 40px; padding: 28px; border-radius: 20px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.4s ease;
+}
+.q-card.answered {
+  background: var(--sec-card-bg);
+  border-color: var(--sec-card-border);
+}
+.q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.q-number {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.3);
+  transition: all 0.3s;
+}
+.q-card.answered .q-number { background: var(--sec-num-bg); color: var(--sec-color); }
+.q-answered-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: none; animation: fadeIn 0.3s ease;
+}
+.q-card.answered .q-answered-dot { display: block; background: var(--sec-color); }
+
+.q-scenario {
+  font-family: 'Newsreader', Georgia, serif; font-size: 14.5px;
+  color: rgba(255,255,255,0.45); line-height: 1.75;
+  margin-bottom: 16px; padding-left: 16px;
+  border-left: 2px solid var(--sec-scenario-border);
+  white-space: pre-line;
+}
+.q-text {
+  font-family: 'Newsreader', Georgia, serif; font-size: 16.5px;
+  color: rgba(255,255,255,0.85); line-height: 1.7;
+  margin-bottom: 24px; font-weight: 400;
+}
+
+/* Options */
+.options-list { display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 16px; border-radius: 14px; cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  transition: all 0.25s ease; text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-btn:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+}
+.option-btn.selected {
+  background: var(--sec-opt-bg);
+  border-color: var(--sec-opt-border);
+}
+.option-btn.selected:hover {
+  background: var(--sec-opt-bg);
+  border-color: var(--sec-opt-border);
+}
+.option-key {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.35);
+  font-size: 12px; font-weight: 700; transition: all 0.25s;
+}
+.option-btn.selected .option-key {
+  background: var(--sec-color);
+  color: #080A12;
+}
+.option-text {
+  font-size: 14px; color: rgba(255,255,255,0.5);
+  line-height: 1.65; padding-top: 3px; transition: color 0.25s;
+}
+.option-btn.selected .option-text { color: rgba(255,255,255,0.9); }
+
+/* ═══════════════════════════════════════════════════════
+   SUBMIT BAR
+   ═══════════════════════════════════════════════════════ */
+.submit-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(8,10,18,0.9); backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 16px 24px; display: flex; align-items: center;
+  justify-content: center; gap: 20;
+}
+.submit-status { font-size: 13px; color: rgba(255,255,255,0.35); }
+.submit-status.ready { color: #4ECDC4; }
+.btn-submit {
+  padding: 16px 52px; border-radius: 100px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.12em; color: rgba(255,255,255,0.2);
+  cursor: not-allowed; transition: all 0.4s ease;
+}
+.btn-submit.ready {
+  background: linear-gradient(135deg, #E8B931, #D4A020);
+  border: none; color: #080A12; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(232,185,49,0.2);
+}
+.btn-submit.ready:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 40px rgba(232,185,49,0.35);
+}
+.btn-submit.ready:active { transform: scale(0.98); }
+
+/* ═══════════════════════════════════════════════════════
+   SPINNER OVERLAY
+   ═══════════════════════════════════════════════════════ */
+.spinner-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(8,10,18,0.92); backdrop-filter: blur(20px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  animation: fadeIn 0.4s ease;
+}
+.spinner-rings { position: relative; width: 80px; height: 80px; margin-bottom: 40px; }
+.spinner-ring-outer {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.08);
+  border-top-color: #E8B931;
+  animation: spin 0.8s linear infinite;
+}
+.spinner-ring-inner {
+  position: absolute; top: 8px; left: 8px;
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.04);
+  border-top-color: #4ECDC4;
+  animation: spinReverse 1.2s linear infinite;
+}
+.spinner-text {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 22px; color: rgba(255,255,255,0.9);
+  letter-spacing: 0.02em; transition: opacity 0.3s; text-align: center;
+}
+.spinner-progress { margin-top: 32px; display: flex; gap: 8px; }
+.spinner-bar {
+  width: 40px; height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,0.1); transition: background 0.5s ease;
+}
+.spinner-bar.active { background: #E8B931; }
+
+/* ═══════════════════════════════════════════════════════
+   RESULTS SCREEN
+   ═══════════════════════════════════════════════════════ */
+#results {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; padding: 60px 20px;
+}
+.results-subtitle {
+  font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.2em; color: rgba(255,255,255,0.3); margin-bottom: 16px;
+}
+.score-ring { position: relative; width: 200px; height: 200px; margin: 20px 0 10px; }
+.score-ring svg { width: 200px; height: 200px; }
+.score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+.score-ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dasharray 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.score-inner {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.score-number {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 56px; font-weight: 300; line-height: 1;
+}
+.score-label {
+  font-size: 14px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em; margin-top: 2px;
+}
+.grade-badge {
+  display: inline-block; padding: 6px 24px; border-radius: 100px;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;
+}
+.grade-badge.pass { background: rgba(78,205,196,0.09); border: 1px solid rgba(78,205,196,0.25); color: #4ECDC4; }
+.grade-badge.fail { background: rgba(255,107,107,0.09); border: 1px solid rgba(255,107,107,0.25); color: #FF6B6B; }
+.score-fraction {
+  font-family: 'Newsreader', Georgia, serif; font-size: 18px;
+  color: rgba(255,255,255,0.5); margin: 8px 0 48px;
+}
+
+/* Section breakdown cards */
+.breakdown-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; width: 100%; max-width: 700px; margin-bottom: 48px;
+}
+.breakdown-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 20px 20px 16px; position: relative; overflow: hidden;
+}
+.breakdown-bar {
+  position: absolute; top: 0; left: 0; height: 3px;
+  border-radius: 16px 16px 0 0; transition: width 1s ease;
+}
+.breakdown-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.breakdown-title {
+  font-family: 'Newsreader', Georgia, serif; font-size: 13px;
+  color: rgba(255,255,255,0.5); margin-bottom: 10px; line-height: 1.3;
+}
+.breakdown-score {
+  font-family: 'Newsreader', Georgia, serif; font-size: 28px;
+  color: #fff; font-weight: 300;
+}
+.breakdown-pct { font-size: 14px; color: rgba(255,255,255,0.3); margin-left: 8px; }
+
+/* Review heading */
+.review-heading {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 20px;
+}
+
+/* Review rows */
+.review-list {
+  width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 8px;
+}
+.review-row {
+  display: flex; align-items: center; gap: 14px;
+  border-radius: 12px; padding: 14px 18px;
+}
+.review-row.correct {
+  background: rgba(78,205,196,0.05);
+  border: 1px solid rgba(78,205,196,0.15);
+}
+.review-row.wrong {
+  background: rgba(255,107,107,0.05);
+  border: 1px solid rgba(255,107,107,0.15);
+}
+.review-icon {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.review-row.correct .review-icon { background: rgba(78,205,196,0.15); color: #4ECDC4; }
+.review-row.wrong .review-icon   { background: rgba(255,107,107,0.15); color: #FF6B6B; }
+.review-info { flex: 1; min-width: 0; }
+.review-qnum { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); }
+.review-section { font-size: 10px; letter-spacing: 0.1em; margin-left: 8px; }
+.review-answer { font-size: 12px; color: rgba(255,255,255,0.4); }
+.review-answer .user-correct { color: #4ECDC4; }
+.review-answer .user-wrong   { color: #FF6B6B; }
+.review-answer .correct-ans  { color: #4ECDC4; margin-left: 8px; }
+
+.btn-retake {
+  margin-top: 48px; padding: 18px 48px; border-radius: 100px;
+  background: linear-gradient(135deg, #E8B931, #D4A020); border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 0.1em; color: #080A12; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-retake:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(232,185,49,0.3);
+}
+.results-footer {
+  margin-top: 40px; font-family: 'Newsreader', Georgia, serif;
+  font-size: 12px; color: rgba(255,255,255,0.2);
+  font-style: italic; text-align: center; line-height: 1.8;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  .landing-sections { grid-template-columns: 1fr; }
+  .topnav-dots { max-width: 280px; }
+  .breakdown-grid { grid-template-columns: 1fr 1fr; }
+  .btn-gold, .btn-submit.ready { padding: 16px 40px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     LANDING SCREEN
+     ═══════════════════════════════════════════════════ -->
+<div id="landing" class="screen active">
+  <div class="landing-icon">📊</div>
+  <div class="landing-badge">9DATAV : MOCK EXAMINATION</div>
+  <h1 class="landing-title">Data<br>Visualisation</h1>
+  <p class="landing-sub">
+    33 multiple-choice questions across five sections.<br>
+    75 minutes recommended. No negative marking.
+  </p>
+  <div class="landing-sections">
+    <div class="landing-section-chip"><div class="landing-section-dot" style="background:#E8B931"></div>Visualization Theory &amp; Data Representation</div>
+    <div class="landing-section-chip"><div class="landing-section-dot" style="background:#4ECDC4"></div>Perception, Cognition &amp; Visual Processing</div>
+    <div class="landing-section-chip"><div class="landing-section-dot" style="background:#FF6B6B"></div>Design Principles &amp; Visual Integrity</div>
+    <div class="landing-section-chip"><div class="landing-section-dot" style="background:#A78BFA"></div>Applied Design &amp; Communication</div>
+    <div class="landing-section-chip"><div class="landing-section-dot" style="background:#F472B6"></div>Cross-Cutting / Integrated</div>
+  </div>
+  <button class="btn-gold" onclick="startExam()">BEGIN EXAM</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EXAM SCREEN
+     ═══════════════════════════════════════════════════ -->
+<div id="exam" class="screen">
+  <div class="topnav">
+    <div class="topnav-logo">9DATAV</div>
+    <div class="topnav-dots" id="navDots"></div>
+    <div class="topnav-count" id="navCount">0/33</div>
+  </div>
+  <div class="questions-wrap" id="questionsContainer"></div>
+  <div class="submit-bar">
+    <div class="submit-status" id="submitStatus">33 unanswered</div>
+    <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">SUBMIT EXAM</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SPINNER OVERLAY (hidden)
+     ═══════════════════════════════════════════════════ -->
+<div class="spinner-overlay" id="spinnerOverlay" style="display:none">
+  <div class="spinner-rings">
+    <div class="spinner-ring-outer"></div>
+    <div class="spinner-ring-inner"></div>
+  </div>
+  <div class="spinner-text" id="spinnerText">Analysing your responses...</div>
+  <div class="spinner-progress">
+    <div class="spinner-bar" id="sbar0"></div>
+    <div class="spinner-bar" id="sbar1"></div>
+    <div class="spinner-bar" id="sbar2"></div>
+    <div class="spinner-bar" id="sbar3"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     RESULTS SCREEN
+     ═══════════════════════════════════════════════════ -->
+<div id="results" class="screen">
+  <div class="results-subtitle">9DATAV Mock Examination Results</div>
+  <div class="score-ring">
+    <svg viewBox="0 0 200 200">
+      <circle class="score-ring-bg" cx="100" cy="100" r="88"/>
+      <circle class="score-ring-fill" id="scoreRingFill" cx="100" cy="100" r="88"
+              stroke-dasharray="0 553" transform="rotate(-90 100 100)"/>
+    </svg>
+    <div class="score-inner">
+      <span class="score-number" id="scoreNumber">0</span>
+      <span class="score-label">PERCENT</span>
+    </div>
+  </div>
+  <div class="grade-badge" id="gradeBadge">PASS</div>
+  <div class="score-fraction" id="scoreFraction">0 of 33 correct</div>
+  <div class="breakdown-grid" id="breakdownGrid"></div>
+  <div class="review-heading">Question-by-Question Review</div>
+  <div class="review-list" id="reviewList"></div>
+  <button class="btn-retake" onclick="retakeExam()">RETAKE EXAM</button>
+  <div class="results-footer">
+    9DATAV Data Visualisation : Mock Examination : April 2026<br>
+    Prepared by Dr. Lars Mortensen, National College of Ireland
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════════════════ */
+const QUESTIONS=[
+{id:1,section:"LO1",scenario:"A Dublin-based health insurance company wants to present its annual claims data to three different audiences: actuaries, marketing managers, and the board of directors. The data analyst argues that different visual approaches are needed for each audience. The marketing director pushes back, stating: \"Good data visualisation is universal; if a chart is well designed, it works for everyone.\"",question:"Which of the following BEST explains why the data analyst\u2019s position is more defensible?",options:[{key:"A",text:"The analyst is correct because each audience needs a completely different dataset; visualisation has nothing to do with it."},{key:"B",text:"The analyst is correct because data visualisation is fundamentally about communicating a message, and different audiences have different levels of data literacy, different decision contexts, and different questions they need answered; a chart optimised for actuarial precision (e.g., detailed probability distributions) would overwhelm a board audience that needs high-level strategic trends."},{key:"C",text:"The marketing director is correct because Tufte\u2019s principles of graphical excellence apply universally, making audience adaptation unnecessary."},{key:"D",text:"The analyst is correct only because the board members are less intelligent than the actuaries and need simplified visuals."},{key:"E",text:"The marketing director is correct because a single, well-designed dashboard can serve all audiences equally if it includes enough interactive filters."},{key:"F",text:"The analyst is correct because each audience prefers different colour schemes, and colour preference is the primary factor in visualisation effectiveness."}],answer:"B"},
+{id:2,section:"LO1",question:"Data visualisation is often confused with infographics. Which of the following BEST captures the core distinction between data visualisation and infographics?",options:[{key:"A",text:"Data visualisation uses software tools while infographics are always hand-drawn illustrations."},{key:"B",text:"Data visualisation is primarily concerned with enabling the reader to explore, interrogate, and interpret data through visual encoding of quantitative and categorical variables, whereas infographics are primarily narrative, designed compositions that combine illustrations, icons, text, and selective data points to tell a predetermined story to a broad audience."},{key:"C",text:"Infographics are always more accurate than data visualisations because they are reviewed by graphic designers."},{key:"D",text:"Data visualisation and infographics are synonymous terms; the distinction is purely academic with no practical significance."},{key:"E",text:"Data visualisation is used in business, while infographics are used only in journalism and social media."},{key:"F",text:"The sole difference is file format: data visualisations are interactive web pages, while infographics are static image files."}],answer:"B"},
+{id:3,section:"LO1",scenario:"A European logistics firm is building an internal analytics platform. The data team proposes a visualisation pipeline with five stages: data acquisition, data transformation, visual mapping, view transformation, and rendering. The project manager asks why the team cannot skip the transformation stage and go directly from raw data to visual output.",question:"Which of the following BEST explains why the transformation stage is essential in the visualisation pipeline?",options:[{key:"A",text:"The transformation stage is only necessary for aesthetic purposes; it makes charts look more professional but does not affect analytical value."},{key:"B",text:"Raw data rarely arrives in a form suitable for direct visual encoding; the transformation stage handles cleaning, aggregation, filtering, derived calculations, and restructuring (e.g., pivoting, normalising, binning) that determine what the visualisation can meaningfully show. Skipping this stage would produce charts that are either meaningless (plotting raw, uncleaned data) or technically impossible (mismatched data types and visual channels)."},{key:"C",text:"The transformation stage is only required when using Power BI; other tools can visualise raw data directly without any preparation."},{key:"D",text:"The transformation stage exists solely to remove outliers from the dataset before visualisation."},{key:"E",text:"Skipping transformation is acceptable if the dataset is small (fewer than 1,000 rows) because visual encoding handles small datasets automatically."},{key:"F",text:"The transformation stage is redundant because modern visualisation tools perform all necessary data preparation automatically without human oversight."}],answer:"B"},
+{id:4,section:"LO1",question:"John Snow\u2019s 1854 cholera map of London\u2019s Broad Street is widely cited as a landmark in the history of data visualisation. Which of the following BEST explains its significance to the field?",options:[{key:"A",text:"It was significant because it was the first map ever produced, establishing cartography as a discipline."},{key:"B",text:"It demonstrated that spatial visualisation of data (plotting cholera deaths by geographic location) could reveal patterns invisible in tabular data, enabling Snow to identify the Broad Street pump as the probable source of the outbreak; this exemplifies how visualisation can serve as an analytical tool for hypothesis generation, not merely a presentation device."},{key:"C",text:"Its significance lies entirely in its aesthetic beauty; the map was the first to use colour printing, which made it influential in graphic design."},{key:"D",text:"It was significant only because it proved that cholera was airborne, which was the prevailing medical theory at the time."},{key:"E",text:"Its importance is overstated; Snow already knew the pump was the cause before creating the map, so the visualisation served no analytical purpose."},{key:"F",text:"It was the first example of interactive data visualisation because viewers could point to different locations on the map."}],answer:"B"},
+{id:5,section:"LO1",question:"Florence Nightingale\u2019s \"coxcomb\" (polar area) diagrams of mortality causes during the Crimean War are celebrated for their impact on policy. Which of the following BEST explains what made these visualisations effective as tools of persuasion?",options:[{key:"A",text:"They were effective solely because Nightingale was a famous nurse, and her celebrity status ensured the charts would be taken seriously."},{key:"B",text:"The polar area design encoded mortality data in a way that made the scale of preventable deaths visually overwhelming compared to combat deaths, making the argument for sanitary reform emotionally compelling and immediately graspable to non-statistical audiences (politicians and military leaders) who would not have engaged with raw mortality tables."},{key:"C",text:"They were effective because they used a standard bar chart format that was already familiar to the British parliament."},{key:"D",text:"Their effectiveness came entirely from their mathematical precision; the charts contained no persuasive design choices whatsoever."},{key:"E",text:"They were effective because Nightingale invented the pie chart, which was a novel visualisation at the time."},{key:"F",text:"The coxcomb diagrams were ineffective; Nightingale\u2019s reforms succeeded despite, not because of, her visualisations."}],answer:"B"},
+{id:6,section:"LO1",scenario:"An Irish retail analytics team is preparing a quarterly report. The team lead explains: \"This quarter we need exploratory visualisation, not explanatory.\" A junior analyst asks what the difference is.",question:"Which of the following BEST distinguishes exploratory from explanatory visualisation?",options:[{key:"A",text:"Exploratory visualisation uses advanced statistical methods, while explanatory visualisation uses only basic charts."},{key:"B",text:"Exploratory visualisation is the process of visually interrogating data to discover patterns, anomalies, and relationships (often iterative, messy, and intended for the analyst\u2019s own understanding), while explanatory visualisation takes a known finding and communicates it clearly to an audience through deliberate design choices, narrative structure, and emphasis."},{key:"C",text:"Exploratory visualisation is always interactive, while explanatory visualisation is always static."},{key:"D",text:"The terms are interchangeable; any well-designed chart serves both exploratory and explanatory purposes simultaneously."},{key:"E",text:"Exploratory visualisation is used only in academia, while explanatory visualisation is used only in business."},{key:"F",text:"Exploratory visualisation requires no data preparation, while explanatory visualisation requires extensive data cleaning."}],answer:"B"},
+{id:7,section:"LO1",scenario:"A data visualisation is published in a national newspaper showing that a pharmaceutical company\u2019s new drug reduces hospital readmissions. The chart uses a truncated y-axis starting at 90% (rather than 0%), making a 3-percentage-point improvement appear as a dramatic halving. An ethics review panel is asked to evaluate this visualisation.",question:"Which of the following BEST identifies the ethical concern?",options:[{key:"A",text:"There is no ethical concern because truncated axes are standard practice and always acceptable in data visualisation."},{key:"B",text:"The concern is purely aesthetic; the chart would look better if it started at 0%, but the data is still technically accurate."},{key:"C",text:"The visualisation violates graphical integrity by distorting the visual representation of the data\u2019s magnitude; the truncated axis creates a lie factor (Tufte\u2019s concept) significantly greater than 1.0, making the visual effect of the improvement far larger than the actual data effect. This is ethically problematic because it manipulates the reader\u2019s perception to overstate the drug\u2019s efficacy."},{key:"D",text:"The only ethical issue is that the newspaper should have disclosed the pharmaceutical company as a sponsor; the chart design itself is acceptable."},{key:"E",text:"Truncated axes are always unethical, regardless of context, audience, or the nature of the data being displayed."},{key:"F",text:"The ethical concern applies only if the chart was created intentionally to deceive; if the analyst simply used the software\u2019s default axis settings, there is no ethical responsibility."}],answer:"C"},
+{id:8,section:"LO1",question:"Minard\u2019s 1869 map of Napoleon\u2019s Russian campaign is often described as one of the greatest statistical graphics ever produced. Which of the following BEST explains why this visualisation is considered exceptional from a data representation perspective?",options:[{key:"A",text:"It is exceptional because it was the first visualisation to use colour, which was a revolutionary innovation in 1869."},{key:"B",text:"The map encodes six variables simultaneously (army size, geographic location in two dimensions, direction of travel, temperature, and dates) in a single, coherent visual narrative, demonstrating that complex multivariate data can be represented with remarkable clarity and without requiring the viewer to cross-reference multiple separate charts."},{key:"C",text:"Its reputation is based entirely on historical nostalgia; by modern standards, the visualisation is poorly designed and difficult to read."},{key:"D",text:"It is exceptional because it uses 3D rendering to show the terrain of the Russian landscape."},{key:"E",text:"The map is celebrated primarily for its artistic quality; the data encoding is secondary to its value as a work of art."},{key:"F",text:"Its importance lies in being the first computer-generated visualisation, which demonstrated the potential of technology in data representation."}],answer:"B"},
+{id:9,section:"LO2",scenario:"A data analyst at a Dublin fintech company creates a dashboard with 15 different metrics displayed simultaneously. Each metric uses a different combination of colour, shape, and size. Users report that the dashboard feels \"overwhelming\" and they cannot find key information quickly. The analyst argues that all the data is there and users just need to learn how to read it.",question:"Drawing on Colin Ware\u2019s work on pre-attentive attributes, which of the following BEST diagnoses the problem?",options:[{key:"A",text:"The problem is that users are not trained sufficiently; with enough practice, any dashboard can be read quickly regardless of design."},{key:"B",text:"Pre-attentive processing allows the human visual system to detect certain attributes (colour hue, orientation, size, motion) in under 250 milliseconds without conscious effort, but only when these attributes are used sparingly and strategically to create visual \"pop-out.\" When 15 metrics each use different combinations of pre-attentive channels, the viewer\u2019s ability to detect any single signal is degraded because the visual field becomes a uniform noise of competing stimuli, eliminating the pop-out effect."},{key:"C",text:"The issue is that the dashboard needs a larger screen; pre-attentive processing works correctly regardless of design as long as the display area is sufficient."},{key:"D",text:"Pre-attentive attributes are relevant only for static images; they do not apply to interactive dashboards."},{key:"E",text:"The dashboard is fine; the real problem is that fintech users prefer tables over charts."},{key:"F",text:"The issue is caused by using too few visual channels; adding animation and sound would resolve the overwhelm by providing additional encoding dimensions."}],answer:"B"},
+{id:10,section:"LO2",scenario:"A retail chain\u2019s operations dashboard displays daily sales figures for 40 stores. The bars for stores in the same geographic region are placed adjacent to each other with small gaps, while larger gaps separate regions. A new analyst is surprised that users can instantly identify regional groupings without any explicit labels.",question:"Which Gestalt principle PRIMARILY explains this perceptual grouping?",options:[{key:"A",text:"Similarity, because stores in the same region likely have similar sales volumes."},{key:"B",text:"Proximity, because elements placed close together are perceived as belonging to the same group; the small gaps within regions and larger gaps between regions create an automatic perceptual structure that the visual system processes without requiring explicit labels or conscious effort."},{key:"C",text:"Closure, because the viewer mentally \"closes\" the gaps between bars to form regional groups."},{key:"D",text:"Figure-ground, because the bars are perceived as figures against the dashboard background."},{key:"E",text:"Continuity, because the bars form a continuous line from left to right."},{key:"F",text:"Enclosure, because the bars within each region are surrounded by a visible border."}],answer:"B"},
+{id:11,section:"LO2",question:"Cleveland and McGill\u2019s research on graphical perception established a hierarchy of visual encoding accuracy. A data analyst must choose how to encode quarterly profit margins for five product lines so that readers can make the most precise quantitative comparisons.\n\nAccording to Cleveland and McGill\u2019s hierarchy, which encoding channel would produce the MOST accurate perceptual judgments?",options:[{key:"A",text:"Colour saturation, where darker shades represent higher margins."},{key:"B",text:"Area, using proportionally sized circles for each product line."},{key:"C",text:"Angle, using a pie chart where each slice represents a product line\u2019s margin."},{key:"D",text:"Position along a common scale, using a grouped bar chart or dot plot where all product lines share the same aligned axis."},{key:"E",text:"Volume, using 3D cubes proportional to each product line\u2019s margin."},{key:"F",text:"Colour hue, using a different colour for each product line mapped to a colour legend."}],answer:"D"},
+{id:12,section:"LO2",scenario:"A European government agency publishes a choropleth map showing COVID-19 infection rates by county, using a rainbow colour scale (red, orange, yellow, green, blue, violet) to represent infection rates from low to high. Approximately 8% of men in the general population have some form of colour vision deficiency.",question:"Which of the following BEST identifies the MOST significant perceptual problems with this colour choice?",options:[{key:"A",text:"The only problem is that the map uses too many colours; reducing to three colours would resolve all perceptual issues."},{key:"B",text:"Rainbow colour scales create multiple perceptual problems simultaneously: they impose a perceptual ordering that does not match the data\u2019s sequential nature (humans do not perceive spectral hues as having an inherent low-to-high order), they create artificial boundaries where the colour transitions appear most dramatic (e.g., yellow to green), and they are inaccessible to the approximately 8% of men with colour vision deficiency who cannot distinguish red from green, potentially misinterpreting high-risk and low-risk areas."},{key:"C",text:"Rainbow scales are always the best choice for maps because they maximise visual distinctiveness between categories."},{key:"D",text:"The problem is only relevant for colour-blind users; for users with typical colour vision, rainbow scales are perceptually optimal."},{key:"E",text:"The issue is that rainbow scales are aesthetically outdated; a modern gradient would solve the perceptual problems while keeping the same spectral colour mapping."},{key:"F",text:"Choropleth maps should never use colour encoding; pattern fills (dots, hatching, crosshatching) are always perceptually superior."}],answer:"B"},
+{id:13,section:"LO2",scenario:"A dashboard designer places a bright red KPI indicator in the top-left corner of a sales dashboard. The indicator is surrounded by muted grey and blue elements. Users consistently report noticing the red indicator first, even when they open the dashboard intending to check a different metric.",question:"Which perceptual phenomenon BEST explains why the red indicator captures attention involuntarily?",options:[{key:"A",text:"The Gestalt principle of closure, because users mentally complete the red indicator as the most important element."},{key:"B",text:"Pre-attentive processing of colour hue combined with luminance contrast; the bright red against muted grey/blue creates a strong contrast signal that the visual system detects and prioritises before conscious attention is directed, effectively \"hijacking\" the viewer\u2019s gaze regardless of their intended focus."},{key:"C",text:"The Von Restorff effect, which states that users always look at the top-left corner of any display first, regardless of visual design."},{key:"D",text:"Change blindness, because the static elements fade from perception while the coloured element remains visible."},{key:"E",text:"The red indicator captures attention only because of cultural association (red meaning \"danger\"); in cultures where red has positive connotations, this effect would not occur."},{key:"F",text:"This occurs because of the recency effect; the red indicator was the most recently added element to the dashboard."}],answer:"B"},
+{id:14,section:"LO2",scenario:"A financial services company builds an executive dashboard that displays 12 KPIs, each with a current value, a trend sparkline, a year-over-year comparison, a target indicator, and a conditional colour code. The CEO complains: \"By the time I\u2019ve processed the third KPI, I\u2019ve forgotten the first one.\"",question:"Which cognitive principle MOST directly explains the CEO\u2019s difficulty?",options:[{key:"A",text:"The Gestalt principle of similarity, because all KPIs look alike and blend together."},{key:"B",text:"Working memory capacity limitations; research (Miller\u2019s \"7 plus or minus 2,\" refined by Cowan to approximately 4 chunks) indicates that working memory can hold only a small number of information units simultaneously. Each KPI with five associated data points (value, trend, comparison, target, colour) creates a high cognitive load that exceeds working memory capacity, causing earlier information to be displaced as new KPIs are processed."},{key:"C",text:"The CEO lacks data literacy and should receive additional training rather than expecting the dashboard to accommodate cognitive limits."},{key:"D",text:"Inattentional blindness, because the CEO is focused on specific KPIs and cannot perceive others."},{key:"E",text:"The problem is screen resolution; a higher-resolution display would allow the CEO to process more information simultaneously."},{key:"F",text:"Long-term memory interference, because the CEO is confusing this quarter\u2019s data with last quarter\u2019s data stored in long-term memory."}],answer:"B"},
+{id:15,section:"LO2",scenario:"A marketing team creates two versions of a campaign performance chart. Version A uses a bar chart with very thin, light-grey bars on a white background. Version B uses the same data with medium-weight bars in a moderately saturated blue on a light grey background. Users consistently report that Version B is \"easier to read\" and \"the data stands out more.\"",question:"Which perceptual principle MOST directly explains the difference in readability?",options:[{key:"A",text:"The Gestalt principle of enclosure, because Version B\u2019s grey background acts as a visual container."},{key:"B",text:"Luminance contrast; Version B creates a stronger contrast ratio between the data elements (saturated blue bars) and the background (light grey), making the figure-ground distinction clearer and reducing the visual effort required to separate the data from its surroundings. Version A\u2019s thin, light-grey bars on a white background produce minimal contrast, forcing the viewer to work harder to perceive the data marks."},{key:"C",text:"Colour preference, because blue is universally preferred over grey, making any blue chart more readable."},{key:"D",text:"The difference is explained by chart size; Version B must have been displayed larger, which improved readability."},{key:"E",text:"Pre-attentive processing of orientation, because the bar width in Version B creates a stronger horizontal signal."},{key:"F",text:"The improvement is due to the Hawthorne effect; users preferred Version B simply because they knew it was the \"new\" version being tested."}],answer:"B"},
+{id:16,section:"LO2",scenario:"A utility company updates its energy consumption dashboard monthly. In January, the dashboard showed five KPIs. In February, a sixth KPI was quietly added in the lower-right corner without any announcement. After two weeks, the operations manager reports that she \"never noticed\" the new metric was added.",question:"Which perceptual phenomenon BEST explains why the manager missed the addition?",options:[{key:"A",text:"The Gestalt principle of proximity, because the new KPI was too far from the other five."},{key:"B",text:"Change blindness; when changes are introduced gradually or without explicit signalling (particularly in complex visual displays), the human visual system frequently fails to detect them. The manager\u2019s mental model of the dashboard was established with five KPIs, and the incremental addition of a sixth element in a peripheral location, without a visual cue drawing attention to the change, was insufficient to update that mental model."},{key:"C",text:"Inattentional blindness, because the manager was deliberately ignoring the lower-right area of the dashboard."},{key:"D",text:"The manager failed to notice the change because the new KPI was in a colour that the manager cannot perceive due to colour vision deficiency."},{key:"E",text:"This is not a perceptual phenomenon; the manager was simply not paying attention, which is a motivation issue, not a design issue."},{key:"F",text:"The Von Restorff effect, because the new KPI was too similar to existing elements to stand out."}],answer:"B"},
+{id:17,section:"LO5",scenario:"A data analyst creates a chart showing quarterly revenue for an Irish technology company. The chart includes a textured background image of a circuit board, a decorative 3D effect on the bars, gridlines in a contrasting colour, a large company logo watermark across the data area, and a redundant legend that duplicates information already shown by direct axis labels.",question:"Applying Tufte\u2019s data-ink ratio principle, which of the following BEST evaluates this chart?",options:[{key:"A",text:"The chart is well designed because the decorative elements make it more engaging and memorable for the audience."},{key:"B",text:"The chart has a very low data-ink ratio; the textured background, 3D effects, contrasting gridlines, logo watermark, and redundant legend all constitute non-data ink (chartjunk in Tufte\u2019s terminology) that competes with the actual data for the viewer\u2019s attention. Tufte\u2019s principle recommends maximising the proportion of ink devoted to data and minimising or eliminating decorative elements that do not convey information."},{key:"C",text:"The data-ink ratio is irrelevant because modern audiences expect visually rich, decorated charts."},{key:"D",text:"The chart would be improved by adding more decorative elements, because research consistently shows that decorated charts are better remembered than plain ones."},{key:"E",text:"The data-ink ratio principle applies only to print publications; digital charts are exempt because screen resolution compensates for visual clutter."},{key:"F",text:"The only problematic element is the 3D effect; all other decorative elements are acceptable under Tufte\u2019s framework."}],answer:"B"},
+{id:18,section:"LO5",scenario:"A product manager at a European e-commerce company asks the data team to show how the company\u2019s market share has changed over five years relative to three competitors. The analyst produces a pie chart for each year (five pie charts side by side) with four slices each.",question:"Which of the following BEST explains why this is a poor chart type selection for this data and purpose?",options:[{key:"A",text:"Pie charts are always inappropriate; they should never be used under any circumstances."},{key:"B",text:"Comparing changes over time across competitors requires the viewer to compare angles across separate, non-aligned pie charts, which Cleveland and McGill\u2019s research shows is one of the least accurate perceptual tasks. A line chart or small-multiple bar chart with a common axis would allow direct visual comparison of each competitor\u2019s trajectory over time, leveraging the more accurate perceptual channel of position along a common scale."},{key:"C",text:"The pie charts are fine; the only improvement needed is to add percentage labels to each slice."},{key:"D",text:"The problem is that there are only four competitors; pie charts work well when there are at least eight slices."},{key:"E",text:"The issue is aesthetic; side-by-side pie charts look cluttered, but they convey the data just as accurately as any alternative."},{key:"F",text:"The chart fails only because e-commerce data should always be shown as a scatter plot."}],answer:"B"},
+{id:19,section:"LO5",scenario:"A financial analyst creates a dashboard for executive review. The dashboard uses: (1) the largest visual element at the top showing total revenue; (2) medium-sized charts in the middle showing departmental breakdowns; (3) detailed tables at the bottom for line-item data. The analyst explains this follows a deliberate design logic.",question:"Which design principle and whose framework BEST describes the structure the analyst has implemented?",options:[{key:"A",text:"Tufte\u2019s data-ink ratio, because the dashboard minimises decorative elements."},{key:"B",text:"Shneiderman\u2019s Visual Information-Seeking Mantra: \"Overview first, zoom and filter, then details on demand.\" The dashboard structure moves from a high-level summary (total revenue) through intermediate breakdowns (departmental) to granular detail (line items), mirroring the cognitive pattern of starting with the big picture and progressively drilling into specifics."},{key:"C",text:"The Gestalt principle of continuity, because the eye flows continuously from top to bottom."},{key:"D",text:"Few\u2019s principle of eliminating all colour, because executive dashboards should be monochrome."},{key:"E",text:"Cleveland and McGill\u2019s hierarchy, because the dashboard uses only position-based encodings."},{key:"F",text:"Knaflic\u2019s storytelling framework, because the dashboard tells a narrative with a beginning (top), middle (centre), and end (bottom)."}],answer:"B"},
+{id:20,section:"LO5",scenario:"A public health agency creates a visualisation showing regional diabetes prevalence rates across Ireland. The rates range from 4.2% to 9.8%. The designer must choose a colour scale.",question:"Which colour scale type is MOST appropriate for this data, and why?",options:[{key:"A",text:"A categorical (qualitative) palette with distinct hues for each region, because each region is a separate category."},{key:"B",text:"A sequential colour scale (e.g., light yellow to dark red) because the data represents a single variable (prevalence rate) with a meaningful low-to-high ordering; a sequential scale maps increasing data values to increasing colour intensity, preserving the perceptual ordering and allowing viewers to intuitively read lighter areas as lower prevalence and darker areas as higher prevalence."},{key:"C",text:"A diverging colour scale (e.g., blue to white to red), because diabetes rates can be either good or bad."},{key:"D",text:"A rainbow colour scale, because it maximises the number of distinguishable colours and therefore provides the highest resolution for detecting differences."},{key:"E",text:"A binary colour scale (two colours only), because the data should be simplified into \"high\" and \"low\" categories for clarity."},{key:"F",text:"No colour encoding should be used; numerical labels on each region are always preferable to colour-based encoding on maps."}],answer:"B"},
+{id:21,section:"LO5",scenario:"Cole Nussbaumer Knaflic\u2019s \"Storytelling with Data\" framework emphasises that effective data communication follows a narrative structure. A data analyst at an Irish bank presents quarterly loan default analysis using the following sequence: (1) shows the overall default rate trend, (2) highlights an unexpected spike in Q3, (3) breaks down the spike by loan category to reveal that SME loans drove the increase, (4) presents a recommendation to tighten SME lending criteria.",question:"Which element of Knaflic\u2019s framework does this sequence BEST exemplify?",options:[{key:"A",text:"The Big Idea concept, because the presentation focuses on a single, surprising finding."},{key:"B",text:"The narrative arc applied to data communication: context (overall trend establishes the baseline), complication (the Q3 spike introduces tension), explanation (the SME breakdown provides resolution of the mystery), and call to action (the recommendation gives the audience a clear next step). This sequence transforms raw data into a persuasive story structure that guides the audience through discovery to decision."},{key:"C",text:"Decluttering, because the analyst removed unnecessary visual elements from the charts."},{key:"D",text:"Choosing an effective visual display, because the analyst selected appropriate chart types."},{key:"E",text:"The \"where do we want to be\" framework, because the recommendation sets a future target."},{key:"F",text:"Knaflic\u2019s colour strategy, because the analyst used strategic use of colour to highlight the spike."}],answer:"B"},
+{id:22,section:"LO5",scenario:"A data team builds an interactive Power BI dashboard for an Irish logistics company. The dashboard includes slicers for date range and region, cross-filtering between visuals, a drill-down hierarchy from country to city to warehouse, and tooltips that show additional detail on hover.",question:"Which of the following BEST describes the primary purpose of these interaction techniques from a design perspective?",options:[{key:"A",text:"The interactions exist solely to make the dashboard appear more technologically sophisticated to impress stakeholders."},{key:"B",text:"These interaction techniques implement progressive disclosure, allowing users to manage complexity by starting with an overview and selectively requesting detail; slicers enable filtering to reduce the visible data to a relevant subset, cross-filtering reveals relationships between visuals, drill-down supports moving from summary to detail within a hierarchy, and tooltips provide supplementary information without permanently consuming screen space."},{key:"C",text:"The interactions are necessary because Power BI cannot display all data at once; they are a technical workaround for a tool limitation, not a design choice."},{key:"D",text:"Interactive features are always superior to static visualisations; every dashboard should maximise the number of interactive elements regardless of audience needs."},{key:"E",text:"The primary purpose of these interactions is to reduce data storage requirements by loading data on demand."},{key:"F",text:"These interactions are designed primarily for mobile devices; on desktop, static dashboards are always preferable."}],answer:"B"},
+{id:23,section:"LO5",question:"A data analyst discovers that a colleague\u2019s chart contains a lie factor (as defined by Tufte) of 3.2. This means:",options:[{key:"A",text:"The chart contains 3.2 times more data points than necessary for the analysis."},{key:"B",text:"The visual effect of the chart exaggerates the underlying data change by a factor of 3.2; specifically, the size of the visual representation of a difference is 3.2 times larger than the size of the actual difference in the data. Tufte defines lie factor as the ratio of the effect shown in the graphic to the effect in the data, and a value significantly above 1.0 indicates that the visualisation distorts the viewer\u2019s perception of the data\u2019s true magnitude."},{key:"C",text:"The chart has been fabricated; 3.2 indicates the probability that the data is false."},{key:"D",text:"The chart uses 3.2 more colours than the recommended maximum, violating Tufte\u2019s colour guidelines."},{key:"E",text:"The chart\u2019s legend is 3.2 times larger than it should be relative to the data area."},{key:"F",text:"The lie factor only applies to charts published in print media; digital charts are immune to this metric because viewers can zoom in."}],answer:"B"},
+{id:24,section:"LO5",scenario:"An analyst at a European consumer goods company is preparing a presentation on annual sales performance. The analyst is deciding between two approaches for labelling chart elements: (a) using a traditional legend positioned to the right of the chart, requiring the reader to look back and forth between the legend and the data, or (b) placing labels directly on or adjacent to the data series themselves.",question:"Which of the following BEST evaluates these two approaches from a design perspective?",options:[{key:"A",text:"A traditional legend is always superior because it provides a single reference point and avoids cluttering the data area."},{key:"B",text:"Direct labelling is generally preferable because it reduces the cognitive effort required to associate a data series with its identity; with a traditional legend, the reader must hold information in working memory while their eyes travel between the legend and the data, increasing cognitive load. Direct labels exploit the Gestalt principle of proximity (label near data) to create an immediate, effortless connection between the label and the data it describes."},{key:"C",text:"Neither approach matters; well-designed charts are understood without any labels or legends."},{key:"D",text:"Legends should always be placed above the chart; right-side placement is the only problem with approach (a)."},{key:"E",text:"Direct labelling is inappropriate for any chart with more than two data series."},{key:"F",text:"The choice is purely aesthetic and has no measurable impact on how accurately or quickly viewers interpret the chart."}],answer:"B"},
+{id:25,section:"LO5-6",scenario:"A data analytics consultancy evaluates two dashboard designs created for an Irish retail bank. Dashboard A is visually minimal (clean layout, few colours, strong hierarchy) but was created without any input from the end users. Dashboard B is more cluttered but was developed through three rounds of user testing with branch managers. Branch managers consistently prefer Dashboard B and perform better on task-completion tests with it.",question:"Which of the following BEST explains why Dashboard B outperforms Dashboard A despite its visual shortcomings?",options:[{key:"A",text:"Cluttered dashboards are always more effective because they show more data simultaneously."},{key:"B",text:"Dashboard B outperforms because iterative, user-centred design incorporates real-world workflow requirements, mental models, and domain-specific priorities that a designer working in isolation cannot anticipate. Aesthetic minimalism does not guarantee usability; a dashboard that looks clean but does not match how users actually think and work will be less effective than one that is visually imperfect but functionally aligned with user needs."},{key:"C",text:"Dashboard A fails only because it used the wrong colour scheme; if the colours were changed, it would outperform Dashboard B."},{key:"D",text:"The user testing was biased; branch managers preferred Dashboard B only because they were involved in creating it (a form of the IKEA effect), not because it is genuinely better."},{key:"E",text:"Dashboard B succeeds because aesthetics are irrelevant to dashboard effectiveness; only the number of data points displayed matters."},{key:"F",text:"The comparison is invalid because dashboard effectiveness cannot be measured through user testing."}],answer:"B"},
+{id:26,section:"LO5-6",scenario:"A multinational pharmaceutical company needs to present clinical trial results to three audiences: (1) regulatory scientists at the European Medicines Agency, (2) the company\u2019s board of directors, and (3) a patient advocacy group. The data is identical across all three presentations.",question:"Which of the following BEST describes how the visualisation approach should differ across these three audiences?",options:[{key:"A",text:"The same visualisation should be used for all three audiences; customising for audience is an unnecessary luxury that introduces the risk of inconsistency."},{key:"B",text:"Regulatory scientists require detailed, precise visualisations with confidence intervals, p-values, and full methodological context that enable technical scrutiny. The board requires high-level summary visualisations emphasising strategic implications (efficacy rates, market opportunity, timeline to approval) with minimal statistical notation. The patient advocacy group requires accessible, jargon-free visualisations that contextualise what the results mean for patient outcomes, using familiar scales and analogies."},{key:"C",text:"Only the board needs visualisations; regulatory scientists work exclusively with raw data tables, and patient advocacy groups should receive only written text with no visuals."},{key:"D",text:"The only difference should be colour scheme: formal colours for regulators, corporate colours for the board, and warm colours for patients."},{key:"E",text:"The patient advocacy group should receive the most detailed, statistically complex version because they deserve full transparency."},{key:"F",text:"Audience tailoring only applies to marketing materials, not to scientific or financial data presentations."}],answer:"B"},
+{id:27,section:"LO5-6",scenario:"A data team is designing a new customer analytics dashboard. Before building anything in Power BI, the lead analyst insists on creating hand-drawn storyboards showing the dashboard layout, user flow, and key interactions. A junior team member questions this step: \"Why not just start building in Power BI? We can always change things later.\"",question:"Which of the following BEST justifies the storyboarding step?",options:[{key:"A",text:"Storyboarding is only useful for film and animation; it has no application in data visualisation or dashboard design."},{key:"B",text:"Storyboarding allows the team to explore layout, hierarchy, interaction flow, and information architecture rapidly and cheaply before investing development time. Changes to hand-drawn wireframes take minutes; changes to built Power BI dashboards take hours and create sunk-cost pressure to retain suboptimal designs. Storyboarding also creates a shared reference point for discussing design decisions with stakeholders before technical constraints influence the conversation."},{key:"C",text:"The junior team member is correct; modern tools like Power BI are so flexible that prototyping on paper provides no advantage."},{key:"D",text:"Storyboarding is required only for regulatory compliance in dashboard development projects."},{key:"E",text:"The purpose of storyboarding is solely to create documentation for project archives; it does not improve the final dashboard design."},{key:"F",text:"Storyboarding is necessary only when the team does not have access to a data visualisation tool."}],answer:"B"},
+{id:28,section:"LO5-6",scenario:"A news organisation publishes an interactive data visualisation exploring housing affordability across European capital cities. Users can filter by city, adjust income levels, toggle between rent and purchase prices, and drill down to neighbourhood-level data. The same organisation also publishes a static infographic summarising the top-line finding: \"Dublin is the 4th least affordable capital in Europe for median-income renters.\"",question:"Which of the following BEST explains when each format (interactive vs static) is the more appropriate choice?",options:[{key:"A",text:"Interactive visualisations are always superior because they allow user exploration; static visuals are obsolete."},{key:"B",text:"Interactive visualisations are appropriate when the audience needs to explore the data from multiple perspectives, answer their own questions, or examine subsets relevant to their personal circumstances (e.g., \"What about my city at my income level?\"). Static visualisations are appropriate when the goal is to communicate a single, specific, pre-determined message quickly and unambiguously to a broad audience that may not have the time, interest, or skill to interact. The choice depends on the communication objective, not the inherent superiority of either format."},{key:"C",text:"Static visualisations are always more trustworthy because the author has curated the view; interactive tools allow users to find misleading patterns."},{key:"D",text:"The choice between interactive and static depends solely on budget: interactive is expensive, static is cheap."},{key:"E",text:"Interactive visualisations should only be used for internal analytics teams; external audiences should always receive static visuals."},{key:"F",text:"The only relevant factor is the platform: websites should use interactive, print should use static, with no further consideration needed."}],answer:"B"},
+{id:29,section:"LO5-6",scenario:"A Power BI developer at an Irish insurance company builds a claims analysis dashboard. The dashboard includes: (1) slicers for policy type, region, and date range; (2) a bar chart of claims by category that cross-filters a map visual; (3) a drill-through page showing individual claim details when a user right-clicks a data point; and (4) bookmarks that save pre-configured views for different stakeholders.",question:"Which of the following BEST evaluates this combination of Power BI features from a design perspective?",options:[{key:"A",text:"The dashboard uses too many interactive features; Power BI dashboards should include no more than two interaction types."},{key:"B",text:"This combination effectively supports different user needs within a single dashboard: slicers enable focused analysis by narrowing the dataset, cross-filtering reveals relationships between claim categories and geography, drill-through provides details on demand without cluttering the overview, and bookmarks allow the same dashboard to serve multiple audiences (e.g., a regional manager\u2019s view vs. an underwriter\u2019s view) without building separate reports."},{key:"C",text:"Drill-through pages are a poor choice because users should always see all detail on a single page; hiding information behind interactions reduces transparency."},{key:"D",text:"Bookmarks are unnecessary because every user should see the same view to ensure consistency."},{key:"E",text:"Cross-filtering is a design flaw because it changes multiple visuals simultaneously, which confuses users."},{key:"F",text:"The dashboard should replace all interactive features with a printed PDF report because insurance executives prefer paper."}],answer:"B"},
+{id:30,section:"LO5-6",scenario:"An analyst creates a scatter plot showing the relationship between advertising spend and revenue for an Irish food company\u2019s 20 product lines. The chart reveals a clear positive trend, but three product lines are extreme outliers (very high spend with low revenue). The analyst\u2019s manager says: \"Remove the outliers; they make the chart look messy.\"",question:"Which of the following BEST evaluates the manager\u2019s instruction?",options:[{key:"A",text:"The manager is correct; outliers should always be removed because they distort the visual pattern."},{key:"B",text:"Removing the outliers would be a mistake because they may represent the most analytically valuable data points in the chart: products where advertising is failing to drive revenue. The \"messy\" appearance is the insight. A better approach would be to annotate the outliers, labelling them by product name and investigating why they deviate from the pattern. Suppressing inconvenient data points to produce a cleaner-looking chart prioritises aesthetics over analytical integrity."},{key:"C",text:"The outliers should be removed but noted in a footnote that readers may or may not see."},{key:"D",text:"Outliers are always the result of data entry errors and should be removed as part of standard data cleaning."},{key:"E",text:"The manager\u2019s instruction is correct from a Tufte perspective, because outliers are a form of chartjunk that reduces the data-ink ratio."},{key:"F",text:"The chart should be changed to a line chart, which would naturally smooth over the outliers."}],answer:"B"},
+{id:31,section:"LO5-6",scenario:"A consultant is asked to critique a dashboard built for a logistics company. The dashboard uses: (1) a dual-axis chart combining delivery volume (bars, left axis) and customer satisfaction score (line, right axis, ranging 1 to 5); (2) a 3D pie chart showing delivery method breakdown; (3) a treemap with 45 categories using a rainbow colour palette. The consultant identifies multiple design failures.",question:"Which of the following MOST comprehensively identifies the design problems?",options:[{key:"A",text:"The only problem is the 3D pie chart; dual-axis charts and treemaps with rainbow palettes are standard best practices."},{key:"B",text:"All three visuals exhibit significant design failures. The dual-axis chart creates a misleading implied correlation between delivery volume and satisfaction by sharing a spatial dimension (height) between two unrelated scales, and the relationship between the two axes is arbitrary. The 3D pie chart distorts angle perception through perspective foreshortening, making slices closer to the viewer appear larger. The 45-category treemap with a rainbow palette exceeds the viewer\u2019s ability to distinguish and remember colour-category mappings, and the rainbow scale imposes no meaningful order on the categories."},{key:"C",text:"The treemap is fine because it can display many categories; the dual-axis chart is fine because it efficiently combines two metrics; only the 3D pie chart is problematic."},{key:"D",text:"These are all acceptable design choices that reflect current industry best practices in logistics dashboards."},{key:"E",text:"The only real problem is the number of categories in the treemap; reducing to 10 categories would resolve all issues across the entire dashboard."},{key:"F",text:"The dashboard is fine; the consultant is applying outdated academic principles that do not reflect how real businesses use data visualisation."}],answer:"B"},
+{id:32,section:"LO5-6",question:"A data visualisation designer must choose between showing a detailed, granular view (individual transactions for 5,000 customers) and a high-level summary view (aggregate metrics by customer segment) for a quarterly business review. The audience is the executive leadership team.\n\nWhich of the following BEST describes the appropriate trade-off between detail and clarity for this audience?",options:[{key:"A",text:"Executive audiences always prefer maximum detail because they need to verify the data personally."},{key:"B",text:"For executive audiences, the high-level summary view is generally more appropriate because executives need to make strategic decisions based on patterns, trends, and segment-level insights, not inspect individual transactions. The summary reduces cognitive load by pre-aggregating data into decision-relevant categories. However, the detailed view should remain accessible (e.g., through drill-down or an appendix) for executives who want to verify or explore specific data points, preserving the option for detail without forcing it on every viewer."},{key:"C",text:"Neither view is appropriate; executives should only receive written narrative reports with no visualisations."},{key:"D",text:"The granular view is always better because it demonstrates the rigour of the analysis and builds credibility."},{key:"E",text:"The choice depends entirely on personal preference; there are no general principles for matching detail level to audience type."},{key:"F",text:"The summary view should be used, and the detailed data should be permanently discarded to prevent information overload in the organisation."}],answer:"B"},
+{id:33,section:"Cross-Cutting",scenario:"A mid-sized Irish insurance company is redesigning its customer-facing policy comparison tool. The current tool uses a table of numbers comparing six insurance plans across 15 features. The redesign team proposes replacing the table with an interactive visual comparison. Consider the following four aspects of the redesign:\n\n(I) The team selects a parallel coordinates chart to show all 15 features simultaneously, with each plan represented as a coloured line. The colour palette uses six fully saturated, spectrally distributed hues (red, orange, yellow, green, blue, violet).\n\n(II) A UX researcher notes that customers with colour vision deficiency (approximately 8% of male customers) will be unable to distinguish several of the plan lines, particularly red from green. The team decides to add pattern encoding (dashed, dotted, solid lines) as a redundant channel alongside colour.\n\n(III) Tufte\u2019s principles suggest maximising the data-ink ratio, but the team intentionally adds contextual annotations (e.g., \"Most popular with families,\" \"Lowest excess for hospital stays\") to specific data points, arguing that context aids decision-making for non-expert audiences.\n\n(IV) The marketing department requests that the tool default to a view that makes the company\u2019s premium plan appear most favourable by sorting features so that the premium plan\u2019s strongest attributes appear first and its weakest attributes are hidden below the fold.",question:"Which of the following BEST evaluates all four aspects of this redesign?",options:[{key:"A",text:"All four aspects are sound design decisions that reflect best practice in data visualisation."},{key:"B",text:"(I) is problematic because six spectrally distributed hues create a rainbow palette that is perceptually unordered and inaccessible. (II) is a sound response, adding a redundant visual channel to address accessibility, though the underlying colour palette from (I) should also be revised. (III) represents a thoughtful, audience-aware trade-off: annotations increase non-data ink but provide essential context for non-expert users making consequential decisions; Tufte\u2019s data-ink principle should be applied with judgment, not as an absolute rule. (IV) is ethically problematic because deliberately manipulating feature order to make one product appear superior violates graphical integrity and exploits the audience\u2019s trust; it prioritises persuasion over honest representation."},{key:"C",text:"Only (IV) is problematic; aspects (I), (II), and (III) are all optimal as described."},{key:"D",text:"(III) is the most problematic aspect because annotations always violate Tufte\u2019s data-ink ratio and should be removed regardless of audience."},{key:"E",text:"(II) is unnecessary because colour vision deficiency affects too small a proportion of the population to justify additional design effort."},{key:"F",text:"(I) and (IV) are fine, but (II) adds unnecessary complexity and (III) adds clutter that reduces analytical value."}],answer:"B"}
+];
+
+const SECTIONS = [
+  { id: "LO1", label: "LO1", fullLabel: "Visualization Theory & Data Representation", range: [1,8], color: "#E8B931" },
+  { id: "LO2", label: "LO2", fullLabel: "Perception, Cognition & Visual Processing", range: [9,16], color: "#4ECDC4" },
+  { id: "LO5", label: "LO5", fullLabel: "Design Principles & Visual Integrity", range: [17,24], color: "#FF6B6B" },
+  { id: "LO5-6", label: "APP", fullLabel: "Applied Design & Communication", range: [25,32], color: "#A78BFA" },
+  { id: "Cross-Cutting", label: "INT", fullLabel: "Cross-Cutting / Integrated", range: [33,33], color: "#F472B6" }
+];
+
+function getSection(qId) {
+  return SECTIONS.find(s => qId >= s.range[0] && qId <= s.range[1]);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RANDOMISATION (anti-cheating)
+   ═══════════════════════════════════════════════════════ */
+let examQuestions = [];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function prepareExam() {
+  const keys = ['A', 'B', 'C', 'D', 'E', 'F'];
+  examQuestions = QUESTIONS.map(q => {
+    const eq = { ...q, options: q.options.map(o => ({...o})) };
+    const correctText = eq.options.find(o => o.key === eq.answer).text;
+    shuffle(eq.options);
+    eq.options.forEach((o, i) => { o.key = keys[i]; });
+    eq.answer = eq.options.find(o => o.text === correctText).key;
+    return eq;
+  });
+  shuffle(examQuestions);
+  examQuestions.forEach((q, i) => { q.displayNum = i + 1; });
+}
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+let answers = {};
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN MANAGEMENT
+   ═══════════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ═══════════════════════════════════════════════════════
+   BUILD EXAM
+   ═══════════════════════════════════════════════════════ */
+function startExam() {
+  prepareExam();
+  buildQuestions();
+  buildNavDots();
+  updateProgress();
+  showScreen('exam');
+}
+
+function buildNavDots() {
+  const wrap = document.getElementById('navDots');
+  wrap.innerHTML = '';
+  examQuestions.forEach(q => {
+    const sec = getSection(q.id);
+    const dot = document.createElement('div');
+    dot.className = 'qdot';
+    dot.id = 'dot-' + q.id;
+    dot.textContent = q.displayNum;
+    dot.style.setProperty('--sec-color', sec.color);
+    dot.style.setProperty('--sec-bg', sec.color + '40');
+    dot.onclick = () => {
+      document.getElementById('qcard-' + q.id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    wrap.appendChild(dot);
+  });
+}
+
+function buildQuestions() {
+  const wrap = document.getElementById('questionsContainer');
+  wrap.innerHTML = '';
+
+  examQuestions.forEach(q => {
+    const sec = getSection(q.id);
+
+    // Question card
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + q.id;
+    card.style.setProperty('--sec-color', sec.color);
+    card.style.setProperty('--sec-card-bg', `linear-gradient(135deg, ${sec.color}08, ${sec.color}04)`);
+    card.style.setProperty('--sec-card-border', sec.color + '25');
+    card.style.setProperty('--sec-num-bg', sec.color + '20');
+    card.style.setProperty('--sec-scenario-border', sec.color + '30');
+    card.style.setProperty('--sec-opt-bg', sec.color + '15');
+    card.style.setProperty('--sec-opt-border', sec.color + '50');
+
+    let scenarioHTML = '';
+    if (q.scenario) {
+      scenarioHTML = `<div class="q-scenario">${escapeHTML(q.scenario)}</div>`;
+    }
+
+    let optionsHTML = q.options.map(o => `
+      <div class="option-btn" data-qid="${q.id}" data-key="${o.key}" onclick="selectOption(${q.id},'${o.key}')">
+        <div class="option-key">${o.key}</div>
+        <div class="option-text">${escapeHTML(o.text)}</div>
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-number">${q.displayNum}</div>
+        <div class="q-answered-dot"></div>
+      </div>
+      ${scenarioHTML}
+      <div class="q-text">${escapeHTML(q.question)}</div>
+      <div class="options-list">${optionsHTML}</div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════════════════════════════════════
+   SELECTION & PROGRESS
+   ═══════════════════════════════════════════════════════ */
+function selectOption(qId, key) {
+  answers[qId] = key;
+  const sec = getSection(qId);
+
+  // Update options visually
+  document.querySelectorAll(`.option-btn[data-qid="${qId}"]`).forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.key === key);
+  });
+
+  // Update card
+  const card = document.getElementById('qcard-' + qId);
+  card.classList.add('answered');
+  card.style.background = `linear-gradient(135deg, ${sec.color}08, ${sec.color}04)`;
+  card.style.borderColor = sec.color + '25';
+
+  // Update nav dot
+  const dot = document.getElementById('dot-' + qId);
+  dot.classList.add('answered');
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  const total = examQuestions.length;
+  const navCount = document.getElementById('navCount');
+  navCount.textContent = count + '/' + total;
+  navCount.classList.toggle('complete', count === total);
+
+  const status = document.getElementById('submitStatus');
+  const btn = document.getElementById('submitBtn');
+
+  if (count === total) {
+    status.textContent = 'All questions answered \u2713';
+    status.classList.add('ready');
+    btn.classList.add('ready');
+  } else {
+    status.textContent = (total - count) + ' unanswered';
+    status.classList.remove('ready');
+    btn.classList.remove('ready');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SUBMIT & SPINNER
+   ═══════════════════════════════════════════════════════ */
+function handleSubmit() {
+  if (Object.keys(answers).length !== examQuestions.length) return;
+
+  const spinner = document.getElementById('spinnerOverlay');
+  spinner.style.display = 'flex';
+
+  const phrases = [
+    'Analysing your responses\u2026',
+    'Cross-referencing answer key\u2026',
+    'Calculating your score\u2026',
+    'Preparing your results\u2026'
+  ];
+
+  const text = document.getElementById('spinnerText');
+  text.textContent = phrases[0];
+  document.getElementById('sbar0').classList.add('active');
+
+  setTimeout(() => { text.textContent = phrases[1]; document.getElementById('sbar1').classList.add('active'); }, 900);
+  setTimeout(() => { text.textContent = phrases[2]; document.getElementById('sbar2').classList.add('active'); }, 1800);
+  setTimeout(() => { text.textContent = phrases[3]; document.getElementById('sbar3').classList.add('active'); }, 2700);
+  setTimeout(() => {
+    spinner.style.display = 'none';
+    // Reset spinner for potential retake
+    [0,1,2,3].forEach(i => document.getElementById('sbar'+i).classList.remove('active'));
+    showResults();
+  }, 3800);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESULTS
+   ═══════════════════════════════════════════════════════ */
+function showResults() {
+  let correct = 0;
+  const details = examQuestions.map(q => {
+    const userAns = answers[q.id] || null;
+    const isCorrect = userAns === q.answer;
+    if (isCorrect) correct++;
+    return { ...q, userAns, isCorrect };
+  });
+
+  const total = examQuestions.length;
+  const pct = Math.round((correct / total) * 100);
+  const pass = pct >= 70;
+  const gradeColor = pass ? '#4ECDC4' : '#FF6B6B';
+
+  // Score ring
+  const ring = document.getElementById('scoreRingFill');
+  ring.setAttribute('stroke', gradeColor);
+  // Animate after a tick
+  requestAnimationFrame(() => {
+    ring.setAttribute('stroke-dasharray', `${(pct / 100) * 553} 553`);
+  });
+
+  document.getElementById('scoreNumber').textContent = pct;
+  const badge = document.getElementById('gradeBadge');
+  badge.textContent = pass ? 'PASS' : 'FAIL';
+  badge.className = 'grade-badge ' + (pass ? 'pass' : 'fail');
+  document.getElementById('scoreFraction').textContent = correct + ' of ' + total + ' correct';
+
+  // Breakdown cards
+  const grid = document.getElementById('breakdownGrid');
+  grid.innerHTML = '';
+  SECTIONS.forEach(s => {
+    const qs = details.filter(d => d.id >= s.range[0] && d.id <= s.range[1]);
+    const c = qs.filter(d => d.isCorrect).length;
+    const sPct = Math.round((c / qs.length) * 100);
+
+    const card = document.createElement('div');
+    card.className = 'breakdown-card';
+    card.innerHTML = `
+      <div class="breakdown-bar" style="background:${s.color};width:0%"></div>
+      <div class="breakdown-label" style="color:${s.color}">${s.label}</div>
+      <div class="breakdown-title">${s.fullLabel}</div>
+      <div class="breakdown-score">${c}/${qs.length}<span class="breakdown-pct">(${sPct}%)</span></div>
+    `;
+    grid.appendChild(card);
+    // Animate bar
+    setTimeout(() => {
+      card.querySelector('.breakdown-bar').style.width = sPct + '%';
+    }, 200);
+  });
+
+  // Review list
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  details.forEach(d => {
+    const sec = getSection(d.id);
+    const row = document.createElement('div');
+    row.className = 'review-row ' + (d.isCorrect ? 'correct' : 'wrong');
+
+    let answerHTML;
+    if (!d.userAns) {
+      answerHTML = `<span class="user-wrong">skipped</span><span class="correct-ans">\u2192 ${d.answer}</span>`;
+    } else if (d.isCorrect) {
+      answerHTML = `<span class="user-correct">${d.userAns}</span>`;
+    } else {
+      answerHTML = `<span class="user-wrong">${d.userAns}</span><span class="correct-ans">\u2192 ${d.answer}</span>`;
+    }
+
+    row.innerHTML = `
+      <div class="review-icon">${d.isCorrect ? '\u2713' : '\u2717'}</div>
+      <div class="review-info">
+        <span class="review-qnum">Q${d.displayNum}<span class="review-section" style="color:${sec.color}">${sec.label}</span></span>
+      </div>
+      <div class="review-answer">${answerHTML}</div>
+    `;
+    list.appendChild(row);
+  });
+
+  showScreen('results');
+}
+
+/* ═══════════════════════════════════════════════════════
+   RETAKE
+   ═══════════════════════════════════════════════════════ */
+function retakeExam() {
+  answers = {};
+  // Reset ring
+  document.getElementById('scoreRingFill').setAttribute('stroke-dasharray', '0 553');
+  // Re-shuffle and rebuild exam
+  prepareExam();
+  buildQuestions();
+  buildNavDots();
+  updateProgress();
+  showScreen('exam');
+}
+</script>
+</body>
+</html>

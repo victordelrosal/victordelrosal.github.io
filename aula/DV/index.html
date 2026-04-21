@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9DATAV Exam Hub | Data Visualisation | NCI</title>
+    <meta name="description" content="Terminal exam preparation hub for 9DATAV Data Visualisation: theory guide, mock exam, MCQ self-test, and LO1/LO2/LO5 revision map.">
+    <meta property="og:title" content="9DATAV Exam Hub: Data Visualisation Terminal Exam Prep">
+    <meta property="og:description" content="Everything for the May terminal exam: theory guide, mock paper, marker key, MCQ self-test, revision map.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230066FF'/%3E%3Cstop offset='100%25' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='%23000036'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='14' font-weight='700' fill='url(%23g)' text-anchor='middle'%3EDV%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-2: #000036;
+            --electric: #0066FF;
+            --cyan: #00D4FF;
+            --ice: #7dd3fc;
+            --glass: rgba(0, 20, 137, 0.25);
+            --glass-border: rgba(0, 180, 255, 0.15);
+            --text-primary: #f5f5f5;
+            --text-secondary: #d4d4d4;
+            --text-tertiary: #a3a3a3;
+            --text-muted: #737373;
+            --bg-dark: #000010;
+            --bg-card: var(--glass);
+            --bg-elevated: rgba(0, 20, 80, 0.4);
+            --bg-hover: rgba(0, 100, 200, 0.2);
+            --border: var(--glass-border);
+            --accent: var(--cyan);
+            --accent-hover: var(--ice);
+            --warning: #f59e0b;
+            --card-shadow: 0 0 0 1px rgba(0, 180, 255, 0.1) inset, 0 20px 40px -16px rgba(0, 0, 0, 0.5), 0 0 60px -20px rgba(0, 102, 255, 0.3);
+            --card-hover-shadow: 0 0 0 1px rgba(0, 212, 255, 0.25) inset, 0 32px 64px -16px rgba(0, 0, 0, 0.6), 0 0 100px -20px rgba(0, 212, 255, 0.4);
+        }
+        body.light-mode {
+            --text-primary: #1a1a1a;
+            --text-secondary: #3d3d3d;
+            --text-tertiary: #666666;
+            --text-muted: #999999;
+            --bg-dark: #ffffff;
+            --bg-card: rgba(245, 245, 245, 0.9);
+            --bg-elevated: rgba(240, 240, 240, 0.95);
+            --bg-hover: rgba(0, 0, 0, 0.05);
+            --border: rgba(0, 0, 0, 0.12);
+            --glass: rgba(250, 250, 250, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+            --card-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+            --cyan: #0066cc;
+            --electric: #0052a3;
+            --accent: #0066cc;
+            --accent-hover: #0052a3;
+            --ice: #0066cc;
+        }
+        body.light-mode::before { background: linear-gradient(135deg, rgba(240, 245, 255, 0.8), rgba(255, 255, 255, 0.9)); }
+        body.light-mode .topbar { background: rgba(255, 255, 255, 0.95); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+        body.light-mode .footer { background: rgba(255, 255, 255, 0.95); border-top: 1px solid rgba(0, 0, 0, 0.08); }
+        body.light-mode .course-header h1 { background: linear-gradient(135deg, #1a1a1a 0%, #0052a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        body.light-mode .logo { color: #1a1a1a; }
+        body.light-mode .card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        body.light-mode .card:hover { border-color: var(--cyan); }
+        body.light-mode .pill { background: rgba(0, 102, 204, 0.08); color: #0052a3; border-color: rgba(0, 102, 204, 0.2); }
+        body.light-mode table { border-color: rgba(0, 0, 0, 0.1); }
+        body.light-mode th { background: rgba(0, 0, 0, 0.03); color: #0052a3; }
+        body.light-mode td, body.light-mode th { border-color: rgba(0, 0, 0, 0.08); }
+        body.light-mode .section > summary { background: #ffffff; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 102, 255, 0.12) 0%, transparent 50%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 212, 255, 0.08) 0%, transparent 40%); pointer-events: none; z-index: -2; }
+        body::after { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0, 180, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 180, 255, 0.04) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: -1; mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black, transparent 80%); }
+        body.light-mode::after { display: none; }
+
+        /* Animated spotlight orbs */
+        .orb { position: fixed; border-radius: 50%; filter: blur(60px); opacity: 0.5; pointer-events: none; z-index: -1; animation: float 18s ease-in-out infinite; }
+        .orb.o1 { width: 360px; height: 360px; background: radial-gradient(circle, rgba(0,102,255,0.55), transparent 70%); top: 10%; left: -100px; }
+        .orb.o2 { width: 420px; height: 420px; background: radial-gradient(circle, rgba(0,212,255,0.4), transparent 70%); bottom: 5%; right: -120px; animation-delay: -8s; }
+        @keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(40px, -30px); } }
+        body.light-mode .orb { opacity: 0.18; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 180, 255, 0.3); border-radius: 4px; }
+
+        .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: rgba(0, 0, 54, 0.95); border-bottom: 1px solid rgba(0, 102, 255, 0.2); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .topbar-left { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+        .logo { font-size: 1.25rem; font-weight: 700; background: linear-gradient(90deg, #7dd3fc 0%, #38bdf8 50%, #00D4FF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; white-space: nowrap; }
+        .course-title { font-size: 0.9rem; color: var(--text-secondary); padding-left: 1rem; border-left: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .topbar-right { display: flex; gap: 0.5rem; align-items: center; }
+        .btn { padding: 0.45rem 0.9rem; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-size: 0.85rem; font-weight: 500; background: transparent; color: var(--text-secondary); transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; font-family: inherit; line-height: 1; }
+        .btn:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--cyan); }
+        .icon-btn { width: 38px; height: 38px; padding: 0; justify-content: center; border-radius: 8px; }
+        .icon-btn svg { width: 18px; height: 18px; }
+        .sun, .moon { display: none; }
+        body:not(.light-mode) .moon { display: block; }
+        body.light-mode .sun { display: block; }
+
+        .main { margin-top: 56px; margin-bottom: 40px; padding: 2rem; max-width: 1100px; margin-left: auto; margin-right: auto; min-height: calc(100vh - 96px); }
+
+        .course-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); text-align: center; }
+        .course-header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; }
+        .course-header .subtitle { color: var(--text-secondary); font-size: 1.05rem; max-width: 720px; margin: 0.6rem auto 0; }
+        .meta-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; font-size: 0.78rem; font-weight: 500; border-radius: 999px; background: rgba(0, 212, 255, 0.08); color: var(--cyan); border: 1px solid rgba(0, 212, 255, 0.25); }
+
+        /* Collapsible sections */
+        .section { margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 14px; background: var(--bg-card); box-shadow: var(--card-shadow); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); overflow: hidden; }
+        .section > summary { list-style: none; cursor: pointer; padding: 1.1rem 1.4rem; display: flex; align-items: center; gap: 0.75rem; font-size: 1.25rem; font-weight: 600; color: var(--text-primary); user-select: none; transition: background 0.15s; }
+        .section > summary::-webkit-details-marker { display: none; }
+        .section > summary:hover { background: var(--bg-hover); }
+        .section > summary .num { font-size: 0.78rem; padding: 0.25rem 0.6rem; border-radius: 6px; background: var(--bg-elevated); color: var(--cyan); border: 1px solid var(--border); font-weight: 600; letter-spacing: 0.04em; }
+        .section > summary .chev { margin-left: auto; transition: transform 0.25s; color: var(--accent); font-size: 1rem; }
+        .section[open] > summary .chev { transform: rotate(90deg); }
+        .section-body { padding: 0.25rem 1.4rem 1.4rem; }
+        .section-body > :first-child { margin-top: 0.5rem; }
+
+        h3 { font-size: 1.05rem; margin: 0 0 0.5rem; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .lead { font-size: 1.02rem; color: var(--text-secondary); }
+
+        .grid { display: grid; gap: 1rem; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+        .card { display: flex; flex-direction: column; padding: 1.25rem 1.4rem; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--card-shadow); text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        a.card:hover { transform: translateY(-2px); box-shadow: var(--card-hover-shadow); border-color: rgba(0, 212, 255, 0.4); }
+        .card .card-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+        .card h3 { margin-bottom: 0.4rem; }
+        .card p { font-size: 0.9rem; color: var(--text-tertiary); margin-bottom: 0.6rem; flex-grow: 1; }
+        .card .links { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+        .card .link-chip { font-size: 0.78rem; padding: 0.25rem 0.6rem; border-radius: 6px; background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border); text-decoration: none; transition: all 0.15s; cursor: pointer; }
+        .card .link-chip:hover { color: var(--cyan); border-color: var(--cyan); background: var(--bg-hover); }
+        .card.featured { background: linear-gradient(135deg, rgba(0, 102, 255, 0.18), rgba(0, 212, 255, 0.06)); border-color: rgba(0, 212, 255, 0.4); }
+        body.light-mode .card.featured { background: linear-gradient(135deg, rgba(0, 102, 204, 0.06), rgba(0, 102, 204, 0.02)); border-color: rgba(0, 102, 204, 0.3); }
+        .card.warn { border-left: 3px solid var(--warning); }
+
+        .panel { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 0.7rem 0.9rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { background: var(--bg-elevated); color: var(--accent); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        ul.checklist { list-style: none; padding: 0; }
+        ul.checklist li { padding: 0.4rem 0 0.4rem 1.6rem; position: relative; color: var(--text-secondary); }
+        ul.checklist li::before { content: '▸'; position: absolute; left: 0.4rem; color: var(--cyan); font-weight: 700; }
+
+        .callout { padding: 1rem 1.2rem; border-radius: 10px; border-left: 3px solid var(--cyan); background: rgba(0, 212, 255, 0.06); margin: 1rem 0; }
+        .callout.warn { border-left-color: var(--warning); background: rgba(245, 158, 11, 0.08); }
+        .callout strong { color: var(--text-primary); }
+
+        .footer { text-align: center; padding: 1.25rem; color: var(--text-tertiary); font-size: 0.85rem; background: rgba(0, 0, 30, 0.6); border-top: 1px solid var(--border); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .disclaimer { max-width: 1100px; margin: 1.5rem auto 0; padding: 1rem 1.25rem; font-size: 0.78rem; color: var(--text-muted); border: 1px dashed var(--border); border-radius: 8px; text-align: center; }
+
+        @media (max-width: 720px) {
+            .course-header h1 { font-size: 1.85rem; }
+            .main { padding: 1.25rem; }
+            .topbar { padding: 0 1rem; }
+            .course-title { display: none; }
+            .btn .label-long { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="logo">9DATAV</span>
+            <span class="course-title">Data Visualisation: Exam Hub</span>
+        </div>
+        <div class="topbar-right">
+            <button class="btn" id="toggleAll" aria-label="Expand or collapse all sections" title="Expand or collapse all sections">
+                <span id="toggleAllLabel">Collapse all</span>
+            </button>
+            <button class="btn icon-btn" id="themeToggle" aria-label="Toggle dark or light theme" title="Toggle theme">
+                <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="course-header">
+            <h1>Data Visualisation: Terminal Exam Hub</h1>
+            <p class="subtitle">Everything you need for the May terminal exam: theory guide, full mock paper calibrated slightly harder than the real thing, MCQ self-test, and a focused revision map keyed to LO1, LO2, and LO5.</p>
+            <div class="meta-row">
+                <span class="pill">9DATAV</span>
+                <span class="pill">MSc Business Analytics for Decision Makers</span>
+                <span class="pill">Terminal Exam: 40%</span>
+                <span class="pill">2 hours</span>
+                <span class="pill">21 April 2026</span>
+            </div>
+        </section>
+
+        <details class="section" open>
+            <summary><span class="num">01</span> Mock Exam (Practice Paper) <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <p class="lead">Sit this under exam conditions. It is deliberately a notch harder than the May paper so the real thing feels manageable.</p>
+                <div class="grid grid-2">
+                    <div class="card featured">
+                        <span class="card-tag">Student Paper</span>
+                        <h3>DV Mock Exam: April 2026</h3>
+                        <p>Section A: 4 short-form questions (30 marks). Section B: pick 2 of 5 long-form scenarios (70 marks). Theory and Applied paths offered on selected questions.</p>
+                        <div class="links">
+                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" target="_blank" rel="noopener">View PDF</a>
+                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.pdf" download>Download PDF</a>
+                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026.docx" download>Download DOCX</a>
+                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL-print.html" target="_blank" rel="noopener">Print HTML</a>
+                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL.md" target="_blank" rel="noopener">Markdown</a>
+                        </div>
+                    </div>
+                    <div class="card warn">
+                        <span class="card-tag">Self-Marking Reference</span>
+                        <h3>Mock Exam Answer Key &amp; Marking Rubric</h3>
+                        <p>Grade band rubrics for every Section B scenario, expected indicators per Section A item, target grade distribution, and full LO coverage matrix. Use it to self-mark <em>after</em> sitting the mock.</p>
+                        <div class="links">
+                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" target="_blank" rel="noopener">View PDF</a>
+                            <a class="link-chip" href="exam/Data-Visualisation-mock-exam-April-2026-ANSWER-key.pdf" download>Download PDF</a>
+                            <a class="link-chip" href="exam/DV-MOCK-EXAM-APRIL-ANSWER-KEY-print.html" target="_blank" rel="noopener">HTML</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">02</span> Self-Test &amp; Practice <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="grid grid-3">
+                    <a class="card" href="mock/exam.html" target="_blank" rel="noopener">
+                        <span class="card-tag">Interactive</span>
+                        <h3>Interactive Mock Exam</h3>
+                        <p>Browser-based mock with instant feedback. Best for active recall before the written sit-down.</p>
+                    </a>
+                    <a class="card" href="exam/DV-MOCK-EXAM-MC-APRIL.md" target="_blank" rel="noopener">
+                        <span class="card-tag">MCQ</span>
+                        <h3>33-Question MCQ Self-Test</h3>
+                        <p>Rapid-fire multiple choice covering perception, encoding choices, design integrity, and ethics.</p>
+                    </a>
+                    <a class="card" href="exam/DV-DUAL-PURPOSE-EXERCISES.html" target="_blank" rel="noopener">
+                        <span class="card-tag">Drills</span>
+                        <h3>Dual-Purpose Exercises</h3>
+                        <p>Short exercises that double as exam practice and DataVis Challenge sharpening reps.</p>
+                    </a>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">03</span> Theory &amp; Reference <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="grid grid-2">
+                    <a class="card featured" href="guide/DV-THEORY-GUIDE.html" target="_blank" rel="noopener">
+                        <span class="card-tag">Primary Reference</span>
+                        <h3>DV Theory Guide</h3>
+                        <p>The full study guide: six pillars of data visualisation, perception and cognition, design principles, integrity and ethics, and worked examples. Dark and light mode.</p>
+                    </a>
+                    <a class="card" href="guide/DV-THEORY-SKELETON.md" target="_blank" rel="noopener">
+                        <span class="card-tag">Outline</span>
+                        <h3>Theory Skeleton (Markdown)</h3>
+                        <p>Compressed outline of the guide. Useful for last-mile revision and for mapping topics to your DataVis Challenge artefacts.</p>
+                    </a>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">04</span> Terminal Exam Format (May) <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="panel">
+                    <table>
+                        <thead><tr><th>Element</th><th>Detail</th></tr></thead>
+                        <tbody>
+                            <tr><td>Weight</td><td>40% of module mark (CA = 60%)</td></tr>
+                            <tr><td>Duration</td><td>2 hours</td></tr>
+                            <tr><td>Section A</td><td>4 compulsory short-form questions, ~7 to 8 marks each (30 marks total)</td></tr>
+                            <tr><td>Section B</td><td>Choose <strong>2 of 4</strong> long-form scenario questions, 35 marks each (70 marks total)</td></tr>
+                            <tr><td>LOs assessed</td><td><strong>LO1</strong> (theory), <strong>LO2</strong> (perception &amp; cognition), <strong>LO5</strong> (design principles &amp; integrity)</td></tr>
+                            <tr><td>LOs assessed by CA</td><td>LO3, LO4, LO6 (DataVis Challenge)</td></tr>
+                            <tr><td>Materials</td><td>Closed book. No charts permitted. Plain answer booklet.</td></tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top:0.75rem; font-size:0.85rem; color:var(--text-tertiary);">The mock paper has <strong>5 Section B questions</strong> (one extra) so you can practise selection. Theory and Applied paths inside questions reward both academic depth and DataVis Challenge experience.</p>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">05</span> What to Revise: LO1 / LO2 / LO5 Map <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="grid grid-3">
+                    <div class="panel">
+                        <h3 style="color:var(--cyan);">LO1: Theory &amp; Foundations</h3>
+                        <ul class="checklist">
+                            <li>Purpose of visualisation: explanatory vs exploratory</li>
+                            <li>Kirk's design workflow (formulating brief to production)</li>
+                            <li>Knaflic: storytelling with data</li>
+                            <li>Tufte: data-ink ratio, chartjunk, small multiples</li>
+                            <li>Few: dashboards as at-a-glance monitoring</li>
+                            <li>Shneiderman mantra: overview, zoom, filter, details-on-demand</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3 style="color:var(--cyan);">LO2: Perception &amp; Cognition</h3>
+                        <ul class="checklist">
+                            <li>Pre-attentive attributes (position, length, hue, motion)</li>
+                            <li>Cleveland and McGill: ranking of encodings</li>
+                            <li>Gestalt principles (proximity, similarity, closure)</li>
+                            <li>Ware: visual thinking and working memory limits</li>
+                            <li>Colour: sequential, diverging, categorical; CVD safety</li>
+                            <li>Cognitive load and chart clutter</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3 style="color:var(--cyan);">LO5: Design Principles &amp; Integrity</h3>
+                        <ul class="checklist">
+                            <li>Truncated axes, dual axes, log scale (when each is honest)</li>
+                            <li>3D and pie chart pitfalls; when 100% stacked misleads</li>
+                            <li>Annotation, hierarchy, focal point</li>
+                            <li>Audience analysis: executive vs operational vs analyst</li>
+                            <li>Accessibility: contrast, alt-text, keyboard navigation</li>
+                            <li>Ethics: AI-generated charts, sparse data, equity in coverage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">06</span> Exam Strategy: 2-Hour Plan <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="panel">
+                    <table>
+                        <thead><tr><th>Time</th><th>Action</th></tr></thead>
+                        <tbody>
+                            <tr><td>0 to 5 min</td><td>Read whole paper. Pick your 2 Section B questions. Write the question numbers on the front cover.</td></tr>
+                            <tr><td>5 to 35 min</td><td>Section A (30 marks): ~7 minutes per question. Bullet structure is fine. Name the source.</td></tr>
+                            <tr><td>35 to 75 min</td><td>Section B Q1: 40 minutes. Plan 5 min, write 30 min, polish 5 min.</td></tr>
+                            <tr><td>75 to 115 min</td><td>Section B Q2: 40 minutes. Same structure.</td></tr>
+                            <tr><td>115 to 120 min</td><td>Sweep: numbering, every sub-part addressed, sources cited.</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="callout" style="margin-top:1rem;">
+                        <strong>Source naming wins marks.</strong> Even one accurate citation per long answer (Kirk 2019; Knaflic 2015; Cleveland and McGill 1984; Ware 2012; Tufte 2001; Few 2009; Shneiderman 1996) lifts an answer from descriptive to academic.
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="section" open>
+            <summary><span class="num">07</span> Common Failure Modes <span class="chev">▶</span></summary>
+            <div class="section-body">
+                <div class="grid grid-2">
+                    <div class="panel">
+                        <h3>Section A pitfalls</h3>
+                        <ul class="checklist">
+                            <li>Listing chart types without explaining <em>why</em> they fit the data</li>
+                            <li>Saying "use colour" without naming a palette family or CVD</li>
+                            <li>Quoting principles without naming the author</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3>Section B pitfalls</h3>
+                        <ul class="checklist">
+                            <li>Re-describing the scenario instead of analysing it</li>
+                            <li>Skipping audience analysis on dashboard questions</li>
+                            <li>Treating ethics as an afterthought rather than a structural section</li>
+                            <li>One-line "redesign" answers with no encoding rationale</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="callout warn">
+                    <strong>Honesty note about the mock.</strong> The mock is calibrated 5 to 10 marks harder than the May paper. A 55-65% on the mock typically corresponds to a 60-69% on the terminal. Use it to find weak topics, not to predict your final grade.
+                </div>
+            </div>
+        </details>
+
+        <div class="disclaimer">
+            Educational materials prepared for 9DATAV Data Visualisation, MSc in Business Analytics for Decision Makers (MSCBADM) at National College of Ireland. Mock exam content is illustrative and slightly harder than the live terminal paper by design. Use the answer key for self-marking <em>after</em> sitting the mock under timed conditions.
+        </div>
+    </main>
+
+    <footer class="footer">
+        9DATAV Data Visualisation &middot; National College of Ireland &middot; <a href="guide/DV-THEORY-GUIDE.html">Theory Guide</a> &middot; <a href="exam/Data-Visualisation-mock-exam-April-2026.pdf" download>Mock PDF</a>
+    </footer>
+
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const stored = localStorage.getItem('dv-theme');
+            if (stored === 'light') document.body.classList.add('light-mode');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                localStorage.setItem('dv-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            });
+
+            const toggleAll = document.getElementById('toggleAll');
+            const toggleAllLabel = document.getElementById('toggleAllLabel');
+            const sections = document.querySelectorAll('details.section');
+            function syncLabel() {
+                const allOpen = Array.from(sections).every(s => s.open);
+                toggleAllLabel.textContent = allOpen ? 'Collapse all' : 'Expand all';
+            }
+            toggleAll.addEventListener('click', () => {
+                const allOpen = Array.from(sections).every(s => s.open);
+                sections.forEach(s => s.open = !allOpen);
+                syncLabel();
+            });
+            sections.forEach(s => s.addEventListener('toggle', syncLabel));
+            syncLabel();
+        })();
+    </script>
+</body>
+</html>

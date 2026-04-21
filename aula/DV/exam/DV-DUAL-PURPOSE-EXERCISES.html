@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9DATAV 2026 | Dual-Purpose Exercises | Victor del Rosal</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000036'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='45' font-weight='bold' fill='%2300D4FF' text-anchor='middle'%3EDV%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== WAVE THEME (Tron Blue) ===== */
+        :root {
+            --blue-1: #000000;
+            --blue-2: #000036;
+            --blue-3: #02066F;
+            --blue-4: #170484;
+            --blue-5: #050c91;
+            --blue-6: #001489;
+            --blue-7: #0000B3;
+            --electric: #0066FF;
+            --cyan: #00D4FF;
+            --ice: #7dd3fc;
+            --glow: rgba(0, 102, 255, 0.2);
+            --glass: rgba(0, 20, 137, 0.25);
+            --glass-border: rgba(0, 180, 255, 0.15);
+            --glass-highlight: rgba(255, 255, 255, 0.1);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-tertiary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.35);
+            --bg-dark: #000010;
+            --bg-card: var(--glass);
+            --bg-elevated: rgba(0, 20, 80, 0.4);
+            --bg-hover: rgba(0, 100, 200, 0.2);
+            --border: var(--glass-border);
+            --accent: var(--cyan);
+            --accent-hover: var(--ice);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --nci-green: #00a651;
+            --card-shadow: 0 0 0 1px rgba(0, 180, 255, 0.1) inset, 0 20px 40px -16px rgba(0, 0, 0, 0.5), 0 0 60px -20px rgba(0, 102, 255, 0.3);
+            --card-hover-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2) inset, 0 32px 64px -16px rgba(0, 0, 0, 0.6), 0 0 100px -20px rgba(0, 212, 255, 0.4);
+            --purple: #a855f7;
+            --purple-glow: rgba(168, 85, 247, 0.2);
+        }
+
+        /* ===== LIGHT MODE ===== */
+        body.light-mode {
+            --text-primary: #1a1a1a;
+            --text-secondary: #3d3d3d;
+            --text-tertiary: #666666;
+            --text-muted: #999999;
+            --bg-dark: #ffffff;
+            --bg-card: rgba(245, 245, 245, 0.9);
+            --bg-elevated: rgba(240, 240, 240, 0.95);
+            --bg-hover: rgba(0, 0, 0, 0.05);
+            --border: rgba(0, 0, 0, 0.12);
+            --glass: rgba(250, 250, 250, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+            --card-hover-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+            --cyan: #0066cc;
+            --electric: #0052a3;
+            --accent: #0066cc;
+            --accent-hover: #0052a3;
+        }
+
+        body.light-mode::before { background: linear-gradient(135deg, rgba(240, 245, 255, 0.8), rgba(255, 255, 255, 0.9)); }
+        body.light-mode .topbar { background: rgba(255, 255, 255, 0.95); border-bottom: 1px solid rgba(0, 0, 0, 0.08); backdrop-filter: blur(20px); }
+        body.light-mode .session { background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.08); }
+        body.light-mode .session-header:hover { background: rgba(0, 0, 0, 0.02); }
+        body.light-mode .session-number { background: linear-gradient(135deg, #0066cc, #0052a3); }
+        body.light-mode .callout.info { background: rgba(0, 102, 204, 0.06); border-left: 4px solid #0066cc; }
+        body.light-mode .callout.success { background: rgba(34, 197, 94, 0.08); }
+        body.light-mode .callout.warning { background: rgba(245, 158, 11, 0.08); }
+        body.light-mode .exercise-box { background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.15); }
+        body.light-mode .concept-card { background: rgba(0, 102, 204, 0.05); border-left: 4px solid #0066cc; }
+        body.light-mode .badge { background: rgba(0, 102, 204, 0.1); color: #0052a3; }
+        body.light-mode pre, body.light-mode code { background: rgba(0, 0, 0, 0.04); color: #1a1a1a; }
+        body.light-mode table { border-color: rgba(0, 0, 0, 0.1); }
+        body.light-mode th { background: rgba(0, 0, 0, 0.03); }
+        body.light-mode td, body.light-mode th { border-color: rgba(0, 0, 0, 0.08); }
+        body.light-mode .btn-ghost { color: var(--text-secondary); }
+        body.light-mode .btn-ghost:hover { background: rgba(0, 0, 0, 0.05); }
+        body.light-mode .course-header h1 { background: linear-gradient(135deg, #1a1a1a 0%, #0052a3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        body.light-mode .course-header .subtitle { color: #3d3d3d; }
+        body.light-mode .course-header .course-code { color: #0066cc; }
+        body.light-mode .logo { color: #1a1a1a; }
+        body.light-mode .lens-card { background: rgba(0, 102, 204, 0.04); border-color: rgba(0, 0, 0, 0.08); }
+        body.light-mode .lens-number { background: linear-gradient(135deg, #0066cc, #0052a3); }
+        body.light-mode .teams-msg { background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.1); }
+        body.light-mode .dual-card { background: rgba(0, 102, 204, 0.04); border-color: rgba(0, 0, 0, 0.08); }
+        body.light-mode .footer { background: rgba(255, 255, 255, 0.95); border-top: 1px solid rgba(0, 0, 0, 0.08); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 102, 255, 0.12) 0%, transparent 50%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 212, 255, 0.08) 0%, transparent 40%); pointer-events: none; z-index: -1; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 180, 255, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 255, 0.5); }
+
+        .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: rgba(0, 0, 54, 0.95); border-bottom: 1px solid rgba(0, 102, 255, 0.2); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 8px 32px rgba(0, 102, 255, 0.1); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .topbar-left { display: flex; align-items: center; gap: 1rem; }
+        .logo { font-size: 1.25rem; font-weight: 700; background: linear-gradient(90deg, #7dd3fc 0%, #38bdf8 50%, #00D4FF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .course-title { font-size: 0.9rem; color: var(--text-secondary); padding-left: 1rem; border-left: 1px solid var(--border); }
+        .topbar-right { display: flex; gap: 0.75rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--cyan); }
+
+        .main { margin-top: 56px; margin-bottom: 40px; padding: 2rem; min-height: calc(100vh - 96px); max-width: 960px; margin-left: auto; margin-right: auto; }
+
+        .course-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        .course-header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.25rem; background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.3; }
+        .course-header .course-code { font-size: 0.9rem; font-weight: 600; color: var(--cyan); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .course-header .subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+        .course-header .meta { display: flex; gap: 1.5rem; margin-top: 1rem; font-size: 0.875rem; color: var(--text-tertiary); flex-wrap: wrap; }
+        .course-header .meta span { display: flex; align-items: center; gap: 0.35rem; }
+
+        /* Session cards */
+        .session { margin-bottom: 1rem; }
+        .session-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: var(--card-shadow); position: relative; overflow: hidden; }
+        .session-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.1) 20%, rgba(0, 212, 255, 0.2) 50%, rgba(0, 212, 255, 0.1) 80%, transparent 100%); }
+        .session.open .session-header { border-radius: 1rem 1rem 0 0; }
+        .session-header:hover { border-color: rgba(0, 212, 255, 0.3); box-shadow: var(--card-hover-shadow); transform: translateY(-2px); }
+        .session-number { width: 48px; height: 48px; background: linear-gradient(135deg, var(--blue-5), var(--cyan)); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: white; flex-shrink: 0; }
+        .session-info { flex: 1; }
+        .session-info h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .session-info .session-meta { font-size: 0.8rem; color: var(--text-tertiary); }
+        .session-toggle { color: var(--text-muted); transition: transform 0.3s ease, color 0.2s; }
+        .session-header:hover .session-toggle { color: var(--cyan); }
+        .session.open .session-toggle { transform: rotate(180deg); color: var(--cyan); }
+
+        .session-content { display: none; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-top: none; border-radius: 0 0 1rem 1rem; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
+        .session.open .session-content { display: block; }
+        .session-content h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--cyan); }
+        .session-content h3:first-child { margin-top: 0; }
+        .session-content h4 { font-size: 0.95rem; font-weight: 600; margin: 1rem 0 0.5rem; color: var(--text-primary); }
+        .session-content p { margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.925rem; }
+        .session-content ul, .session-content ol { margin: 0.5rem 0 1rem 1.5rem; color: var(--text-secondary); }
+        .session-content li { margin-bottom: 0.4rem; font-size: 0.925rem; }
+        .session-content strong { color: var(--ice); }
+        .session-content code { background: rgba(0, 102, 255, 0.2); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.875em; color: var(--cyan); }
+        .session-content pre { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.5; }
+        .session-content pre code { background: none; padding: 0; color: var(--text-secondary); }
+
+        /* Callouts */
+        .callout { padding: 1rem 1.25rem; border-radius: 0.5rem; margin: 1rem 0; border-left: 4px solid; backdrop-filter: blur(20px); }
+        .callout.info { background: rgba(0, 102, 255, 0.15); border-color: var(--electric); }
+        .callout.warning { background: rgba(245, 158, 11, 0.15); border-color: var(--warning); }
+        .callout.success { background: rgba(34, 197, 94, 0.15); border-color: var(--success); }
+
+        /* Dual-purpose cards */
+        .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+        .dual-card { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; }
+        .dual-card h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .dual-card.challenge h4 { color: var(--warning); }
+        .dual-card.exam h4 { color: var(--success); }
+        .dual-card p { font-size: 0.875rem; margin: 0; color: var(--text-secondary); }
+
+        /* Teams message blocks */
+        .teams-msg { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 180, 255, 0.15); border-radius: 0.75rem; padding: 1.25rem; margin: 1rem 0; position: relative; }
+        .teams-msg::before { content: 'Teams Chat'; position: absolute; top: -0.6rem; left: 1rem; background: rgba(0, 0, 54, 0.95); padding: 0 0.5rem; font-size: 0.7rem; font-weight: 600; color: var(--cyan); letter-spacing: 0.05em; text-transform: uppercase; }
+        body.light-mode .teams-msg::before { background: var(--bg-dark); color: #0066cc; }
+        .teams-msg p { margin-bottom: 0.6rem; }
+        .teams-msg p:last-child { margin-bottom: 0; }
+        .teams-msg strong { color: var(--ice); }
+        .teams-msg ol, .teams-msg ul { margin: 0.5rem 0 0.75rem 1.5rem; }
+        .teams-msg li { margin-bottom: 0.4rem; font-size: 0.9rem; }
+
+        /* Copy button */
+        .copy-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.7rem; transition: all 0.2s; }
+        .copy-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+        .copy-btn.copied { color: var(--success); border-color: var(--success); }
+
+        /* Debrief callout */
+        .debrief { background: rgba(168, 85, 247, 0.1); border-left: 4px solid var(--purple); padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+        .debrief h4 { color: var(--purple); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+        .debrief p { font-size: 0.875rem; margin: 0; color: var(--text-secondary); }
+
+        /* 7 Lenses grid */
+        .lenses-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin: 1rem 0; }
+        .lens-card { display: grid; grid-template-columns: 48px 1fr 1.2fr; gap: 1rem; align-items: center; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1rem; transition: all 0.2s; }
+        .lens-card:hover { border-color: rgba(0, 212, 255, 0.3); transform: translateX(4px); }
+        .lens-number { width: 36px; height: 36px; background: linear-gradient(135deg, var(--blue-5), var(--cyan)); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; color: white; flex-shrink: 0; }
+        .lens-name { font-weight: 600; font-size: 0.95rem; color: var(--text-primary); }
+        .lens-theory { font-size: 0.8rem; color: var(--text-tertiary); }
+        .lens-question { font-size: 0.85rem; color: var(--text-secondary); font-style: italic; }
+
+        /* Session plan table */
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(0, 102, 255, 0.15); font-weight: 600; color: var(--cyan); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        td { color: var(--text-secondary); }
+        tr:hover td { background: rgba(0, 102, 255, 0.05); }
+
+        /* Badge */
+        .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; margin-right: 0.35rem; }
+        .badge.team { background: rgba(0, 212, 255, 0.2); color: var(--cyan); }
+        .badge.individual { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+        .badge.paired { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge.duration { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+        /* Why it works summary */
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden; }
+        .summary-grid .col-header { padding: 0.75rem 1rem; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .summary-grid .col-header.challenge { background: rgba(245, 158, 11, 0.15); color: var(--warning); border-right: 1px solid var(--border); }
+        .summary-grid .col-header.exam { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .summary-grid .row { display: contents; }
+        .summary-grid .cell { padding: 0.6rem 1rem; font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid var(--border); }
+        .summary-grid .cell.left { border-right: 1px solid var(--border); }
+
+        /* Quote */
+        .closing-quote { text-align: center; padding: 2rem 1.5rem; margin-top: 2rem; border-top: 1px solid var(--border); }
+        .closing-quote p { font-size: 1.05rem; font-style: italic; color: var(--text-tertiary); max-width: 700px; margin: 0 auto; line-height: 1.7; }
+
+        /* Footer */
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; height: 40px; background: rgba(0, 0, 54, 0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 0.8rem; color: var(--text-muted); z-index: 100; backdrop-filter: blur(20px); }
+        .footer-sep { color: var(--border); }
+
+        @media (max-width: 768px) {
+            .main { padding: 1rem; }
+            .course-header h1 { font-size: 1.6rem; }
+            .dual-grid { grid-template-columns: 1fr; }
+            .lens-card { grid-template-columns: 36px 1fr; }
+            .lens-question { grid-column: 1 / -1; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .summary-grid .cell.left { border-right: none; }
+            .summary-grid .col-header.challenge { border-right: none; }
+            .course-title { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .lens-card { grid-template-columns: 1fr; }
+            .lens-number { width: 28px; height: 28px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <a class="logo" href="https://victordelrosal.com/aula/DV/" target="_blank">9DATAV</a>
+            <span class="course-title">Dual-Purpose Exercises</span>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-ghost" onclick="toggleTheme()" id="themeBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <span class="theme-label">Light</span>
+            </button>
+            <button class="btn btn-ghost" onclick="toggleAll()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                Expand All
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Header -->
+        <div class="course-header">
+            <div class="course-code">9DATAV DATA VISUALISATION</div>
+            <h1>Dual-Purpose Exercises</h1>
+            <p class="subtitle">Improve Your Challenge Submission AND Prepare for the Terminal Exam</p>
+            <div class="meta">
+                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> March 2026</span>
+                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 2.5 hours, online</span>
+                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> MS Teams Session</span>
+                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Lars Mortensen</span>
+            </div>
+        </div>
+
+        <!-- Dual-Purpose Logic -->
+        <div class="callout info" style="margin-bottom: 1.5rem;">
+            <p style="margin:0;"><strong>The Dual-Purpose Logic:</strong> Every exercise below uses the teams' own challenge projects as the material. Students aren't practising on hypothetical scenarios; they're stress-testing their own work through the lens of the theories the exam will test. The result: better challenge submissions AND exam-ready fluency with named principles.</p>
+        </div>
+
+        <!-- Session Plan -->
+        <div class="session open" id="session-plan">
+            <div class="session-header" onclick="toggleSession('session-plan')">
+                <div class="session-number" style="background: linear-gradient(135deg, var(--blue-5), var(--electric));">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </div>
+                <div class="session-info">
+                    <h2>Session Plan</h2>
+                    <span class="session-meta">2.5 hours, online, 5 exercises + debriefs</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <table>
+                    <thead>
+                        <tr><th>Time</th><th>Activity</th><th>Format</th><th>Duration</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0:00</td><td>Theory Primer: "The 7 Lenses"</td><td>Lecture, main room</td><td>15 min</td></tr>
+                        <tr><td>0:15</td><td>Exercise 1: The Principle Audit</td><td>Team breakout rooms</td><td>20 min</td></tr>
+                        <tr><td>0:35</td><td>Debrief Exercise 1</td><td>Main room, 2 teams present</td><td>10 min</td></tr>
+                        <tr><td>0:45</td><td>Exercise 2: The Decision-Maker Test</td><td>Individual, main room</td><td>12 min</td></tr>
+                        <tr><td>0:57</td><td>Debrief Exercise 2</td><td>Main room, read 3 answers</td><td>8 min</td></tr>
+                        <tr><td>1:05</td><td>Break</td><td></td><td>5 min</td></tr>
+                        <tr><td>1:10</td><td>Exercise 3: Cross-Team Tribunal</td><td>Paired breakout rooms</td><td>25 min</td></tr>
+                        <tr><td>1:35</td><td>Debrief Exercise 3</td><td>Main room, 2 pairs report</td><td>10 min</td></tr>
+                        <tr><td>1:45</td><td>Exercise 4: The Ethics Stress Test</td><td>Team breakout rooms</td><td>15 min</td></tr>
+                        <tr><td>2:00</td><td>Debrief Exercise 4</td><td>Main room, rapid round</td><td>10 min</td></tr>
+                        <tr><td>2:10</td><td>Exercise 5: The Exam Bridge</td><td>Individual, main room</td><td>15 min</td></tr>
+                        <tr><td>2:25</td><td>Wrap-up</td><td></td><td>5 min</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Theory Primer: The 7 Lenses -->
+        <div class="session" id="session-lenses">
+            <div class="session-header" onclick="toggleSession('session-lenses')">
+                <div class="session-number" style="background: linear-gradient(135deg, #02066F, var(--cyan));">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                </div>
+                <div class="session-info">
+                    <h2>Theory Primer: "The 7 Lenses"</h2>
+                    <span class="session-meta">15 min, main room &middot; Evaluation framework for the full session</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <p>Present these as 7 lenses to look through when evaluating ANY visualisation, including their own.</p>
+                <div class="lenses-grid">
+                    <div class="lens-card">
+                        <div class="lens-number">1</div>
+                        <div><span class="lens-name">Integrity</span><br><span class="lens-theory">Tufte: data-ink ratio, graphical integrity, lie factor</span></div>
+                        <div class="lens-question">Does the visual representation honestly reflect the data?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">2</div>
+                        <div><span class="lens-name">Perception</span><br><span class="lens-theory">Ware, Healey: pre-attentive attributes</span></div>
+                        <div class="lens-question">Will the viewer see the most important thing FIRST?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">3</div>
+                        <div><span class="lens-name">Grouping</span><br><span class="lens-theory">Gestalt: proximity, similarity, enclosure, connection</span></div>
+                        <div class="lens-question">Does the layout help the viewer understand what belongs together?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">4</div>
+                        <div><span class="lens-name">Encoding</span><br><span class="lens-theory">Cleveland and McGill: hierarchy of graphical perception</span></div>
+                        <div class="lens-question">Are you using the most accurate visual channel for the comparison?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">5</div>
+                        <div><span class="lens-name">Audience</span><br><span class="lens-theory">Knaflic, Kirk: audience-first design, the Big Idea</span></div>
+                        <div class="lens-question">Could your target decision-maker act on this in 30 seconds?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">6</div>
+                        <div><span class="lens-name">Disclosure</span><br><span class="lens-theory">Shneiderman: overview first, zoom and filter, details on demand</span></div>
+                        <div class="lens-question">Can the viewer go from summary to detail without being overwhelmed?</div>
+                    </div>
+                    <div class="lens-card">
+                        <div class="lens-number">7</div>
+                        <div><span class="lens-name">Ethics</span><br><span class="lens-theory">Tufte, Kirk: responsibility of the visualiser</span></div>
+                        <div class="lens-question">What does your visualisation NOT show, and could that mislead?</div>
+                    </div>
+                </div>
+                <div class="callout info">
+                    <p style="margin:0; font-style: italic;">"These 7 lenses are the vocabulary of the terminal exam. Every Section B question can be answered by applying 3-4 of these lenses to a scenario. Today, you're applying them to your own work."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 1 -->
+        <div class="session" id="session-ex1">
+            <div class="session-header" onclick="toggleSession('session-ex1')">
+                <div class="session-number">1</div>
+                <div class="session-info">
+                    <h2>The Principle Audit</h2>
+                    <span class="session-meta"><span class="badge team">Team</span><span class="badge duration">20 min</span> Breakout Rooms</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="dual-grid">
+                    <div class="dual-card challenge">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Challenge Benefit</h4>
+                        <p>Forces teams to audit their own dashboard design against named principles before submission. Catches design flaws early.</p>
+                    </div>
+                    <div class="dual-card exam">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Benefit</h4>
+                        <p>Practises the exact skill tested in Section B: evaluate a visualisation using named theories.</p>
+                    </div>
+                </div>
+
+                <h3>Post in Teams Chat</h3>
+                <div class="teams-msg">
+                    <button class="copy-btn" onclick="copyTeamsMsg(this)">Copy</button>
+                    <p><strong>TEAM EXERCISE 1: The Principle Audit (20 minutes)</strong></p>
+                    <p>Open your team's current dashboard or design sketch. Using the 7 Lenses framework, audit your own work.</p>
+                    <p><strong>Step 1 (10 min):</strong> Go through each of the 7 lenses. For each, write:</p>
+                    <ul>
+                        <li><strong>Score</strong> (Strong / Needs Work / Not Yet Addressed)</li>
+                        <li><strong>Evidence</strong> (one sentence explaining your score)</li>
+                        <li><strong>If "Needs Work":</strong> what specific change would fix it, and which principle justifies that change?</li>
+                    </ul>
+                    <p>Use this format in your Teams chat:</p>
+<pre><code>TEAM [number]: Principle Audit
+1. Integrity: [Strong/Needs Work/Not Yet] - [evidence]
+2. Perception: ...
+3. Grouping: ...
+4. Encoding: ...
+5. Audience: ...
+6. Disclosure: ...
+7. Ethics: ...
+
+TOP PRIORITY FIX: [the one change that would most improve our dashboard]</code></pre>
+                    <p><strong>Step 2 (10 min):</strong> Agree on your TOP 3 design changes based on the audit. For each, write one sentence starting with: "We will change [X] because [named principle] tells us that [reason]."</p>
+                    <p>Paste your full audit into the Teams chat before returning to the main room.</p>
+                </div>
+
+                <div class="debrief">
+                    <h4>Debrief (10 min)</h4>
+                    <p>Two teams present. Ask: "Which lens revealed something you hadn't noticed? Which change are you actually going to make?"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 2 -->
+        <div class="session" id="session-ex2">
+            <div class="session-header" onclick="toggleSession('session-ex2')">
+                <div class="session-number">2</div>
+                <div class="session-info">
+                    <h2>The Decision-Maker Test</h2>
+                    <span class="session-meta"><span class="badge individual">Individual</span><span class="badge duration">12 min</span> Main Room</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="dual-grid">
+                    <div class="dual-card challenge">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Challenge Benefit</h4>
+                        <p>Forces each student to articulate their dashboard's "Big Idea" in one sentence, which is exactly what a decision-maker needs.</p>
+                    </div>
+                    <div class="dual-card exam">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Benefit</h4>
+                        <p>Practises the audience-awareness skill tested in B3 (audience design) and the clarity expected across all Section B answers.</p>
+                    </div>
+                </div>
+
+                <h3>Post in Teams Chat</h3>
+                <div class="teams-msg">
+                    <button class="copy-btn" onclick="copyTeamsMsg(this)">Copy</button>
+                    <p><strong>INDIVIDUAL EXERCISE 2: The Decision-Maker Test (12 minutes)</strong></p>
+                    <p>Imagine your team's target decision-maker (the person whose mind you want to change) opens your dashboard for exactly 30 seconds. They will not click anything. They will not read small text. They will glance, absorb, and close it.</p>
+                    <p>Answer these four questions. Type your answers into the Teams chat.</p>
+                    <ol>
+                        <li><strong>Who is your decision-maker?</strong> (Job title and one sentence about what pressures they face)</li>
+                        <li><strong>The 30-Second Test:</strong> In one sentence, what will they take away from your dashboard in 30 seconds? If you cannot write this sentence, your dashboard does not yet have a thesis.</li>
+                        <li><strong>The Knaflic Test:</strong> Complete this sentence: "This dashboard argues that [decision-maker] should [action] because [data evidence]."</li>
+                        <li><strong>The Pre-Attentive Test:</strong> What is the single most important data point or trend on your dashboard? What pre-attentive attribute (colour, size, position, motion) makes it impossible to miss? If nothing stands out, name the specific change you would make.</li>
+                    </ol>
+                    <p>You have 12 minutes. Be specific, not generic.</p>
+                </div>
+
+                <div class="debrief">
+                    <h4>Debrief (8 min)</h4>
+                    <p>Read 3 answers aloud (volunteer or call on). Highlight: who had the clearest Big Idea? Who discovered their dashboard doesn't have one yet? That discovery is worth more than a week of building.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 3 -->
+        <div class="session" id="session-ex3">
+            <div class="session-header" onclick="toggleSession('session-ex3')">
+                <div class="session-number">3</div>
+                <div class="session-info">
+                    <h2>Cross-Team Tribunal</h2>
+                    <span class="session-meta"><span class="badge paired">Paired Teams</span><span class="badge duration">25 min</span> Breakout Rooms</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="dual-grid">
+                    <div class="dual-card challenge">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Challenge Benefit</h4>
+                        <p>Teams get external eyes on their work. Fresh perspectives catch blind spots that the building team cannot see.</p>
+                    </div>
+                    <div class="dual-card exam">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Benefit</h4>
+                        <p>Directly practises the B1/B2/B4 skill: critically evaluate someone else's visualisation using named theories, then propose improvements.</p>
+                    </div>
+                </div>
+
+                <div class="callout warning" style="margin-bottom: 1rem;">
+                    <p style="margin:0;"><strong>Setup:</strong> Pair teams in breakout rooms (Team 1 with Team 2, Team 3 with Team 4, etc.). Each team shares their dashboard (screen share or link).</p>
+                </div>
+
+                <h3>Post in Teams Chat</h3>
+                <div class="teams-msg">
+                    <button class="copy-btn" onclick="copyTeamsMsg(this)">Copy</button>
+                    <p><strong>CROSS-TEAM EXERCISE 3: The Tribunal (25 minutes)</strong></p>
+                    <p>You are paired with another team. Each team will evaluate the other's dashboard.</p>
+                    <p><strong>Round 1: Team A presents, Team B evaluates (12 min)</strong></p>
+                    <p>Team A: Share your screen. In 2 minutes, explain your dashboard's purpose, audience, and key message. Then stop talking.</p>
+                    <p>Team B: You have 10 minutes. Using the 7 Lenses, identify:</p>
+                    <ul>
+                        <li><strong>2 strengths</strong> (name the principle that makes it work)</li>
+                        <li><strong>2 weaknesses</strong> (name the principle being violated and why it matters for the intended audience)</li>
+                        <li><strong>1 specific improvement</strong> (what to change, justified by a named principle)</li>
+                    </ul>
+                    <p>Write your evaluation in this format:</p>
+<pre><code>TRIBUNAL: Team [X] evaluating Team [Y]
+STRENGTH 1: [what works] - Principle: [name]
+STRENGTH 2: [what works] - Principle: [name]
+WEAKNESS 1: [problem] - Violates: [principle] - Impact: [why it matters]
+WEAKNESS 2: [problem] - Violates: [principle] - Impact: [why it matters]
+IMPROVEMENT: [specific change] - Justified by: [principle]</code></pre>
+                    <p><strong>Round 2: Swap roles (12 min)</strong><br>Team B presents, Team A evaluates. Same format.</p>
+                    <p><strong>Final minute:</strong> Each team writes one sentence: "The most useful feedback we received was..."</p>
+                    <p>Paste both evaluations and your reflection into the Teams chat.</p>
+                </div>
+
+                <div class="debrief">
+                    <h4>Debrief (10 min)</h4>
+                    <p>Two pairs report back. Ask: "What surprised you about how another team saw your work?" and "Which named principle appeared most in your feedback?"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 4 -->
+        <div class="session" id="session-ex4">
+            <div class="session-header" onclick="toggleSession('session-ex4')">
+                <div class="session-number">4</div>
+                <div class="session-info">
+                    <h2>The Ethics Stress Test</h2>
+                    <span class="session-meta"><span class="badge team">Team</span><span class="badge duration">15 min</span> Breakout Rooms</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="dual-grid">
+                    <div class="dual-card challenge">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Challenge Benefit</h4>
+                        <p>Forces teams to confront what their visualisation omits, exaggerates, or implies. The difference between a good dashboard and a responsible one.</p>
+                    </div>
+                    <div class="dual-card exam">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Benefit</h4>
+                        <p>Directly prepares for the ethics components in B1a (public health ethics), B4a (investor ethics), and the ethical awareness rewarded across all questions.</p>
+                    </div>
+                </div>
+
+                <h3>Post in Teams Chat</h3>
+                <div class="teams-msg">
+                    <button class="copy-btn" onclick="copyTeamsMsg(this)">Copy</button>
+                    <p><strong>TEAM EXERCISE 4: The Ethics Stress Test (15 minutes)</strong></p>
+                    <p>Look at your own dashboard through the eyes of someone who DISAGREES with your message.</p>
+                    <p>Answer these five questions as a team. Be honest; this is where the real learning happens.</p>
+                    <ol>
+                        <li><strong>What does your visualisation NOT show?</strong> Name one important variable or context that is absent from your dashboard. Could its absence mislead your decision-maker?</li>
+                        <li><strong>The Axis Test:</strong> Do any of your charts use a truncated axis, a non-linear scale, or a time range that could exaggerate a trend? If yes, is it justified? What would Tufte say?</li>
+                        <li><strong>The Colour Test:</strong> Could your colour choices mislead? Are you using red/green in a way that implies good/bad when the data is neutral? Would a colour-blind viewer lose information?</li>
+                        <li><strong>The Omission Test:</strong> If a journalist wrote a headline based solely on your dashboard, what would the headline be? Now: is that headline fair to the full picture, or does it cherry-pick?</li>
+                        <li><strong>The "So What" Sentence:</strong> Write one sentence that acknowledges a limitation of your visualisation. This is the kind of sentence that earns marks in the terminal exam and earns trust with a real decision-maker.</li>
+                    </ol>
+                    <p>Format:</p>
+<pre><code>TEAM [number]: Ethics Stress Test
+1. Missing variable: ...
+2. Axis check: ...
+3. Colour check: ...
+4. Headline test: ...
+5. Limitation sentence: ...</code></pre>
+                    <p>Paste into Teams chat.</p>
+                </div>
+
+                <div class="debrief">
+                    <h4>Debrief (10 min)</h4>
+                    <p>Rapid round: each team reads their "limitation sentence" (question 5). Point out: this kind of intellectual honesty is what separates a first-class exam answer from a good one, and a trustworthy dashboard from a flashy one.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise 5 -->
+        <div class="session" id="session-ex5">
+            <div class="session-header" onclick="toggleSession('session-ex5')">
+                <div class="session-number">5</div>
+                <div class="session-info">
+                    <h2>The Exam Bridge</h2>
+                    <span class="session-meta"><span class="badge individual">Individual</span><span class="badge duration">15 min</span> Main Room</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="dual-grid">
+                    <div class="dual-card challenge">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Challenge Benefit</h4>
+                        <p>Nothing directly. This is the bridge to the exam.</p>
+                    </div>
+                    <div class="dual-card exam">
+                        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Exam Benefit</h4>
+                        <p>Students write a practice Section B opening paragraph using their own challenge project as the scenario.</p>
+                    </div>
+                </div>
+
+                <h3>Post in Teams Chat</h3>
+                <div class="teams-msg">
+                    <button class="copy-btn" onclick="copyTeamsMsg(this)">Copy</button>
+                    <p><strong>INDIVIDUAL EXERCISE 5: The Exam Bridge (15 minutes)</strong></p>
+                    <p>Imagine your team's dashboard appears as a scenario in the terminal exam. The question reads:</p>
+                    <p><em>"Critically evaluate the [your team's dashboard topic] visualisation. Consider the perceptual, cognitive, and ethical implications of the design choices, and propose specific improvements grounded in named design principles."</em></p>
+                    <p>Write TWO paragraphs:</p>
+                    <p><strong>Paragraph 1 (Evaluation):</strong> Identify two design strengths and two design weaknesses of your own dashboard. For each, name the specific theory or principle. Write as if you are answering a 20-mark exam question.</p>
+                    <p><strong>Paragraph 2 (Improvements):</strong> Propose two specific improvements. Each must reference a named principle and explain why the change would improve the viewer's experience.</p>
+                    <p>This is exam practice using material you already know deeply. Use the vocabulary: Tufte, Gestalt, pre-attentive, Knaflic, Shneiderman, Cleveland and McGill, progressive disclosure, cognitive load.</p>
+                    <p>Paste into Teams chat. You have 15 minutes.</p>
+                </div>
+
+                <div class="debrief">
+                    <h4>Debrief</h4>
+                    <p>No formal debrief needed. Scan responses. If time permits, read one strong example and explain why it would score well.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why This Works -->
+        <div class="session" id="session-summary">
+            <div class="session-header" onclick="toggleSession('session-summary')">
+                <div class="session-number" style="background: linear-gradient(135deg, var(--warning), var(--success));">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="session-info">
+                    <h2>Why This Works</h2>
+                    <span class="session-meta">The key insight: challenge projects ARE the exam scenarios</span>
+                </div>
+                <svg class="session-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="session-content">
+                <div class="summary-grid">
+                    <div class="col-header challenge">Challenge Benefit</div>
+                    <div class="col-header exam">Exam Benefit</div>
+                    <div class="row">
+                        <div class="cell left">Teams audit their own dashboards against named principles</div>
+                        <div class="cell">Students learn to evaluate visualisations using theory</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell left">Teams articulate their Big Idea for the decision-maker</div>
+                        <div class="cell">Students practise the audience-awareness B3 tests</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell left">Teams get external critical feedback from other teams</div>
+                        <div class="cell">Students practise the critical evaluation B1/B2/B4 skill</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell left">Teams confront ethical blind spots in their own work</div>
+                        <div class="cell">Students prepare for the ethics components across Section B</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell left">Students write evaluation paragraphs about familiar material</div>
+                        <div class="cell">Students practise Section B writing using content they know deeply</div>
+                    </div>
+                </div>
+
+                <div class="callout success">
+                    <p style="margin:0;"><strong>The key insight:</strong> the challenge projects ARE the exam scenarios. Students who can critically evaluate their own work using named theories can critically evaluate any scenario the exam gives them.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Closing quote -->
+        <div class="closing-quote">
+            <p>"You already know how to build. Now learn to name what you built and argue for why you built it that way. That's the difference between a dashboard and a discipline."</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <span>9DATAV 2026</span>
+        <span class="footer-sep">|</span>
+        <span>Data Visualisation</span>
+        <span class="footer-sep">|</span>
+        <span>Victor del Rosal</span>
+    </div>
+
+    <script>
+        function toggleSession(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('themeBtn');
+            const label = btn.querySelector('.theme-label');
+            if (document.body.classList.contains('light-mode')) {
+                label.textContent = 'Dark';
+            } else {
+                label.textContent = 'Light';
+            }
+        }
+
+        let allExpanded = false;
+        function toggleAll() {
+            allExpanded = !allExpanded;
+            document.querySelectorAll('.session').forEach(s => {
+                if (allExpanded) {
+                    s.classList.add('open');
+                } else {
+                    s.classList.remove('open');
+                }
+            });
+        }
+
+        function copyTeamsMsg(btn) {
+            const msg = btn.parentElement;
+            // Get all text content except the button
+            const clone = msg.cloneNode(true);
+            clone.querySelector('.copy-btn')?.remove();
+            const text = clone.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
