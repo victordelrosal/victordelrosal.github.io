@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="paperWarm" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0%" stop-color="#f1e7d3"/>
+      <stop offset="60%" stop-color="#e6d8bd"/>
+      <stop offset="100%" stop-color="#cdbb96"/>
+    </radialGradient>
+    <radialGradient id="oxbloodGlow" cx="0.18" cy="0.85" r="0.55">
+      <stop offset="0%" stop-color="#6b1d2c" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#6b1d2c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="goldGlow" cx="0.85" cy="0.15" r="0.5">
+      <stop offset="0%" stop-color="#a87a2c" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#a87a2c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 0.10  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0.55 0"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paperWarm)"/>
+  <rect width="1200" height="630" fill="url(#oxbloodGlow)"/>
+  <rect width="1200" height="630" fill="url(#goldGlow)"/>
+  <rect width="1200" height="630" filter="url(#grain)" opacity="0.40"/>
+
+  <!-- thin top rule + colophon -->
+  <line x1="80" y1="76" x2="1120" y2="76" stroke="#1a1a2e" stroke-width="0.8" opacity="0.32"/>
+  <text x="80" y="62" font-family="Georgia, serif" font-size="14" letter-spacing="6" fill="#6b1d2c" font-weight="500">ANTICIPATED · MAY 2026</text>
+  <text x="1120" y="62" font-family="Georgia, serif" font-size="14" letter-spacing="6" fill="#3a3654" text-anchor="end">MMXXVI · WESTPORT</text>
+  <text x="600" y="62" font-family="Georgia, serif" font-style="italic" font-weight="900" font-size="22" fill="#6b1d2c" text-anchor="middle">℣</text>
+
+  <!-- title block -->
+  <text x="80" y="270" font-family="Georgia, serif" font-weight="300" font-size="160" fill="#1a1a2e" letter-spacing="-5">Who Do We</text>
+  <text x="80" y="410" font-family="Georgia, serif" font-weight="300" font-size="160" fill="#1a1a2e" letter-spacing="-5">
+    Get to <tspan font-style="italic" fill="#6b1d2c">Be</tspan><tspan font-style="italic" fill="#a87a2c">.</tspan>
+  </text>
+
+  <!-- italic subtitle -->
+  <text x="80" y="475" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#3a3654">The questions you wanted to ask about AI,</text>
+  <text x="80" y="510" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#3a3654">in one book.</text>
+
+  <!-- bottom rule + author block -->
+  <line x1="80" y1="556" x2="200" y2="556" stroke="#6b1d2c" stroke-width="1" opacity="0.7"/>
+  <text x="80" y="585" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#3a3654">A NEW BOOK BY</text>
+  <text x="80" y="606" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#1a1a2e" font-weight="600">VICTOR DEL ROSAL · AUTHOR OF HUMANLIKE</text>
+
+  <!-- chair on right -->
+  <g transform="translate(950,290) scale(1.5)" stroke="#1a1a2e" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 0 100 L 0 50 L 70 50 L 70 100"/>
+    <path d="M 0 50 L 0 0 L 70 0 L 70 50"/>
+    <path d="M 14 50 L 14 6"/>
+    <path d="M 35 50 L 35 6"/>
+    <path d="M 56 50 L 56 6"/>
+    <path d="M 0 56 L 70 56"/>
+    <path d="M 0 100 L -7 113"/>
+    <path d="M 70 100 L 77 113"/>
+  </g>
+  <line x1="935" y1="425" x2="1075" y2="425" stroke="#1a1a2e" stroke-width="0.8" opacity="0.4"/>
+</svg>
