@@ -129,10 +129,19 @@ section{padding:110px 0;border-top:1px solid var(--rule);position:relative;z-ind
 .cover{
   width:100%;aspect-ratio:2/3;max-width:430px;margin:0 auto;
   transform:rotate(-2.2deg) translateY(0);
-  transition:transform .8s cubic-bezier(.2,.7,.2,1);
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.2,.7,.2,1);
   position:relative;background:transparent;
+  animation:coverFloat 7.5s ease-in-out infinite;
+  will-change:transform;
 }
-.cover:hover{transform:rotate(-1.2deg) translateY(-6px)}
+@keyframes coverFloat{
+  0%,100%{transform:rotate(-2.2deg) translateY(0)}
+  50%   {transform:rotate(-1.7deg) translateY(-6px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cover{animation:none;transform:rotate(-2.2deg);transition:none}
+}
 .cover img{display:block;width:100%;height:100%;object-fit:contain}
 .cover .spine{display:none}
 .cover-stage::after{
@@ -643,6 +652,43 @@ footer{
     nodes.s.textContent = pad(s, 2);
   }
   tick(); setInterval(tick, 1000);
+})();
+
+// Cover parallax tilt: subtle rotateX/rotateY follow cursor, gentle ambient float on idle.
+(function(){
+  var stage = document.querySelector('.cover-stage');
+  var card  = stage && stage.querySelector('.cover');
+  if(!stage || !card) return;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var rect = null, raf = 0;
+
+  function refreshRect(){ rect = stage.getBoundingClientRect(); }
+
+  function update(e){
+    if(!rect) refreshRect();
+    var x = (e.clientX - rect.left) / rect.width;   // 0..1
+    var y = (e.clientY - rect.top)  / rect.height;  // 0..1
+    var ry = (x - 0.5) * 8;     // -4 .. +4 deg around vertical
+    var rx = (0.5 - y) * 5;     // -2.5 .. +2.5 deg around horizontal
+    if(raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function(){
+      card.style.animation = 'none';
+      card.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) rotate(-2deg) translateY(-4px)';
+    });
+  }
+
+  function reset(){
+    rect = null;
+    if(raf) cancelAnimationFrame(raf);
+    card.style.transform = '';
+    card.style.animation = '';
+  }
+
+  stage.addEventListener('mousemove', update, {passive:true});
+  stage.addEventListener('mouseleave', reset);
+  window.addEventListener('scroll', function(){ rect = null; }, {passive:true});
+  window.addEventListener('resize', function(){ rect = null; });
 })();
 </script>
 
