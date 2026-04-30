@@ -3,374 +3,1256 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Save the Date · Cumbre de IA · 1–2 mayo 2027</title>
-<meta name="description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. 1 y 2 de mayo, 2027." />
-<meta property="og:title" content="Cumbre de IA · 1–2 mayo 2027" />
-<meta property="og:description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. 1 y 2 de mayo, 2027." />
-<meta property="og:type" content="website" />
+<title>Cumbre de IA · 1–2 mayo 2027 · Condado de Mayo, Irlanda</title>
+<meta name="description" content="Dos días para pensar despacio en la era de la inteligencia. Cumbre de IA en el oeste de Irlanda. 1 y 2 de mayo de 2027." />
+<meta property="og:title" content="Cumbre de IA · Mayo, Irlanda · 1–2 mayo 2027" />
+<meta property="og:description" content="Dos días para pensar despacio en la era de la inteligencia. Por invitación." />
 <meta property="og:image" content="bg.png" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%87%3C/text%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#FBF9F4" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='33.3' height='100' fill='%23169B62'/%3E%3Crect x='66.6' width='33.4' height='100' fill='%23FF883E'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #2a2a2a;
-    --ink-soft: #5a5a5a;
-    --ink-faint: #8a8a8a;
-    --rule: rgba(42, 42, 42, 0.18);
-    --paper: #ffffff;
-    --eire-green: #1B5E3A;
-    --eire-orange: #D17B3C;
+    /* Paper-warm palette */
+    --paper: #FBF9F4;
+    --paper-warm: #F4EFE3;
+    --paper-soft: #F8F5EC;
+    --ink: #1B1B17;
+    --ink-soft: #59544A;
+    --ink-faint: #A39D8E;
+    --ink-ghost: #D6CFBE;
+    --rule: rgba(27, 27, 23, 0.14);
+    --rule-soft: rgba(27, 27, 23, 0.08);
+
+    /* True Irish flag */
+    --eire-green: #169B62;
+    --eire-green-deep: #0d4f2a;
+    --eire-green-light: #4ed79a;
+    --eire-orange: #FF883E;
+    --eire-orange-deep: #b85a18;
+    --eire-orange-light: #ffc07a;
+
+    /* Metallic */
+    --gold: #C9A867;
+    --gold-soft: #E5D4A6;
+
+    --max: 1240px;
+    --gutter: clamp(20px, 4vw, 56px);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   html, body { height: 100%; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 300;
+    font-family: 'Onest', -apple-system, system-ui, sans-serif;
+    font-weight: 400;
     color: var(--ink);
     background: var(--paper);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     line-height: 1.55;
     overflow-x: hidden;
   }
-  .bg {
-    position: fixed; inset: 0; z-index: 0;
-    background-image: url('bg.png');
-    background-size: cover;
-    background-position: center;
-    filter: blur(6px) saturate(0.95) brightness(1.04);
-    transform: scale(1.08);
+
+  /* Paper grain overlay */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(201, 168, 103, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(22, 155, 98, 0.03) 0%, transparent 50%);
   }
-  .veil {
-    position: fixed; inset: 0; z-index: 1;
-    background:
-      radial-gradient(ellipse 90% 80% at center, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0.18) 100%);
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
   }
-  .lang {
-    position: fixed; top: 22px; right: 24px; z-index: 10;
-    display: flex; gap: 0;
-    font-family: 'Inter', sans-serif;
+
+  /* Topbar */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px var(--gutter);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(251, 249, 244, 0.72);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  .topbar.scrolled { border-bottom-color: var(--rule-soft); }
+  .topbar .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 40;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .topbar .brand .flag {
+    display: inline-block;
+    width: 14px; height: 10px;
+    vertical-align: -1px;
+    margin-right: 8px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--eire-orange) 66.66% 100%);
+    border: 1px solid rgba(27,27,23,0.12);
+    border-radius: 1px;
+  }
+  .topbar nav { display: flex; align-items: center; gap: 22px; }
+  .topbar nav a {
+    font-family: 'Onest', sans-serif;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .topbar nav a:hover { color: var(--ink); }
+  .topbar nav a.cta {
+    color: var(--ink);
+    font-weight: 500;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+  }
+  .topbar nav a.cta:hover { color: var(--eire-green); border-bottom-color: var(--eire-green); }
+  @media (max-width: 640px) {
+    .topbar nav .nav-link { display: none; }
+  }
+
+  /* Language toggle */
+  .lang { display: flex; align-items: center; gap: 0; }
+  .lang button {
+    border: 0; background: transparent;
+    font-family: 'Onest', sans-serif;
     font-size: 11px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-  }
-  .lang button {
-    border: 0; background: transparent;
     color: var(--ink-faint);
-    padding: 6px 10px;
+    padding: 4px 8px;
     cursor: pointer;
     transition: color 0.2s ease;
   }
-  .lang button.active { color: var(--ink); border-bottom: 1px solid var(--ink); }
-  .lang .sep { color: var(--ink-faint); padding: 6px 0; }
-  main {
-    position: relative; z-index: 2;
+  .lang button.active { color: var(--eire-green); font-weight: 500; }
+  .lang .sep { color: var(--ink-ghost); }
+
+  /* HERO */
+  .hero {
+    position: relative;
     min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 80px 28px 60px;
-    max-width: 720px;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px var(--gutter) 80px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: -5%; z-index: 0;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px) saturate(0.95) brightness(1.04);
+    opacity: 1;
+    transform: scale(1.05);
+    will-change: transform;
+  }
+  .hero-veil {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      radial-gradient(ellipse 90% 80% at 50% 50%, rgba(251,249,244,0.30) 0%, rgba(251,249,244,0.18) 60%, rgba(251,249,244,0.55) 100%),
+      linear-gradient(to bottom, rgba(251,249,244,0.15), rgba(251,249,244,0.45) 70%, var(--paper) 100%);
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: var(--max);
     margin: 0 auto;
-    text-align: center;
-  }
-  .mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    color: var(--ink-faint);
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    margin-bottom: 56px;
-  }
-  .mark .dot { display: inline-block; margin: 0 6px; opacity: 0.5; }
-  .kicker {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.45em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 28px;
-  }
-  h1 {
-    font-family: 'Fraunces', 'Playfair Display', 'Cormorant Garamond', serif;
-    font-weight: 900;
-    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
-    color: var(--ink);
-    margin-bottom: 28px;
     width: 100%;
-    max-width: 640px;
   }
-  h1 em { font-style: normal; font-weight: 900; color: var(--eire-green); }
-  h1 .hl1, h1 .hl2 { display: block; white-space: nowrap; }
-  h1 .hl1 {
-    font-size: 120px;
-    line-height: 0.95;
-    letter-spacing: -0.025em;
-    margin-bottom: 6px;
+  .eyebrow {
+    font-family: 'Onest', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 14px;
   }
-  h1 .hl2 {
-    font-size: 50px;
-    line-height: 1.0;
-    letter-spacing: -0.005em;
+  .eyebrow .tricolor {
+    display: inline-block;
+    width: 28px; height: 2px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--eire-orange) 66.66% 100%);
+  }
+  h1.headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 36px;
+    max-width: 11em;
+  }
+  h1.headline .hl1 {
+    display: block;
+    font-size: clamp(64px, 11.5vw, 168px);
+  }
+  h1.headline .hl2 {
+    display: block;
+    font-size: clamp(28px, 4.6vw, 62px);
     font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    margin-top: 6px;
+    white-space: nowrap;
   }
-  .eire {
-    background: linear-gradient(90deg,
-      #0a3d22 0%,
-      #169B62 10%,
-      #4ed79a 22%,
-      #169B62 30%,
-      #0a3d22 33%,
+  h1.headline em {
+    font-style: normal;
+    font-weight: 900;
+    color: var(--eire-green);
+  }
+  .eire-word {
+    background: linear-gradient(92deg,
+      var(--eire-green-deep) 0%,
+      var(--eire-green) 11%,
+      var(--eire-green-light) 22%,
+      var(--eire-green) 30%,
+      var(--eire-green-deep) 33%,
       #e8dfc6 40%,
       #ffffff 50%,
       #e8dfc6 60%,
-      #b85a18 66%,
-      #FF883E 72%,
-      #ffc07a 82%,
-      #FF883E 90%,
-      #b85a18 100%);
-    background-size: 100% 100%;
+      var(--eire-orange-deep) 66%,
+      var(--eire-orange) 72%,
+      var(--eire-orange-light) 82%,
+      var(--eire-orange) 90%,
+      var(--eire-orange-deep) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    -webkit-text-stroke: 0.5px rgba(42,42,42,0.18);
-    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.6)) drop-shadow(0 2px 4px rgba(42,42,42,0.08));
+    -webkit-text-stroke: 0.5px rgba(27,27,23,0.18);
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.5)) drop-shadow(0 2px 6px rgba(27,27,23,0.07));
   }
-  .subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: clamp(18px, 2.4vw, 24px);
-    color: var(--ink-soft);
-    margin-bottom: 56px;
-    max-width: 540px;
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(20px, 3.5vw, 56px);
+    align-items: end;
+    margin-top: 16px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    max-width: 920px;
   }
-  .rule {
-    width: 84px; height: 2px;
-    margin: 0 auto 56px;
-    background: linear-gradient(to right,
-      var(--eire-green) 0%, var(--eire-green) 33.33%,
-      #ffffff 33.33%, #ffffff 66.66%,
-      var(--eire-orange) 66.66%, var(--eire-orange) 100%);
-    box-shadow: 0 0 0 1px rgba(42,42,42,0.06);
-  }
-  .mark { color: var(--eire-green); }
-  .mark .dot { color: var(--eire-orange); opacity: 0.9; }
-  .place {
-    color: var(--ink-soft);
-  }
-  .form button:hover { color: var(--eire-orange); }
-  .footer-flag {
-    display: inline-block;
-    width: 18px; height: 4px;
-    vertical-align: middle;
-    margin: 0 8px;
-    background: linear-gradient(to right,
-      var(--eire-green) 0%, var(--eire-green) 33.33%,
-      #ffffff 33.33%, #ffffff 66.66%,
-      var(--eire-orange) 66.66%, var(--eire-orange) 100%);
-    border: 1px solid rgba(42,42,42,0.08);
-  }
-  .lang button.active { color: var(--eire-green); border-bottom: 1px solid var(--eire-green); }
-  .date-block { margin-bottom: 56px; }
-  .date {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4vw, 38px);
-    font-weight: 400;
-    letter-spacing: 0.04em;
+  .hero-meta .when {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(20px, 2.6vw, 30px);
+    letter-spacing: -0.015em;
     color: var(--ink);
+    line-height: 1.1;
+  }
+  .hero-meta .when small {
+    display: block;
+    font-family: 'Onest', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
     margin-bottom: 8px;
   }
-  .place {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 13px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-  }
-  .blurb {
+  .hero-meta .lede {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
-    font-weight: 300;
-    line-height: 1.55;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.4;
     color: var(--ink-soft);
-    max-width: 540px;
-    margin: 0 auto 56px;
+    max-width: 36em;
   }
-  .blurb p + p { margin-top: 14px; }
-  .form {
-    display: flex; gap: 0;
-    max-width: 460px; margin: 0 auto 24px;
-    border-bottom: 1px solid var(--rule);
+  .hero-cta {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+    margin-top: 44px;
+  }
+  .btn-primary, .btn-ghost {
+    font-family: 'Onest', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 26px;
+    cursor: pointer;
+    border: 0;
+    transition: all 0.25s ease;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 0;
+    position: relative;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--eire-orange) 66.66% 100%);
+  }
+  .btn-primary:hover { background: var(--eire-green-deep); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-primary .arr, .btn-ghost .arr { font-size: 14px; transition: transform 0.25s ease; }
+  .btn-primary:hover .arr, .btn-ghost:hover .arr { transform: translateX(4px); }
+
+  .scroll-cue {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    font-family: 'Onest', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .scroll-cue .line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--ink-faint));
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* Sections */
+  section {
+    position: relative; z-index: 2;
+    padding: clamp(80px, 12vw, 160px) var(--gutter);
+  }
+  .container {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    margin-bottom: clamp(40px, 6vw, 80px);
+    align-items: baseline;
+  }
+  .section-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--eire-green);
+  }
+  .section-num::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 1px;
+    background: var(--eire-green);
+    vertical-align: middle;
+    margin-right: 12px;
+    margin-bottom: 3px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(34px, 5.5vw, 76px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  @media (max-width: 720px) {
+    .section-head { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  /* MANIFESTO */
+  .manifesto {
+    background: var(--paper-soft);
+    border-top: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .manifesto .body {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(22px, 3vw, 40px);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 26ch;
+  }
+  .manifesto .body strong {
+    font-weight: 700;
+    color: var(--eire-green-deep);
+    font-style: normal;
+  }
+  .manifesto .body em {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 100px);
+  }
+  .manifesto-side {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 38ch;
+    align-self: end;
     padding-bottom: 4px;
   }
-  .form input[type="email"] {
-    flex: 1;
-    border: 0; outline: 0; background: transparent;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    padding: 12px 4px;
+  .manifesto-side .att {
+    display: block;
+    font-family: 'Onest', sans-serif;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 18px;
+  }
+  @media (max-width: 800px) {
+    .manifesto-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* TWO DAYS */
+  .days-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 4vw, 64px);
+  }
+  .day {
+    border-top: 2px solid var(--ink);
+    padding-top: 32px;
+    position: relative;
+  }
+  .day .day-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
     color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .day .day-mark .of {
+    color: var(--ink-ghost);
+    font-weight: 400;
+  }
+  .day .day-tag {
+    font-family: 'Onest', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--eire-green);
+    margin-bottom: 22px;
+  }
+  .day .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(26px, 3.4vw, 42px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .day .day-body {
+    font-family: 'Onest', sans-serif;
+    font-size: clamp(15px, 1.4vw, 17px);
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    max-width: 36ch;
+  }
+  .day ul {
+    list-style: none;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .day li {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .day li .t {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 60;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--eire-green);
     letter-spacing: 0.02em;
   }
-  .form input[type="email"]::placeholder {
-    color: var(--ink-faint);
-    letter-spacing: 0.08em;
+  .day li .l {
+    font-family: 'Onest', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.4;
   }
-  .form button {
-    border: 0; background: transparent;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
+  .day li .l small {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+  @media (max-width: 800px) {
+    .days-grid { grid-template-columns: 1fr; gap: 60px; }
+  }
+
+  /* THE PLACE */
+  .place {
+    background: var(--paper-warm);
+    overflow: hidden;
+  }
+  .place-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 5vw, 80px);
+    align-items: center;
+  }
+  .place-image {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--eire-green-deep), var(--ink));
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(27,27,23,0.4), 0 10px 30px -10px rgba(27,27,23,0.15);
+  }
+  .place-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .place-image:hover img { transform: scale(1.05); }
+  .place-image::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(27,27,23,0.15));
+    pointer-events: none;
+  }
+  .place-text h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(32px, 4.4vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .place-text h3 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--eire-green);
+  }
+  .place-text p {
+    font-family: 'Onest', sans-serif;
+    font-size: clamp(15px, 1.5vw, 18px);
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    max-width: 44ch;
+  }
+  .place-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .place-stat .v {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .place-stat .k {
+    font-family: 'Onest', sans-serif;
+    font-size: 10.5px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 8px;
+  }
+  @media (max-width: 800px) {
+    .place-grid { grid-template-columns: 1fr; }
+    .place-image { aspect-ratio: 5/4; }
+  }
+
+  /* WHO */
+  .who-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(20px, 3vw, 40px);
+  }
+  .who-card {
+    padding: 36px 28px;
+    border: 1px solid var(--rule-soft);
+    background: var(--paper);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .who-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -20px rgba(27,27,23,0.18);
+  }
+  .who-card .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 60;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--eire-orange);
+    margin-bottom: 20px;
+    letter-spacing: 0.04em;
+  }
+  .who-card .lbl {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--ink);
-    padding: 12px 0 12px 16px;
+    margin-bottom: 12px;
+  }
+  .who-card .desc {
+    font-family: 'Onest', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 900px) {
+    .who-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .who-grid { grid-template-columns: 1fr; }
+  }
+
+  /* TRAVEL */
+  .travel {
+    background: var(--paper-soft);
+  }
+  .travel-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+  }
+  .travel-flow {
+    list-style: none;
+  }
+  .travel-flow li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: start;
+  }
+  .travel-flow li:last-child { border-bottom: 0; }
+  .travel-flow .step {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 144;
+    font-size: 22px;
+    color: var(--eire-green);
+    line-height: 1;
+  }
+  .travel-flow .where {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 60;
+    font-size: clamp(17px, 1.7vw, 21px);
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .travel-flow .det {
+    font-family: 'Onest', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .travel-aside {
+    padding: clamp(28px, 3vw, 44px);
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .travel-aside h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-variation-settings: "opsz" 60;
+    font-size: 18px;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .travel-aside ul { list-style: none; }
+  .travel-aside li {
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--rule-soft);
+    font-family: 'Onest', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex; justify-content: space-between; gap: 10px;
+  }
+  .travel-aside li:last-child { border-bottom: 0; }
+  .travel-aside li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  @media (max-width: 800px) {
+    .travel-grid { grid-template-columns: 1fr; }
+  }
+
+  /* CTA SAVE THE DATE */
+  .cta-section {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.10;
+    filter: blur(4px) brightness(1.4);
+  }
+  .cta-section::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--eire-orange) 66.66% 100%);
+  }
+  .cta-section .container { position: relative; z-index: 2; }
+  .cta-section .section-num { color: var(--gold-soft); }
+  .cta-section .section-num::before { background: var(--gold-soft); }
+  .cta-section .section-title { color: var(--paper); max-width: 13ch; }
+  .cta-section .section-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-soft);
+  }
+  .cta-form {
+    margin-top: 56px;
+    max-width: 560px;
+  }
+  .cta-form .input-row {
+    display: flex;
+    border-bottom: 1px solid rgba(251, 249, 244, 0.3);
+    padding-bottom: 4px;
+    transition: border-color 0.3s ease;
+  }
+  .cta-form .input-row:focus-within { border-bottom-color: var(--gold-soft); }
+  .cta-form input[type="email"] {
+    flex: 1;
+    border: 0; outline: 0; background: transparent;
+    font-family: 'Onest', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 16px 0;
+    color: var(--paper);
+    letter-spacing: 0.01em;
+  }
+  .cta-form input[type="email"]::placeholder {
+    color: rgba(251,249,244,0.45);
+    letter-spacing: 0.04em;
+  }
+  .cta-form button {
+    border: 0; background: transparent;
+    font-family: 'Onest', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    padding: 16px 0 16px 24px;
     cursor: pointer;
     transition: color 0.2s ease;
+    display: inline-flex; align-items: center; gap: 10px;
   }
-  .form button:hover { color: var(--ink-faint); }
-  .note {
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
-    margin-bottom: 80px;
-  }
-  .footer {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-top: auto;
-    padding-top: 40px;
-  }
-  .ok {
+  .cta-form button:hover { color: var(--paper); }
+  .cta-form .ok {
     display: none;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 18px;
-    color: var(--ink);
-    margin-bottom: 24px;
+    font-size: 22px;
+    color: var(--gold-soft);
   }
-  .ok.show { display: block; }
-  .form.hidden { display: none; }
+  .cta-form.sent .input-row { display: none; }
+  .cta-form.sent .ok { display: block; }
+  .cta-foot {
+    margin-top: 24px;
+    font-family: 'Onest', sans-serif;
+    font-size: 12.5px;
+    color: rgba(251,249,244,0.55);
+    letter-spacing: 0.04em;
+  }
+  .cta-foot a {
+    color: var(--gold-soft);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,103,0.35);
+  }
+  .cta-foot a:hover { color: var(--paper); }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 2;
+    padding: 40px var(--gutter);
+    background: var(--paper);
+    border-top: 1px solid var(--rule-soft);
+    display: flex;
+    flex-wrap: wrap; gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Onest', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+  footer .flag {
+    display: inline-block;
+    width: 16px; height: 11px;
+    vertical-align: -1px;
+    margin: 0 6px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0 33.33%,
+      #ffffff 33.33% 66.66%,
+      var(--eire-orange) 66.66% 100%);
+    border: 1px solid rgba(27,27,23,0.12);
+    border-radius: 1px;
+  }
+
+  /* i18n */
   [data-en], [data-es] { display: none; }
   html[lang="es"] [data-es] { display: inline; }
   html[lang="en"] [data-en] { display: inline; }
-  html[lang="es"] h1 > [data-es] { display: block; }
-  html[lang="en"] h1 > [data-en] { display: block; }
-  @media (max-width: 600px) {
-    main { padding: 60px 22px 40px; }
-    .mark { margin-bottom: 40px; font-size: 18px; }
-    .form { flex-direction: column; gap: 8px; border: 0; }
-    .form input[type="email"] {
-      border-bottom: 1px solid var(--rule);
-      text-align: center; padding: 12px 0;
+  html[lang="es"] .block[data-es],
+  html[lang="es"] [data-es].block { display: block; }
+  html[lang="en"] .block[data-en],
+  html[lang="en"] [data-en].block { display: block; }
+
+  /* Reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .stagger.in > * { opacity: 1; transform: translateY(0); }
+  .stagger.in > *:nth-child(1) { transition-delay: 0.05s; }
+  .stagger.in > *:nth-child(2) { transition-delay: 0.18s; }
+  .stagger.in > *:nth-child(3) { transition-delay: 0.30s; }
+  .stagger.in > *:nth-child(4) { transition-delay: 0.42s; }
+  .stagger.in > *:nth-child(5) { transition-delay: 0.54s; }
+  .stagger.in > *:nth-child(6) { transition-delay: 0.66s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
-    .form button { padding: 12px 0; }
-    .lang { top: 14px; right: 14px; }
   }
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true"></div>
-<div class="veil" aria-hidden="true"></div>
 
-<div class="lang">
-  <button id="es-btn" class="active" onclick="setLang('es')">ES</button>
-  <span class="sep">·</span>
-  <button id="en-btn" onclick="setLang('en')">EN</button>
-</div>
-
-<main>
-  <div class="kicker">Save the Date</div>
-  <h1>
-    <span data-es>
-      <span class="hl1"><em>Cumbre de IA</em></span>
-      <span class="hl2">en el oeste de <span class="eire">Irlanda</span></span>
+<header class="topbar" id="topbar">
+  <div class="brand"><span class="flag" aria-hidden="true"></span>Cumbre <span data-es>de IA</span><span data-en>AI Summit</span> · 2027</div>
+  <nav>
+    <a href="#manifesto" class="nav-link"><span data-es>Manifiesto</span><span data-en>Manifesto</span></a>
+    <a href="#days" class="nav-link"><span data-es>Programa</span><span data-en>Programme</span></a>
+    <a href="#place" class="nav-link"><span data-es>El lugar</span><span data-en>The place</span></a>
+    <a href="#cta" class="cta"><span data-es>Save the Date</span><span data-en>Save the Date</span></a>
+    <span class="lang">
+      <button id="es-btn" class="active" onclick="setLang('es')">ES</button>
+      <span class="sep">·</span>
+      <button id="en-btn" onclick="setLang('en')">EN</button>
     </span>
-    <span data-en>
-      <span class="hl1"><em>AI Summit</em></span>
-      <span class="hl2">in the West of <span class="eire">Ireland</span></span>
-    </span>
-  </h1>
-  <p class="subtitle">
-    <span data-es>Un día de trabajo sobre lo que está cambiando, y un recorrido por el borde atlántico salvaje de Europa.</span>
-    <span data-en>A working day on what is changing, and a guided visit to the wild Atlantic edge of Europe.</span>
-  </p>
+  </nav>
+</header>
 
-  <div class="rule"></div>
+<section class="hero">
+  <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="hero-inner stagger" id="heroStagger">
+    <p class="eyebrow">
+      <span class="tricolor" aria-hidden="true"></span>
+      <span data-es>Por invitación · Mayo 2027</span>
+      <span data-en>By invitation · May 2027</span>
+    </p>
 
-  <div class="date-block">
-    <div class="date">
-      <span data-es>1 &amp; 2 de mayo, 2027</span>
-      <span data-en>May 1 &amp; 2, 2027</span>
+    <h1 class="headline">
+      <span data-es>
+        <span class="hl1"><em>Cumbre de IA</em></span>
+        <span class="hl2">en el oeste de <span class="eire-word">Irlanda</span></span>
+      </span>
+      <span data-en>
+        <span class="hl1"><em>AI Summit</em></span>
+        <span class="hl2">in the West of <span class="eire-word">Ireland</span></span>
+      </span>
+    </h1>
+
+    <div class="hero-meta">
+      <div class="when">
+        <small><span data-es>Cuándo &amp; dónde</span><span data-en>When &amp; where</span></small>
+        <span data-es>1 &amp; 2 mayo, 2027<br/>Westport · Condado de Mayo</span>
+        <span data-en>May 1 &amp; 2, 2027<br/>Westport · County Mayo</span>
+      </div>
+      <div class="lede">
+        <span data-es>Dos días para pensar despacio en la era de la inteligencia. Un día de programa. Un día por la costa atlántica. Una sola conversación que importa.</span>
+        <span data-en>Two days to think slowly in the age of intelligence. One day of programme. One day along the Atlantic. One conversation worth having.</span>
+      </div>
     </div>
-    <div class="place">
-      <span data-es>Condado de Mayo · Irlanda</span>
-      <span data-en>County Mayo · Ireland</span>
+
+    <div class="hero-cta">
+      <a href="#cta" class="btn-primary">
+        <span data-es>Reservar mi lugar</span>
+        <span data-en>Save the date</span>
+        <span class="arr">→</span>
+      </a>
+      <a href="#manifesto" class="btn-ghost">
+        <span data-es>Por qué</span>
+        <span data-en>Why</span>
+        <span class="arr">↓</span>
+      </a>
     </div>
   </div>
-
-  <div class="blurb">
-    <p>
-      <span data-es>Un día de programa. Dos días por Mayo alrededor: Croagh Patrick, la bahía de Clew, la Wild Atlantic Way.</span>
-      <span data-en>One programme day. Two days in Mayo around it: Croagh Patrick, Clew Bay, the Wild Atlantic Way.</span>
-    </p>
-    <p>
-      <span data-es>Para fundadores, operadores y amigos que quieren pensar con claridad sobre la IA en un lugar que ayuda a pensar.</span>
-      <span data-en>For founders, operators, and friends who want to think clearly about AI in a place that helps you think.</span>
-    </p>
+  <div class="scroll-cue" aria-hidden="true">
+    <span data-es>desliza</span><span data-en>scroll</span>
+    <span class="line"></span>
   </div>
+</section>
 
-  <p class="ok" id="ok">
-    <span data-es>Gracias. Te avisamos cuando se acerque la fecha.</span>
-    <span data-en>Thank you. We will be in touch nearer the date.</span>
-  </p>
+<section class="manifesto" id="manifesto">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>I · Manifiesto</span>
+        <span data-en>I · Manifesto</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>Por qué <em>aquí</em>, por qué <em>ahora</em>.</span>
+        <span data-en>Why <em>here</em>, why <em>now</em>.</span>
+      </h2>
+    </div>
+    <div class="manifesto-grid">
+      <p class="body reveal">
+        <span data-es>No te invitamos a Irlanda para hablar de <strong>inteligencia artificial</strong>. Te invitamos a Irlanda para <strong>pensar</strong>. La pregunta no es <em>si</em> la usaremos. Es <em>quiénes nos volvemos</em> al usarla.</span>
+        <span data-en>We are not flying you to Ireland to talk about <strong>artificial intelligence</strong>. We are flying you to Ireland to <strong>think</strong>. The question is not <em>whether</em> we will use it. It is <em>who we become</em> by using it.</span>
+      </p>
+      <p class="manifesto-side reveal">
+        <span data-es>"El paisaje no es decoración. Es parte del razonamiento. Algunas ideas solo se pueden tener mirando el Atlántico."</span>
+        <span data-en>"Landscape is not decoration. It is part of the reasoning. Some ideas can only be had while looking at the Atlantic."</span>
+        <span class="att" data-es>— Una nota de los anfitriones</span>
+        <span class="att" data-en>— A note from the hosts</span>
+      </p>
+    </div>
+  </div>
+</section>
 
-  <form class="form" id="form" onsubmit="return saveTheDate(event)">
-    <input type="email" id="email" required autocomplete="email" />
-    <button type="submit">
-      <span data-es>Avísame</span>
-      <span data-en>Remind me</span>
-    </button>
-  </form>
+<section id="days">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>II · Dos días</span>
+        <span data-en>II · Two days</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>Programa &amp; <em>peregrinaje</em>.</span>
+        <span data-en>Programme &amp; <em>pilgrimage</em>.</span>
+      </h2>
+    </div>
 
-  <p class="note">
-    <span data-es>Programa y sede confirmados a inicios de 2027. Solo por invitación.</span>
-    <span data-en>Programme and venue confirmed in early 2027. Invitation only.</span>
-  </p>
+    <div class="days-grid">
+      <article class="day reveal">
+        <div class="day-mark">01<span class="of"> / 02</span></div>
+        <div class="day-tag">
+          <span data-es>Sábado · 1 mayo</span>
+          <span data-en>Saturday · May 1</span>
+        </div>
+        <h3 class="day-title">
+          <span data-es>La cumbre.</span>
+          <span data-en>The summit.</span>
+        </h3>
+        <p class="day-body">
+          <span data-es>Un día de trabajo en Westport. Conversaciones, no presentaciones. Por invitación, en grupos pequeños. Para fundadores, operadores e investigadores que ya están construyendo con IA.</span>
+          <span data-en>A working day in Westport. Conversations, not presentations. Invitation only, in small groups. For founders, operators and researchers already building with AI.</span>
+        </p>
+        <ul>
+          <li><span class="t">09:00</span><span class="l"><span data-es>Café &amp; bienvenida</span><span data-en>Coffee &amp; welcome</span><small><span data-es>Marco común para los dos días</span><span data-en>Setting the frame for the two days</span></small></span></li>
+          <li><span class="t">10:00</span><span class="l"><span data-es>IA en los negocios</span><span data-en>AI in business</span><small><span data-es>Lo que está funcionando, lo que no</span><span data-en>What is working, what is not</span></small></span></li>
+          <li><span class="t">12:30</span><span class="l"><span data-es>Almuerzo largo</span><span data-en>Long lunch</span><small><span data-es>Sin agenda. La parte importante.</span><span data-en>No agenda. The important part.</span></small></span></li>
+          <li><span class="t">15:00</span><span class="l"><span data-es>IA &amp; el oficio humano</span><span data-en>AI &amp; the human craft</span><small><span data-es>Educación, salud, escritura</span><span data-en>Education, health, writing</span></small></span></li>
+          <li><span class="t">17:30</span><span class="l"><span data-es>Cierre &amp; preguntas para mañana</span><span data-en>Close &amp; questions for tomorrow</span></span></li>
+          <li><span class="t">19:30</span><span class="l"><span data-es>Cena en Westport</span><span data-en>Dinner in Westport</span></span></li>
+        </ul>
+      </article>
 
-  <div class="footer">5il · fiveinnolabs · Westport <span class="footer-flag" aria-label="Ireland"></span> Éire</div>
-</main>
+      <article class="day reveal">
+        <div class="day-mark">02<span class="of"> / 02</span></div>
+        <div class="day-tag">
+          <span data-es>Domingo · 2 mayo</span>
+          <span data-en>Sunday · May 2</span>
+        </div>
+        <h3 class="day-title">
+          <span data-es>El oeste.</span>
+          <span data-en>The west.</span>
+        </h3>
+        <p class="day-body">
+          <span data-es>Un día por el oeste de Irlanda. Caminata, paisaje, comida local, silencio. Tiempo para que las ideas del día anterior se acomoden en otra parte del cuerpo.</span>
+          <span data-en>A day across the west of Ireland. Walking, landscape, local food, silence. Time for the ideas from the day before to settle in another part of the body.</span>
+        </p>
+        <ul>
+          <li><span class="t">08:30</span><span class="l"><span data-es>Salida de Westport</span><span data-en>Depart Westport</span></span></li>
+          <li><span class="t">09:30</span><span class="l"><span data-es>Croagh Patrick</span><span data-en>Croagh Patrick</span><small><span data-es>Caminata o vista, según el día</span><span data-en>A walk, or just the view, weather permitting</span></small></span></li>
+          <li><span class="t">12:30</span><span class="l"><span data-es>Bahía de Clew &amp; los islotes</span><span data-en>Clew Bay &amp; the islands</span></span></li>
+          <li><span class="t">14:00</span><span class="l"><span data-es>Almuerzo en la costa</span><span data-en>Lunch on the coast</span></span></li>
+          <li><span class="t">16:00</span><span class="l"><span data-es>Wild Atlantic Way</span><span data-en>Wild Atlantic Way</span><small><span data-es>Recorrido escénico de regreso</span><span data-en>Scenic drive back</span></small></span></li>
+          <li><span class="t">19:00</span><span class="l"><span data-es>Cena de despedida</span><span data-en>Farewell dinner</span></span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="place" id="place">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>III · El lugar</span>
+        <span data-en>III · The place</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>Mayo es <em>otra forma</em> de pensar.</span>
+        <span data-en>Mayo is <em>another way</em> to think.</span>
+      </h2>
+    </div>
+    <div class="place-grid">
+      <div class="place-image reveal">
+        <img src="place.png" alt="Croagh Patrick rising over Clew Bay, County Mayo" loading="lazy" />
+      </div>
+      <div class="place-text reveal">
+        <h3>
+          <span data-es>Westport, <em>al borde del Atlántico</em>.</span>
+          <span data-en>Westport, <em>at the Atlantic's edge</em>.</span>
+        </h3>
+        <p>
+          <span data-es>Pueblo georgiano del siglo XVIII, planeado, ordenado, junto al mar. Detrás se eleva Croagh Patrick, montaña sagrada desde antes del cristianismo. Frente a él, la bahía de Clew con 365 islotes verdes. Atrás, el camino más antiguo y más bello de Europa: la Wild Atlantic Way.</span>
+          <span data-en>An eighteenth-century Georgian town, planned, calm, on the sea. Behind it rises Croagh Patrick, a sacred mountain since long before Christianity. In front, Clew Bay with its 365 green islets. Threading through it all, Europe's oldest and most beautiful coastal road: the Wild Atlantic Way.</span>
+        </p>
+        <p>
+          <span data-es>El primer día de mayo cae en la fiesta celta de Bealtaine: el comienzo del verano, la luz larga, los campos en flor. No es una fecha al azar.</span>
+          <span data-en>May 1 is Bealtaine in the old Celtic calendar: the beginning of summer, long light, hedgerows in bloom. The date is not an accident.</span>
+        </p>
+        <div class="place-stats">
+          <div class="place-stat">
+            <div class="v">764<span style="color:var(--ink-faint);font-size:0.6em">m</span></div>
+            <div class="k"><span data-es>Croagh Patrick</span><span data-en>Croagh Patrick</span></div>
+          </div>
+          <div class="place-stat">
+            <div class="v">365</div>
+            <div class="k"><span data-es>Islotes en Clew Bay</span><span data-en>Islands in Clew Bay</span></div>
+          </div>
+          <div class="place-stat">
+            <div class="v">2,500<span style="color:var(--ink-faint);font-size:0.6em">km</span></div>
+            <div class="k"><span data-es>Wild Atlantic Way</span><span data-en>Wild Atlantic Way</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="who">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>IV · Para quién</span>
+        <span data-en>IV · Who it is for</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>Una mesa pequeña, <em>elegida con cuidado</em>.</span>
+        <span data-en>A small table, <em>carefully chosen</em>.</span>
+      </h2>
+    </div>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <div class="num">i.</div>
+        <div class="lbl"><span data-es>Fundadores</span><span data-en>Founders</span></div>
+        <p class="desc"><span data-es>Construyendo con IA, o decidiendo cómo hacerlo. Tracción real o convicción real.</span><span data-en>Building with AI, or deciding how to. Real traction or real conviction.</span></p>
+      </div>
+      <div class="who-card reveal">
+        <div class="num">ii.</div>
+        <div class="lbl"><span data-es>Operadores</span><span data-en>Operators</span></div>
+        <p class="desc"><span data-es>Líderes de equipos que tienen que hacer que la IA funcione la próxima semana, no en cinco años.</span><span data-en>Team leaders who have to make AI work next week, not in five years.</span></p>
+      </div>
+      <div class="who-card reveal">
+        <div class="num">iii.</div>
+        <div class="lbl"><span data-es>Curiosos serios</span><span data-en>Serious curious</span></div>
+        <p class="desc"><span data-es>Académicos, escritores, médicos, profesores. Personas que piensan en voz alta.</span><span data-en>Academics, writers, doctors, teachers. People who think out loud.</span></p>
+      </div>
+      <div class="who-card reveal">
+        <div class="num">iv.</div>
+        <div class="lbl"><span data-es>Amigos</span><span data-en>Friends</span></div>
+        <p class="desc"><span data-es>Familia y amigos cercanos del anfitrión. La cumbre celebra cincuenta años de vida también.</span><span data-en>Close family and friends of the host. The summit also marks fifty years of life.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="travel" id="travel">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>V · Llegar</span>
+        <span data-en>V · Getting there</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>De cualquier capital a <em>Westport</em>.</span>
+        <span data-en>From any capital to <em>Westport</em>.</span>
+      </h2>
+    </div>
+    <div class="travel-grid">
+      <ul class="travel-flow reveal">
+        <li>
+          <div class="step">01</div>
+          <div>
+            <div class="where"><span data-es>Vuelo a Dublín (DUB)</span><span data-en>Fly to Dublin (DUB)</span></div>
+            <div class="det"><span data-es>Vuelos directos desde Ciudad de México, Madrid, Nueva York, Boston, Chicago, Toronto, la mayoría de capitales europeas. Primera semana de mayo es temporada baja: tarifas favorables.</span><span data-en>Direct flights from Mexico City, Madrid, New York, Boston, Chicago, Toronto, most European capitals. First week of May is shoulder season: friendly fares.</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="step">02</div>
+          <div>
+            <div class="where"><span data-es>Dublín → Westport</span><span data-en>Dublin → Westport</span></div>
+            <div class="det"><span data-es>Tren directo desde Dublin Heuston, ~3h 20min, atravesando el centro de Irlanda. Auto: ~3h por la M6/N5. Servicio de traslado coordinado el sábado por la mañana para los que llegan el viernes.</span><span data-en>Direct train from Dublin Heuston, ~3h 20min, crossing the heart of Ireland. By car: ~3h via the M6/N5. A Saturday-morning shuttle is coordinated for guests arriving Friday.</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="step">03</div>
+          <div>
+            <div class="where"><span data-es>Hospedaje en Westport</span><span data-en>Stay in Westport</span></div>
+            <div class="det"><span data-es>Pueblo compacto y peatonal. Todo a 10 minutos a pie. Tres opciones recomendadas a la derecha — confirmamos disponibilidad cuando reserves la fecha.</span><span data-en>Compact, walkable town. Everything within ten minutes on foot. Three recommended options listed on the right — we confirm availability once you save the date.</span></div>
+          </div>
+        </li>
+      </ul>
+      <aside class="travel-aside reveal">
+        <h4><span data-es>Hoteles recomendados</span><span data-en>Recommended hotels</span></h4>
+        <ul>
+          <li><strong>Knockranny House</strong><span data-es>4★ · spa</span><span data-en>4★ · spa</span></li>
+          <li><strong>Hotel Westport</strong><span data-es>céntrico</span><span data-en>central</span></li>
+          <li><strong>Mulranny Park</strong><span data-es>vista al Atlántico</span><span data-en>Atlantic view</span></li>
+          <li><strong>Wyatt Hotel</strong><span data-es>boutique, plaza principal</span><span data-en>boutique, main square</span></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-num">
+        <span data-es>VI · Reserva</span>
+        <span data-en>VI · Save the date</span>
+      </div>
+      <h2 class="section-title">
+        <span data-es>Te avisamos cuando se acerque la <em>fecha</em>.</span>
+        <span data-en>We will be in touch as the <em>date</em> approaches.</span>
+      </h2>
+    </div>
+    <form class="cta-form reveal" id="form" onsubmit="return saveTheDate(event)">
+      <div class="input-row">
+        <input type="email" id="email" required autocomplete="email" />
+        <button type="submit">
+          <span data-es>Reservar la fecha</span>
+          <span data-en>Save the date</span>
+          <span class="arr">→</span>
+        </button>
+      </div>
+      <p class="ok">
+        <span data-es>Gracias. Te escribimos antes de mayo de 2027.</span>
+        <span data-en>Thank you. We will write before May 2027.</span>
+      </p>
+      <p class="cta-foot">
+        <span data-es>Sin spam. Solo lo necesario, dos o tres veces antes del evento. ¿Preguntas? Escribe a <a href="mailto:victordelrosal@gmail.com?subject=Cumbre%20de%20IA%20Mayo%202027%20—%20pregunta">los anfitriones</a>.</span>
+        <span data-en>No spam. Just two or three notes before the event. Questions? Write to <a href="mailto:victordelrosal@gmail.com?subject=Mayo%20AI%20Summit%202027%20—%20question">the hosts</a>.</span>
+      </p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div>5il · fiveinnolabs · Westport <span class="flag" aria-hidden="true"></span> Éire</div>
+  <div><span data-es>1 &amp; 2 mayo 2027 · Por invitación</span><span data-en>May 1 &amp; 2, 2027 · By invitation</span></div>
+</footer>
 
 <script>
+  // Language toggle
   function setLang(l) {
     document.documentElement.lang = l;
     document.getElementById('es-btn').classList.toggle('active', l === 'es');
     document.getElementById('en-btn').classList.toggle('active', l === 'en');
     document.title = l === 'es'
-      ? 'Save the Date · Cumbre de IA · Mayo 2027'
-      : 'Save the Date · Mayo AI Summit · May 2027';
+      ? 'Cumbre de IA · 1–2 mayo 2027 · Condado de Mayo, Irlanda'
+      : 'AI Summit · May 1–2, 2027 · County Mayo, Ireland';
     const email = document.getElementById('email');
-    email.placeholder = l === 'es' ? 'tu correo' : 'your email';
+    if (email) email.placeholder = l === 'es' ? 'tu correo' : 'your email';
     try { localStorage.setItem('lang', l); } catch(e) {}
+    requestAnimationFrame(function(){ requestAnimationFrame(fitTitle); });
   }
-  (function init() {
+  (function init(){
     let l = 'es';
     try { l = localStorage.getItem('lang') || 'es'; } catch(e) {}
     setLang(l);
   })();
 
+  // Hero title fit-to-width: equalise hl1 + hl2
   function fitTitle() {
     const lang = document.documentElement.lang;
-    const visible = document.querySelector('h1 > [data-' + lang + ']');
+    const visible = document.querySelector('h1.headline > [data-' + lang + ']');
     if (!visible) return;
-    const h1 = document.querySelector('h1');
-    const target = h1.clientWidth;
+    const target = document.querySelector('h1.headline').clientWidth;
     if (!target) return;
     const lines = visible.querySelectorAll('.hl1, .hl2');
     lines.forEach(function(line) {
@@ -379,39 +1261,58 @@
       const naturalW = line.scrollWidth;
       if (!naturalW) return;
       let newFs = baseFs * (target / naturalW);
-      newFs = Math.max(22, Math.min(180, newFs));
+      newFs = Math.max(22, Math.min(220, newFs));
       line.style.fontSize = newFs + 'px';
     });
   }
-  const _origSetLang = setLang;
-  setLang = function(l) {
-    _origSetLang(l);
-    requestAnimationFrame(function(){ requestAnimationFrame(fitTitle); });
-  };
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(fitTitle);
-  } else {
-    window.addEventListener('load', fitTitle);
   }
+  window.addEventListener('load', fitTitle);
   window.addEventListener('resize', fitTitle);
-  // Re-run after init lang set
   requestAnimationFrame(function(){ requestAnimationFrame(fitTitle); });
+
+  // Topbar shadow
+  const topbar = document.getElementById('topbar');
+  function onScroll(){
+    topbar.classList.toggle('scrolled', window.scrollY > 16);
+    // hero parallax
+    const hb = document.getElementById('heroBg');
+    if (hb) {
+      const y = Math.min(window.scrollY * 0.18, 240);
+      hb.style.transform = 'translateY(' + y + 'px) scale(1.05)';
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Hero stagger on load
+  setTimeout(function(){ document.getElementById('heroStagger').classList.add('in'); }, 80);
+
+  // Scroll reveal
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+  document.querySelectorAll('.reveal, .stagger').forEach(function(el){ io.observe(el); });
+
+  // Form
   function saveTheDate(e) {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     if (!email) return false;
     const l = document.documentElement.lang;
     const subject = encodeURIComponent(l === 'es'
-      ? 'Save the Date — Cumbre de IA, 1–2 mayo 2027'
-      : 'Save the Date — Mayo AI Summit, May 1–2, 2027');
+      ? 'Save the Date — Cumbre de IA, 1–2 mayo 2027, Mayo, Irlanda'
+      : 'Save the Date — AI Summit, May 1–2 2027, Mayo, Ireland');
     const body = encodeURIComponent((l === 'es'
-      ? 'Por favor avísenme sobre la cumbre de IA en Mayo, 1 y 2 de mayo de 2027.\n\nCorreo: '
-      : 'Please add me to reminders for the Mayo AI Summit, May 1 and 2, 2027.\n\nEmail: ') + email);
+      ? 'Por favor avísenme sobre la Cumbre de IA en Mayo, Irlanda, 1 y 2 de mayo de 2027.\n\nCorreo: '
+      : 'Please add me to reminders for the AI Summit in Mayo, Ireland, May 1 and 2, 2027.\n\nEmail: ') + email);
     window.location.href = 'mailto:victordelrosal@gmail.com?subject=' + subject + '&body=' + body;
-    document.getElementById('form').classList.add('hidden');
-    document.getElementById('ok').classList.add('show');
+    document.getElementById('form').classList.add('sent');
     return false;
   }
 </script>
+
 </body>
 </html>
