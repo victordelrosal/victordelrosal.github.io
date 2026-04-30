@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Save the Date · Mayo AI Summit · May 2027</title>
-<meta name="description" content="A one-day AI business summit with a guided visit to the West of Ireland. First week of May 2027. Save the date." />
-<meta property="og:title" content="Mayo AI Summit · May 2027" />
-<meta property="og:description" content="A one-day AI business summit with a guided visit to the West of Ireland. First week of May 2027." />
+<title>Save the Date · Cumbre de IA · Mayo 2027</title>
+<meta name="description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. Primera semana de mayo, 2027." />
+<meta property="og:title" content="Cumbre de IA · Mayo 2027" />
+<meta property="og:description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. Primera semana de mayo, 2027." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="bg.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%87%3C/text%3E%3C/svg%3E" />
@@ -20,7 +20,8 @@
     --ink-faint: #8a8a8a;
     --rule: rgba(42, 42, 42, 0.18);
     --paper: #ffffff;
-    --paper-soft: #fafafa;
+    --eire-green: #1B5E3A;
+    --eire-orange: #D17B3C;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -38,16 +39,31 @@
     background-image: url('bg.png');
     background-size: cover;
     background-position: center;
-    filter: blur(14px) saturate(0.85) brightness(1.08);
-    transform: scale(1.1);
-    opacity: 0.55;
+    filter: blur(6px) saturate(0.95) brightness(1.04);
+    transform: scale(1.08);
   }
   .veil {
     position: fixed; inset: 0; z-index: 1;
     background:
-      radial-gradient(ellipse at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,0.95) 100%),
-      linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+      radial-gradient(ellipse 90% 80% at center, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0.18) 100%);
   }
+  .lang {
+    position: fixed; top: 22px; right: 24px; z-index: 10;
+    display: flex; gap: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .lang button {
+    border: 0; background: transparent;
+    color: var(--ink-faint);
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .lang button.active { color: var(--ink); border-bottom: 1px solid var(--ink); }
+  .lang .sep { color: var(--ink-faint); padding: 6px 0; }
   main {
     position: relative; z-index: 2;
     min-height: 100vh;
@@ -84,7 +100,7 @@
     color: var(--ink);
     margin-bottom: 24px;
   }
-  h1 em { font-style: italic; font-weight: 300; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--eire-green); }
   .subtitle {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -95,10 +111,32 @@
     max-width: 540px;
   }
   .rule {
-    width: 56px; height: 1px;
-    background: var(--rule);
+    width: 84px; height: 2px;
     margin: 0 auto 56px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0%, var(--eire-green) 33.33%,
+      #ffffff 33.33%, #ffffff 66.66%,
+      var(--eire-orange) 66.66%, var(--eire-orange) 100%);
+    box-shadow: 0 0 0 1px rgba(42,42,42,0.06);
   }
+  .mark { color: var(--eire-green); }
+  .mark .dot { color: var(--eire-orange); opacity: 0.9; }
+  .place {
+    color: var(--ink-soft);
+  }
+  .form button:hover { color: var(--eire-orange); }
+  .footer-flag {
+    display: inline-block;
+    width: 18px; height: 4px;
+    vertical-align: middle;
+    margin: 0 8px;
+    background: linear-gradient(to right,
+      var(--eire-green) 0%, var(--eire-green) 33.33%,
+      #ffffff 33.33%, #ffffff 66.66%,
+      var(--eire-orange) 66.66%, var(--eire-orange) 100%);
+    border: 1px solid rgba(42,42,42,0.08);
+  }
+  .lang button.active { color: var(--eire-green); border-bottom: 1px solid var(--eire-green); }
   .date-block { margin-bottom: 56px; }
   .date {
     font-family: 'Cormorant Garamond', serif;
@@ -183,6 +221,11 @@
   }
   .ok.show { display: block; }
   .form.hidden { display: none; }
+  [data-en], [data-es] { display: none; }
+  html[lang="es"] [data-es] { display: inline; }
+  html[lang="en"] [data-en] { display: inline; }
+  html[lang="es"] h1 [data-es] { display: block; }
+  html[lang="en"] h1 [data-en] { display: block; }
   @media (max-width: 600px) {
     main { padding: 60px 22px 40px; }
     .mark { margin-bottom: 40px; font-size: 18px; }
@@ -192,49 +235,106 @@
       text-align: center; padding: 12px 0;
     }
     .form button { padding: 12px 0; }
+    .lang { top: 14px; right: 14px; }
   }
 </style>
 </head>
 <body>
 <div class="bg" aria-hidden="true"></div>
 <div class="veil" aria-hidden="true"></div>
+
+<div class="lang">
+  <button id="es-btn" class="active" onclick="setLang('es')">ES</button>
+  <span class="sep">·</span>
+  <button id="en-btn" onclick="setLang('en')">EN</button>
+</div>
+
 <main>
   <div class="mark">V<span class="dot">·</span>50</div>
 
   <div class="kicker">Save the Date</div>
-  <h1>An <em>AI Summit</em><br/>in the West of Ireland</h1>
-  <p class="subtitle">A working day on what is changing, and a guided visit to the wild Atlantic edge of Europe.</p>
+  <h1>
+    <span data-es>Una <em>cumbre de IA</em><br/>en el oeste de Irlanda</span>
+    <span data-en>An <em>AI Summit</em><br/>in the West of Ireland</span>
+  </h1>
+  <p class="subtitle">
+    <span data-es>Un día de trabajo sobre lo que está cambiando, y un recorrido por el borde atlántico salvaje de Europa.</span>
+    <span data-en>A working day on what is changing, and a guided visit to the wild Atlantic edge of Europe.</span>
+  </p>
 
   <div class="rule"></div>
 
   <div class="date-block">
-    <div class="date">First week of May, 2027</div>
-    <div class="place">County Mayo · Ireland</div>
+    <div class="date">
+      <span data-es>Primera semana de mayo, 2027</span>
+      <span data-en>First week of May, 2027</span>
+    </div>
+    <div class="place">
+      <span data-es>Condado de Mayo · Irlanda</span>
+      <span data-en>County Mayo · Ireland</span>
+    </div>
   </div>
 
   <div class="blurb">
-    <p>One programme day. Two days in Mayo around it: Croagh Patrick, Clew Bay, the Wild Atlantic Way.</p>
-    <p>For founders, operators, and friends who want to think clearly about AI in a place that helps you think.</p>
+    <p>
+      <span data-es>Un día de programa. Dos días por Mayo alrededor: Croagh Patrick, la bahía de Clew, la Wild Atlantic Way.</span>
+      <span data-en>One programme day. Two days in Mayo around it: Croagh Patrick, Clew Bay, the Wild Atlantic Way.</span>
+    </p>
+    <p>
+      <span data-es>Para fundadores, operadores y amigos que quieren pensar con claridad sobre la IA en un lugar que ayuda a pensar.</span>
+      <span data-en>For founders, operators, and friends who want to think clearly about AI in a place that helps you think.</span>
+    </p>
   </div>
 
-  <p class="ok" id="ok">Thank you. We will be in touch nearer the date.</p>
+  <p class="ok" id="ok">
+    <span data-es>Gracias. Te avisamos cuando se acerque la fecha.</span>
+    <span data-en>Thank you. We will be in touch nearer the date.</span>
+  </p>
 
   <form class="form" id="form" onsubmit="return saveTheDate(event)">
-    <input type="email" id="email" required placeholder="your email" autocomplete="email" />
-    <button type="submit">Remind me</button>
+    <input type="email" id="email" required autocomplete="email" />
+    <button type="submit">
+      <span data-es>Avísame</span>
+      <span data-en>Remind me</span>
+    </button>
   </form>
 
-  <p class="note">Programme and venue confirmed in early 2027. Invitation only.</p>
+  <p class="note">
+    <span data-es>Programa y sede confirmados a inicios de 2027. Solo por invitación.</span>
+    <span data-en>Programme and venue confirmed in early 2027. Invitation only.</span>
+  </p>
 
-  <div class="footer">5il · fiveinnolabs · Westport</div>
+  <div class="footer">5il · fiveinnolabs · Westport <span class="footer-flag" aria-label="Ireland"></span> Éire</div>
 </main>
+
 <script>
+  function setLang(l) {
+    document.documentElement.lang = l;
+    document.getElementById('es-btn').classList.toggle('active', l === 'es');
+    document.getElementById('en-btn').classList.toggle('active', l === 'en');
+    document.title = l === 'es'
+      ? 'Save the Date · Cumbre de IA · Mayo 2027'
+      : 'Save the Date · Mayo AI Summit · May 2027';
+    const email = document.getElementById('email');
+    email.placeholder = l === 'es' ? 'tu correo' : 'your email';
+    try { localStorage.setItem('lang', l); } catch(e) {}
+  }
+  (function init() {
+    let l = 'es';
+    try { l = localStorage.getItem('lang') || 'es'; } catch(e) {}
+    setLang(l);
+  })();
   function saveTheDate(e) {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     if (!email) return false;
-    const subject = encodeURIComponent('Save the Date — Mayo AI Summit, May 2027');
-    const body = encodeURIComponent('Please add me to reminders for the Mayo AI Summit, first week of May 2027.\n\nEmail: ' + email);
+    const l = document.documentElement.lang;
+    const subject = encodeURIComponent(l === 'es'
+      ? 'Save the Date — Cumbre de IA, Mayo 2027'
+      : 'Save the Date — Mayo AI Summit, May 2027');
+    const body = encodeURIComponent((l === 'es'
+      ? 'Por favor avísenme sobre la cumbre de IA en Mayo, primera semana de mayo de 2027.\n\nCorreo: '
+      : 'Please add me to reminders for the Mayo AI Summit, first week of May 2027.\n\nEmail: ') + email);
     window.location.href = 'mailto:victordelrosal@gmail.com?subject=' + subject + '&body=' + body;
     document.getElementById('form').classList.add('hidden');
     document.getElementById('ok').classList.add('show');
