@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Save the Date · Mayo AI Summit · May 2027</title>
+<meta name="description" content="A one-day AI business summit with a guided visit to the West of Ireland. First week of May 2027. Save the date." />
+<meta property="og:title" content="Mayo AI Summit · May 2027" />
+<meta property="og:description" content="A one-day AI business summit with a guided visit to the West of Ireland. First week of May 2027." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="bg.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%87%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2a2a2a;
+    --ink-soft: #5a5a5a;
+    --ink-faint: #8a8a8a;
+    --rule: rgba(42, 42, 42, 0.18);
+    --paper: #ffffff;
+    --paper-soft: #fafafa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(14px) saturate(0.85) brightness(1.08);
+    transform: scale(1.1);
+    opacity: 0.55;
+  }
+  .veil {
+    position: fixed; inset: 0; z-index: 1;
+    background:
+      radial-gradient(ellipse at center, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,0.95) 100%),
+      linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+  }
+  main {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 80px 28px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--ink-faint);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    margin-bottom: 56px;
+  }
+  .mark .dot { display: inline-block; margin: 0 6px; opacity: 0.5; }
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(44px, 7vw, 78px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  h1 em { font-style: italic; font-weight: 300; }
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(18px, 2.4vw, 24px);
+    color: var(--ink-soft);
+    margin-bottom: 56px;
+    max-width: 540px;
+  }
+  .rule {
+    width: 56px; height: 1px;
+    background: var(--rule);
+    margin: 0 auto 56px;
+  }
+  .date-block { margin-bottom: 56px; }
+  .date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .place {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .blurb {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0 auto 56px;
+  }
+  .blurb p + p { margin-top: 14px; }
+  .form {
+    display: flex; gap: 0;
+    max-width: 460px; margin: 0 auto 24px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4px;
+  }
+  .form input[type="email"] {
+    flex: 1;
+    border: 0; outline: 0; background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 12px 4px;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .form input[type="email"]::placeholder {
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+  .form button {
+    border: 0; background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink);
+    padding: 12px 0 12px 16px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .form button:hover { color: var(--ink-faint); }
+  .note {
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    margin-bottom: 80px;
+  }
+  .footer {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: auto;
+    padding-top: 40px;
+  }
+  .ok {
+    display: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .ok.show { display: block; }
+  .form.hidden { display: none; }
+  @media (max-width: 600px) {
+    main { padding: 60px 22px 40px; }
+    .mark { margin-bottom: 40px; font-size: 18px; }
+    .form { flex-direction: column; gap: 8px; border: 0; }
+    .form input[type="email"] {
+      border-bottom: 1px solid var(--rule);
+      text-align: center; padding: 12px 0;
+    }
+    .form button { padding: 12px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="veil" aria-hidden="true"></div>
+<main>
+  <div class="mark">V<span class="dot">·</span>50</div>
+
+  <div class="kicker">Save the Date</div>
+  <h1>An <em>AI Summit</em><br/>in the West of Ireland</h1>
+  <p class="subtitle">A working day on what is changing, and a guided visit to the wild Atlantic edge of Europe.</p>
+
+  <div class="rule"></div>
+
+  <div class="date-block">
+    <div class="date">First week of May, 2027</div>
+    <div class="place">County Mayo · Ireland</div>
+  </div>
+
+  <div class="blurb">
+    <p>One programme day. Two days in Mayo around it: Croagh Patrick, Clew Bay, the Wild Atlantic Way.</p>
+    <p>For founders, operators, and friends who want to think clearly about AI in a place that helps you think.</p>
+  </div>
+
+  <p class="ok" id="ok">Thank you. We will be in touch nearer the date.</p>
+
+  <form class="form" id="form" onsubmit="return saveTheDate(event)">
+    <input type="email" id="email" required placeholder="your email" autocomplete="email" />
+    <button type="submit">Remind me</button>
+  </form>
+
+  <p class="note">Programme and venue confirmed in early 2027. Invitation only.</p>
+
+  <div class="footer">5il · fiveinnolabs · Westport</div>
+</main>
+<script>
+  function saveTheDate(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    if (!email) return false;
+    const subject = encodeURIComponent('Save the Date — Mayo AI Summit, May 2027');
+    const body = encodeURIComponent('Please add me to reminders for the Mayo AI Summit, first week of May 2027.\n\nEmail: ' + email);
+    window.location.href = 'mailto:victordelrosal@gmail.com?subject=' + subject + '&body=' + body;
+    document.getElementById('form').classList.add('hidden');
+    document.getElementById('ok').classList.add('show');
+    return false;
+  }
+</script>
+</body>
+</html>
