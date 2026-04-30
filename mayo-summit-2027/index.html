@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Save the Date · Cumbre de IA · Mayo 2027</title>
-<meta name="description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. Primera semana de mayo, 2027." />
-<meta property="og:title" content="Cumbre de IA · Mayo 2027" />
-<meta property="og:description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. Primera semana de mayo, 2027." />
+<title>Save the Date · Cumbre de IA · 1–2 mayo 2027</title>
+<meta name="description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. 1 y 2 de mayo, 2027." />
+<meta property="og:title" content="Cumbre de IA · 1–2 mayo 2027" />
+<meta property="og:description" content="Una cumbre de IA con recorrido guiado por el oeste de Irlanda. 1 y 2 de mayo, 2027." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="bg.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%87%3C/text%3E%3C/svg%3E" />
@@ -252,8 +252,8 @@
 <main>
   <div class="kicker">Save the Date</div>
   <h1>
-    <span data-es>Una <em>cumbre de IA</em><br/>en el oeste de Irlanda</span>
-    <span data-en>An <em>AI Summit</em><br/>in the West of Ireland</span>
+    <span data-es><em>Cumbre de IA</em><br/>en el oeste de Irlanda</span>
+    <span data-en><em>AI Summit</em><br/>in the West of Ireland</span>
   </h1>
   <p class="subtitle">
     <span data-es>Un día de trabajo sobre lo que está cambiando, y un recorrido por el borde atlántico salvaje de Europa.</span>
@@ -264,8 +264,8 @@
 
   <div class="date-block">
     <div class="date">
-      <span data-es>Primera semana de mayo, 2027</span>
-      <span data-en>First week of May, 2027</span>
+      <span data-es>1 &amp; 2 de mayo, 2027</span>
+      <span data-en>May 1 &amp; 2, 2027</span>
     </div>
     <div class="place">
       <span data-es>Condado de Mayo · Irlanda</span>
@@ -328,11 +328,11 @@
     if (!email) return false;
     const l = document.documentElement.lang;
     const subject = encodeURIComponent(l === 'es'
-      ? 'Save the Date — Cumbre de IA, Mayo 2027'
-      : 'Save the Date — Mayo AI Summit, May 2027');
+      ? 'Save the Date — Cumbre de IA, 1–2 mayo 2027'
+      : 'Save the Date — Mayo AI Summit, May 1–2, 2027');
     const body = encodeURIComponent((l === 'es'
-      ? 'Por favor avísenme sobre la cumbre de IA en Mayo, primera semana de mayo de 2027.\n\nCorreo: '
-      : 'Please add me to reminders for the Mayo AI Summit, first week of May 2027.\n\nEmail: ') + email);
+      ? 'Por favor avísenme sobre la cumbre de IA en Mayo, 1 y 2 de mayo de 2027.\n\nCorreo: '
+      : 'Please add me to reminders for the Mayo AI Summit, May 1 and 2, 2027.\n\nEmail: ') + email);
     window.location.href = 'mailto:victordelrosal@gmail.com?subject=' + subject + '&body=' + body;
     document.getElementById('form').classList.add('hidden');
     document.getElementById('ok').classList.add('show');
