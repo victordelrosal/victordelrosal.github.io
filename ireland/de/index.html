@@ -14,47 +14,54 @@
 <link rel="alternate" hreflang="fr" href="https://victordelrosal.com/ireland/fr/" />
 <link rel="alternate" hreflang="pt" href="https://victordelrosal.com/ireland/pt/" />
 <link rel="alternate" hreflang="de" href="https://victordelrosal.com/ireland/de/" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill='none' stroke='%238E2A1B' stroke-width='6'%3E%3Ccircle cx='0' cy='-15' r='20'/%3E%3Ccircle cx='13' cy='8' r='20'/%3E%3Ccircle cx='-13' cy='8' r='20'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill='none' stroke='%238E2A1B' stroke-width='5.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5'/%3E%3Cpath d='M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5' transform='rotate(120)'/%3E%3Cpath d='M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5' transform='rotate(240)'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Vellum mode (default) — Insular manuscript */
-    --bg:#F2E8CF;
-    --bg-2:#E8DBB0;
-    --panel:#FAF3DD;
-    --panel-2:#F6EDC9;
-    --text:#241A0E;          /* sepia-black, like iron-gall ink */
-    --text-soft:#4A3520;
-    --text-dim:#8A7050;
-    --rule:rgba(184,134,43,0.35);
+    /* Vellum (default) — Insular palette: oxblood, burnished gold, Connemara green, bog brown */
+    --bg:#EFE4C4;
+    --bg-2:#E2D2A8;
+    --panel:#F8EFD2;
+    --panel-2:#F2E5BD;
+    --text:#1F1607;          /* iron-gall ink */
+    --text-soft:#3D2C18;     /* bog oak */
+    --text-dim:#7A6238;
+    --rule:rgba(184,134,43,0.42);
     --rule-strong:#B8862B;
-    --kells-red:#8E2A1B;     /* Kells oxblood */
+    --kells-red:#8E2A1B;     /* Kells oxblood / Tara Brooch garnet */
     --kells-red-2:#A33324;
+    --kells-red-deep:#5E1D14;
     --gold:#B8862B;          /* burnished insular gold */
-    --gold-deep:#8B6314;
-    --connemara:#3D5C3A;     /* deep moss/Connemara */
-    --woad:#2E4A6B;          /* dyer's woad blue, faint */
-    --shadow:0 1px 2px rgba(60,40,15,0.06), 0 8px 24px rgba(60,40,15,0.05);
+    --gold-bright:#D6A93C;
+    --gold-deep:#7B5610;
+    --connemara:#3D5C3A;     /* deep Connemara moss */
+    --connemara-2:#5A7A4F;
+    --woad:#2E4A6B;          /* dyer's woad */
+    --shadow:0 1px 2px rgba(60,40,15,0.10), 0 8px 24px rgba(60,40,15,0.08);
   }
   html[data-theme="peat"]{
-    --bg:#1A140E;
-    --bg-2:#0E0905;
-    --panel:rgba(60,45,30,0.55);
-    --panel-2:rgba(80,60,38,0.40);
-    --text:#EBDFC2;
-    --text-soft:#C4B58E;
-    --text-dim:#8A7B5C;
-    --rule:rgba(212,160,23,0.28);
+    /* Peat mode — bog at night, peat fire, gold leaf still warm */
+    --bg:#1A1308;
+    --bg-2:#0C0703;
+    --panel:rgba(56,38,18,0.62);
+    --panel-2:rgba(80,55,28,0.50);
+    --text:#F1E4BD;
+    --text-soft:#D4C094;
+    --text-dim:#9A8559;
+    --rule:rgba(212,160,23,0.30);
     --rule-strong:#D4A017;
-    --kells-red:#C9461F;
-    --kells-red-2:#D55A33;
+    --kells-red:#D14922;
+    --kells-red-2:#E0613B;
+    --kells-red-deep:#A33A1E;
     --gold:#D4A017;
-    --gold-deep:#A88016;
-    --connemara:#6B8E5E;
-    --woad:#6B86A8;
-    --shadow:0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+    --gold-bright:#EFC347;
+    --gold-deep:#A07910;
+    --connemara:#7AA269;
+    --connemara-2:#5C8050;
+    --woad:#7596B8;
+    --shadow:0 1px 2px rgba(0,0,0,0.5), 0 12px 28px rgba(0,0,0,0.45);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -63,53 +70,65 @@
     color:var(--text);
     background:var(--bg);
     background-image:
-      radial-gradient(900px 540px at 88% -10%, rgba(184,134,43,0.10), transparent 60%),
-      radial-gradient(700px 500px at -10% 30%, rgba(142,42,27,0.06), transparent 60%);
+      radial-gradient(1100px 600px at 92% -10%, rgba(184,134,43,0.16), transparent 60%),
+      radial-gradient(800px 500px at -8% 28%, rgba(142,42,27,0.10), transparent 60%),
+      radial-gradient(700px 600px at 50% 110%, rgba(61,92,58,0.10), transparent 60%);
     min-height:100vh;
     line-height:1.65;
     font-size:18px;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
-  /* Vellum / parchment fibre noise — generated via SVG */
+  /* Vellum fibre noise — pushed harder so it actually reads as parchment */
   body::before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.10 0 0 0 0 0.06 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity:0.18;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0 0.05 0 0 0 0.85 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.32;
     mix-blend-mode:multiply;
   }
-  html[data-theme="peat"] body::before{opacity:0.28; mix-blend-mode:screen}
+  html[data-theme="peat"] body::before{opacity:0.42; mix-blend-mode:screen}
+  /* Manuscript ruling — faint horizontal guides like scribes drew on vellum */
+  body::after{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:linear-gradient(to bottom, transparent 0, transparent 31px, rgba(123,86,16,0.07) 32px);
+    background-size:100% 32px;
+  }
+  html[data-theme="peat"] body::after{background-image:linear-gradient(to bottom, transparent 0, transparent 31px, rgba(212,160,23,0.05) 32px)}
 
-  /* Header — vellum bar with gold rule */
+  /* Header */
   header.site{
     position:sticky; top:0; z-index:10;
-    backdrop-filter:saturate(120%) blur(8px);
-    -webkit-backdrop-filter:saturate(120%) blur(8px);
-    background:linear-gradient(180deg, rgba(242,232,207,0.92), rgba(242,232,207,0.78));
+    backdrop-filter:saturate(125%) blur(10px);
+    -webkit-backdrop-filter:saturate(125%) blur(10px);
+    background:linear-gradient(180deg, rgba(239,228,196,0.94), rgba(239,228,196,0.78));
     border-bottom:1px solid var(--rule);
-    box-shadow:0 1px 0 rgba(184,134,43,0.18);
+    box-shadow:0 2px 0 var(--gold), 0 3px 0 var(--bg), 0 4px 0 var(--rule-strong);
   }
   html[data-theme="peat"] header.site{
-    background:linear-gradient(180deg, rgba(14,9,5,0.9), rgba(14,9,5,0.72));
+    background:linear-gradient(180deg, rgba(12,7,3,0.92), rgba(12,7,3,0.74));
+    box-shadow:0 2px 0 var(--gold-deep), 0 3px 0 var(--bg), 0 4px 0 rgba(212,160,23,0.45);
   }
-  .nav{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px;justify-content:space-between;flex-wrap:wrap}
-  .brand{display:flex;align-items:center;gap:12px;font-family:"Cinzel",serif;font-weight:600;letter-spacing:0.08em;font-size:15px;color:var(--text)}
+  .nav{max-width:1140px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px;font-family:"Cinzel",serif;font-weight:600;letter-spacing:0.06em;font-size:15px;color:var(--text);text-decoration:none}
   .brand .mark{
-    width:34px;height:34px;display:grid;place-items:center;
+    width:38px;height:38px;display:grid;place-items:center;
     color:var(--kells-red);
+    filter:drop-shadow(0 1px 0 rgba(184,134,43,0.35));
   }
-  .brand .mark svg{width:34px;height:34px}
+  html[data-theme="peat"] .brand .mark{color:var(--gold-bright);filter:drop-shadow(0 0 6px rgba(209,73,34,0.35))}
+  .brand .mark svg{width:38px;height:38px}
   .brand .sep{color:var(--rule-strong);margin:0 2px}
-  .brand .gaeilge{font-style:italic;font-family:"EB Garamond",serif;font-weight:500;letter-spacing:0.02em;font-size:16px;color:var(--kells-red)}
-  .nav-links{display:flex;gap:6px;flex-wrap:wrap}
-  .nav-links a{color:var(--text-soft);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:6px;letter-spacing:0.02em;font-variant:small-caps;font-family:"Cinzel",serif;font-weight:500}
+  .brand .gaeilge{font-family:"Uncial Antiqua","Cinzel",serif;font-weight:400;letter-spacing:0.02em;font-size:24px;color:var(--kells-red);line-height:1}
+  html[data-theme="peat"] .brand .gaeilge{color:var(--kells-red-2)}
+  .nav-links{display:flex;gap:4px;flex-wrap:wrap}
+  .nav-links a{color:var(--text-soft);text-decoration:none;font-size:12.5px;padding:6px 9px;border-radius:4px;letter-spacing:0.12em;font-variant:small-caps;font-family:"Cinzel",serif;font-weight:500}
   .nav-links a:hover{background:var(--panel-2);color:var(--kells-red)}
   .controls-right{display:flex;gap:10px;align-items:center}
   .lang{
     display:flex;gap:0;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--panel);
-    font-family:"Cinzel",serif;font-size:11px;letter-spacing:0.12em;
+    font-family:"Cinzel",serif;font-size:11px;letter-spacing:0.14em;
   }
-  .lang a{padding:5px 10px;color:var(--text-dim);text-decoration:none;border-right:1px solid var(--rule)}
+  .lang a{padding:6px 11px;color:var(--text-dim);text-decoration:none;border-right:1px solid var(--rule)}
   .lang a:last-child{border-right:none}
   .lang a.active{color:var(--kells-red);background:var(--panel-2);font-weight:700}
   .lang a:hover{color:var(--kells-red)}
@@ -118,111 +137,176 @@
     color:var(--text);border-radius:999px;padding:5px 12px;font-size:12px;
     font-family:"Cinzel",serif;letter-spacing:0.1em
   }
-  .toggle:hover{border-color:var(--gold)}
+  .toggle:hover{border-color:var(--gold);color:var(--kells-red)}
 
-  main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:24px 24px 96px}
+  main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:24px 24px 96px}
 
-  /* Hero — illuminated opening */
-  .hero{padding:48px 0 28px;position:relative}
-  .hero-rule{height:1px;background:var(--rule-strong);opacity:0.6;margin:0 0 24px}
+  /* Hero */
+  .hero{padding:36px 0 28px;position:relative}
+  .carpet{
+    width:140px;height:140px;margin:0 auto 24px;display:block;
+    color:var(--kells-red);
+    filter:drop-shadow(0 2px 6px rgba(123,86,16,0.18));
+  }
+  .carpet .gold{color:var(--gold)}
+  .carpet .green{color:var(--connemara)}
+  html[data-theme="peat"] .carpet{filter:drop-shadow(0 0 12px rgba(209,73,34,0.30))}
+
+  .hero-rule{
+    height:6px;
+    background:
+      linear-gradient(to bottom,
+        var(--rule-strong) 0, var(--rule-strong) 1px,
+        transparent 1px, transparent 2px,
+        var(--gold) 2px, var(--gold) 4px,
+        transparent 4px, transparent 5px,
+        var(--rule-strong) 5px, var(--rule-strong) 6px);
+    margin:0 0 20px;opacity:0.7
+  }
   .kicker{
     font-family:"Cinzel",serif;
-    text-transform:uppercase;letter-spacing:0.32em;font-size:11px;
-    color:var(--kells-red);font-weight:600;
+    text-transform:uppercase;letter-spacing:0.36em;font-size:11px;
+    color:var(--kells-red);font-weight:700;
+    text-align:center;
   }
-  .kicker .gaeilge{font-style:italic;font-family:"EB Garamond",serif;text-transform:none;letter-spacing:0.04em;font-size:13px;color:var(--gold-deep)}
+  .kicker .gaeilge{font-style:italic;font-family:"EB Garamond",serif;text-transform:none;letter-spacing:0.04em;font-size:13px;color:var(--gold-deep);font-weight:500}
+  html[data-theme="peat"] .kicker .gaeilge{color:var(--gold-bright)}
   h1.title{
-    font-family:"Cinzel",serif;
-    font-size:clamp(42px,6vw,72px);
-    line-height:1.05;
+    font-family:"Uncial Antiqua","Cinzel",serif;
+    font-size:clamp(46px,7vw,86px);
+    line-height:1.0;
     margin:18px 0 8px;
-    letter-spacing:0.01em;
-    font-weight:600;
+    letter-spacing:0.02em;
+    font-weight:400;
     color:var(--text);
+    text-align:center;
+    text-shadow:0 1px 0 rgba(184,134,43,0.18);
   }
-  h1.title em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--kells-red);font-weight:500;letter-spacing:0}
+  h1.title em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--kells-red);font-weight:500;letter-spacing:0;font-size:0.8em}
   .gaeilge-title{
-    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;
-    color:var(--gold-deep);margin:0 0 22px;letter-spacing:0.02em
+    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:26px;
+    color:var(--gold-deep);margin:0 0 28px;letter-spacing:0.02em;text-align:center
   }
-  .lede{font-size:20px;color:var(--text-soft);max-width:760px;line-height:1.6}
+  html[data-theme="peat"] .gaeilge-title{color:var(--gold-bright)}
+  .lede{font-size:20px;color:var(--text-soft);max-width:820px;line-height:1.65;margin:0 auto}
   .lede .dropcap{
-    float:left; font-family:"Cinzel",serif; font-weight:700;
-    font-size:78px; line-height:0.85; padding:6px 12px 0 0;
+    float:left; font-family:"Uncial Antiqua",serif; font-weight:400;
+    font-size:78px; line-height:0.72; padding:10px 14px 0 0;
     color:var(--kells-red);
-    background:linear-gradient(180deg, transparent 0, transparent 100%);
-    margin-right:8px;
-    text-shadow:0 1px 0 rgba(184,134,43,0.3);
+    margin:6px 6px 0 0;
   }
-  .meta{margin-top:22px;display:flex;gap:16px;flex-wrap:wrap;color:var(--text-dim);font-size:13px;font-style:italic;font-family:"Cormorant Garamond",serif}
-  .controls{display:flex;gap:10px;margin:24px 0 8px;flex-wrap:wrap}
+  html[data-theme="peat"] .lede .dropcap{color:var(--kells-red-2);text-shadow:0 0 10px rgba(209,73,34,0.30)}
+  .meta{margin:24px auto 0;display:flex;gap:16px;flex-wrap:wrap;color:var(--text-dim);font-size:13px;font-style:italic;font-family:"Cormorant Garamond",serif;justify-content:center;max-width:820px}
+  .controls{display:flex;gap:10px;margin:26px auto 8px;flex-wrap:wrap;justify-content:center}
   .btn{
     cursor:pointer;border:1px solid var(--rule);background:var(--panel);
-    color:var(--text);padding:8px 16px;border-radius:999px;font-size:12.5px;
-    font-family:"Cinzel",serif;letter-spacing:0.12em;text-transform:uppercase
+    color:var(--text);padding:8px 18px;border-radius:999px;font-size:12.5px;
+    font-family:"Cinzel",serif;letter-spacing:0.14em;text-transform:uppercase
   }
-  .btn:hover{border-color:var(--kells-red);color:var(--kells-red)}
+  .btn:hover{border-color:var(--kells-red);color:var(--kells-red);background:var(--panel-2)}
 
-  /* Knot divider — gold double rule with central trefoil */
+  /* Knot divider — woven interlace band with central triskele */
   .knot{
-    position:relative; height:36px; margin:36px 0;
+    position:relative; height:54px; margin:44px 0;
     display:flex;align-items:center;justify-content:center;
   }
-  .knot::before, .knot::after{
-    content:""; flex:1; height:1px;
-    background:linear-gradient(90deg, transparent, var(--rule-strong) 20%, var(--rule-strong) 80%, transparent);
-    opacity:0.55;
+  .knot-band{
+    flex:1;height:24px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='24' viewBox='0 0 80 24'%3E%3Cpath d='M 0 12 C 13 -4 27 -4 40 12 C 53 28 67 28 80 12' fill='none' stroke='%23B8862B' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M 0 12 C 13 28 27 28 40 12 C 53 -4 67 -4 80 12' fill='none' stroke='%238E2A1B' stroke-width='2.2' stroke-linecap='round' stroke-dasharray='18 44 18 0'/%3E%3C/svg%3E");
+    background-repeat:repeat-x;
+    background-position:center;
+    background-size:80px 24px;
+    opacity:0.85;
+  }
+  html[data-theme="peat"] .knot-band{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='24' viewBox='0 0 80 24'%3E%3Cpath d='M 0 12 C 13 -4 27 -4 40 12 C 53 28 67 28 80 12' fill='none' stroke='%23D4A017' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M 0 12 C 13 28 27 28 40 12 C 53 -4 67 -4 80 12' fill='none' stroke='%23D14922' stroke-width='2.2' stroke-linecap='round' stroke-dasharray='18 44 18 0'/%3E%3C/svg%3E");
   }
   .knot .glyph{
-    width:40px;height:40px;margin:0 14px;display:grid;place-items:center;
-    color:var(--gold);
+    width:54px;height:54px;margin:0 18px;display:grid;place-items:center;
+    color:var(--kells-red);
+    background:var(--bg);
+    border:1.5px solid var(--gold);
+    border-radius:50%;
+    box-shadow:0 0 0 4px var(--bg), 0 0 0 5.5px var(--gold), inset 0 0 0 1px rgba(184,134,43,0.18);
   }
-  .knot .glyph svg{width:32px;height:32px;display:block}
+  html[data-theme="peat"] .knot .glyph{color:var(--gold-bright);background:var(--bg);border-color:var(--gold);box-shadow:0 0 0 4px var(--bg), 0 0 0 5.5px var(--gold), 0 0 18px rgba(212,160,23,0.30)}
+  .knot .glyph svg{width:34px;height:34px;display:block}
 
-  /* Details — manuscript panels */
+  /* Layer panels — each wrapped as illuminated incipit */
   details.layer{
     background:var(--panel);
     border:1px solid var(--rule);
+    border-left:4px solid var(--kells-red);
     border-radius:6px;
-    padding:22px 26px;
+    padding:24px 28px;
     margin:0;
     transition:border-color .25s, background .25s;
     box-shadow:var(--shadow);
     position:relative;
   }
-  details.layer[open]{border-color:rgba(184,134,43,0.55)}
+  details.layer:nth-of-type(2n){border-left-color:var(--connemara)}
+  details.layer:nth-of-type(3n){border-left-color:var(--gold)}
+  details.layer[open]{border-color:rgba(184,134,43,0.6)}
   details.layer > summary{
     cursor:pointer; list-style:none;
-    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
-    font-family:"Cinzel",serif; font-weight:600; font-size:20px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:18px;
+    font-family:"Cinzel",serif; font-weight:600; font-size:21px;
     letter-spacing:0.02em; color:var(--text);
   }
   details summary::-webkit-details-marker{display:none}
   details.layer > summary::after{
     content:""; display:inline-block;
     width:14px;height:14px; flex:0 0 14px;
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%238E2A1B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%238E2A1B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
     transform:rotate(-90deg); transition:transform .25s; align-self:center;
   }
   html[data-theme="peat"] details.layer > summary::after{
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%23C9461F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%23D14922' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
   }
   details.layer[open] > summary::after{transform:rotate(0deg)}
-  .layer-num{
-    font-family:"Cinzel",serif;font-weight:700;
-    color:var(--kells-red);
-    font-size:13px;letter-spacing:0.18em;text-transform:uppercase;
-    margin-right:14px;
-  }
-  .layer-num::before{content:"·";color:var(--rule-strong);margin-right:14px;font-weight:400}
-  .layer-num:first-child::before{content:""}
-  .gae{font-style:italic;font-family:"Cormorant Garamond",serif;font-weight:400;color:var(--gold-deep);letter-spacing:0.02em;font-size:0.9em}
-  details.layer > p, details.layer > ul, details.layer > div{margin-top:14px}
 
-  /* Nested details (within layers) */
+  /* Illuminated layer numeral — Roman numeral inside knot-bordered square */
+  .lnum{
+    flex:0 0 auto;
+    width:54px;height:54px;
+    display:grid;place-items:center;
+    font-family:"Uncial Antiqua",serif;font-weight:400;
+    font-size:24px;color:var(--kells-red);
+    background:linear-gradient(135deg, rgba(214,169,60,0.22), rgba(184,134,43,0.10));
+    border:1.5px solid var(--gold);
+    border-radius:4px;
+    position:relative;
+    margin-right:4px;
+  }
+  details.layer:nth-of-type(2n) > summary .lnum{color:var(--connemara);border-color:var(--connemara-2)}
+  details.layer:nth-of-type(3n) > summary .lnum{color:var(--gold-deep);border-color:var(--gold-bright)}
+  html[data-theme="peat"] .lnum{background:linear-gradient(135deg, rgba(239,195,71,0.18), rgba(212,160,23,0.05));color:var(--kells-red-2)}
+  /* Corner ornament dots — like Kells corner illumination */
+  .lnum::before, .lnum::after{
+    content:""; position:absolute; width:5px; height:5px;
+    background:var(--gold); border-radius:50%;
+  }
+  .lnum::before{top:3px; left:3px}
+  .lnum::after{bottom:3px; right:3px}
+  .lhead{flex:1;line-height:1.25;padding-top:10px}
+  .gae{font-style:italic;font-family:"Cormorant Garamond",serif;font-weight:400;color:var(--gold-deep);letter-spacing:0.02em;font-size:0.78em;display:block;margin-top:2px}
+  html[data-theme="peat"] .gae{color:var(--gold-bright)}
+
+  details.layer > p, details.layer > ul, details.layer > div{margin-top:14px}
+  /* Drop-cap on the first paragraph of opening layer */
+  details.layer > p:first-of-type{position:relative}
+  .l-dropcap{
+    float:left;font-family:"Uncial Antiqua",serif;
+    font-size:64px;line-height:0.72;padding:8px 12px 0 0;
+    color:var(--kells-red);margin-right:4px;
+  }
+  html[data-theme="peat"] .l-dropcap{color:var(--kells-red-2);text-shadow:0 0 8px rgba(209,73,34,0.25)}
+
+  /* Nested details */
   details.layer details{
     background:var(--panel-2);
     border:1px solid var(--rule);
+    border-left:2px solid var(--connemara);
     border-radius:4px;
     padding:14px 18px;
     margin:10px 0;
@@ -238,15 +322,11 @@
   }
   details.layer details[open] summary::after{content:"−"}
   details.layer details p{margin:10px 0 0;font-size:17px;line-height:1.65}
-  details.layer details details{background:transparent;border:none;border-top:1px dashed var(--rule);border-radius:0;padding:10px 0;margin:6px 0}
+  details.layer details details{background:transparent;border:none;border-left:1px dashed var(--connemara);border-radius:0;padding:8px 0 8px 14px;margin:6px 0}
 
-  /* Era timeline */
-  .timeline{
-    position:relative;
-    padding-left:0;
-    margin:14px 0 4px;
-  }
-  .timeline details{margin:8px 0}
+  /* Era timeline — Connemara-green spine */
+  .timeline{position:relative;padding-left:0;margin:14px 0 4px}
+  .timeline details{margin:8px 0;border-left-color:var(--connemara)}
   .when{
     display:inline-block; font-family:"Cinzel",serif;
     font-weight:600; color:var(--kells-red);
@@ -255,14 +335,19 @@
   }
   blockquote{
     border-left:3px solid var(--kells-red);
-    margin:18px 0; padding:8px 22px;
+    margin:18px 0; padding:10px 24px;
     color:var(--text-soft);
     font-style:italic;
     font-family:"Cormorant Garamond",serif;
-    font-size:21px;
+    font-size:22px;
     line-height:1.55;
     background:var(--panel-2);
     border-radius:0 4px 4px 0;
+    position:relative;
+  }
+  blockquote::before{
+    content:"❦"; position:absolute; top:8px; right:14px;
+    font-style:normal; color:var(--gold); font-size:18px; opacity:0.7;
   }
   a{color:var(--kells-red); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:2px}
   a:hover{color:var(--kells-red-2)}
@@ -271,11 +356,11 @@
 
   .why{
     font-family:"Cormorant Garamond",serif;
-    font-style:italic; font-size:17px;
+    font-style:italic; font-size:17.5px;
     color:var(--text-dim); margin-top:10px;
   }
 
-  /* Cards — illuminated tiles */
+  /* Cards */
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
   .card{
     background:var(--panel);
@@ -286,9 +371,11 @@
   }
   .card::before{
     content:""; position:absolute; left:0; top:0; bottom:0;
-    width:3px; background:var(--gold); opacity:0.6;
+    width:3px; background:var(--connemara); opacity:0.7;
     border-radius:4px 0 0 4px;
   }
+  .card:nth-child(2n)::before{background:var(--gold)}
+  .card:nth-child(3n)::before{background:var(--kells-red)}
   .card h4{
     margin:0 0 6px; font-family:"Cinzel",serif; font-weight:600;
     font-size:14px; letter-spacing:0.04em; color:var(--kells-red);
@@ -301,9 +388,14 @@
     border-top:1px solid var(--rule-strong);
     color:var(--text-dim); font-size:14px; text-align:center;
     font-family:"Cormorant Garamond",serif; font-style:italic;
+    position:relative;
   }
-  footer .colophon{font-family:"Cinzel",serif;font-style:normal;text-transform:uppercase;letter-spacing:0.18em;font-size:11px;color:var(--kells-red);margin-bottom:10px}
-  .disclaimer{margin-top:14px;color:var(--text-dim);font-size:13px;max-width:780px;margin-left:auto;margin-right:auto}
+  footer::before{
+    content:"❦"; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background:var(--bg); padding:0 14px; color:var(--gold); font-size:18px; font-style:normal;
+  }
+  footer .colophon{font-family:"Cinzel",serif;font-style:normal;text-transform:uppercase;letter-spacing:0.22em;font-size:11px;color:var(--kells-red);margin-bottom:10px}
+  .disclaimer{margin-top:14px;color:var(--text-dim);font-size:13px;max-width:820px;margin-left:auto;margin-right:auto}
 
   ul{padding-left:1.2em}
   li{margin:6px 0}
@@ -312,9 +404,11 @@
     .nav{gap:10px}
     .nav-links{order:3;flex-basis:100%;justify-content:flex-start}
     .lede .dropcap{font-size:62px}
-    h1.title{font-size:38px}
+    h1.title{font-size:42px}
     .when{display:block;min-width:0;margin-bottom:4px}
     details.layer{padding:18px 18px}
+    .lnum{width:46px;height:46px;font-size:20px}
+    .carpet{width:110px;height:110px}
   }
 </style>
 </head>
@@ -324,7 +418,7 @@
   <div class="nav">
     <a href="/ireland/de/" class="brand" style="text-decoration:none">
       <span class="mark" aria-hidden="true">
-        <svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg>
+        <svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg>
       </span>
       <span><span class="gaeilge">Éire</span> <span class="sep">·</span> Ein Referenz-Briefing</span>
     </a>
@@ -352,6 +446,50 @@
 
 <main>
   <section class="hero">
+    <svg class="carpet" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <g id="tri">
+          <g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 0 0 m 0 -18 a 18 18 0 1 1 -15.6 9 a 11 11 0 1 0 9.5 -5.5 a 5.5 5.5 0 1 1 -4.75 2.75"/>
+            <path d="M 0 0 m 0 -18 a 18 18 0 1 1 -15.6 9 a 11 11 0 1 0 9.5 -5.5 a 5.5 5.5 0 1 1 -4.75 2.75" transform="rotate(120)"/>
+            <path d="M 0 0 m 0 -18 a 18 18 0 1 1 -15.6 9 a 11 11 0 1 0 9.5 -5.5 a 5.5 5.5 0 1 1 -4.75 2.75" transform="rotate(240)"/>
+          </g>
+        </g>
+      </defs>
+      <!-- Outer gold ring -->
+      <circle cx="0" cy="0" r="92" fill="none" stroke="currentColor" class="gold" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="0" cy="0" r="86" fill="none" stroke="currentColor" class="gold" stroke-width="0.8" opacity="0.5"/>
+      <!-- Interlace ring of 8 small loops -->
+      <g class="green" fill="none" stroke="currentColor" stroke-width="1.6">
+        <g>
+          <circle cx="0" cy="-72" r="9" />
+          <circle cx="51" cy="-51" r="9" />
+          <circle cx="72" cy="0" r="9" />
+          <circle cx="51" cy="51" r="9" />
+          <circle cx="0" cy="72" r="9" />
+          <circle cx="-51" cy="51" r="9" />
+          <circle cx="-72" cy="0" r="9" />
+          <circle cx="-51" cy="-51" r="9" />
+        </g>
+      </g>
+      <!-- Cross arms in oxblood -->
+      <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.85">
+        <path d="M 0 -86 Q 0 -50 0 -28" />
+        <path d="M 0 86 Q 0 50 0 28" />
+        <path d="M -86 0 Q -50 0 -28 0" />
+        <path d="M 86 0 Q 50 0 28 0" />
+      </g>
+      <!-- Central triskele (large) -->
+      <use href="#tri" />
+      <!-- Four corner triskeles, smaller -->
+      <g transform="translate(-58,-58) scale(0.35)"><use href="#tri" class="green"/></g>
+      <g transform="translate(58,-58) scale(0.35)"><use href="#tri" class="gold"/></g>
+      <g transform="translate(58,58) scale(0.35)"><use href="#tri" class="green"/></g>
+      <g transform="translate(-58,58) scale(0.35)"><use href="#tri" class="gold"/></g>
+      <!-- Center dot -->
+      <circle cx="0" cy="0" r="2.5" fill="currentColor" class="gold"/>
+    </svg>
+
     <div class="hero-rule"></div>
     <div class="kicker">Achoimre Thagartha <span class="gaeilge">— ein Referenz-Briefing</span></div>
     <h1 class="title">Irland, <em>Schicht für Schicht.</em></h1>
@@ -370,21 +508,33 @@
   </section>
 
   <div class="knot" aria-hidden="true">
-    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span>
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
   </div>
 
   <!-- LAYER 1 -->
   <details id="l1" class="layer" open>
-    <summary><span><span class="layer-num">I</span>Irland in 30 Sekunden <span class="gae">· An Crothán</span></span></summary>
-    <p>Irland ist eine Insel am westlichen Rand Europas, geteilt zwischen zwei Hoheitsgebieten: der <strong>Republik Irland</strong> (seit 1922 unabhängig, EU-Mitglied, Hauptstadt Dublin, rund 5,3 Millionen Einwohner) und <strong>Nordirland</strong> (sechs Grafschaften, Teil des Vereinigten Königreichs, Hauptstadt Belfast, rund 1,9 Millionen). Die Insel wurde vom zwölften Jahrhundert an von England kolonisiert, erlitt in den 1840er Jahren eine katastrophale Hungersnot, die die Bevölkerung durch Tod und Auswanderung halbierte, focht 1919 bis 1921 einen Unabhängigkeitskrieg aus, der mit der Teilung endete, und durchlitt im Norden einen dreißigjährigen konfessionellen Konflikt, bekannt als <em>The Troubles</em>, bis zum Karfreitagsabkommen von 1998. Heute ist die Republik eine kleine, offene, englischsprachige, überwiegend post-katholische Gesellschaft mit einer Hightech-Wirtschaft, einer tiefen literarischen und musikalischen Tradition und einer weltweiten Diaspora, deren Größe auf siebzig Millionen geschätzt wird.</p>
+    <summary>
+      <span class="lnum">I</span>
+      <span class="lhead">Irland in 30 Sekunden<span class="gae">An Crothán</span></span>
+    </summary>
+    <p><span class="l-dropcap">I</span>rland ist eine Insel am westlichen Rand Europas, geteilt zwischen zwei Hoheitsgebieten: der <strong>Republik Irland</strong> (seit 1922 unabhängig, EU-Mitglied, Hauptstadt Dublin, rund 5,3 Millionen Einwohner) und <strong>Nordirland</strong> (sechs Grafschaften, Teil des Vereinigten Königreichs, Hauptstadt Belfast, rund 1,9 Millionen). Die Insel wurde vom zwölften Jahrhundert an von England kolonisiert, erlitt in den 1840er Jahren eine katastrophale Hungersnot, die die Bevölkerung durch Tod und Auswanderung halbierte, focht 1919 bis 1921 einen Unabhängigkeitskrieg aus, der mit der Teilung endete, und durchlitt im Norden einen dreißigjährigen konfessionellen Konflikt, bekannt als <em>The Troubles</em>, bis zum Karfreitagsabkommen von 1998. Heute ist die Republik eine kleine, offene, englischsprachige, überwiegend post-katholische Gesellschaft mit einer Hightech-Wirtschaft, einer tiefen literarischen und musikalischen Tradition und einer weltweiten Diaspora, deren Größe auf siebzig Millionen geschätzt wird.</p>
     <p class="why">Wenn Sie sich nur drei Dinge merken: <strong>Teilung (1921)</strong>, <strong>Hungersnot (1845–1852)</strong>, <strong>Karfreitagsabkommen (1998)</strong>. Die meisten anderen Fragen hängen an diesen drei Pflöcken.</p>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- LAYER 2 -->
   <details id="l2" class="layer">
-    <summary><span><span class="layer-num">II</span>Irland in 5 Minuten <span class="gae">· Forléargas</span></span></summary>
+    <summary>
+      <span class="lnum">II</span>
+      <span class="lhead">Irland in 5 Minuten<span class="gae">Forléargas</span></span>
+    </summary>
 
     <details open>
       <summary>Geographie und die beiden Hoheitsgebiete</summary>
@@ -417,11 +567,18 @@
     </details>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- LAYER 3 -->
   <details id="l3" class="layer">
-    <summary><span><span class="layer-num">III</span>Die Epochen: das Gerüst <span class="gae">· Na Tréimhsí</span></span></summary>
+    <summary>
+      <span class="lnum">III</span>
+      <span class="lhead">Die Epochen: das Gerüst<span class="gae">Na Tréimhsí</span></span>
+    </summary>
     <p class="why">Zwölf Epochen, jede in einem Absatz. Lesen Sie sie der Reihe nach, und Sie haben das Rückgrat von zweitausend Jahren.</p>
 
     <div class="timeline">
@@ -479,11 +636,18 @@
     </div>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- LAYER 4 -->
   <details id="l4" class="layer">
-    <summary><span><span class="layer-num">IV</span>Vertiefende Themen <span class="gae">· Téamaí Doimhne</span></span></summary>
+    <summary>
+      <span class="lnum">IV</span>
+      <span class="lhead">Vertiefende Themen<span class="gae">Téamaí Doimhne</span></span>
+    </summary>
     <p class="why">Die Epochen sagen Ihnen, was geschah. Die Themen sagen Ihnen, warum es noch immer wichtig ist.</p>
 
     <details>
@@ -527,11 +691,18 @@
     </details>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- LAYER 5 -->
   <details id="l5" class="layer">
-    <summary><span><span class="layer-num">V</span>Das lebendige Irland: was heute gilt <span class="gae">· Éire Inniu</span></span></summary>
+    <summary>
+      <span class="lnum">V</span>
+      <span class="lhead">Das lebendige Irland: was heute gilt<span class="gae">Éire Inniu</span></span>
+    </summary>
 
     <details open>
       <summary>Politik und Parteien</summary>
@@ -569,11 +740,18 @@
     </details>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- GLOSSARY -->
   <details id="glossary" class="layer">
-    <summary><span><span class="layer-num">·</span>Namen und Begriffe <span class="gae">· Ainmneacha</span></span></summary>
+    <summary>
+      <span class="lnum">·</span>
+      <span class="lhead">Namen und Begriffe<span class="gae">Ainmneacha</span></span>
+    </summary>
     <div class="grid">
       <div class="card"><h4>Sankt Patrick (5. Jh.)</h4><p>Romano-britischer Missionar, traditioneller Christianisierer Irlands. Weniger grünes Bier, mehr theologische Infrastruktur.</p></div>
       <div class="card"><h4>Brian Boru (gest. 1014)</h4><p>Hochkönig; besiegte die hiberno-norse Allianz bei Clontarf; das mittelalterliche Irland kam einer Vereinigung nie näher.</p></div>
@@ -600,11 +778,18 @@
     </div>
   </details>
 
-  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+  <div class="knot" aria-hidden="true">
+    <div class="knot-band"></div>
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(120)"/><path d="M 0 0 m 0 -36 a 36 36 0 1 1 -31.18 18 a 22 22 0 1 0 19.05 -11 a 11 11 0 1 1 -9.5 5.5" transform="rotate(240)"/></g></svg></span>
+    <div class="knot-band"></div>
+  </div>
 
   <!-- READING -->
   <details id="read" class="layer">
-    <summary><span><span class="layer-num">·</span>Wenn Sie weiter eintauchen wollen <span class="gae">· Tuilleadh Léitheoireachta</span></span></summary>
+    <summary>
+      <span class="lnum">·</span>
+      <span class="lhead">Wenn Sie weiter eintauchen wollen<span class="gae">Tuilleadh Léitheoireachta</span></span>
+    </summary>
     <p class="why">Eine kurze, eigensinnige Leseliste. Wählen Sie eine allgemeine Geschichte und ein literarisches Werk; das genügt, um die meisten Gespräche redlich zu führen.</p>
     <ul>
       <li><strong>R.F. Foster — <em>Modern Ireland 1600–1972</em></strong>. Die Standard-Einbänder-Geschichte; gründlich, kühl im Blick, in ihrem Revisionismus gelegentlich umstritten.</li>
