@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%87%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@700;800;900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #2a2a2a;
@@ -92,24 +92,27 @@
     margin-bottom: 28px;
   }
   h1 {
-    font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+    font-family: 'Fraunces', 'Playfair Display', 'Cormorant Garamond', serif;
     font-weight: 900;
+    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
     color: var(--ink);
     margin-bottom: 28px;
+    width: 100%;
+    max-width: 640px;
   }
   h1 em { font-style: normal; font-weight: 900; color: var(--eire-green); }
-  h1 .hl1, h1 .hl2 { display: block; }
+  h1 .hl1, h1 .hl2 { display: block; white-space: nowrap; }
   h1 .hl1 {
-    font-size: clamp(58px, 12.5vw, 132px);
+    font-size: 120px;
     line-height: 0.95;
     letter-spacing: -0.025em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   h1 .hl2 {
-    font-size: clamp(22px, 4.7vw, 52px);
+    font-size: 50px;
     line-height: 1.0;
     letter-spacing: -0.005em;
-    white-space: nowrap;
+    font-weight: 700;
   }
   .eire {
     background: linear-gradient(90deg,
@@ -361,6 +364,38 @@
     try { l = localStorage.getItem('lang') || 'es'; } catch(e) {}
     setLang(l);
   })();
+
+  function fitTitle() {
+    const lang = document.documentElement.lang;
+    const visible = document.querySelector('h1 > [data-' + lang + ']');
+    if (!visible) return;
+    const h1 = document.querySelector('h1');
+    const target = h1.clientWidth;
+    if (!target) return;
+    const lines = visible.querySelectorAll('.hl1, .hl2');
+    lines.forEach(function(line) {
+      line.style.fontSize = '';
+      const baseFs = parseFloat(getComputedStyle(line).fontSize);
+      const naturalW = line.scrollWidth;
+      if (!naturalW) return;
+      let newFs = baseFs * (target / naturalW);
+      newFs = Math.max(22, Math.min(180, newFs));
+      line.style.fontSize = newFs + 'px';
+    });
+  }
+  const _origSetLang = setLang;
+  setLang = function(l) {
+    _origSetLang(l);
+    requestAnimationFrame(function(){ requestAnimationFrame(fitTitle); });
+  };
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitTitle);
+  } else {
+    window.addEventListener('load', fitTitle);
+  }
+  window.addEventListener('resize', fitTitle);
+  // Re-run after init lang set
+  requestAnimationFrame(function(){ requestAnimationFrame(fitTitle); });
   function saveTheDate(e) {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
