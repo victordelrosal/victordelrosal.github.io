@@ -158,6 +158,35 @@
     transform: scale(1.05);
     will-change: transform;
   }
+  .hero-video {
+    position: absolute; inset: -5%; z-index: 0;
+    width: 110%; height: 110%;
+    object-fit: cover;
+    opacity: 0.62;
+    mix-blend-mode: luminosity;
+    filter: saturate(0.85) contrast(1.02) brightness(1.06);
+    pointer-events: none;
+    will-change: transform;
+  }
+  .hero-video.loaded { animation: heroFadeIn 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  @keyframes heroFadeIn {
+    from { opacity: 0; transform: scale(1.08); }
+    to { opacity: 0.62; transform: scale(1); }
+  }
+  .hero-credit {
+    position: absolute; bottom: 16px; right: var(--gutter); z-index: 3;
+    font-family: 'Onest', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    opacity: 0.5;
+  }
+  .hero-credit a { color: inherit; text-decoration: none; }
+  .hero-credit a:hover { color: var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video { display: none; }
+  }
   .hero-veil {
     position: absolute; inset: 0; z-index: 1;
     background:
@@ -913,6 +942,9 @@
 
 <section class="hero">
   <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="bg.png" aria-hidden="true">
+    <source src="hero.mp4" type="video/mp4" />
+  </video>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-inner stagger" id="heroStagger">
     <p class="eyebrow">
@@ -961,6 +993,7 @@
     <span data-es>desliza</span><span data-en>scroll</span>
     <span class="line"></span>
   </div>
+  <div class="hero-credit"><a href="https://www.pexels.com/video/15735845/" target="_blank" rel="noopener">Cliffs of Moher · Pexels</a></div>
 </section>
 
 <section class="manifesto" id="manifesto">
@@ -1287,6 +1320,15 @@
 
   // Hero stagger on load
   setTimeout(function(){ document.getElementById('heroStagger').classList.add('in'); }, 80);
+
+  // Mark hero video as loaded once it can play
+  (function(){
+    const v = document.getElementById('heroVideo');
+    if (!v) return;
+    function ready(){ v.classList.add('loaded'); }
+    if (v.readyState >= 2) ready();
+    else v.addEventListener('loadeddata', ready, { once: true });
+  })();
 
   // Scroll reveal
   const io = new IntersectionObserver(function(entries){
