@@ -94,13 +94,38 @@
   h1 {
     font-family: 'Playfair Display', 'Cormorant Garamond', serif;
     font-weight: 900;
-    font-size: clamp(48px, 8.4vw, 92px);
+    font-size: clamp(34px, 7.2vw, 82px);
     line-height: 0.98;
     letter-spacing: -0.02em;
     color: var(--ink);
     margin-bottom: 28px;
   }
   h1 em { font-style: normal; font-weight: 900; color: var(--eire-green); }
+  h1 .hl1, h1 .hl2 { display: block; }
+  h1 .hl2 { white-space: nowrap; }
+  .eire {
+    background: linear-gradient(90deg,
+      #0a3d22 0%,
+      #169B62 10%,
+      #4ed79a 22%,
+      #169B62 30%,
+      #0a3d22 33%,
+      #e8dfc6 40%,
+      #ffffff 50%,
+      #e8dfc6 60%,
+      #b85a18 66%,
+      #FF883E 72%,
+      #ffc07a 82%,
+      #FF883E 90%,
+      #b85a18 100%);
+    background-size: 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    -webkit-text-stroke: 0.5px rgba(42,42,42,0.18);
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.6)) drop-shadow(0 2px 4px rgba(42,42,42,0.08));
+  }
   .subtitle {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
@@ -224,8 +249,8 @@
   [data-en], [data-es] { display: none; }
   html[lang="es"] [data-es] { display: inline; }
   html[lang="en"] [data-en] { display: inline; }
-  html[lang="es"] h1 [data-es] { display: block; }
-  html[lang="en"] h1 [data-en] { display: block; }
+  html[lang="es"] h1 > [data-es] { display: block; }
+  html[lang="en"] h1 > [data-en] { display: block; }
   @media (max-width: 600px) {
     main { padding: 60px 22px 40px; }
     .mark { margin-bottom: 40px; font-size: 18px; }
@@ -252,8 +277,14 @@
 <main>
   <div class="kicker">Save the Date</div>
   <h1>
-    <span data-es><em>Cumbre de IA</em><br/>en el oeste de Irlanda</span>
-    <span data-en><em>AI Summit</em><br/>in the West of Ireland</span>
+    <span data-es>
+      <span class="hl1"><em>Cumbre de IA</em></span>
+      <span class="hl2">en el oeste de <span class="eire">Irlanda</span></span>
+    </span>
+    <span data-en>
+      <span class="hl1"><em>AI Summit</em></span>
+      <span class="hl2">in the West of <span class="eire">Ireland</span></span>
+    </span>
   </h1>
   <p class="subtitle">
     <span data-es>Un día de trabajo sobre lo que está cambiando, y un recorrido por el borde atlántico salvaje de Europa.</span>
