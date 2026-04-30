@@ -1317,7 +1317,7 @@
   // Hero stagger on load
   setTimeout(function(){ document.getElementById('heroStagger').classList.add('in'); }, 80);
 
-  // Hero video chain — crossfades through Ireland clips
+  // Hero video chain — 5s per clip, 1.4s crossfade
   (function(){
     const playlist = [
       'clips/01-cliffs-moher.mp4',
@@ -1332,44 +1332,58 @@
     const vidB = document.getElementById('vidB');
     if (!vidA || !vidB) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const HOLD = 5000;   // ms primary visibility per clip
+    const FADE = 1400;   // ms crossfade duration
+
     let idx = 0;
     let active = vidA, next = vidB;
     let switching = false;
-    const FADE_LEAD = 1.4; // start crossfade this many seconds before clip ends
 
-    function load(el, i) {
-      el.src = playlist[i];
-      el.load();
+    function setSrc(el, i) {
+      try {
+        el.src = playlist[i];
+        el.muted = true;
+        el.playsInline = true;
+        el.setAttribute('muted','');
+        el.setAttribute('playsinline','');
+        el.load();
+      } catch(e) {}
     }
+    function safePlay(el) {
+      const p = el.play();
+      if (p && p.catch) p.catch(function(){});
+    }
+
+    // Boot: load both, show A
+    setSrc(vidA, 0);
+    setSrc(vidB, 1);
+    function boot() {
+      vidA.classList.add('active');
+      safePlay(vidA);
+    }
+    if (vidA.readyState >= 2) boot();
+    else vidA.addEventListener('loadeddata', boot, { once: true });
+
     function advance() {
       if (switching) return;
       switching = true;
-      const nextIdx = (idx + 1) % playlist.length;
-      const playPromise = next.play();
-      if (playPromise) playPromise.catch(function(){});
+      try { next.currentTime = 0; } catch(e) {}
+      safePlay(next);
       next.classList.add('active');
       active.classList.remove('active');
-      // After fade finishes, swap roles & preload the one after
+      const oldActive = active;
+      const oldNext = next;
       setTimeout(function(){
-        const tmp = active; active = next; next = tmp;
-        next.pause();
-        idx = nextIdx;
-        load(next, (idx + 1) % playlist.length);
+        try { oldActive.pause(); oldActive.currentTime = 0; } catch(e) {}
+        active = oldNext;
+        next = oldActive;
+        idx = (idx + 1) % playlist.length;
+        setSrc(next, (idx + 1) % playlist.length);
         switching = false;
-      }, 1450);
+      }, FADE + 50);
     }
-    function tick() {
-      if (!active.duration || !isFinite(active.duration)) return;
-      if (active.currentTime >= active.duration - FADE_LEAD) advance();
-    }
-    load(vidA, 0);
-    vidA.addEventListener('loadeddata', function once(){
-      vidA.removeEventListener('loadeddata', once);
-      vidA.classList.add('active');
-      const p = vidA.play(); if (p) p.catch(function(){});
-      load(vidB, 1);
-    }, { once: true });
-    setInterval(tick, 200);
+
+    setInterval(advance, HOLD);
   })();
 
   // Scroll reveal
