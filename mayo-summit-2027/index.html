@@ -162,17 +162,14 @@
     position: absolute; inset: -5%; z-index: 0;
     width: 110%; height: 110%;
     object-fit: cover;
-    opacity: 0.62;
+    opacity: 0;
     mix-blend-mode: luminosity;
     filter: saturate(0.85) contrast(1.02) brightness(1.06);
     pointer-events: none;
-    will-change: transform;
+    will-change: opacity, transform;
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .hero-video.loaded { animation: heroFadeIn 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-  @keyframes heroFadeIn {
-    from { opacity: 0; transform: scale(1.08); }
-    to { opacity: 0.62; transform: scale(1); }
-  }
+  .hero-video.active { opacity: 0.66; }
   .hero-credit {
     position: absolute; bottom: 16px; right: var(--gutter); z-index: 3;
     font-family: 'Onest', sans-serif;
@@ -942,9 +939,8 @@
 
 <section class="hero">
   <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="bg.png" aria-hidden="true">
-    <source src="hero.mp4" type="video/mp4" />
-  </video>
+  <video class="hero-video" id="vidA" autoplay muted playsinline preload="auto" poster="bg.png" aria-hidden="true"></video>
+  <video class="hero-video" id="vidB" muted playsinline preload="auto" aria-hidden="true"></video>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-inner stagger" id="heroStagger">
     <p class="eyebrow">
@@ -993,7 +989,7 @@
     <span data-es>desliza</span><span data-en>scroll</span>
     <span class="line"></span>
   </div>
-  <div class="hero-credit"><a href="https://www.pexels.com/video/15735845/" target="_blank" rel="noopener">Cliffs of Moher · Pexels</a></div>
+  <div class="hero-credit"><a href="https://www.pexels.com/" target="_blank" rel="noopener">Footage · Pexels</a></div>
 </section>
 
 <section class="manifesto" id="manifesto">
@@ -1321,13 +1317,59 @@
   // Hero stagger on load
   setTimeout(function(){ document.getElementById('heroStagger').classList.add('in'); }, 80);
 
-  // Mark hero video as loaded once it can play
+  // Hero video chain — crossfades through Ireland clips
   (function(){
-    const v = document.getElementById('heroVideo');
-    if (!v) return;
-    function ready(){ v.classList.add('loaded'); }
-    if (v.readyState >= 2) ready();
-    else v.addEventListener('loadeddata', ready, { once: true });
+    const playlist = [
+      'clips/01-cliffs-moher.mp4',
+      'clips/02-irish-landscape.mp4',
+      'clips/03-coastline-cliffs.mp4',
+      'clips/04-cliffs-sea.mp4',
+      'clips/05-cliff-drama.mp4',
+      'clips/07-pub-people.mp4',
+      'clips/06-pub-mug.mp4'
+    ];
+    const vidA = document.getElementById('vidA');
+    const vidB = document.getElementById('vidB');
+    if (!vidA || !vidB) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let idx = 0;
+    let active = vidA, next = vidB;
+    let switching = false;
+    const FADE_LEAD = 1.4; // start crossfade this many seconds before clip ends
+
+    function load(el, i) {
+      el.src = playlist[i];
+      el.load();
+    }
+    function advance() {
+      if (switching) return;
+      switching = true;
+      const nextIdx = (idx + 1) % playlist.length;
+      const playPromise = next.play();
+      if (playPromise) playPromise.catch(function(){});
+      next.classList.add('active');
+      active.classList.remove('active');
+      // After fade finishes, swap roles & preload the one after
+      setTimeout(function(){
+        const tmp = active; active = next; next = tmp;
+        next.pause();
+        idx = nextIdx;
+        load(next, (idx + 1) % playlist.length);
+        switching = false;
+      }, 1450);
+    }
+    function tick() {
+      if (!active.duration || !isFinite(active.duration)) return;
+      if (active.currentTime >= active.duration - FADE_LEAD) advance();
+    }
+    load(vidA, 0);
+    vidA.addEventListener('loadeddata', function once(){
+      vidA.removeEventListener('loadeddata', once);
+      vidA.classList.add('active');
+      const p = vidA.play(); if (p) p.catch(function(){});
+      load(vidB, 1);
+    }, { once: true });
+    setInterval(tick, 200);
   })();
 
   // Scroll reveal
