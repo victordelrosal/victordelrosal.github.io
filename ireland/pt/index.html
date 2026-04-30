@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="vellum">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Éire · Um guia de referência sobre a Irlanda</title>
+<meta name="description" content="Um guia de referência sobre a história, a identidade e o presente da Irlanda, em cinco camadas concêntricas, na linhagem visual dos manuscritos insulares." />
+<meta property="og:title" content="Éire · Um guia de referência sobre a Irlanda" />
+<meta property="og:description" content="Da versão de 30 segundos aos temas mais profundos: um guia em camadas sobre a história e a identidade da Irlanda." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://victordelrosal.com/ireland/pt/" />
+<link rel="alternate" hreflang="en" href="https://victordelrosal.com/ireland/" />
+<link rel="alternate" hreflang="es" href="https://victordelrosal.com/ireland/es/" />
+<link rel="alternate" hreflang="fr" href="https://victordelrosal.com/ireland/fr/" />
+<link rel="alternate" hreflang="pt" href="https://victordelrosal.com/ireland/pt/" />
+<link rel="alternate" hreflang="de" href="https://victordelrosal.com/ireland/de/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill='none' stroke='%238E2A1B' stroke-width='6'%3E%3Ccircle cx='0' cy='-15' r='20'/%3E%3Ccircle cx='13' cy='8' r='20'/%3E%3Ccircle cx='-13' cy='8' r='20'/%3E%3C/g%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Vellum mode (default) — Insular manuscript */
+    --bg:#F2E8CF;
+    --bg-2:#E8DBB0;
+    --panel:#FAF3DD;
+    --panel-2:#F6EDC9;
+    --text:#241A0E;          /* sepia-black, like iron-gall ink */
+    --text-soft:#4A3520;
+    --text-dim:#8A7050;
+    --rule:rgba(184,134,43,0.35);
+    --rule-strong:#B8862B;
+    --kells-red:#8E2A1B;     /* Kells oxblood */
+    --kells-red-2:#A33324;
+    --gold:#B8862B;          /* burnished insular gold */
+    --gold-deep:#8B6314;
+    --connemara:#3D5C3A;     /* deep moss/Connemara */
+    --woad:#2E4A6B;          /* dyer's woad blue, faint */
+    --shadow:0 1px 2px rgba(60,40,15,0.06), 0 8px 24px rgba(60,40,15,0.05);
+  }
+  html[data-theme="peat"]{
+    --bg:#1A140E;
+    --bg-2:#0E0905;
+    --panel:rgba(60,45,30,0.55);
+    --panel-2:rgba(80,60,38,0.40);
+    --text:#EBDFC2;
+    --text-soft:#C4B58E;
+    --text-dim:#8A7B5C;
+    --rule:rgba(212,160,23,0.28);
+    --rule-strong:#D4A017;
+    --kells-red:#C9461F;
+    --kells-red-2:#D55A33;
+    --gold:#D4A017;
+    --gold-deep:#A88016;
+    --connemara:#6B8E5E;
+    --woad:#6B86A8;
+    --shadow:0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"EB Garamond","Adobe Garamond Pro",Garamond,Georgia,serif;
+    color:var(--text);
+    background:var(--bg);
+    background-image:
+      radial-gradient(900px 540px at 88% -10%, rgba(184,134,43,0.10), transparent 60%),
+      radial-gradient(700px 500px at -10% 30%, rgba(142,42,27,0.06), transparent 60%);
+    min-height:100vh;
+    line-height:1.65;
+    font-size:18px;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* Vellum / parchment fibre noise — generated via SVG */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.10 0 0 0 0 0.06 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.18;
+    mix-blend-mode:multiply;
+  }
+  html[data-theme="peat"] body::before{opacity:0.28; mix-blend-mode:screen}
+
+  /* Header — vellum bar with gold rule */
+  header.site{
+    position:sticky; top:0; z-index:10;
+    backdrop-filter:saturate(120%) blur(8px);
+    -webkit-backdrop-filter:saturate(120%) blur(8px);
+    background:linear-gradient(180deg, rgba(242,232,207,0.92), rgba(242,232,207,0.78));
+    border-bottom:1px solid var(--rule);
+    box-shadow:0 1px 0 rgba(184,134,43,0.18);
+  }
+  html[data-theme="peat"] header.site{
+    background:linear-gradient(180deg, rgba(14,9,5,0.9), rgba(14,9,5,0.72));
+  }
+  .nav{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px;font-family:"Cinzel",serif;font-weight:600;letter-spacing:0.08em;font-size:15px;color:var(--text)}
+  .brand .mark{
+    width:34px;height:34px;display:grid;place-items:center;
+    color:var(--kells-red);
+  }
+  .brand .mark svg{width:34px;height:34px}
+  .brand .sep{color:var(--rule-strong);margin:0 2px}
+  .brand .gaeilge{font-style:italic;font-family:"EB Garamond",serif;font-weight:500;letter-spacing:0.02em;font-size:16px;color:var(--kells-red)}
+  .nav-links{display:flex;gap:6px;flex-wrap:wrap}
+  .nav-links a{color:var(--text-soft);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:6px;letter-spacing:0.02em;font-variant:small-caps;font-family:"Cinzel",serif;font-weight:500}
+  .nav-links a:hover{background:var(--panel-2);color:var(--kells-red)}
+  .controls-right{display:flex;gap:10px;align-items:center}
+  .lang{
+    display:flex;gap:0;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--panel);
+    font-family:"Cinzel",serif;font-size:11px;letter-spacing:0.12em;
+  }
+  .lang a{padding:5px 10px;color:var(--text-dim);text-decoration:none;border-right:1px solid var(--rule)}
+  .lang a:last-child{border-right:none}
+  .lang a.active{color:var(--kells-red);background:var(--panel-2);font-weight:700}
+  .lang a:hover{color:var(--kells-red)}
+  .toggle{
+    cursor:pointer;border:1px solid var(--rule);background:var(--panel);
+    color:var(--text);border-radius:999px;padding:5px 12px;font-size:12px;
+    font-family:"Cinzel",serif;letter-spacing:0.1em
+  }
+  .toggle:hover{border-color:var(--gold)}
+
+  main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:24px 24px 96px}
+
+  /* Hero — illuminated opening */
+  .hero{padding:48px 0 28px;position:relative}
+  .hero-rule{height:1px;background:var(--rule-strong);opacity:0.6;margin:0 0 24px}
+  .kicker{
+    font-family:"Cinzel",serif;
+    text-transform:uppercase;letter-spacing:0.32em;font-size:11px;
+    color:var(--kells-red);font-weight:600;
+  }
+  .kicker .gaeilge{font-style:italic;font-family:"EB Garamond",serif;text-transform:none;letter-spacing:0.04em;font-size:13px;color:var(--gold-deep)}
+  h1.title{
+    font-family:"Cinzel",serif;
+    font-size:clamp(42px,6vw,72px);
+    line-height:1.05;
+    margin:18px 0 8px;
+    letter-spacing:0.01em;
+    font-weight:600;
+    color:var(--text);
+  }
+  h1.title em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--kells-red);font-weight:500;letter-spacing:0}
+  .gaeilge-title{
+    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;
+    color:var(--gold-deep);margin:0 0 22px;letter-spacing:0.02em
+  }
+  .lede{font-size:20px;color:var(--text-soft);max-width:760px;line-height:1.6}
+  .lede .dropcap{
+    float:left; font-family:"Cinzel",serif; font-weight:700;
+    font-size:78px; line-height:0.85; padding:6px 12px 0 0;
+    color:var(--kells-red);
+    background:linear-gradient(180deg, transparent 0, transparent 100%);
+    margin-right:8px;
+    text-shadow:0 1px 0 rgba(184,134,43,0.3);
+  }
+  .meta{margin-top:22px;display:flex;gap:16px;flex-wrap:wrap;color:var(--text-dim);font-size:13px;font-style:italic;font-family:"Cormorant Garamond",serif}
+  .controls{display:flex;gap:10px;margin:24px 0 8px;flex-wrap:wrap}
+  .btn{
+    cursor:pointer;border:1px solid var(--rule);background:var(--panel);
+    color:var(--text);padding:8px 16px;border-radius:999px;font-size:12.5px;
+    font-family:"Cinzel",serif;letter-spacing:0.12em;text-transform:uppercase
+  }
+  .btn:hover{border-color:var(--kells-red);color:var(--kells-red)}
+
+  /* Knot divider — gold double rule with central trefoil */
+  .knot{
+    position:relative; height:36px; margin:36px 0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .knot::before, .knot::after{
+    content:""; flex:1; height:1px;
+    background:linear-gradient(90deg, transparent, var(--rule-strong) 20%, var(--rule-strong) 80%, transparent);
+    opacity:0.55;
+  }
+  .knot .glyph{
+    width:40px;height:40px;margin:0 14px;display:grid;place-items:center;
+    color:var(--gold);
+  }
+  .knot .glyph svg{width:32px;height:32px;display:block}
+
+  /* Details — manuscript panels */
+  details.layer{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:22px 26px;
+    margin:0;
+    transition:border-color .25s, background .25s;
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+  details.layer[open]{border-color:rgba(184,134,43,0.55)}
+  details.layer > summary{
+    cursor:pointer; list-style:none;
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    font-family:"Cinzel",serif; font-weight:600; font-size:20px;
+    letter-spacing:0.02em; color:var(--text);
+  }
+  details summary::-webkit-details-marker{display:none}
+  details.layer > summary::after{
+    content:""; display:inline-block;
+    width:14px;height:14px; flex:0 0 14px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%238E2A1B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    transform:rotate(-90deg); transition:transform .25s; align-self:center;
+  }
+  html[data-theme="peat"] details.layer > summary::after{
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 5l4 4 4-4' fill='none' stroke='%23C9461F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+  details.layer[open] > summary::after{transform:rotate(0deg)}
+  .layer-num{
+    font-family:"Cinzel",serif;font-weight:700;
+    color:var(--kells-red);
+    font-size:13px;letter-spacing:0.18em;text-transform:uppercase;
+    margin-right:14px;
+  }
+  .layer-num::before{content:"·";color:var(--rule-strong);margin-right:14px;font-weight:400}
+  .layer-num:first-child::before{content:""}
+  .gae{font-style:italic;font-family:"Cormorant Garamond",serif;font-weight:400;color:var(--gold-deep);letter-spacing:0.02em;font-size:0.9em}
+  details.layer > p, details.layer > ul, details.layer > div{margin-top:14px}
+
+  /* Nested details (within layers) */
+  details.layer details{
+    background:var(--panel-2);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:14px 18px;
+    margin:10px 0;
+  }
+  details.layer details summary{
+    cursor:pointer;list-style:none;
+    font-family:"Cinzel",serif;font-weight:500;font-size:15px;
+    letter-spacing:0.04em;color:var(--text);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  details.layer details summary::after{
+    content:"+"; color:var(--kells-red); font-size:18px; transition:transform .2s;
+  }
+  details.layer details[open] summary::after{content:"−"}
+  details.layer details p{margin:10px 0 0;font-size:17px;line-height:1.65}
+  details.layer details details{background:transparent;border:none;border-top:1px dashed var(--rule);border-radius:0;padding:10px 0;margin:6px 0}
+
+  /* Era timeline */
+  .timeline{
+    position:relative;
+    padding-left:0;
+    margin:14px 0 4px;
+  }
+  .timeline details{margin:8px 0}
+  .when{
+    display:inline-block; font-family:"Cinzel",serif;
+    font-weight:600; color:var(--kells-red);
+    font-size:12.5px;letter-spacing:0.18em;text-transform:uppercase;
+    margin-right:14px; min-width:140px;
+  }
+  blockquote{
+    border-left:3px solid var(--kells-red);
+    margin:18px 0; padding:8px 22px;
+    color:var(--text-soft);
+    font-style:italic;
+    font-family:"Cormorant Garamond",serif;
+    font-size:21px;
+    line-height:1.55;
+    background:var(--panel-2);
+    border-radius:0 4px 4px 0;
+  }
+  a{color:var(--kells-red); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:2px}
+  a:hover{color:var(--kells-red-2)}
+  strong{color:var(--text); font-weight:700}
+  em{color:var(--text-soft)}
+
+  .why{
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic; font-size:17px;
+    color:var(--text-dim); margin-top:10px;
+  }
+
+  /* Cards — illuminated tiles */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:14px 16px;
+    position:relative;
+  }
+  .card::before{
+    content:""; position:absolute; left:0; top:0; bottom:0;
+    width:3px; background:var(--gold); opacity:0.6;
+    border-radius:4px 0 0 4px;
+  }
+  .card h4{
+    margin:0 0 6px; font-family:"Cinzel",serif; font-weight:600;
+    font-size:14px; letter-spacing:0.04em; color:var(--kells-red);
+  }
+  .card p{margin:0;color:var(--text-soft);font-size:15.5px;line-height:1.55}
+
+  /* Footer — colophon */
+  footer{
+    margin-top:54px; padding:32px 0 0;
+    border-top:1px solid var(--rule-strong);
+    color:var(--text-dim); font-size:14px; text-align:center;
+    font-family:"Cormorant Garamond",serif; font-style:italic;
+  }
+  footer .colophon{font-family:"Cinzel",serif;font-style:normal;text-transform:uppercase;letter-spacing:0.18em;font-size:11px;color:var(--kells-red);margin-bottom:10px}
+  .disclaimer{margin-top:14px;color:var(--text-dim);font-size:13px;max-width:780px;margin-left:auto;margin-right:auto}
+
+  ul{padding-left:1.2em}
+  li{margin:6px 0}
+
+  @media (max-width:680px){
+    .nav{gap:10px}
+    .nav-links{order:3;flex-basis:100%;justify-content:flex-start}
+    .lede .dropcap{font-size:62px}
+    h1.title{font-size:38px}
+    .when{display:block;min-width:0;margin-bottom:4px}
+    details.layer{padding:18px 18px}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav">
+    <a href="/ireland/pt/" class="brand" style="text-decoration:none">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg>
+      </span>
+      <span><span class="gaeilge">Éire</span> <span class="sep">·</span> Um guia de referência</span>
+    </a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#l1">I · 30 seg</a>
+      <a href="#l2">II · 5 min</a>
+      <a href="#l3">III · Eras</a>
+      <a href="#l4">IV · Temas</a>
+      <a href="#l5">V · Hoje</a>
+      <a href="#glossary">Nomes</a>
+      <a href="#read">Ler</a>
+    </nav>
+    <div class="controls-right">
+      <div class="lang" role="navigation" aria-label="Idioma">
+        <a href="/ireland/" lang="en">EN</a>
+        <a href="/ireland/es/" lang="es">ES</a>
+        <a href="/ireland/fr/" lang="fr">FR</a>
+        <a href="/ireland/pt/" class="active" lang="pt">PT</a>
+        <a href="/ireland/de/" lang="de">DE</a>
+      </div>
+      <button class="toggle" id="themeToggle" title="Alternar tema">Pergaminho / Turfa</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-rule"></div>
+    <div class="kicker">Achoimre Thagartha <span class="gaeilge">— um guia de referência</span></div>
+    <h1 class="title">Irlanda, <em>camada por camada.</em></h1>
+    <div class="gaeilge-title">Éire, ciseal ar chiseal.</div>
+    <p class="lede"><span class="dropcap">U</span>m guia de referência em cinco camadas concêntricas, construído para que você possa entrar na profundidade que a conversa pedir. A versão de 30 segundos serve para uma apresentação; as eras e os temas, quando o assunto fica sério; os nomes e a lista de leituras, para quem quiser ir adiante. Pensado para alguém já familiarizado com a Irlanda que deseja um mapa mais nítido dela.</p>
+    <div class="meta">
+      <span>Curadoria de Team Victor</span>
+      <span>· Lars (rigor) · Theo (ritmo) · Eli (calor)</span>
+      <span>· Última atualização em 30 de abril de 2026</span>
+    </div>
+    <div class="controls">
+      <button class="btn" onclick="openAll(true)">Expandir tudo</button>
+      <button class="btn" onclick="openAll(false)">Recolher tudo</button>
+      <button class="btn" onclick="document.getElementById('l1').scrollIntoView({behavior:'smooth'})">Começar · I</button>
+    </div>
+  </section>
+
+  <div class="knot" aria-hidden="true">
+    <span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span>
+  </div>
+
+  <!-- LAYER 1 -->
+  <details id="l1" class="layer" open>
+    <summary><span><span class="layer-num">I</span>A Irlanda em 30 segundos <span class="gae">· An Crothán</span></span></summary>
+    <p>A Irlanda é uma ilha na borda ocidental da Europa, dividida em duas jurisdições: a <strong>República da Irlanda</strong> (independente desde 1922, membro da UE, capital Dublin, cerca de 5,3 milhões de habitantes) e a <strong>Irlanda do Norte</strong> (seis condados, parte do Reino Unido, capital Belfast, cerca de 1,9 milhão). A ilha foi colonizada pela Inglaterra a partir do século XII, sofreu uma fome catastrófica nos anos 1840 que reduziu a população à metade por morte e emigração, travou uma guerra de independência entre 1919 e 1921 que terminou na partição, e suportou um conflito sectário de trinta anos no Norte conhecido como <em>The Troubles</em>, encerrado pelo Acordo da Sexta-Feira Santa de 1998. Hoje, a República é uma sociedade pequena, aberta, anglófona, predominantemente pós-católica, com economia de alta tecnologia, profunda tradição literária e musical e uma diáspora global estimada em setenta milhões.</p>
+    <p class="why">Se for para guardar apenas três coisas: <strong>partição (1921)</strong>, <strong>fome (1845–52)</strong>, <strong>Acordo da Sexta-Feira Santa (1998)</strong>. Quase todas as outras perguntas se prendem a esses três ganchos.</p>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- LAYER 2 -->
+  <details id="l2" class="layer">
+    <summary><span><span class="layer-num">II</span>A Irlanda em 5 minutos <span class="gae">· Forléargas</span></span></summary>
+
+    <details open>
+      <summary>Geografia e as duas jurisdições</summary>
+      <p>Uma ilha, dois Estados. A <strong>República</strong> abrange 26 condados e cerca de 70.000 km². A <strong>Irlanda do Norte</strong> tem 6 condados e cerca de 14.000 km². A fronteira é invisível em campo (sem postos de controle desde 1998), mas politicamente muito real. Dublin é a cidade dominante no sul; Belfast, no norte. O oeste, formado por Galway, Mayo, Kerry e Donegal, é mais agreste, mais falante de irlandês, e é o coração cultural da antiga Irlanda gaélica.</p>
+    </details>
+
+    <details>
+      <summary>Governo e instituições (República)</summary>
+      <p>Uma democracia parlamentar. A câmara baixa é o <strong>Dáil Éireann</strong>; o chefe de governo é o <strong>Taoiseach</strong> (pronuncia-se <em>TI-chôc</em>); o chefe de Estado é um <strong>Presidente</strong> (Uachtarán) de função sobretudo cerimonial. O Judiciário é independente; a constituição é a <em>Bunreacht na hÉireann</em> (1937). A Irlanda ingressou na Comunidade Econômica Europeia (hoje UE) em 1973, ponto de virada na modernização do Estado.</p>
+    </details>
+
+    <details>
+      <summary>Língua</summary>
+      <p>Dois idiomas oficiais: <strong>irlandês (Gaeilge)</strong> e inglês. Todo mundo fala inglês; cerca de 1,7% usa o irlandês diariamente fora do sistema escolar, sobretudo nas regiões da <em>Gaeltacht</em>, no litoral oeste. O irlandês é ensinado em todas as escolas mantidas pelo Estado, aparece em todas as placas de estrada e carrega enorme peso simbólico, mesmo quando seu uso cotidiano é pequeno.</p>
+    </details>
+
+    <details>
+      <summary>Religião, antes e agora</summary>
+      <p>Historicamente, a República era esmagadoramente católica romana, e a Igreja detinha imenso poder social: educação, hospitais, casamento, censura. Esse poder ruiu desde os anos 1990, sob o peso dos escândalos de abuso clerical e de uma rápida liberalização social: o divórcio foi legalizado em 1995, o casamento entre pessoas do mesmo sexo aprovado por referendo em 2015 e o aborto, por referendo em 2018. Hoje o país se descreve melhor como <strong>pós-católico</strong>: culturalmente moldado pela Igreja, mas não mais governado por ela. A divisão religiosa da Irlanda do Norte (protestantes unionistas e católicos nacionalistas) foi a linha de falha de The Troubles.</p>
+    </details>
+
+    <details>
+      <summary>Economia</summary>
+      <p>Pequena, aberta, puxada pelos serviços, profundamente integrada ao capital americano e ao mercado único da UE. Setores principais: farmacêutico, medtech, software (Dublin abriga Google, Meta, Microsoft, Stripe, LinkedIn e a sede europeia da Apple em Cork), serviços financeiros (IFSC), agroalimentar e turismo. O PIB é uma cifra notoriamente distorcida pelas estruturas tributárias das multinacionais; a <strong>RNB modificada (GNI*)</strong> é a medida mais honesta. O boom do <em>Tigre Celta</em> (cerca de 1995–2007) transformou o padrão de vida; o crash de 2008 foi brutal; a recuperação foi forte, mas a acessibilidade da moradia é a crise doméstica que define a década de 2020.</p>
+    </details>
+
+    <details>
+      <summary>Cultura em um sopro</summary>
+      <p>Quatro Prêmios Nobel de Literatura (Yeats, Shaw, Beckett, Heaney). Joyce. Wilde. O pub como infraestrutura social, não apenas como bar. As sessões de música tradicional. A <strong>GAA</strong> (Gaelic Athletic Association), que abriga o hurling e o futebol gaélico, é a maior organização esportiva amadora da Europa e a espinha dorsal da vida comunitária rural. Hospitalidade e conversa são levadas a sério. O clima também, em boa parte porque há tanto dele.</p>
+    </details>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- LAYER 3 -->
+  <details id="l3" class="layer">
+    <summary><span><span class="layer-num">III</span>As eras: o esqueleto <span class="gae">· Na Tréimhsí</span></span></summary>
+    <p class="why">Doze eras, cada uma em um parágrafo. Lidas em sequência, dão a coluna vertebral de dois mil anos.</p>
+
+    <div class="timeline">
+      <details open><summary><span class="when">~500 a.C. – 400 d.C.</span> Irlanda celta e pré-cristã</summary>
+        <p>Povos de língua celta da Idade do Ferro, em uma sociedade tribal organizada em torno das <em>tuatha</em> (pequenos reinos) e de uma classe jurídica de alto status (a lei brehon, os druidas, os filí, poetas). Sem cidades, sem moeda, mas com uma cultura oral sofisticada. Roma jamais invadiu. Essa independência em relação a Roma é estruturalmente importante: a Irlanda entra no registro histórico sem nunca ter sido romanizada.</p>
+      </details>
+
+      <details><summary><span class="when">~432 – 800</span> Cristianização e a "Ilha de Santos e Sábios"</summary>
+        <p>O cristianismo chega no século V, atribuído pela tradição a <strong>São Patrício</strong> (um romano-britânico cristão, de origem escrava). Os mosteiros se tornam centros de saber enquanto a Europa continental se reorganiza após o colapso de Roma. Monges irlandeses partem para evangelizar a Britânia e o continente (Columba a Iona, Columbano à Gália e à Itália). O <em>Book of Kells</em> data desse período.</p>
+      </details>
+
+      <details><summary><span class="when">795 – 1014</span> Vikings e Brian Boru</summary>
+        <p>As incursões viking começam em 795 e dão origem a assentamentos: Dublin, Waterford, Wexford, Limerick e Cork são todas fundações nórdicas. <strong>Brian Boru</strong>, Alto Rei, derrota uma aliança hiberno-nórdica em Clontarf, em 1014, e morre na batalha. A Irlanda permanece politicamente fragmentada, sem um Estado-nação único, apenas uma hierarquia móvel de reis provinciais.</p>
+      </details>
+
+      <details><summary><span class="when">1169 – 1500</span> A invasão normanda e o Senhorio da Irlanda</summary>
+        <p>Os anglo-normandos desembarcam em 1169 a convite de um rei deposto de Leinster. A Coroa inglesa proclama o Senhorio da Irlanda em 1171. Senhores normandos se estabelecem, erguem castelos e, em poucas gerações, são descritos como "mais irlandeses do que os próprios irlandeses": falam irlandês, casam-se com famílias gaélicas, seguem a lei brehon. A autoridade inglesa encolhe a uma zona fortificada em torno de Dublin, chamada <strong>The Pale</strong>.</p>
+      </details>
+
+      <details><summary><span class="when">1500 – 1690</span> Conquista Tudor e Stuart, plantações, Cromwell</summary>
+        <p>O período decisivo. Henrique VIII se proclama Rei da Irlanda em 1541. Os Tudor e, depois, os Stuart conduzem uma série de conquistas militares brutais e <strong>plantações</strong>: confiscam terras de proprietários gaélicos e de antigos ingleses católicos e instalam colonos protestantes ingleses e escoceses, sobretudo em Ulster (a futura linha de falha da Irlanda do Norte). A campanha de <strong>Oliver Cromwell</strong> (1649–53) é lembrada pelos massacres de Drogheda e Wexford e pela despossessão em massa que se seguiu: <em>"Para o inferno ou para Connacht"</em>. A Guerra Williamita termina em 1690–91 (Batalha do Boyne, Tratado de Limerick) com o poder político católico destruído.</p>
+      </details>
+
+      <details><summary><span class="when">1695 – 1798</span> As Leis Penais e os United Irishmen</summary>
+        <p>As <strong>Leis Penais</strong> excluíram sistematicamente os católicos (a maioria) da posse da terra, da educação, dos cargos públicos e do exército. Em 1778, os católicos detinham cerca de 5% do território irlandês. Inspirada pelas revoluções americana e francesa, a <strong>Society of United Irishmen</strong>, conduzida em conjunto por protestantes e católicos, com destaque para <strong>Theobald Wolfe Tone</strong>, levantou-se em 1798. Foi derrotada. A resposta britânica foi abolir o parlamento irlandês e fundir a Irlanda diretamente ao Reino Unido.</p>
+      </details>
+
+      <details><summary><span class="when">1801 – 1845</span> A União, O'Connell, a Emancipação Católica</summary>
+        <p>Os Atos de União (1800) entram em vigor em 1801. A Irlanda passa a ser governada de Westminster. <strong>Daniel O'Connell</strong> ("O Libertador") constrói o primeiro grande movimento político de massas da Europa, conquistando a Emancipação Católica em 1829 (os católicos podem ocupar cadeiras no parlamento) por meio da agitação pacífica. Não consegue revogar a União. Então vem a catástrofe.</p>
+      </details>
+
+      <details><summary><span class="when">1845 – 1852</span> A Grande Fome — <em>An Gorta Mór</em></summary>
+        <p>Uma praga da batata destrói o alimento básico dos pobres do campo. Em sete anos, cerca de <strong>um milhão de pessoas morrem</strong> e outras <strong>um a dois milhões emigram</strong>. A população cai de aproximadamente 8,5 milhões para 6,5 milhões e segue caindo por um século. Alimentos eram exportados da Irlanda durante a Fome; a resposta do governo britânico foi ideologicamente travada pelo laissez-faire econômico. A Fome é o evento mais consequente da história moderna da Irlanda: marcou a língua (as regiões de fala irlandesa foram as mais atingidas), semeou a diáspora e fez a defesa da independência ser tão moral quanto política.</p>
+      </details>
+
+      <details><summary><span class="when">1858 – 1916</span> Guerra da Terra, Home Rule, a Insurreição</summary>
+        <p>Décadas de agitação: rebeldes fenianos, as reformas da <strong>Guerra da Terra</strong> que transferiram gradualmente a propriedade dos latifundiários para os arrendatários, e o longo esforço parlamentar pelo <strong>Home Rule</strong> (autogoverno irlandês dentro do Reino Unido) liderado por <strong>Charles Stewart Parnell</strong>. O Home Rule é finalmente aprovado em 1914, mas suspenso pela Primeira Guerra Mundial. Na <strong>Segunda-feira de Páscoa de 1916</strong>, um pequeno grupo de republicanos toma edifícios em Dublin e proclama uma República Irlandesa. A Insurreição fracassa militarmente em uma semana, mas a execução britânica de quinze líderes (entre eles <strong>Patrick Pearse</strong> e <strong>James Connolly</strong>) vira bruscamente a opinião pública.</p>
+      </details>
+
+      <details><summary><span class="when">1919 – 1923</span> Guerra da Independência, Tratado, Guerra Civil, Partição</summary>
+        <p>O Sinn Féin vence a eleição de 1918, recusa-se a sentar-se em Westminster e forma o primeiro <strong>Dáil</strong>. A <strong>Guerra da Independência</strong> (1919–21) é travada sobretudo como guerra de guerrilha sob o comando de <strong>Michael Collins</strong>. O <strong>Tratado Anglo-Irlandês</strong> (dezembro de 1921) cria o <em>Estado Livre Irlandês</em>, um domínio dentro do Império Britânico, e separa seis condados de Ulster como <em>Irlanda do Norte</em>. O Tratado divide o movimento independentista. A <strong>Guerra Civil</strong> (1922–23) opõe os pró-Tratado (Collins, morto em 1922) aos anti-Tratado (<strong>Éamon de Valera</strong>). Vencem os pró-Tratado. O ressentimento define a política irlandesa por décadas; os dois grandes partidos (<em>Fine Gael</em> e <em>Fianna Fáil</em>) descendem diretamente dos dois lados dessa guerra.</p>
+      </details>
+
+      <details><summary><span class="when">1922 – 1973</span> O Estado Livre, a República, o isolamento</summary>
+        <p>De Valera domina a política a partir dos anos 1930. Uma nova constituição em 1937 (<em>Bunreacht na hÉireann</em>) renomeia o Estado como Éire/Irlanda; a República plena é declarada em 1949. A Irlanda permanece neutra na Segunda Guerra Mundial (<em>The Emergency</em>). As décadas do pós-guerra são economicamente estagnadas, socialmente conservadoras e marcadas por forte emigração. Então, nos anos 1960, a economia se abre ao investimento estrangeiro com as reformas de T.K. Whitaker, e 1973 traz a entrada na CEE: começa, em ritmo lento, o giro para fora.</p>
+      </details>
+
+      <details><summary><span class="when">1968 – 1998</span> The Troubles</summary>
+        <p>Na Irlanda do Norte, um movimento católico pelos direitos civis contra a discriminação sistêmica escala para um conflito armado de trinta anos. Três lados principais: o <strong>IRA Provisório</strong> (republicano, em busca de uma Irlanda unida), os <strong>paramilitares lealistas</strong> (UVF, UDA, em defesa da União) e o <strong>Exército Britânico e a RUC</strong> (forças do Estado). Cerca de <strong>3.500 pessoas são mortas</strong>, em sua maioria civis. O Domingo Sangrento (1972), as greves de fome dos H-Blocks (1981, Bobby Sands), os atentados de Enniskillen, Omagh e Birmingham, e inúmeras outras atrocidades menores definem a era. O <strong>Acordo da Sexta-Feira Santa (1998)</strong> estabelece instituições de partilha de poder, reconhece tanto a identidade britânica quanto a irlandesa no Norte e desmilitariza o conflito, embora tensões persistam, e o Brexit tenha reaberto algumas delas.</p>
+      </details>
+
+      <details><summary><span class="when">1995 – presente</span> Tigre Celta, crash, Irlanda moderna</summary>
+        <p>Um boom econômico veloz a partir de meados dos anos 1990, alicerçado em IDE, fundos da UE, em uma força de trabalho qualificada e anglófona e em baixa tributação corporativa. O boom virou bolha imobiliária; o crash de 2008 forçou um humilhante resgate de 67,5 bilhões de euros pela UE/FMI em 2010 e anos de austeridade. A retomada a partir de 2014 foi forte, sobretudo em tecnologia e farmacêutica. No plano social, o país liberalizou-se em ritmo extraordinário: o referendo da Igualdade no Casamento (2015) e o referendo da Revogação da Oitava Emenda sobre o aborto (2018) foram aprovados por maiorias claras. O Brexit (2016–20) reformulou a relação com a Grã-Bretanha e tornou mais aguda a questão da Irlanda do Norte. Habitação, imigração e clima dominam a década atual.</p>
+      </details>
+    </div>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- LAYER 4 -->
+  <details id="l4" class="layer">
+    <summary><span><span class="layer-num">IV</span>Temas mais profundos <span class="gae">· Téamaí Doimhne</span></span></summary>
+    <p class="why">As eras dizem o que aconteceu. Os temas dizem por que ainda importa.</p>
+
+    <details>
+      <summary>Por que a partição segue sendo o fato político central</summary>
+      <p>O Tratado de 1921 traçou uma fronteira pensada para garantir aos unionistas de Ulster uma maioria protestante permanente. Isso criou um Estado (a Irlanda do Norte) em que uma comunidade foi estruturalmente privilegiada e outra estruturalmente desfavorecida por cinquenta anos: o motor de The Troubles. O Acordo da Sexta-Feira Santa não aboliu a fronteira; tornou-a porosa e politicamente reversível (uma "consulta de fronteira" pode ser convocada se o Secretário para a Irlanda do Norte concluir que uma maioria votaria pela unificação). O Brexit voltou a endurecer a questão: a Irlanda do Norte votou pela permanência, foi retirada da UE assim mesmo, e o <em>Protocolo da Irlanda do Norte</em> / <em>Acordo de Windsor</em> dali resultante criou, na prática, uma fronteira comercial no mar da Irlanda. O debate sobre a unificação está mais vivo agora do que em qualquer momento desde 1921.</p>
+    </details>
+
+    <details>
+      <summary>A Fome como fundamento moral</summary>
+      <p>A Fome não é apenas uma tragédia histórica; é a lente pela qual boa parte do restante da história irlandesa é lida. Ela molda atitudes em relação ao governo britânico, à propriedade da terra, à emigração, à língua irlandesa (que ruiu junto com o oeste rural), à segurança alimentar e à diáspora. A frase <em>"Deus mandou a praga, mas os ingleses mandaram a Fome"</em> resume uma memória popular que os historiadores acadêmicos complicam, mas nunca chegam a desfazer.</p>
+    </details>
+
+    <details>
+      <summary>A Igreja Católica: de coestadual a instituição contida</summary>
+      <p>Da independência até os anos 1990, a Igreja praticamente administrou as escolas, os hospitais e os serviços sociais da Irlanda, e moldou suas leis sobre casamento, contracepção, divórcio e sexualidade. O colapso não veio do argumento secular, mas da própria conduta institucional: as Magdalene Laundries, os reformatórios industriais, os lares para mães e bebês e uma onda de revelações de abusos sexuais clericais a partir de 1994. A deferência pública se rompeu. Os referendos do casamento igualitário, em 2015, e do aborto, em 2018, foram, sobretudo, um acerto de contas com essa história.</p>
+    </details>
+
+    <details>
+      <summary>Emigração e diáspora como estratégia econômica</summary>
+      <p>Por um século e meio depois da Fome, a emigração foi a válvula de escape. Cerca de setenta milhões de pessoas no mundo se reivindicam de descendência irlandesa, mais de dez vezes a população da ilha. Essa diáspora foi um trunfo político (de modo mais visível, ao moldar a política americana sobre a Irlanda do Norte sob Bill Clinton), um trunfo econômico (remessas, capital de retorno, relações de IDE) e um trunfo cultural. A frase <em>"a Irlanda não é tanto um país quanto uma rede global com um pequeno pedaço de terra anexado"</em> exagera, mas captura algo real.</p>
+    </details>
+
+    <details>
+      <summary>Neutralidade, mas de um tipo particular</summary>
+      <p>A Irlanda é militarmente neutra desde 1939: fora da OTAN, sem armas nucleares, contribuinte tradicional das missões de paz da ONU. Mas a neutralidade está cada vez mais contestada. O Estado abriga infraestrutura tecnológica americana de importância estratégica, permite o trânsito de tropas dos EUA pelo Aeroporto de Shannon e está exposto a atividades russas em torno de cabos submarinos no Atlântico. Desde a invasão da Ucrânia, em 2022, a pergunta <em>"que tipo de neutralidade, exatamente?"</em> deixou de ser doutrina assentada e virou uma conversa política séria.</p>
+    </details>
+
+    <details>
+      <summary>A economia: pequena, aberta e permanentemente exposta</summary>
+      <p>A prosperidade irlandesa se apoia em três pernas: o acesso ao mercado único da UE, o investimento das multinacionais americanas e uma força de trabalho qualificada e anglófona. As três são exógenas. Uma economia pequena e aberta, de cinco milhões de pessoas, não consegue se isolar de choques alheios; só pode construir resiliência por meio da diversificação, de reservas fiscais e de capital humano. O modelo do imposto corporativo de 12,5% está agora sob pressão da tributação mínima global da OCDE. A habitação é o canário na mina: o sucesso ultrapassou a capacidade do Estado de planejar para ele.</p>
+    </details>
+
+    <details>
+      <summary>A língua irlandesa: oficial, amada, frágil</summary>
+      <p>O irlandês é a primeira língua oficial pela constituição e a língua cotidiana de talvez 70.000 pessoas na Gaeltacht. Esse abismo, entre a primazia simbólica e a fragilidade demográfica, diz muito sobre a identidade irlandesa. Houve uma renovação silenciosa nas escolas urbanas de imersão em irlandês (<em>Gaelscoileanna</em>) e nas artes e na radiodifusão (TG4, RnaG). Se a língua sobreviverá como língua viva de comunidade ou se virará prática de patrimônio é, de fato, uma pergunta em aberto neste século.</p>
+    </details>
+
+    <details>
+      <summary>A literatura como soft power desproporcional</summary>
+      <p>Para um país de seu tamanho, a produção literária irlandesa é absurda. As razões se acumulam: uma forte tradição oral, a ascendência anglo-irlandesa que produziu escritores ambivalentes em relação às duas Irlandas a que pertenciam, a duplicidade católico-protestante que tornou a língua escorregadia, a experiência do exílio como condição geradora. Yeats e Joyce reinventaram a literatura do século XX; Beckett a reinventou de novo, em Paris e em francês; Heaney fez a Irlanda do Norte falar; hoje, autores como Sally Rooney, Anna Burns, Paul Lynch e Sebastian Barry continuam uma linha ininterrupta.</p>
+    </details>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- LAYER 5 -->
+  <details id="l5" class="layer">
+    <summary><span><span class="layer-num">V</span>A Irlanda viva: o que é verdade agora <span class="gae">· Éire Inniu</span></span></summary>
+
+    <details open>
+      <summary>Política e partidos</summary>
+      <p>O histórico bipartidarismo (Fianna Fáil e Fine Gael, ambos descendentes da Guerra Civil) se fragmentou. O Sinn Féin é hoje a maior força de oposição no Dáil e o maior partido na Assembleia da Irlanda do Norte: uma mudança estrutural. Coligações são a nova norma no sul. Os Verdes, o Labour, os Social Democrats e uma bancada crescente de independentes têm peso real. Pelos padrões europeus, a política da República é amplamente centrista; a onda populista de direita que varreu boa parte do continente foi comparativamente contida, ainda que a imigração esteja remodelando o debate.</p>
+    </details>
+
+    <details>
+      <summary>O que se discute no café em 2026</summary>
+      <div class="grid">
+        <div class="card"><h4>Habitação</h4><p>A questão doméstica que define o momento. Uma geração trancada fora da casa própria; aluguéis em níveis recordes; oferta atrasada em relação à demanda há uma década.</p></div>
+        <div class="card"><h4>Imigração e integração</h4><p>O saldo migratório positivo está reformulando um país que foi, por 150 anos, uma nação de emigrantes. A política ainda procura sua forma.</p></div>
+        <div class="card"><h4>Uma Irlanda unida</h4><p>Antes um slogan, hoje uma questão de planejamento. A demografia, o Brexit e os mecanismos do GFA a tornaram concreta.</p></div>
+        <div class="card"><h4>Neutralidade</h4><p>A Ucrânia, os cabos submarinos, aeronaves russas no espaço aéreo controlado pela Irlanda. O velho consenso se desfia.</p></div>
+        <div class="card"><h4>Clima e agricultura</h4><p>O perfil de emissões da Irlanda é incomum: a agricultura (laticínios, carne bovina) responde pela fatia dominante. Politicamente explosivo.</p></div>
+        <div class="card"><h4>Tecnologia e tributação</h4><p>As multinacionais financiam um quarto da arrecadação do Estado. Belo quando funciona; aterrador quando ameaça falhar.</p></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Como um estrangeiro pode ler o ambiente</summary>
+      <p>Algumas regras de bolso que se sustentam na conversa:</p>
+      <ul>
+        <li>Não confunda "irlandês" com "britânico". Nunca. A distinção é fundamental, e a confusão casual é sentida como colonial.</li>
+        <li>Não pergunte a alguém na Irlanda do Norte se é irlandês ou britânico sem um motivo legítimo; o GFA reconhece explicitamente as duas identidades, e é uma escolha pessoal.</li>
+        <li>A autoironia é um sinal de alto status, não de baixo. A autopromoção barulhenta ("os begrudgers, os invejosos, vão te alcançar") soa mal.</li>
+        <li>O pub é uma sala de estar pública. Pagar a sua rodada não é opcional e diz algo sobre quem você é. Não pule a sua rodada.</li>
+        <li>"Grand" no inglês irlandês significa qualquer coisa de "excelente" a "passável", dependendo do tom. Escute.</li>
+        <li>O tribalismo esportivo é real, mas raramente hostil. Conhecer as cores do clube local da GAA abre portas.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Uma visão sistêmica (a lente de Lars)</summary>
+      <blockquote>A Irlanda é uma democracia pequena, aberta, bem-educada e pós-colonial, que converteu três desvantagens estruturais (ser pequena, estar na borda, ter uma diáspora) em três ativos estratégicos. Essa conversão é recente, frágil e não tem garantia de durar. Sua maior vulnerabilidade interna é a habitação; sua maior vulnerabilidade externa é o risco de concentração nas multinacionais americanas. Sua maior pergunta em aberto é a ilha, não o Estado.</blockquote>
+    </details>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- GLOSSARY -->
+  <details id="glossary" class="layer">
+    <summary><span><span class="layer-num">·</span>Nomes e termos <span class="gae">· Ainmneacha</span></span></summary>
+    <div class="grid">
+      <div class="card"><h4>São Patrício (séc. V)</h4><p>Missionário romano-britânico, cristianizador tradicional da Irlanda. Menos cerveja verde; mais infraestrutura teológica.</p></div>
+      <div class="card"><h4>Brian Boru (m. 1014)</h4><p>Alto Rei; derrotou a aliança hiberno-nórdica em Clontarf; foi o que mais perto a Irlanda medieval chegou da unificação.</p></div>
+      <div class="card"><h4>Oliver Cromwell (1599–1658)</h4><p>General puritano inglês. Sua campanha irlandesa e a despossessão que se seguiu são lembradas com rara unanimidade.</p></div>
+      <div class="card"><h4>Wolfe Tone (1763–1798)</h4><p>Fundador protestante do republicanismo irlandês; líder dos United Irishmen; insurgiu-se em 1798. Fracassou; tornou-se ícone.</p></div>
+      <div class="card"><h4>Daniel O'Connell (1775–1847)</h4><p>"O Libertador". Conquistou a Emancipação Católica pela agitação não violenta de massas. Pioneiro da política democrática moderna.</p></div>
+      <div class="card"><h4>Charles Stewart Parnell (1846–1891)</h4><p>"O Rei sem Coroa da Irlanda". Conduziu o movimento Home Rule em Westminster. Caiu por um escândalo de divórcio.</p></div>
+      <div class="card"><h4>Patrick Pearse (1879–1916)</h4><p>Professor, poeta, defensor da renovação da língua irlandesa. Leu a Proclamação da República diante do GPO. Executado.</p></div>
+      <div class="card"><h4>James Connolly (1868–1916)</h4><p>Socialista, sindicalista, colíder da Insurreição. Amarrado a uma cadeira para ser executado, ferido demais para ficar de pé.</p></div>
+      <div class="card"><h4>Michael Collins (1890–1922)</h4><p>Diretor de Inteligência na Guerra da Independência. Negociou o Tratado. Morto na Guerra Civil. O grande "e se" da história irlandesa.</p></div>
+      <div class="card"><h4>Éamon de Valera (1882–1975)</h4><p>Líder anti-Tratado, Taoiseach, Presidente. Arquiteto da constituição de 1937 e do conservadorismo social da Irlanda de meados do século.</p></div>
+      <div class="card"><h4>Mary Robinson (n. 1944)</h4><p>Primeira mulher a ocupar a Presidência (1990–97). Símbolo da modernização social da Irlanda.</p></div>
+      <div class="card"><h4>John Hume (1937–2020)</h4><p>Líder do SDLP, principal arquiteto do Acordo da Sexta-Feira Santa. Nobel da Paz em 1998.</p></div>
+      <div class="card"><h4>Bobby Sands (1954–1981)</h4><p>Grevista de fome do IRA; eleito MP poucos dias antes de morrer. As greves de fome dos H-Blocks reformularam The Troubles.</p></div>
+      <div class="card"><h4>Seamus Heaney (1939–2013)</h4><p>Poeta laureado com o Nobel. A voz que ensinou a Irlanda do Norte a falar em registro pleno.</p></div>
+      <div class="card"><h4>The Pale</h4><p>Termo medieval para a zona sob controle inglês em torno de Dublin. Daí a expressão "beyond the pale", para fora dos limites.</p></div>
+      <div class="card"><h4>Gaeltacht</h4><p>Regiões oficialmente de fala irlandesa, em sua maioria ao longo da costa oeste.</p></div>
+      <div class="card"><h4>Taoiseach / Tánaiste</h4><p>Primeiro-Ministro / Vice-Primeiro-Ministro.</p></div>
+      <div class="card"><h4>Dáil / Seanad</h4><p>Câmaras baixa e alta do Oireachtas (parlamento).</p></div>
+      <div class="card"><h4>GAA</h4><p>Gaelic Athletic Association. Hurling, futebol gaélico, camogie. Amadora, com base nas paróquias, enorme.</p></div>
+      <div class="card"><h4>The Troubles</h4><p>Conflito de 1968–1998 na Irlanda do Norte.</p></div>
+      <div class="card"><h4>GFA</h4><p>Acordo da Sexta-Feira Santa, 1998. O acerto.</p></div>
+      <div class="card"><h4>An Gorta Mór</h4><p>"A Grande Fome", de 1845–52.</p></div>
+    </div>
+  </details>
+
+  <div class="knot"><span class="glyph"><svg viewBox="-50 -50 100 100"><g fill="none" stroke="currentColor" stroke-width="6"><circle cx="0" cy="-15" r="20"/><circle cx="13" cy="8" r="20"/><circle cx="-13" cy="8" r="20"/></g></svg></span></div>
+
+  <!-- READING -->
+  <details id="read" class="layer">
+    <summary><span><span class="layer-num">·</span>Para ir mais fundo <span class="gae">· Tuilleadh Léitheoireachta</span></span></summary>
+    <p class="why">Uma lista curta e opinativa. Escolha uma história geral e uma obra literária; é o suficiente para sustentar a maioria das conversas com honestidade.</p>
+    <ul>
+      <li><strong>R.F. Foster, <em>Modern Ireland 1600–1972</em></strong>. A história em volume único de referência; rigorosa, de olhar frio, eventualmente polêmica em seu revisionismo.</li>
+      <li><strong>Diarmaid Ferriter, <em>The Transformation of Ireland 1900–2000</em></strong>. O século XX com amplitude e calor.</li>
+      <li><strong>Fintan O'Toole, <em>We Don't Know Ourselves: A Personal History of Modern Ireland</em></strong>. O livro a ler se for ler só um. Memória como história social; brilhante sobre a virada pós-católica.</li>
+      <li><strong>Tim Pat Coogan, <em>The Famine Plot</em></strong>. Polêmico, contrapeso valioso.</li>
+      <li><strong>Susan McKay, <em>Northern Protestants: On Shifting Ground</em></strong>. A comunidade sobre a qual se costuma escrever, aqui escrevendo por si mesma.</li>
+      <li><strong>Patrick Radden Keefe, <em>Say Nothing</em></strong>. The Troubles através de um desaparecimento. Eletrizante e justo.</li>
+      <li><strong>James Joyce, <em>Dubliners</em></strong>. Comece por aqui, não por <em>Ulysses</em>.</li>
+      <li><strong>Edna O'Brien, <em>The Country Girls</em></strong>. O romance que deu nome às asfixias da Irlanda de meados do século.</li>
+      <li><strong>Seamus Heaney, <em>Opened Ground: Selected Poems 1966–1996</em></strong>. Toda a dor e a graça nacionais, em voz baixa.</li>
+      <li><strong>Anna Burns, <em>Milkman</em></strong>. The Troubles narrados de viés; o livro mais honesto sobre viver dentro deles.</li>
+    </ul>
+  </details>
+
+  <footer>
+    <div class="colophon">— Cólofon —</div>
+    <div>Guia de referência montado por Team Victor: Lars Mortensen com Theo Garza e Eli Stone. Curadoria para a biblioteca de trabalho de Victor del Rosal · 30 de abril de 2026.</div>
+    <div class="disclaimer">Esta página é uma introdução, não um livro-texto. Onde os historiadores divergem (e divergem, sobretudo a respeito da Fome, da Guerra Civil e de The Troubles), o enquadramento aqui busca uma leitura de mainstream com espírito justo. Correções e acréscimos: lars@vdr.me.</div>
+  </footer>
+</main>
+
+<script>
+  const t = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('ie-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  t.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'vellum' ? 'peat' : 'vellum';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('ie-theme', next);
+  });
+  function openAll(open){
+    document.querySelectorAll('details').forEach(d => d.open = open);
+  }
+</script>
+</body>
+</html>
