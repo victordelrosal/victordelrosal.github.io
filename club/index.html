@@ -411,6 +411,105 @@ html[data-theme="dark"] .beat-num { color: var(--copper-light); }
   margin: 0;
 }
 
+/* ─────────────  agenda timetable  ───────────── */
+.agenda {
+  margin-top: 56px;
+  padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 44px);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--paper) 88%, transparent), color-mix(in srgb, var(--paper-2) 80%, transparent));
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  position: relative;
+}
+.agenda::before {
+  content: ""; position: absolute; top: -1px; left: 0;
+  width: 64px; height: 3px; background: var(--copper);
+}
+.agenda-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 18px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+.agenda-kicker {
+  font-family: var(--display);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.agenda-meta {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.agenda-list { list-style: none; padding: 0; margin: 0; }
+.agenda-list li {
+  display: grid;
+  grid-template-columns: 64px 90px 1fr 64px;
+  gap: 18px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  font-size: 16px;
+  line-height: 1.45;
+}
+.agenda-list li:last-child { border-bottom: none; }
+.agenda-list .t {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--copper-deep);
+}
+html[data-theme="dark"] .agenda-list .t { color: var(--copper-light); }
+.agenda-list .b {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  font-style: italic;
+}
+.agenda-list .d {
+  font-family: var(--body);
+  color: var(--ink-soft);
+}
+.agenda-list .m {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-align: right;
+}
+.agenda-foot {
+  margin: 22px 0 0;
+  font-family: var(--display);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.55;
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 16px;
+}
+@media (max-width: 720px) {
+  .agenda-list li {
+    grid-template-columns: 60px 1fr;
+    gap: 4px 16px;
+  }
+  .agenda-list .t { grid-column: 1; grid-row: 1; }
+  .agenda-list .b { grid-column: 2; grid-row: 1; }
+  .agenda-list .d { grid-column: 2; grid-row: 2; font-size: 15px; }
+  .agenda-list .m { grid-column: 1 / -1; grid-row: 3; text-align: left; padding-top: 4px; }
+}
+
 /* ─────────────  token / coin section  ───────────── */
 .token-grid {
   margin-top: 44px;
@@ -651,7 +750,7 @@ footer {
       <p class="hero-sub">A network of rooms. Pay-per-session. Token at the door.</p>
       <div class="hero-meta">
         <span><span class="pip"></span> Newport, Co. Mayo</span>
-        <span><span class="pip"></span> Saturday</span>
+        <span><span class="pip"></span> First Saturday of the month</span>
         <span><span class="pip"></span> €4 at the door</span>
       </div>
     </div>
@@ -713,24 +812,40 @@ footer {
       <li class="beat">
         <span class="beat-num">III.</span>
         <span class="beat-name">Play</span>
-        <p class="beat-desc">A game with stakes. Status earned, not bought.</p>
+        <p class="beat-desc">A cognitive game. With each other, with the machine. Scored. An artefact you walk out with.</p>
       </li>
       <li class="beat">
         <span class="beat-num">IV.</span>
         <span class="beat-name">Sit</span>
-        <p class="beat-desc">Down. Together. The circle forms.</p>
+        <p class="beat-desc">Reset. Water. Chairs in a circle. No silence ritual; just sit.</p>
       </li>
       <li class="beat">
         <span class="beat-num">V.</span>
         <span class="beat-name">Talk</span>
-        <p class="beat-desc">Real talk. One true sentence each. Nothing recorded.</p>
+        <p class="beat-desc">One question on the wall. Civic argument, not testimony. Disagreement is the format.</p>
       </li>
       <li class="beat">
         <span class="beat-num">VI.</span>
         <span class="beat-name">Close</span>
-        <p class="beat-desc">A bell. A breath. The door, the other way.</p>
+        <p class="beat-desc">One sentence each: what you are taking out of the room. Lights off.</p>
       </li>
     </ol>
+
+    <div class="agenda">
+      <div class="agenda-head">
+        <span class="agenda-kicker">An honest timetable</span>
+        <span class="agenda-meta">Newport · First Saturday · €4 at the door</span>
+      </div>
+      <ol class="agenda-list">
+        <li><span class="t">00:00</span><span class="b">Door</span><span class="d">Coin in the tin. Name on the sheet. Hello.</span><span class="m">5 min</span></li>
+        <li><span class="t">00:05</span><span class="b">Move</span><span class="d">A walk along the pier. Or the handball alley if it's wet.</span><span class="m">20 min</span></li>
+        <li><span class="t">00:25</span><span class="b">Play</span><span class="d">A prompt-battle, a fact-check race, an agent-build, or a quiz round. Pairs. Scored. One artefact you keep.</span><span class="m">30 min</span></li>
+        <li><span class="t">00:55</span><span class="b">Sit</span><span class="d">Reset. Water. Chairs into a circle.</span><span class="m">5 min</span></li>
+        <li><span class="t">01:00</span><span class="b">Talk</span><span class="d">One question on the wall. 90-second cap per voice. Someone has to argue the unpopular side.</span><span class="m">25 min</span></li>
+        <li><span class="t">01:25</span><span class="b">Close</span><span class="d">One sentence from each member. Twelve sentences on a clipboard. Lights out.</span><span class="m">5 min</span></li>
+      </ol>
+      <p class="agenda-foot">No silence ritual. No synchronised greeting. No sacred phrase. No founder monologue. The room takes itself seriously enough to be honest, and lightly enough to be fun.</p>
+    </div>
   </section>
 
   <!-- ───────  THE TOKEN  ─────── -->
