@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4ecd8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1410" media="(prefers-color-scheme: dark)">
+<title>Club — A club for staying human.</title>
+<meta name="description" content="A network of rooms for staying human. Pay-per-session. Token at the door. Newport, Co. Mayo first; cities to follow. Day zero, MMXXVI.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Club — A club for staying human.">
+<meta property="og:description" content="A network of rooms for staying human. Pay-per-session. Token at the door. Newport first. MMXXVI.">
+<meta property="og:url" content="https://victordelrosal.com/club">
+<meta property="og:site_name" content="Club">
+<meta property="og:image" content="https://victordelrosal.com/club/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Club — A club for staying human.">
+<meta name="twitter:description" content="A network of rooms for staying human. Pay-per-session. Token at the door. Newport first.">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23a87432' stroke='%237a5418' stroke-width='2'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-weight='700' text-anchor='middle' fill='%231a1410'%3EIV%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper:        #f4ecd8;
+  --paper-2:      #ece1c6;
+  --paper-edge:   #d8c89e;
+  --ink:          #1a1614;
+  --ink-soft:     #3a322a;
+  --ink-mute:     #6b5e4e;
+  --rule:         #b09a6a;
+  --rule-soft:    rgba(26, 22, 20, 0.12);
+  --copper:       #a87432;
+  --copper-deep:  #7a5418;
+  --copper-light: #d8a35a;
+  --ember:        #7a3217;
+  --ember-glow:   rgba(168, 116, 50, 0.22);
+  --max:          1180px;
+  --gap:          clamp(20px, 3vw, 36px);
+
+  --display: 'EB Garamond', 'Adobe Garamond Pro', Georgia, 'Times New Roman', serif;
+  --body:    'EB Garamond', Georgia, 'Times New Roman', serif;
+  --sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+}
+html[data-theme="dark"] {
+  --paper:        #15110d;
+  --paper-2:      #1d1812;
+  --paper-edge:   #2a221a;
+  --ink:          #ece2c8;
+  --ink-soft:     #c8b994;
+  --ink-mute:     #8a7d62;
+  --rule:         #6e5a30;
+  --rule-soft:    rgba(236, 226, 200, 0.12);
+  --copper:       #d8a35a;
+  --copper-deep:  #a87432;
+  --copper-light: #f0c478;
+  --ember:        #d6783d;
+  --ember-glow:   rgba(216, 163, 90, 0.18);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
+  font-feature-settings: "kern", "liga", "onum";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ─────────────  paper grain + ember glow background  ───────────── */
+.bg {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(1100px 700px at 18% 12%, var(--ember-glow), transparent 60%),
+    radial-gradient(900px 600px at 92% 88%, var(--ember-glow), transparent 65%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+}
+.grain {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: 0.42;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.13  0 0 0 0 0.10  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
+}
+html[data-theme="dark"] .grain { mix-blend-mode: screen; opacity: 0.18; }
+
+/* ─────────────  masthead  ───────────── */
+.masthead {
+  position: sticky; top: 0; z-index: 50;
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px) saturate(1.05);
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+}
+.masthead-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 12px var(--gap);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px;
+}
+.masthead-mark {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap;
+}
+.masthead-mark .dot { color: var(--copper); }
+.masthead-mark .dim { color: var(--ink-mute); font-weight: 500; }
+.theme-toggle {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.theme-toggle:hover { border-color: var(--copper); color: var(--copper); background: var(--ember-glow); }
+
+/* ─────────────  layout  ───────────── */
+main { max-width: var(--max); margin: 0 auto; padding: 0 var(--gap); }
+section { padding: clamp(60px, 9vw, 130px) 0; position: relative; }
+section + section { border-top: 1px solid var(--rule-soft); }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--copper-deep);
+  display: inline-flex; align-items: center; gap: 14px;
+}
+html[data-theme="dark"] .eyebrow { color: var(--copper-light); }
+.eyebrow::before {
+  content: "";
+  width: 36px; height: 1px;
+  background: currentColor;
+  display: inline-block;
+}
+.eyebrow .roman { color: var(--ink-mute); font-weight: 500; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+h1 {
+  font-size: clamp(54px, 9.4vw, 132px);
+  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+h2 {
+  font-size: clamp(34px, 5.4vw, 60px);
+  line-height: 1.05;
+  font-weight: 500;
+  margin: 22px 0 28px;
+  letter-spacing: -0.018em;
+}
+h3 {
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.25;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+p { margin: 0 0 1.1em; }
+p.lede {
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.42;
+  font-weight: 400;
+  color: var(--ink);
+  max-width: 32ch;
+}
+em { font-style: italic; color: var(--ember); }
+html[data-theme="dark"] em { color: var(--copper-light); }
+strong { font-weight: 700; color: var(--ink); }
+
+/* ─────────────  hero  ───────────── */
+.hero {
+  padding-top: clamp(70px, 10vw, 130px);
+  padding-bottom: clamp(70px, 10vw, 130px);
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: clamp(30px, 5vw, 80px);
+  align-items: center;
+  border-top: none;
+}
+.hero-mark {
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--copper);
+  letter-spacing: 0.28em;
+  margin-bottom: 26px;
+  display: flex; align-items: center; gap: 14px;
+}
+.hero-mark::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule); max-width: 220px;
+}
+.hero h1 {
+  margin-bottom: 32px;
+}
+.hero h1 .ital { font-style: italic; font-weight: 400; }
+.hero-sub {
+  font-family: var(--display);
+  font-size: clamp(20px, 2vw, 24px);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 36px;
+  max-width: 28ch;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 10px 26px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 10px; }
+.hero-meta .pip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 0 3px var(--ember-glow);
+}
+
+/* ─────────────  the coin (CSS, no images)  ───────────── */
+.coin-stage {
+  display: grid; place-items: center;
+  perspective: 900px;
+  min-height: 320px;
+}
+.coin {
+  width: clamp(220px, 24vw, 300px);
+  aspect-ratio: 1;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: coin-spin 22s linear infinite;
+  filter: drop-shadow(0 30px 50px rgba(40, 24, 8, 0.30));
+}
+.coin:hover { animation-duration: 6s; }
+.coin-face {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, #f3d090 0%, #d8a35a 18%, #a87432 48%, #7a5418 82%, #4a3208 100%);
+  box-shadow:
+    inset 0 0 0 8px rgba(255,230,180,0.18),
+    inset 0 0 0 9px rgba(50,30,8,0.4),
+    inset 0 0 60px rgba(60,32,8,0.55);
+  display: grid; place-items: center;
+  backface-visibility: hidden;
+}
+.coin-face.back { transform: rotateY(180deg); }
+.coin-face::before {
+  content: "";
+  position: absolute; inset: 18px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(40, 22, 6, 0.45);
+}
+.coin-num {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(72px, 9vw, 108px);
+  color: #2a1a06;
+  letter-spacing: -0.04em;
+  text-shadow: 0 1px 0 rgba(255,220,160,0.35), 0 -1px 0 rgba(0,0,0,0.35);
+  line-height: 1;
+}
+.coin-edge {
+  position: absolute;
+  width: 100%; height: 100%;
+  top: 0; left: 0;
+  pointer-events: none;
+}
+.coin-edge text {
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.6em;
+  fill: rgba(40, 22, 6, 0.55);
+  text-transform: uppercase;
+}
+.coin-back-content {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: #2a1a06;
+  font-family: var(--display);
+}
+.coin-back-content .star { font-size: 28px; }
+.coin-back-content .word {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.coin-back-content .year {
+  font-family: var(--display);
+  font-size: 18px;
+  font-style: italic;
+}
+@keyframes coin-spin {
+  0%   { transform: rotateY(0deg)   rotateX(8deg); }
+  50%  { transform: rotateY(180deg) rotateX(-6deg); }
+  100% { transform: rotateY(360deg) rotateX(8deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coin { animation: none; transform: rotateY(-12deg) rotateX(6deg); }
+}
+
+/* ─────────────  premise  ───────────── */
+.premise-grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(24px, 4vw, 70px);
+  align-items: start;
+}
+.premise-grid p { font-size: clamp(19px, 1.6vw, 22px); line-height: 1.6; }
+.premise-grid p:first-of-type::first-letter {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 5em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.04em 0.12em -0.04em 0;
+  color: var(--copper);
+}
+.aside-card {
+  border-left: 2px solid var(--copper);
+  padding: 6px 0 6px 22px;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.5;
+}
+.aside-card .who {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ─────────────  six beats  ───────────── */
+.beats {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.beat {
+  padding: 28px 18px 32px;
+  border-right: 1px solid var(--rule-soft);
+  display: flex; flex-direction: column; gap: 12px;
+  transition: background .25s;
+  position: relative;
+}
+.beat:last-child { border-right: none; }
+.beat:hover { background: color-mix(in srgb, var(--copper) 6%, transparent); }
+.beat-num {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--copper-deep);
+  font-style: italic;
+}
+html[data-theme="dark"] .beat-num { color: var(--copper-light); }
+.beat-name {
+  font-family: var(--display);
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+}
+.beat-desc {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ─────────────  token / coin section  ───────────── */
+.token-grid {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: clamp(30px, 5vw, 80px);
+  align-items: center;
+}
+.token-grid p { font-size: 19px; line-height: 1.6; }
+.token-list {
+  list-style: none; padding: 0; margin: 26px 0 0;
+  display: grid; gap: 14px;
+}
+.token-list li {
+  padding-left: 28px;
+  position: relative;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.token-list li::before {
+  content: "◆";
+  position: absolute; left: 0; top: 1px;
+  color: var(--copper);
+  font-size: 12px;
+}
+
+/* ─────────────  rooms / network  ───────────── */
+.rooms-headline {
+  font-family: var(--display);
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-weight: 500;
+  line-height: 1.18;
+  margin: 24px 0 50px;
+  max-width: 38ch;
+  color: var(--ink);
+}
+.rooms-headline em { color: var(--ember); font-weight: 600; }
+.cities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+.city {
+  padding: 22px 18px;
+  border-bottom: 1px solid var(--rule-soft);
+  border-right: 1px solid var(--rule-soft);
+  display: flex; align-items: baseline; gap: 14px;
+  font-family: var(--display);
+}
+.city-name { font-size: 22px; font-weight: 500; color: var(--ink); }
+.city-status {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-left: auto;
+}
+.city.first .city-status { color: var(--copper-deep); }
+html[data-theme="dark"] .city.first .city-status { color: var(--copper-light); }
+.city.first .city-name { font-style: italic; }
+
+/* ─────────────  vethari pull quote  ───────────── */
+.vethari {
+  text-align: left;
+  padding-block: clamp(70px, 9vw, 120px);
+  border-top: 2px solid var(--copper);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.vethari::before {
+  content: "";
+  position: absolute;
+  top: -7px; left: 0;
+  width: 70px; height: 12px;
+  background: var(--copper);
+}
+.pull {
+  font-family: var(--display);
+  font-size: clamp(28px, 3.6vw, 46px);
+  line-height: 1.22;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink);
+  max-width: 26ch;
+  margin: 30px 0 28px;
+  letter-spacing: -0.01em;
+}
+.pull-attr {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* ─────────────  door  ───────────── */
+.door {
+  text-align: center;
+  padding-block: clamp(80px, 12vw, 160px);
+}
+.door h2 {
+  font-size: clamp(60px, 11vw, 156px);
+  line-height: 0.92;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.03em;
+  margin: 22px auto 36px;
+  max-width: 14ch;
+}
+.whisper {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 0 8px;
+  transition: color .2s, border-color .2s;
+}
+.whisper:hover { color: var(--copper); border-color: var(--copper); }
+.whisper .arrow { transition: transform .25s; }
+.whisper:hover .arrow { transform: translateX(6px); }
+.door-note {
+  font-family: var(--display);
+  font-style: italic;
+  color: var(--ink-mute);
+  font-size: 16px;
+  margin-top: 38px;
+}
+
+/* ─────────────  footer  ───────────── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 38px 0 56px;
+  margin-top: 0;
+}
+.foot-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px 36px;
+  align-items: end;
+}
+.foot-mark {
+  font-family: var(--display);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.foot-mark .row1 {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-style: normal;
+  margin-bottom: 8px;
+}
+.disclaimer {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-align: right;
+  line-height: 1.7;
+}
+
+/* ─────────────  small screens  ───────────── */
+@media (max-width: 880px) {
+  .hero { grid-template-columns: 1fr; }
+  .premise-grid, .token-grid { grid-template-columns: 1fr; }
+  .beats { grid-template-columns: repeat(2, 1fr); }
+  .beat { border-right: none; border-bottom: 1px solid var(--rule-soft); }
+  .beat:nth-child(odd) { border-right: 1px solid var(--rule-soft); }
+  .coin-stage { min-height: 260px; margin-top: 10px; }
+  body { font-size: 17px; }
+  .foot-inner { grid-template-columns: 1fr; }
+  .disclaimer { text-align: left; }
+}
+@media (max-width: 480px) {
+  .beats { grid-template-columns: 1fr; }
+  .beat { border-right: none !important; }
+  .masthead-mark { font-size: 9px; gap: 8px; }
+  .masthead-mark .hide-sm { display: none; }
+}
+
+/* ─────────────  utility  ───────────── */
+.skip {
+  position: absolute; left: -9999px;
+}
+.skip:focus { left: 12px; top: 12px; background: var(--paper); padding: 8px 12px; z-index: 100; }
+
+::selection { background: var(--copper); color: var(--paper); }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead" role="banner">
+  <div class="masthead-inner">
+    <div class="masthead-mark" aria-label="Masthead">
+      <span>Club</span>
+      <span class="dot">◆</span>
+      <span class="dim hide-sm">A network of rooms</span>
+      <span class="dot hide-sm">·</span>
+      <span class="dim hide-sm">Newport · MMXXVI</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light or dark mode">
+      <span data-show="light">Dim the lights</span>
+      <span data-show="dark" hidden>Light the lamp</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ───────  HERO  ─────── -->
+  <section class="hero">
+    <div>
+      <div class="hero-mark">◆ &nbsp;Club</div>
+      <h1>A&nbsp;club for <span class="ital">staying human.</span></h1>
+      <p class="hero-sub">A network of rooms. Pay-per-session. Token at the door.</p>
+      <div class="hero-meta">
+        <span><span class="pip"></span> Newport, Co. Mayo</span>
+        <span><span class="pip"></span> Saturday</span>
+        <span><span class="pip"></span> €4 at the door</span>
+      </div>
+    </div>
+    <div class="coin-stage" aria-hidden="true">
+      <div class="coin">
+        <div class="coin-face front">
+          <span class="coin-num">IV</span>
+          <svg class="coin-edge" viewBox="0 0 200 200">
+            <defs>
+              <path id="circ" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/>
+            </defs>
+            <text><textPath href="#circ" startOffset="0">CLUB · A CLUB FOR STAYING HUMAN · CLUB · </textPath></text>
+          </svg>
+        </div>
+        <div class="coin-face back">
+          <div class="coin-back-content">
+            <span class="star">◆</span>
+            <span class="word">Lights On</span>
+            <span class="year">MMXXVI</span>
+            <span class="word">Lights Off</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────  PREMISE  ─────── -->
+  <section>
+    <div class="eyebrow"><span class="roman">I.</span> The Premise</div>
+    <h2>Thinking is no longer the moat.</h2>
+    <div class="premise-grid">
+      <div>
+        <p>If artificial intelligence out-thinks us, and it will, then <em>sapiens</em> ends as a self-definition. Not because the species becomes stupid. Because thinking stops being the faculty that distinguishes the species. The crown moves. The species needs a new name and nobody knows what it is yet.</p>
+        <p>Club does not claim the new name. Club is the room in which the new name gets found, together, in our bodies, in our towns, every week.</p>
+      </div>
+      <aside class="aside-card">
+        Most responses to the AGI transition are individual. Read a book. Take a course. Doomscroll a feed. Almost none are communal, embodied, repeated, ritualised. Club is the missing infrastructure.
+        <span class="who">Founders' table — 3 May 2026</span>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ───────  SIX BEATS  ─────── -->
+  <section>
+    <div class="eyebrow"><span class="roman">II.</span> The Protocol</div>
+    <h2>Six beats. Ninety minutes.</h2>
+    <p class="lede">Every room, every Saturday, the same shape. Thin enough to be portable. Thick enough to be felt.</p>
+    <ol class="beats" reversed="false">
+      <li class="beat">
+        <span class="beat-num">I.</span>
+        <span class="beat-name">Door</span>
+        <p class="beat-desc">A coin. A threshold. The crossing means something.</p>
+      </li>
+      <li class="beat">
+        <span class="beat-num">II.</span>
+        <span class="beat-name">Move</span>
+        <p class="beat-desc">A walk, a hit, a stretch. The body, before the mind.</p>
+      </li>
+      <li class="beat">
+        <span class="beat-num">III.</span>
+        <span class="beat-name">Play</span>
+        <p class="beat-desc">A game with stakes. Status earned, not bought.</p>
+      </li>
+      <li class="beat">
+        <span class="beat-num">IV.</span>
+        <span class="beat-name">Sit</span>
+        <p class="beat-desc">Down. Together. The circle forms.</p>
+      </li>
+      <li class="beat">
+        <span class="beat-num">V.</span>
+        <span class="beat-name">Talk</span>
+        <p class="beat-desc">Real talk. One true sentence each. Nothing recorded.</p>
+      </li>
+      <li class="beat">
+        <span class="beat-num">VI.</span>
+        <span class="beat-name">Close</span>
+        <p class="beat-desc">A bell. A breath. The door, the other way.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ───────  THE TOKEN  ─────── -->
+  <section>
+    <div class="eyebrow"><span class="roman">III.</span> The Token</div>
+    <div class="token-grid">
+      <div>
+        <h2 style="margin-top:0;">Lights on.<br>Lights off.</h2>
+        <p>At the Newport handball alley, a four-euro coin switches the lights on. The players play. The lights go off. After softball at Swinford, players Revolut two euro to cover costs.</p>
+        <p>That is the model. Honest, frictionless, scarce by design.</p>
+      </div>
+      <ul class="token-list">
+        <li><strong>No leash.</strong> Nobody owns a seat. Nobody renews. Nobody churns.</li>
+        <li><strong>Honest economics.</strong> A few euro is a price a human pays without thinking.</li>
+        <li><strong>Built-in scarcity.</strong> The session ends. The next one earns its own coin.</li>
+        <li><strong>No retention engineering.</strong> The session itself is the retention strategy.</li>
+        <li><strong>Threshold, not tax.</strong> The coin in the hand is the ritual. Keep it physical.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────  THE ROOMS  ─────── -->
+  <section>
+    <div class="eyebrow"><span class="roman">IV.</span> The Rooms</div>
+    <h2>One room first.<br>A network after.</h2>
+    <p class="rooms-headline">A member walks into a Club room in Newport, Monterrey, or Lisbon and recognises it instantly. Same opening. Same close. <em>Different faces.</em></p>
+    <div class="cities" role="list">
+      <div class="city first" role="listitem">
+        <span class="city-name">Newport</span>
+        <span class="city-status">First Room</span>
+      </div>
+      <div class="city" role="listitem"><span class="city-name">Monterrey</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">London</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">Lisbon</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">Mexico City</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">Galway</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">Dublin</span><span class="city-status">In Time</span></div>
+      <div class="city" role="listitem"><span class="city-name">Your Town</span><span class="city-status">When You Light It</span></div>
+    </div>
+  </section>
+
+  <!-- ───────  VETHARI  ─────── -->
+  <section class="vethari">
+    <div class="eyebrow"><span class="roman">V.</span> The Precedent</div>
+    <p class="pull">Most species build their rooms after the crisis, in the rubble. Yours has the chance to build them in the daylight.</p>
+    <div class="pull-attr">— ITx · 3 May 2026</div>
+  </section>
+
+  <!-- ───────  DOOR  ─────── -->
+  <section class="door">
+    <div class="eyebrow" style="justify-content:center;"><span class="roman">VI.</span> The Door</div>
+    <h2>Find your seat.</h2>
+    <a class="whisper" href="mailto:club@victordelrosal.com?subject=I%20would%20like%20a%20seat">
+      <span>Whisper, and we will write back</span>
+      <span class="arrow">→</span>
+    </a>
+    <p class="door-note">No mailing list. No newsletter. A short, human reply.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-mark">
+      <div class="row1">Club &nbsp;◆&nbsp; Members of the Club &nbsp;◆&nbsp; Anno MMXXVI</div>
+      Newport, Co. Mayo, Ireland · Founded Sunday, 3 May 2026.
+    </div>
+    <div class="disclaimer">
+      Day Zero. Not yet open.<br>
+      The fire is already burning.
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const stored = localStorage.getItem('club-theme');
+  if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+  const sync = () => {
+    const t = root.getAttribute('data-theme');
+    btn.querySelector('[data-show="light"]').hidden = (t === 'dark');
+    btn.querySelector('[data-show="dark"]').hidden  = (t === 'light');
+  };
+  sync();
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('club-theme', next);
+    sync();
+  });
+})();
+</script>
+
+</body>
+</html>

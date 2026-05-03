@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#f4ecd8"/>
+      <stop offset="100%" stop-color="#e6d5a8"/>
+    </radialGradient>
+    <radialGradient id="coin" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f3d090"/>
+      <stop offset="25%" stop-color="#d8a35a"/>
+      <stop offset="65%" stop-color="#a87432"/>
+      <stop offset="100%" stop-color="#4a3208"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+      <feColorMatrix values="0 0 0 0 0.16  0 0 0 0 0.13  0 0 0 0 0.10  0 0 0 0.08 0"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paper)"/>
+  <rect width="1200" height="630" filter="url(#grain)" opacity="0.6"/>
+
+  <!-- left thin rule -->
+  <rect x="80" y="80" width="120" height="2" fill="#a87432"/>
+  <text x="80" y="120" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#7a5418" letter-spacing="4">CLUB ◆ MMXXVI</text>
+
+  <!-- main headline -->
+  <text x="80" y="280" font-family="EB Garamond, Georgia, serif" font-size="120" font-weight="500" fill="#1a1614" letter-spacing="-2">A club for</text>
+  <text x="80" y="400" font-family="EB Garamond, Georgia, serif" font-size="120" font-weight="400" font-style="italic" fill="#1a1614" letter-spacing="-2">staying human.</text>
+
+  <!-- subtitle -->
+  <text x="80" y="470" font-family="EB Garamond, Georgia, serif" font-size="32" font-style="italic" fill="#3a322a">A network of rooms. Token at the door.</text>
+
+  <!-- meta line -->
+  <text x="80" y="555" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#6b5e4e" letter-spacing="3">NEWPORT, CO. MAYO ◆ SATURDAY ◆ FOUR EURO AT THE DOOR</text>
+
+  <!-- coin on right -->
+  <g transform="translate(960, 290)">
+    <circle r="180" fill="url(#coin)" stroke="#4a3208" stroke-width="3"/>
+    <circle r="155" fill="none" stroke="#2a1a06" stroke-width="2" stroke-dasharray="4 5" opacity="0.5"/>
+    <text x="0" y="38" font-family="EB Garamond, Georgia, serif" font-size="160" font-weight="700" fill="#2a1a06" text-anchor="middle" letter-spacing="-6">IV</text>
+  </g>
+</svg>
