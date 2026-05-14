@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI at the Boardroom Table: A Decision-Maker's Briefing from the William Fry AI Summit 2026</title>
+<meta name="description" content="An independent delegate briefing from the William Fry AI Summit 2026: what Ireland's distributed AI regulation, the AI Office of Ireland, the Digital Omnibus and the overlapping EU rulebook mean for Irish decision-makers.">
+<meta name="author" content="Victor del Rosal, fiveinnolabs">
+<meta property="og:title" content="AI at the Boardroom Table: A Briefing from the William Fry AI Summit 2026">
+<meta property="og:description" content="What the summit means for Irish business and public-sector decision-makers: regulation, the AI Office of Ireland, the Digital Omnibus, procurement and people.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231E1D4C'/%3E%3Cpath d='M16 7l7 9-7 9-7-9z' fill='%236F82D4'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --primary:#1E1D4C;
+    --deeper:#14133A;
+    --accent:#003399;
+    --accent-dark:#002277;
+    --accent-light:#6F82D4;
+    --pale:#D8E4F7;
+    --pale-soft:#EAF0FA;
+    --slate:#475569;
+    --slate-mid:#64748B;
+    --slate-soft:#94A3B8;
+    --graphite:#1F2937;
+    --border:#D1D5DB;
+    --row-alt:#F8FAFB;
+    --backdrop:#EEF1F8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--backdrop);
+    color:var(--graphite);
+    line-height:1.65;
+    font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .paper{
+    max-width:880px;
+    margin:0 auto;
+    background:#fff;
+    box-shadow:0 1px 3px rgba(20,19,58,.08),0 12px 40px rgba(20,19,58,.10);
+  }
+  .runhead{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:14px 56px;border-bottom:1px solid var(--primary);
+    position:sticky;top:0;background:rgba(255,255,255,.96);
+    backdrop-filter:saturate(160%) blur(6px);z-index:20;
+  }
+  .runhead .t{font-weight:bold;color:var(--primary);font-size:12px;letter-spacing:.8px;text-transform:uppercase;}
+  .runhead .s{color:var(--slate);font-size:12px;letter-spacing:.2px;}
+  .body-wrap{padding:0 56px 64px;}
+
+  /* ---- HERO COVER ---- */
+  .hero{
+    background:var(--primary);
+    background-image:linear-gradient(160deg,#1E1D4C 0%,#14133A 100%);
+    color:#fff;text-align:center;
+    padding:74px 56px 64px;
+  }
+  .hero .mark{color:var(--accent-light);font-size:26px;line-height:1;}
+  .hero .kicker{
+    color:#fff;font-size:11px;font-weight:bold;letter-spacing:3px;
+    text-transform:uppercase;margin-top:20px;
+  }
+  .hero .divider{width:54px;height:1px;background:var(--accent-light);margin:18px auto;}
+  .hero .scope{
+    color:var(--accent-light);font-size:11px;font-weight:bold;letter-spacing:2.5px;
+    text-transform:uppercase;margin-bottom:18px;
+  }
+  .hero h1{
+    color:#fff;font-size:43px;line-height:1.12;font-weight:bold;
+    letter-spacing:-.3px;margin:0 auto;max-width:14ch;
+  }
+  .hero .sub{
+    color:var(--pale);font-size:19px;font-style:italic;line-height:1.4;
+    margin:22px auto 0;max-width:34ch;
+  }
+  .cover-meta{
+    display:flex;gap:54px;justify-content:center;flex-wrap:wrap;
+    padding:34px 56px 8px;text-align:left;
+  }
+  .cover-meta .lab{
+    color:var(--slate);font-size:10px;font-weight:bold;letter-spacing:1.6px;
+    text-transform:uppercase;margin-bottom:4px;
+  }
+  .cover-meta .val{color:var(--primary);font-weight:bold;font-size:17px;}
+  .cover-meta .val.sm{font-size:14px;font-weight:normal;color:var(--graphite);}
+  .provenance{
+    margin:26px 56px 0;padding:14px 18px;background:var(--pale-soft);
+    border-left:3px solid var(--accent);font-size:13px;color:var(--slate);
+    line-height:1.55;
+  }
+
+  /* ---- GENERIC SECTION FURNITURE ---- */
+  .section{padding-top:46px;}
+  .eyebrow{
+    color:var(--accent);font-size:10px;font-weight:bold;letter-spacing:2.2px;
+    text-transform:uppercase;
+  }
+  .bar{width:46px;height:3px;background:var(--accent);margin:9px 0 16px;}
+  h1.big{
+    color:var(--primary);font-size:30px;line-height:1.16;font-weight:bold;
+    letter-spacing:-.2px;margin-bottom:8px;
+  }
+  h2{
+    color:var(--primary);font-size:20px;font-weight:bold;
+    margin:30px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--primary);
+  }
+  h3{color:var(--primary);font-size:15.5px;font-weight:bold;margin:22px 0 4px;}
+  p{margin:11px 0;text-align:justify;}
+  p.lead{font-size:18px;color:var(--slate);text-align:left;font-style:italic;}
+  ul,ol{margin:11px 0 11px 26px;}
+  li{margin:7px 0;text-align:justify;}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--pale);}
+  a:hover{border-bottom-color:var(--accent);}
+  strong{color:var(--primary);}
+  .small{font-size:13px;color:var(--slate-mid);}
+  sup{font-size:.7em;line-height:0;}
+
+  /* ---- CALLOUTS ---- */
+  .callout{
+    background:var(--pale);border-left:6px solid var(--accent);
+    padding:16px 20px;margin:20px 0;
+  }
+  .callout.indigo{border-left-color:var(--primary);background:var(--pale-soft);}
+  .callout .clab{
+    color:var(--accent);font-size:10px;font-weight:bold;letter-spacing:1.8px;
+    text-transform:uppercase;
+  }
+  .callout.indigo .clab{color:var(--primary);}
+  .callout .ctitle{color:var(--primary);font-weight:bold;font-size:16px;margin:3px 0 6px;}
+  .callout p{margin:7px 0;}
+  .callout p:first-of-type{margin-top:0;}
+
+  /* ---- KEY FIGURE PANEL ---- */
+  .kfp{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    background:var(--pale-soft);border-top:3px solid var(--accent);
+    margin:22px 0;
+  }
+  .kfp .cell{padding:18px 14px;text-align:center;border-right:1px solid var(--border);}
+  .kfp .cell:last-child{border-right:none;}
+  .kfp .num{color:var(--primary);font-size:30px;font-weight:bold;line-height:1.05;}
+  .kfp .lab{color:var(--slate);font-size:11px;margin-top:6px;line-height:1.4;}
+
+  /* ---- TABLES ---- */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;}
+  thead th{
+    background:var(--primary);color:#fff;text-align:left;
+    font-size:10.5px;letter-spacing:1px;text-transform:uppercase;
+    padding:9px 12px;
+  }
+  tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:left;}
+  tbody tr:nth-child(even){background:var(--row-alt);}
+  table.bordered{border-top:3px solid var(--primary);border-bottom:3px solid var(--primary);}
+
+  /* ---- PULL QUOTE ---- */
+  .pq{
+    margin:26px 0;padding:18px 0 12px;
+    border-top:3px solid var(--primary);border-bottom:1px solid var(--border);
+  }
+  .pq blockquote{
+    color:var(--primary);font-size:22px;font-style:italic;line-height:1.4;
+    text-align:left;
+  }
+  .pq .attr{
+    color:var(--slate);font-size:10px;font-weight:bold;letter-spacing:1.6px;
+    text-transform:uppercase;margin-top:10px;
+  }
+
+  /* ---- CONTENTS ---- */
+  .toc ol{list-style:none;margin:14px 0 0;padding:0;}
+  .toc li{
+    display:flex;align-items:baseline;gap:8px;margin:0;
+    padding:9px 0;border-bottom:1px solid var(--border);
+  }
+  .toc li:last-child{border-bottom:none;}
+  .toc .rn{
+    color:var(--accent);font-weight:bold;font-size:12px;letter-spacing:1px;
+    min-width:42px;
+  }
+  .toc .tt{color:var(--primary);font-weight:bold;flex:1;}
+  .toc .tt a{border:none;color:var(--primary);}
+  .toc .tt a:hover{color:var(--accent);}
+  .toc .dots{flex:1;border-bottom:1.5px dotted var(--slate-soft);transform:translateY(-3px);}
+
+  /* ---- PANEL CARDS ---- */
+  .panel{
+    border:1px solid var(--border);border-top:3px solid var(--accent);
+    padding:16px 20px;margin:16px 0;background:#fff;
+  }
+  .panel .pname{color:var(--primary);font-weight:bold;font-size:16px;}
+  .panel .pmeta{color:var(--slate-mid);font-size:12.5px;margin-bottom:8px;}
+  .panel .roster{margin:6px 0 0 0;list-style:none;}
+  .panel .roster li{
+    margin:6px 0;padding-left:16px;position:relative;font-size:14px;text-align:left;
+  }
+  .panel .roster li::before{
+    content:"\25C6";color:var(--accent-light);font-size:9px;
+    position:absolute;left:0;top:5px;
+  }
+  .panel .roster .who{font-weight:bold;color:var(--primary);}
+
+  /* ---- COLLAPSIBLE ---- */
+  details{border:1px solid var(--border);margin:12px 0;background:var(--row-alt);}
+  details summary{
+    cursor:pointer;padding:11px 16px;font-weight:bold;color:var(--primary);
+    font-size:14px;list-style:none;
+  }
+  details summary::-webkit-details-marker{display:none;}
+  details summary::before{content:"\25B8  ";color:var(--accent);}
+  details[open] summary::before{content:"\25BE  ";}
+  details .dbody{padding:4px 16px 14px;font-size:13.5px;}
+  details .dbody ol{margin-left:20px;}
+  details .dbody li{font-size:13px;line-height:1.5;}
+  details .dbody a{word-break:break-word;}
+
+  .endbar{margin:48px 0 8px;}
+  .endbar .b{width:46px;height:3px;background:var(--accent);}
+  .endbar .e{
+    color:var(--primary);font-size:11px;font-weight:bold;letter-spacing:2.4px;
+    text-transform:uppercase;margin-top:10px;
+  }
+  footer{
+    border-top:1px solid var(--border);margin-top:8px;padding:18px 56px 40px;
+    display:flex;justify-content:space-between;font-size:11px;color:var(--slate-mid);
+    flex-wrap:wrap;gap:8px;
+  }
+  footer .pn{color:var(--primary);font-weight:bold;}
+
+  @media (max-width:680px){
+    body{font-size:15.5px;}
+    .runhead,.body-wrap,.hero,.cover-meta,.provenance,footer{padding-left:22px;padding-right:22px;}
+    .provenance{margin-left:22px;margin-right:22px;}
+    .hero h1{font-size:31px;}
+    h1.big{font-size:24px;}
+    .kfp{grid-template-columns:repeat(2,1fr);}
+    .kfp .cell:nth-child(2){border-right:none;}
+    .cover-meta{gap:24px;}
+    .runhead .s{display:none;}
+  }
+  @media print{
+    body{background:#fff;font-size:10.5pt;}
+    .paper{box-shadow:none;max-width:100%;}
+    .runhead{position:static;}
+    .section{page-break-inside:auto;}
+    h1.big,h2{page-break-after:avoid;}
+    .callout,.panel,table,.kfp,.pq{page-break-inside:avoid;}
+    a{color:var(--accent);}
+    details{border-color:#bbb;}
+    details[open] .dbody{display:block;}
+  }
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <div class="runhead">
+    <span class="t">AI at the Boardroom Table</span>
+    <span class="s">William Fry AI Summit 2026 &middot; Delegate Briefing</span>
+  </div>
+
+  <!-- ============ COVER ============ -->
+  <header class="hero">
+    <div class="mark">&#9670;</div>
+    <div class="kicker">fiveinnolabs &middot; Delegate Briefing</div>
+    <div class="divider"></div>
+    <div class="scope">Dublin &middot; 14 May 2026</div>
+    <h1>AI at the Boardroom Table</h1>
+    <p class="sub">What the William Fry AI Summit 2026 means for Irish decision-makers</p>
+  </header>
+
+  <div class="cover-meta">
+    <div>
+      <div class="lab">Prepared for</div>
+      <div class="val">Irish business and public-sector decision-makers</div>
+    </div>
+    <div>
+      <div class="lab">Compiled by</div>
+      <div class="val">Victor del Rosal</div>
+      <div class="val sm">fiveinnolabs</div>
+    </div>
+    <div>
+      <div class="lab">Document date</div>
+      <div class="val sm">14 May 2026</div>
+    </div>
+  </div>
+
+  <div class="provenance">
+    This is an independent briefing compiled from a delegate's contemporaneous notes taken at the William Fry AI Summit 2026, cross-checked against primary and reputable secondary sources. It is not affiliated with, endorsed by, or published by William Fry LLP, and it is not legal advice. Personal and speculative material in the original notes has been excluded by design. Methodology and source notes are at Appendix C.
+  </div>
+
+  <div class="body-wrap">
+
+  <!-- ============ EXECUTIVE SUMMARY ============ -->
+  <section class="section" id="exec">
+    <div class="eyebrow">Executive Summary</div>
+    <div class="bar"></div>
+    <h1 class="big">Irish organisations have adopted AI faster than they have learned to govern it.</h1>
+    <p class="lead">The gap on display at the summit was not one of capability. It was one of readiness.</p>
+    <p>Ireland sits among Europe's leading destinations for artificial intelligence investment. IDA Ireland approved a record 323 investments in 2025, up 38 percent on the prior year, and its clients committed a record 2.5 billion euro in future research, development and innovation spending, much of it tied to AI.<sup>1</sup> The Irish government's own assessment is that the country hosts eight of the world's leading providers of foundation AI models.<sup>2</sup> Adoption inside Irish organisations is broad: the third William Fry Technology Report, launched at the summit, found that 80 percent of large Irish businesses have invested in AI.<sup>3</sup></p>
+    <p>The same report exposes the readiness gap. Only 11 percent of those businesses report a clearly positive return on that investment, and 81 percent now rank legal and regulatory compliance as their single biggest consideration when adopting AI.<sup>3</sup> The Central Bank of Ireland's read is blunter still: many firms continue to treat AI as an innovation initiative rather than a risk-management issue.<sup>4</sup> Across the day, the summit's panels returned to the same four levers that separate the organisations that will pull ahead from those that will stall: the contracts, the people, the workflows, and the governance.</p>
+    <p>Two developments give this briefing its urgency. The first is structural: Ireland is standing up an entirely new regulatory architecture for AI, built on a distributed network of sectoral regulators coordinated by a new statutory body, the AI Office of Ireland, whose first chief executive is still to be hired. The second is that the compliance timeline moved under delegates' feet. One week before the summit, on 7 May 2026, EU negotiators reached a provisional deal to delay the AI Act's high-risk obligations into late 2027. The detail of both is below.</p>
+
+    <div class="callout indigo">
+      <div class="clab">Headline Finding</div>
+      <div class="ctitle">Adoption has outpaced readiness, and the cost is now showing.</div>
+      <p>Four in five large Irish businesses have invested in AI; roughly one in nine can point to a positive return. The binding constraint is no longer access to the technology. It is governance, contracting, workforce capability and workflow design. Decision-makers who treat AI as a risk-management discipline, not only an innovation programme, are the ones the summit identified as likely to win.</p>
+    </div>
+
+    <div class="callout">
+      <div class="clab">Second-Order Finding</div>
+      <div class="ctitle">The regulatory timeline is a moving target, not a fixed runway.</div>
+      <p>On 7 May 2026, the European Parliament and Council reached a provisional agreement on the "Digital Omnibus on AI", pushing the AI Act's high-risk obligations for Annex III systems from August 2026 to December 2027. The deal is agreed in principle but not yet adopted into law. Ireland has signalled it will press ahead with national implementation regardless. Plan for the original discipline; do not bank on the delay.</p>
+    </div>
+
+    <div class="eyebrow" style="margin-top:24px;">At a Glance</div>
+    <div class="kfp">
+      <div class="cell"><div class="num">80%</div><div class="lab">of large Irish businesses have invested in AI<sup>3</sup></div></div>
+      <div class="cell"><div class="num">11%</div><div class="lab">report a clearly positive return on it<sup>3</sup></div></div>
+      <div class="cell"><div class="num">13</div><div class="lab">Irish market-surveillance authorities designated for the AI Act<sup>5</sup></div></div>
+      <div class="cell"><div class="num">Dec 2027</div><div class="lab">proposed new deadline for high-risk AI obligations<sup>6</sup></div></div>
+    </div>
+  </section>
+
+  <!-- ============ CONTENTS ============ -->
+  <section class="section toc" id="contents">
+    <div class="eyebrow">What Follows</div>
+    <div class="bar"></div>
+    <h1 class="big">Contents</h1>
+    <ol>
+      <li><span class="rn">I</span><span class="tt"><a href="#s1">Ireland's AI moment: adoption ahead of readiness</a></span><span class="dots"></span></li>
+      <li><span class="rn">II</span><span class="tt"><a href="#s2">Regulating AI: the distributed model and the AI Office of Ireland</a></span><span class="dots"></span></li>
+      <li><span class="rn">III</span><span class="tt"><a href="#s3">A moving target: the Digital Omnibus and the new timeline</a></span><span class="dots"></span></li>
+      <li><span class="rn">IV</span><span class="tt"><a href="#s4">The overlapping rulebook: five instruments, one compliance burden</a></span><span class="dots"></span></li>
+      <li><span class="rn">V</span><span class="tt"><a href="#s5">The boardroom conversation: workflows, ROI and reputational risk</a></span><span class="dots"></span></li>
+      <li><span class="rn">VI</span><span class="tt"><a href="#s6">Procuring AI: from business outcome to contract</a></span><span class="dots"></span></li>
+      <li><span class="rn">VII</span><span class="tt"><a href="#s7">Seven actions for Irish decision-makers</a></span><span class="dots"></span></li>
+      <li><span class="rn">App. A</span><span class="tt"><a href="#a">Summit panels and named participants</a></span><span class="dots"></span></li>
+      <li><span class="rn">App. B</span><span class="tt"><a href="#b">EU AI Act application timeline, as amended</a></span><span class="dots"></span></li>
+      <li><span class="rn">App. C</span><span class="tt"><a href="#c">Methodology, sources and verification notes</a></span><span class="dots"></span></li>
+    </ol>
+  </section>
+
+  <!-- ============ SECTION I ============ -->
+  <section class="section" id="s1">
+    <div class="eyebrow">Section I</div>
+    <div class="bar"></div>
+    <h1 class="big">Ireland's AI moment: adoption ahead of readiness</h1>
+    <p>The summit opened from a position of strength. Ireland is, on the evidence, a leading European location for AI investment. IDA Ireland recorded 323 approved investments in 2025, a 38 percent increase year on year, expected to create more than 15,300 jobs, and reported record future research and development commitments of 2.5 billion euro from its client base, explicitly linked to emerging technologies including AI.<sup>1</sup> The agency's 2025 to 2029 strategy, "Adapt Intelligently", names AI and digitalisation as the first of its four growth drivers.<sup>7</sup> The Irish state's own briefing to the Oireachtas describes Ireland as host to eight of the leading providers of foundation AI models.<sup>2</sup></p>
+    <p>Inside Irish organisations, adoption is wide. The third William Fry Technology Report, launched at the summit and offering a ten-year view across survey years 2016, 2021 and 2026, found that 80 percent of large Irish businesses have invested in AI.<sup>3</sup> That is the adoption story. The readiness story is harder. Only 11 percent of those businesses report a clearly positive return on the investment, and 81 percent now place legal and regulatory compliance at the top of their list of adoption considerations.<sup>3</sup></p>
+
+    <h3>The readiness gap</h3>
+    <p>Delegates' notes record a recurring frame across the day: a readiness gap that widens as one moves from today's systems to more capable ones. The point is not that Irish firms lack access to AI. It is that the organisational scaffolding around it, the governance, the contracts, the assurance, the trained people, has not kept pace. The Central Bank of Ireland made the same observation from the supervisory side: in its view, many regulated firms still treat AI primarily as an innovation initiative rather than a risk-management issue.<sup>4</sup></p>
+    <p>The summit's answer was not caution for its own sake. Several panels were emphatic that paralysis is itself a strategy, and a losing one. A firm can become so anxious about regulation that it stops moving; not moving, the floor agreed, is not an option. The better mental model offered on the day: treat an AI system like a capable new employee. You do not hand a new hire the keys to every system on day one. You scope their access, you supervise, and you get going.</p>
+
+    <div class="pq">
+      <blockquote>"It's a Kodak moment."</blockquote>
+      <div class="attr">Recurring frame &middot; William Fry AI Summit 2026 &middot; Delegate notes</div>
+    </div>
+    <p>The Kodak reference ran through more than one session: the risk to incumbents is not that AI is unavailable to them, but that they recognise its significance and still fail to reorganise around it in time. The organisations the summit identified as likely to win were described in plain terms: the ones that get their <strong>contracts right</strong> and their <strong>people ready</strong>. On that reading, Ireland's status as a country of choice for AI investment is an opening, not a result. It is held only by organisations that convert adoption into governed, returning capability.</p>
+  </section>
+
+  <!-- ============ SECTION II ============ -->
+  <section class="section" id="s2">
+    <div class="eyebrow">Section II</div>
+    <div class="bar"></div>
+    <h1 class="big">Regulating AI: the distributed model and the AI Office of Ireland</h1>
+    <p>The summit's regulation panel, moderated by William Fry technology partner Rachel Hayes, brought together the public bodies that will define how the EU AI Act is felt in Ireland: Jean Carberry of the Department of Enterprise, Tourism and Employment, which leads national implementation; Dale Sunderland, Commissioner for Data Protection; and Trevor Fitzpatrick of the Central Bank of Ireland. Full roles are listed at Appendix A.</p>
+
+    <h3>A distributed model, not a single super-regulator</h3>
+    <p>Ireland has decided, through a series of government decisions in 2024 and 2025, to apply the AI Act through a distributed model.<sup>5</sup> Rather than create one new super-regulator, Ireland is using its existing sectoral regulators and placing a central coordinating authority on top of them. To date, 13 public bodies have been designated as market-surveillance authorities and four as notifying authorities, with some bodies holding both roles and further designations still to come.<sup>5</sup> The designated bodies include the Central Bank of Ireland, the Data Protection Commission, Coimisiún na Meán, ComReg, the Competition and Consumer Protection Commission, the Health and Safety Authority, the Health Products Regulatory Authority and the Workplace Relations Commission, among others.<sup>5</sup></p>
+
+    <h3>The AI Office of Ireland</h3>
+    <p>At the centre of that network sits a new body. The AI Office of Ireland, in Irish Oifig IS na hÉireann, will be a statutory independent body under the remit of the Department of Enterprise, Tourism and Employment.<sup>5</sup> Its job is coordination, not front-line enforcement. It will act as the single point of contact between Ireland and the European Commission and other Member States, coordinate the activity of the sectoral regulators, host a centralised pool of technical expertise, drive national AI literacy, and deliver Ireland's AI regulatory sandbox.<sup>5</sup> Investigations, surveillance and sanctions remain with the sectoral authorities; because the single-point-of-contact role legally requires market-surveillance-authority status, the AI Office is itself constituted as one, but it is a coordinator rather than the enforcer.<sup>5</sup></p>
+    <p>The governance is taking shape. The legislative vehicle is the General Scheme of the Regulation of Artificial Intelligence Bill 2026, for which the Government approved priority drafting on 13 January 2026.<sup>5</sup> The Office is to be run on a chief executive and board model, with a board of seven, and a budget of 1.5 million euro was secured in Budget 2026 to establish it, with initial senior staff, including the chief executive, intended to be in place by the end of 2026.<sup>5</sup> The Irish penalties mirror the AI Act itself: up to 35 million euro or 7 percent of worldwide turnover for breaches of the prohibited-practices rules.<sup>5</sup> Delegates' notes capture the practical reading on the day: the AI Office is meant to be the single door, and its chief executive is still to be hired.</p>
+
+    <div class="callout">
+      <div class="clab">Clarification</div>
+      <div class="ctitle">Two AI Offices, two different jobs.</div>
+      <p>The <strong>European AI Office</strong>, inside the European Commission in Brussels, has exclusive EU-level competence to supervise and enforce the obligations on providers of general-purpose AI models. It polices the foundation-model layer across the Union.<sup>8</sup></p>
+      <p>The <strong>AI Office of Ireland</strong>, in Dublin, is a national coordinator. It does not police foundation models; it coordinates Ireland's distributed network of sectoral regulators and is the country's single point of contact with the EU.<sup>5</sup> When a delegate hears "the AI Office", the question to ask is: Brussels, or Dublin?</p>
+    </div>
+
+    <h3>The Data Protection Commission and the Central Bank</h3>
+    <p>Two of the designated regulators are already shaping how AI is built and used in Ireland. The Data Protection Commission has pursued an "ex ante" approach, engaging with large technology firms before AI training begins rather than relying only on enforcement afterwards. Its engagements with Meta over training large language models on public Facebook and Instagram content, and its use, for the first time, of injunctive proceedings to halt X's processing of EU and EEA user data to train Grok, have made Dublin the de facto European front line for AI-training data-protection questions, because so many of these firms have their EU establishment in Ireland.<sup>9</sup> The Commission's separate statutory inquiries into X over Grok, including a 2026 inquiry into the "nudification" of images, continue.<sup>9</sup></p>
+    <p>The Central Bank of Ireland is the designated authority for AI in financial services and has named AI as one of its core supervisory priorities for 2026, alongside operational resilience and consumer protection, with a focus on governance, explainability and model-risk management for automated financial decisions.<sup>4</sup> The AI Act itself treats parts of financial-services AI as high-risk, notably AI used to assess the creditworthiness of individuals and AI used in risk assessment and pricing for life and health insurance.<sup>10</sup></p>
+
+    <h3>The definitional problem: an octopus that does not fit the box</h3>
+    <p>A sharper, more technical thread ran under the regulation panel. The AI Act is built on a defined notion of an "AI system". That definition was drafted with a fairly stable picture of software in mind. Delegates' notes capture the strain that agentic AI puts on it, in a memorable image: an octopus that does not fit in the box. As the field moves from classical, rule-based AI through generative models to agentic systems that plan, call tools and act over extended horizons, the tidy categories of the Act become harder to apply cleanly. The related concern raised on the day was an "evaluation gap": the rate at which model and agent capabilities are improving, particularly in areas like coding, is outpacing the capacity of regulators to assess them. Neither point is an argument against regulation. Both are arguments for regulators, and regulated firms, to build genuine technical evaluation capacity, which is precisely what the AI Office's centralised expertise pool is meant to address.</p>
+  </section>
+
+  <!-- ============ SECTION III ============ -->
+  <section class="section" id="s3">
+    <div class="eyebrow">Section III</div>
+    <div class="bar"></div>
+    <h1 class="big">A moving target: the Digital Omnibus and the new timeline</h1>
+    <p>Any summit discussion of the AI Act timeline in May 2026 came with a live caveat, because the timeline was being rewritten in the same week. On 7 May 2026, one week before the summit, negotiators for the European Parliament and the Council reached a provisional agreement on the "Digital Omnibus on AI", a targeted set of amendments to the AI Act.<sup>6</sup></p>
+
+    <h3>What the AI Act timeline was</h3>
+    <p>The AI Act, Regulation (EU) 2024/1689, entered into force on 1 August 2024 and was designed to apply in stages.<sup>11</sup> The ban on prohibited AI practices, and the AI literacy obligation, took effect on 2 February 2025.<sup>11</sup> Obligations for general-purpose AI models, the governance provisions and the penalties chapter applied from 2 August 2025, the same date by which Member States were to designate their national competent authorities.<sup>11</sup> The bulk of the remaining obligations, including the rules for high-risk systems listed in Annex III, were due to apply from 2 August 2026, with a further tranche for high-risk AI embedded in regulated products following on 2 August 2027.<sup>11</sup></p>
+
+    <h3>What the Digital Omnibus changes</h3>
+    <p>The Digital Omnibus, first published by the European Commission on 19 November 2025 as part of a wider simplification agenda, and provisionally agreed on 7 May 2026, moves several of those dates.<sup>6,12</sup> On the strength of multiple independent legal analyses of the provisional deal:</p>
+    <table class="bordered">
+      <thead>
+        <tr><th style="width:34%">Obligation</th><th style="width:22%">Original date</th><th>Proposed new position</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>High-risk AI systems listed in Annex III (biometrics, critical infrastructure, employment, education, law enforcement and similar)</td><td>2 August 2026</td><td>Moved to 2 December 2027<sup>6</sup></td></tr>
+        <tr><td>High-risk AI embedded in products regulated under EU sectoral law (Annex I: medical devices, machinery, toys, lifts)</td><td>2 August 2027</td><td>Moved to 2 August 2028<sup>6</sup></td></tr>
+        <tr><td>Start of high-risk obligations generally</td><td>Fixed calendar date</td><td>Now tied to the availability of harmonised standards and support tools<sup>6</sup></td></tr>
+        <tr><td>New prohibition on AI generating non-consensual intimate imagery and child sexual abuse material</td><td>Not in original text</td><td>Compliance required by 2 December 2026<sup>6</sup></td></tr>
+        <tr><td>Transparency and AI-content marking obligations</td><td>Six-month grace period</td><td>Grace period cut to three months; compliance by 2 December 2026<sup>6</sup></td></tr>
+      </tbody>
+    </table>
+    <p>Two points matter for planning. First, what does not change: the February 2025 prohibitions and the August 2025 general-purpose-AI obligations remain in force as originally dated.<sup>6</sup> The AI literacy obligation has applied since February 2025 and is not deferred. Second, the deal is provisional. It still requires formal endorsement by the Council and Parliament, legal-linguistic revision, and publication in the Official Journal before it is law.<sup>6</sup> It should be treated as agreed in principle, not as settled law.</p>
+    <p>The wider package also includes a broader Digital Omnibus touching the interaction of GDPR, the Data Act, the ePrivacy rules and cybersecurity law, and sits alongside a deeper "Digital Fitness Check", a stress test of the entire EU digital rulebook, whose stakeholder consultation ran to March 2026.<sup>12</sup> The summit's shorthand of an "AI Act Simplification Act" and "fitness checks of regulatory frameworks" maps onto these two instruments: the Omnibus is the near-term simplification vehicle; the fitness check is the longer diagnostic that may feed future reform.</p>
+
+    <div class="callout">
+      <div class="clab">Risk</div>
+      <div class="ctitle">Do not mistake a delay for a reprieve.</div>
+      <p>Ireland's own position, set out in its briefing to the Oireachtas, is that nothing in the Omnibus package requires a delay in Ireland's national implementation programme, and that it remains vitally important for Ireland to keep moving without delay.<sup>5</sup> The extra EU-level time is being framed in Dublin as room for quality implementation, not as permission to postpone preparatory work. An Irish organisation that stands down its AI governance programme on the strength of a Brussels delay will find the national machinery, and its own customers and boards, moving on the original schedule.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION IV ============ -->
+  <section class="section" id="s4">
+    <div class="eyebrow">Section IV</div>
+    <div class="bar"></div>
+    <h1 class="big">The overlapping rulebook: five instruments, one compliance burden</h1>
+    <p>A theme that recurred across the summit, and one delegates' notes return to repeatedly, is regulatory overlap. The AI Act does not arrive on a clean desk. It lands on top of a stack of EU instruments that already govern data, security and operational resilience, and the seams between them are where the real compliance cost sits.</p>
+    <table class="bordered">
+      <thead>
+        <tr><th style="width:18%">Instrument</th><th style="width:30%">What it governs</th><th style="width:20%">Status</th><th>How it touches AI</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>GDPR</strong></td><td>Processing of personal data</td><td>Applicable since May 2018</td><td>Training data, lawful basis, and automated decision-making. The DPC's Meta and Grok engagements are GDPR enforcement.<sup>9</sup></td></tr>
+        <tr><td><strong>EU AI Act</strong></td><td>AI systems and general-purpose AI models, on a risk basis</td><td>In force Aug 2024; phased to 2026 and 2027, with high-risk obligations now proposed to move to Dec 2027<sup>6,11</sup></td><td>The core instrument: classification, high-risk obligations, transparency, prohibited practices.</td></tr>
+        <tr><td><strong>DORA</strong></td><td>Digital operational resilience for financial entities: ICT risk, incident reporting, third-party risk</td><td>Applicable since 17 January 2025<sup>13</sup></td><td>AI tools used by financial firms fall inside DORA's ICT-risk and third-party-provider scope.</td></tr>
+        <tr><td><strong>NIS2</strong></td><td>Cybersecurity risk management and incident reporting for essential and important entities</td><td>EU transposition deadline October 2024; Irish transposition has run behind schedule<sup>14</sup></td><td>AI systems are part of the network and information estate that must be secured and whose incidents must be reported.</td></tr>
+        <tr><td><strong>EU Data Act</strong></td><td>Access to and sharing of data from connected products; cloud switching and interoperability</td><td>Core provisions applicable since 12 September 2025<sup>15</sup></td><td>Governs access to the machine-generated data that feeds AI systems, and the ability to switch cloud providers for AI workloads.</td></tr>
+      </tbody>
+    </table>
+    <p>The friction is concrete. Incident reporting is the clearest example: NIS2 can require an initial notification within 24 hours, DORA compresses this to a 4-hour window for major incidents in financial services, the AI Act requires prompt notification of serious incidents involving high-risk AI, and GDPR runs its own separate 72-hour clock for personal-data breaches.<sup>16</sup> A single incident involving an AI system at a financial firm can trigger four reporting obligations on four different clocks to four different authorities. There is also a structural tension between GDPR's data-minimisation principle and the data appetite of modern AI systems.<sup>16</sup></p>
+    <p>The EU's own response to this overlap is, in part, the Digital Omnibus described in Section III, together with a planned single entry point intended to route incident and breach notifications across several of these regimes and cut duplicate reporting.<sup>16</sup> For an Irish decision-maker, the practical implication is to stop treating these as five separate compliance projects. The economical move is one mapped AI estate, one risk register, and one incident process built to satisfy the strictest applicable clock.</p>
+  </section>
+
+  <!-- ============ SECTION V ============ -->
+  <section class="section" id="s5">
+    <div class="eyebrow">Section V</div>
+    <div class="bar"></div>
+    <h1 class="big">The boardroom conversation: workflows, ROI and reputational risk</h1>
+    <p>The summit's C-Suite panel, drawing on senior voices from Microsoft, IBM, Teneo and StoryToys, moved the discussion from the regulator's desk to the boardroom table. Its central message was that AI has become a boardroom conversation, not a technology-function conversation, and that the framing of that conversation determines whether the investment returns anything.</p>
+
+    <h3>Redesign the workflow, do not just accelerate it</h3>
+    <p>The panel's sharpest point, and the one most directly tied to the 11 percent positive-return figure, was that productivity gains from bolting AI onto an unchanged process are real but shallow. The deeper return comes from redesigning the workflow itself. The questions the panel pressed boards to ask were uncomfortable and specific: where is the fat in this process, what can be trimmed, and what would this workflow look like if it were designed today, with these tools, from scratch. An organisation that only asks AI to make the existing process faster has, in effect, paved a cow path.</p>
+
+    <h3>The two pressures on the board</h3>
+    <p>Two pressures were named as bearing down on directors. The first is the pressure to show a return on investment, which the Technology Report's figures make tangible: heavy adoption, thin demonstrated return.<sup>3</sup> The second is reputational risk, the exposure that comes from an AI system that behaves badly in public, mishandles data, or makes a decision the organisation cannot explain. The panel's framing was that these two pressures are not in tension. The same disciplines that reduce reputational risk, scoping, supervision, evaluation and governance, are the disciplines that turn adoption into return.</p>
+
+    <div class="pq">
+      <blockquote>"AI is like a new employee. You don't give access to all areas. You scope it, you supervise, and you get going."</blockquote>
+      <div class="attr">C-Suite panel discussion &middot; William Fry AI Summit 2026 &middot; Delegate notes</div>
+    </div>
+    <p>The "new employee" model recurred because it resolves the paralysis problem. It gives a board a way to act that is neither reckless nor frozen: onboard the capability, grant it scoped access, supervise it, review it, and expand its remit as trust is earned. Not moving, the panel agreed, is not an option. But moving without scope is how reputational risk is manufactured.</p>
+  </section>
+
+  <!-- ============ SECTION VI ============ -->
+  <section class="section" id="s6">
+    <div class="eyebrow">Section VI</div>
+    <div class="bar"></div>
+    <h1 class="big">Procuring AI: from business outcome to contract</h1>
+    <p>The summit's procurement panel, "Procuring AI from Concept to Contract", was deliberately practical, drawing on a vendor perspective from Microsoft and Google, a buyer and legal perspective from Bank of Ireland, and an enterprise perspective associated with Diageo. Participants and roles are at Appendix A.</p>
+
+    <h3>Start with the business outcome</h3>
+    <p>The panel's opening discipline was to start procurement from the business outcome, not the technology. The recommended path was to express the need as user stories, the concrete "as a [role], I want [outcome]" statements familiar from agile delivery, and to run delivery through a Scrum-style iterative process rather than a single large specification handed to a vendor. The effect is to keep the contract anchored to outcomes the business actually wants, and to make it possible to test, learn and adjust before committing at scale.</p>
+
+    <h3>The workforce question</h3>
+    <p>A pointed exchange on the panel was a question put to Google's representative, David Sneddon: are the technology vendors training the workforce enough? It is the right question to carry into any procurement conversation. The cost of an AI deployment is not only licence and integration. It is the capability of the people who will use it, supervise it and be accountable for it. A procurement that secures the tool but not the training has bought half of what it needs.</p>
+    <p>This closes the loop with the summit's opening theme. The organisations identified as likely to win were the ones with their contracts right and their people ready. Section VI is where those two are bought: the contract is the instrument that gets the outcome and the risk allocation right; the procurement process is also where workforce capability either gets funded or quietly gets dropped.</p>
+  </section>
+
+  <!-- ============ SECTION VII ============ -->
+  <section class="section" id="s7">
+    <div class="eyebrow">Section VII</div>
+    <div class="bar"></div>
+    <h1 class="big">Seven actions for Irish decision-makers</h1>
+    <p>Drawn together from across the summit's panels, with the regulatory position as it stood in mid-May 2026.</p>
+    <ol>
+      <li><strong>Reclassify AI as a risk-management discipline, not only an innovation programme.</strong> This is the Central Bank's explicit supervisory expectation for regulated firms,<sup>4</sup> and it is good governance for everyone else. Put AI on the risk register, not only the innovation roadmap.</li>
+      <li><strong>Map your AI estate against the full rulebook now.</strong> Do not wait for August 2026 or December 2027. Inventory every AI system in use or in procurement, and assess each against the AI Act, GDPR, and, where relevant, DORA, NIS2 and the Data Act. The overlap is the cost; one map is cheaper than five.</li>
+      <li><strong>Get the contracts right.</strong> Treat AI procurement as a distinct contracting discipline: outcome definition, vendor diligence, liability and indemnities, intellectual property, data rights, and audit and exit terms. Start from the business outcome and express it as user stories before the legal drafting begins.</li>
+      <li><strong>Get the people ready, and treat literacy as an obligation.</strong> AI literacy is not a soft extra. Article 4 of the AI Act has required it since February 2025, and it was not deferred by the Digital Omnibus. Fund workforce training inside the procurement, and ask vendors directly what training they provide.</li>
+      <li><strong>Redesign workflows; do not just accelerate them.</strong> The thin returns reported by Irish businesses<sup>3</sup> track the difference between bolting AI onto an unchanged process and rebuilding the process around it. Ask where the fat is and what can be trimmed.</li>
+      <li><strong>Build one incident process, set to the strictest clock.</strong> Rather than maintaining separate notification procedures for GDPR, NIS2, DORA and the AI Act, design a single incident-response process calibrated to the tightest applicable deadline, and watch for the EU's planned single entry point.<sup>16</sup></li>
+      <li><strong>Engage the AI Office of Ireland early.</strong> Track the Regulation of Artificial Intelligence Bill 2026, plan to use the AI Office as the single point of contact, and consider the national AI regulatory sandbox for higher-risk use cases once it is operational.<sup>5</sup></li>
+    </ol>
+    <div class="callout indigo">
+      <div class="clab">The throughline</div>
+      <div class="ctitle">Capability, not access, is the constraint.</div>
+      <p>The summit's evidence is that Irish organisations already have access to AI. What separates the organisations that will pull ahead is whether they build the surrounding capability: governed systems, sound contracts, trained people, and workflows redesigned rather than merely sped up. Regulation, on this reading, is not the obstacle to that capability. It is a forcing function for it.</p>
+    </div>
+  </section>
+
+  <!-- ============ APPENDIX A ============ -->
+  <section class="section" id="a">
+    <div class="eyebrow">Appendix A</div>
+    <div class="bar"></div>
+    <h1 class="big">Summit panels and named participants</h1>
+    <p class="small">Panel compositions and exchanges are recorded from a delegate's contemporaneous notes; the William Fry AI Summit 2026 programme had not been published at the time of writing. Individual roles below have been independently verified against public sources where possible. Items that could not be fully verified are flagged, with detail at Appendix C.</p>
+
+    <div class="panel">
+      <div class="pname">Regulating AI</div>
+      <div class="pmeta">Panel on the regulation of AI in Ireland and the EU</div>
+      <ul class="roster">
+        <li><span class="who">Rachel Hayes</span>: Partner, Technology Group, William Fry LLP (moderator). Verified.</li>
+        <li><span class="who">Jean Carberry</span>: Assistant Secretary, Digital, EU and Climate Programmes Division, Department of Enterprise, Tourism and Employment, the division that leads Ireland's EU AI Act implementation. Verified.</li>
+        <li><span class="who">Dale Sunderland</span>: Commissioner for Data Protection, Data Protection Commission. Verified.</li>
+        <li><span class="who">Trevor Fitzpatrick</span>: Central Bank of Ireland, working on risk-focused data science and the supervision of AI in financial services. Organisation verified; exact title not independently confirmed.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <div class="pname">The C-Suite Panel</div>
+      <div class="pmeta">AI as a boardroom conversation: workflows, return on investment, reputational risk</div>
+      <ul class="roster">
+        <li><span class="who">Microsoft</span>: senior representative. Individual name not recorded in the delegate's notes.</li>
+        <li><span class="who">IBM</span>: senior representative. Individual name not recorded in the delegate's notes.</li>
+        <li><span class="who">Teneo</span>: senior representative. Teneo (formerly Artificial Solutions) is an enterprise conversational and voice AI company. Individual name not recorded.</li>
+        <li><span class="who">StoryToys</span>: senior representative. StoryToys is a Dublin-based developer of interactive children's apps, part of the everplay group. Individual name not recorded.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <div class="pname">Procuring AI from Concept to Contract</div>
+      <div class="pmeta">From business outcome to signed contract: a vendor, buyer and enterprise view</div>
+      <ul class="roster">
+        <li><span class="who">David Sneddon</span>: Vice President at Google, holding a Google Ireland site-leadership role. A real Google executive in Dublin; public sources describe his exact title inconsistently, so a general formulation is used here.</li>
+        <li><span class="who">Robert (Rob) Owens</span>: Head of Legal, Technology, Data Protection and Efficiencies, Bank of Ireland. Verified.</li>
+        <li><span class="who">Microsoft</span>: senior representative. Individual name not recorded in the delegate's notes.</li>
+        <li><span class="who">Tiernan O'Morain</span>: representing Diageo, per the delegate's notes. A Diageo career history is confirmed in public sources; current role and summit presence not independently confirmed.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ APPENDIX B ============ -->
+  <section class="section" id="b">
+    <div class="eyebrow">Appendix B</div>
+    <div class="bar"></div>
+    <h1 class="big">EU AI Act application timeline, as amended</h1>
+    <p class="small">As at mid-May 2026. Dates marked "proposed" reflect the provisional Digital Omnibus on AI agreement of 7 May 2026, which is agreed in principle but not yet adopted into law.</p>
+    <table class="bordered">
+      <thead>
+        <tr><th style="width:20%">Date</th><th>Milestone</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1 August 2024</strong></td><td>The AI Act, Regulation (EU) 2024/1689, enters into force.<sup>11</sup></td></tr>
+        <tr><td><strong>2 February 2025</strong></td><td>Ban on prohibited AI practices takes effect. AI literacy obligation (Article 4) applies. Not deferred by the Digital Omnibus.<sup>11</sup></td></tr>
+        <tr><td><strong>2 August 2025</strong></td><td>Obligations for general-purpose AI models, the governance provisions and the penalties chapter apply. Member States to have designated national competent authorities.<sup>11</sup></td></tr>
+        <tr><td><strong>2 December 2026</strong> <span class="small">(proposed)</span></td><td>Proposed compliance date for the new prohibition on AI generating non-consensual intimate imagery and child sexual abuse material, and for the transparency and AI-content marking obligations.<sup>6</sup></td></tr>
+        <tr><td><strong>2 December 2027</strong> <span class="small">(proposed)</span></td><td>Proposed new application date for high-risk AI systems listed in Annex III, moved from 2 August 2026, with the start now tied to the availability of harmonised standards and support tools.<sup>6</sup></td></tr>
+        <tr><td><strong>2 August 2028</strong> <span class="small">(proposed)</span></td><td>Proposed new application date for high-risk AI embedded in products regulated under EU sectoral law (Annex I), moved from 2 August 2027.<sup>6</sup></td></tr>
+        <tr><td><strong>2030</strong></td><td>Public-authority deployers of certain high-risk AI systems already in use must reach compliance; final deadlines for large-scale IT system components.<sup>11</sup></td></tr>
+      </tbody>
+    </table>
+    <p class="small">Note on the original notes: the delegate's notes recorded an "August 2026 enforcement of prohibited practices" milestone. For accuracy: the prohibited practices have been enforceable since 2 February 2025. August 2026 was the original date on which the enforcement machinery and the high-risk obligations were due to take full effect; that high-risk date is the one now proposed to move to December 2027.</p>
+  </section>
+
+  <!-- ============ APPENDIX C ============ -->
+  <section class="section" id="c">
+    <div class="eyebrow">Appendix C</div>
+    <div class="bar"></div>
+    <h1 class="big">Methodology, sources and verification notes</h1>
+    <h3>Methodology</h3>
+    <p>This briefing was compiled from a delegate's contemporaneous handwritten notes taken at the William Fry AI Summit 2026, then cross-checked against primary sources (EU institutions, Irish government and the Oireachtas, the Data Protection Commission, IDA Ireland) and reputable secondary sources (established law firms and national media). Personal, speculative and unrelated material in the original notes has been excluded by design; this document reports only the summit's substantive content and the verified context around it.</p>
+
+    <h3>Verification notes and limitations</h3>
+    <ul>
+      <li>The William Fry AI Summit 2026 programme had not been published online at the time of writing. The existence of the summit and the launch of the third William Fry Technology Report are corroborated by national media; the specific panel titles, compositions and exchanges are taken from the delegate's notes and should be read as such.</li>
+      <li>Named individuals' roles have been independently verified where possible. Rachel Hayes, Jean Carberry, Dale Sunderland and Robert Owens are verified. David Sneddon is a confirmed Google executive in Dublin, but public sources give his exact title inconsistently. Trevor Fitzpatrick's organisation is confirmed; his exact title is not. Tiernan O'Morain has a confirmed Diageo career history; his current role and summit presence are not independently confirmed.</li>
+      <li>The Digital Omnibus on AI provisional agreement of 7 May 2026 is corroborated by multiple independent legal analyses. As a provisional, pre-adoption agreement, the new dates it proposes are not yet settled law.</li>
+      <li>The count of Irish competent authorities follows the primary Oireachtas briefing note (13 market-surveillance authorities and four notifying authorities); some secondary sources cite higher figures, and further designations are pending.</li>
+      <li>The Central Bank of Ireland's 2026 supervisory priorities are reported via a reputable advisory-firm summary; readers requiring the precise wording should consult the Central Bank's own published priorities.</li>
+      <li>The status of Ireland's transposition of the NIS2 Directive was running behind the EU deadline at the time of writing and should be checked for the current position.</li>
+    </ul>
+
+    <details>
+      <summary>Full source list</summary>
+      <div class="dbody">
+        <ol>
+          <li>IDA Ireland, end-of-year results 2025 (record 323 investments, up 38 percent; 2.5 billion euro future RD&amp;I commitments): idaireland.com/latest-news/press-release/strength-and-resilience-of-fdi-propels-growth,-innovation,-and-competitiveness</li>
+          <li>Oireachtas, briefing note from the Department of Enterprise, Tourism and Employment, AI and Digital Regulation Unit (Ireland hosts eight leading foundation-model providers; the distributed model; the AI Office of Ireland; penalties; Ireland's position on the Omnibus): data.oireachtas.ie, Joint Committee on Enterprise, Tourism and Employment submissions, 2026.</li>
+          <li>Third William Fry Technology Report, launched at the William Fry AI Summit 2026 (80 percent of large Irish businesses invested in AI; 11 percent positive ROI; 81 percent rank compliance as the top consideration), as reported by RTÉ, 14 May 2026: rte.ie/news/business/2026/0514/1573309-william-fry-ai-survey/</li>
+          <li>Central Bank of Ireland 2026 supervisory priorities, AI named a core priority, as summarised by Grant Thornton Ireland: grantthornton.ie/insights/publications/operational-resilience-ai-and-fraud-the-central-bank-focus-for-2026/</li>
+          <li>Oireachtas briefing note (as item 2): distributed model, 13 market-surveillance authorities and four notifying authorities, the AI Office of Ireland's role and governance, the Regulation of Artificial Intelligence Bill 2026, penalties. See also gov.ie, Department of Enterprise, Tourism and Employment, "EU Artificial Intelligence (AI) Act".</li>
+          <li>Digital Omnibus on AI, provisional agreement of 7 May 2026: Council of the EU press release, 7 May 2026; corroborated by analyses from Hogan Lovells, Baker Botts, Bird &amp; Bird and Addleshaw Goddard.</li>
+          <li>IDA Ireland strategy 2025 to 2029, "Adapt Intelligently": idaireland.com/ida-ireland-strategy-2025-2029</li>
+          <li>European Commission, "Regulatory framework on AI" and the European AI Office: digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai; artificialintelligenceact.eu/responsibilities-of-european-commission-ai-office/</li>
+          <li>Data Protection Commission statements on Meta AI and on the X / Grok inquiries: dataprotection.ie/en/news-media</li>
+          <li>EU AI Act, Annex III (high-risk classification of certain creditworthiness and insurance pricing uses). Structural reference; readers should consult the Annex III text directly.</li>
+          <li>EU AI Act implementation timeline: artificialintelligenceact.eu/implementation-timeline/</li>
+          <li>EU Digital Omnibus package and Digital Fitness Check, published 19 November 2025, as analysed by Morrison Foerster: mofo.com/resources/insights/251201-eu-digital-omnibus</li>
+          <li>DORA, Regulation (EU) 2022/2554, applicable since 17 January 2025: Mayer Brown, "Cybersecurity in the financial sector".</li>
+          <li>NIS2 Directive (EU) 2022/2555, EU transposition deadline 17 October 2024.</li>
+          <li>EU Data Act, Regulation (EU) 2023/2854, core provisions applicable since 12 September 2025: digital-strategy.ec.europa.eu/en/policies/data-act</li>
+          <li>Commentary on overlap and conflicting incident-reporting clocks across NIS2, DORA, the AI Act and GDPR: William Fry, "Navigating AI, NIS2, DORA, DSA, DMA and the rest of the EU's tech regulations"; ISMS.online comparison of NIS2, DORA and the EU AI Act.</li>
+        </ol>
+        <p class="small">Source titles and publishers are given so that any reader can locate and check them. Where a primary EU or Irish government page was temporarily inaccessible during research, the underlying fact was corroborated through at least one independent source.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="endbar">
+    <div class="b"></div>
+    <div class="e">End of briefing</div>
+  </div>
+
+  </div><!-- /body-wrap -->
+
+  <footer>
+    <span>14 May 2026 &middot; Compiled by Victor del Rosal, fiveinnolabs</span>
+    <span class="pn">AI at the Boardroom Table</span>
+    <span>Independent delegate briefing &middot; Not legal advice</span>
+  </footer>
+
+</div><!-- /paper -->
+</body>
+</html>
