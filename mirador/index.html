@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirador : a calm view onto every Claude Code session</title>
-  <meta name="description" content="Mirador turns every Claude Code terminal on your Mac into a chat in your browser. One window, every conversation. Voice, themes, attachments, archive, resurrection." />
+  <title>Mirador : the harness for Claude Opus 4.7</title>
+  <meta name="description" content="The complete harness for Claude Opus 4.7. Personas, memory, context, calm. Localhost-only. €14.99/mo founding-100, €19/mo standard. Mac only." />
   <meta property="og:title" content="Mirador" />
-  <meta property="og:description" content="A localhost command center for Claude Code. One window, every conversation." />
+  <meta property="og:description" content="The harness for Claude Opus 4.7. Personas, memory, context, calm." />
   <meta property="og:image" content="icon.png" />
   <meta name="theme-color" content="#0a7bff" />
   <link rel="icon" type="image/png" href="icon.png" />
@@ -355,6 +355,87 @@
     .mic-anim .dot{width:9px;height:9px;border-radius:50%;background:#ef4444;animation:pulse 1.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(239,68,68,.6)}
     @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
 
+    /* ===== Edge section (Free / Edge / Covenant) ===== */
+    .edge-section { background:transparent; }
+    .edge-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+      align-items:stretch;
+    }
+    .edge-card{
+      background:white;border:1px solid var(--line);border-radius:18px;
+      padding:30px 26px;display:flex;flex-direction:column;gap:14px;
+      box-shadow:var(--shadow-sm);
+      position:relative;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .edge-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+    .edge-card-featured{
+      border-color:rgba(10,16,69,0.18);
+      box-shadow:var(--shadow-md);
+    }
+    .edge-badge{
+      display:inline-flex;align-self:flex-start;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.66rem;letter-spacing:.6px;text-transform:uppercase;font-weight:700;
+      padding:4px 10px;border-radius:999px;
+    }
+    .edge-badge-free{ background:rgba(94,118,160,0.12); color:#3a4566; border:1px solid rgba(94,118,160,0.22); }
+    .edge-badge-edge{ background:rgba(10,16,69,0.10); color:var(--ink); border:1px solid rgba(10,16,69,0.18); }
+    .edge-badge-covenant{ background:rgba(10,123,255,0.10); color:var(--sky); border:1px solid rgba(10,123,255,0.22); }
+    .edge-card h3{
+      font-size:1.18rem;font-weight:700;color:var(--ink);letter-spacing:-0.014em;margin:0;
+    }
+    .edge-price{
+      display:flex;align-items:baseline;gap:6px;color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",inherit;
+    }
+    .edge-price .amount{ font-size:2.2rem;font-weight:700;letter-spacing:-0.02em;line-height:1; }
+    .edge-price .per{ color:var(--muted);font-size:.95rem;font-weight:500; }
+    .edge-price-alt{ width:100%;color:var(--muted);font-size:.82rem;margin-top:6px; }
+    .edge-tag{ color:var(--ink);font-size:.96rem;font-weight:500;line-height:1.5;margin:0; }
+    .edge-features{
+      list-style:none;padding:0;margin:6px 0 0;display:flex;flex-direction:column;gap:8px;
+      color:var(--muted);font-size:.9rem;line-height:1.5;
+    }
+    .edge-features li{ position:relative;padding-left:20px; }
+    .edge-features li::before{
+      content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;
+      background:var(--sky);opacity:.6;
+    }
+    .edge-cta{
+      margin-top:auto;display:inline-flex;align-items:center;justify-content:center;
+      padding:11px 18px;border-radius:11px;font-weight:600;font-size:.92rem;
+      transition:transform .12s ease, background .15s ease;
+    }
+    .edge-cta-primary{
+      background:var(--ink);color:white;
+    }
+    .edge-cta-primary:hover{ background:#000;text-decoration:none;transform:translateY(-1px); }
+    .edge-cta-secondary{
+      background:white;color:var(--ink);border:1px solid var(--line);
+    }
+    .edge-cta-secondary:hover{ border-color:var(--ink);text-decoration:none; }
+    @media (max-width:880px){
+      .edge-grid{ grid-template-columns:1fr; }
+    }
+
+    /* ===== FAQ (small, restrained) ===== */
+    .faq{
+      max-width:760px;margin:0 auto;padding:24px 0 0;
+      display:flex;flex-direction:column;gap:16px;
+    }
+    .faq-item{
+      background:white;border:1px solid var(--line);border-radius:14px;
+      padding:20px 22px;
+    }
+    .faq-item h3{
+      font-size:1rem;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:-0.012em;
+    }
+    .faq-item p{
+      color:var(--muted);font-size:.94rem;line-height:1.6;margin:0;
+    }
+    .faq-item p strong{ color:var(--ink);font-weight:600; }
+
     /* ===== Install ===== */
     .install{
       background:linear-gradient(135deg,#0a1045 0%, #0a7bff 100%);color:white;
@@ -401,10 +482,11 @@
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
-        <a href="#install">Install</a>
-        <a href="#love">Love</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#love">Why</a>
+        <a href="#faq">FAQ</a>
       </div>
-      <a class="cta-nav" href="#install">Get Mirador</a>
+      <a class="cta-nav" href="#pricing">Start trial</a>
     </div>
   </nav>
 
@@ -412,20 +494,15 @@
   <header class="hero" id="top">
     <div class="container">
       <img class="hero-icon" src="icon.png" alt="Mirador icon" />
-      <div class="eyebrow"><span class="dot"></span>Now in private release on macOS</div>
-      <h1>No more madness managing multiple Claudes.</h1>
-      <p class="lede">
-        Twelve terminal tabs. Eight Cmd-Tabs. Three wrong sessions before you find the right one.
-        Mirador ends it. <strong>One window. Every conversation. Every Claude.</strong>
-        Voice in, image attach, dictate-and-edit, themes, autocomplete, archive, resurrection.
-        The terminal stays. Your perspective changes.
-      </p>
+      <div class="eyebrow"><span class="dot"></span>Mac only · Localhost-only · Cancel anytime</div>
+      <h1>The harness for Claude Opus 4.7.</h1>
+      <p class="lede"><strong>Personas, memory, context, calm.</strong> One window. Every Claude. The whole scaffold.</p>
       <div class="hero-cta">
-        <a class="btn-primary" href="#install">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
-          Install in 60 seconds
+        <a class="btn-primary" href="#pricing">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Start 14-day free trial
         </a>
-        <a class="btn-secondary" href="#how">See how it works</a>
+        <a class="btn-secondary" href="#pricing">See pricing</a>
       </div>
     </div>
 
@@ -434,16 +511,16 @@
       <!-- Phase 1: chaos -- floating overlapping terminal windows -->
       <div class="chaos-stage">
         <div class="chaos-label">Before</div>
-        <div class="floating-term" style="--n:0"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (3)</b></div><div class="ft-body">$ claude<br>refactor the auth…</div></div>
-        <div class="floating-term" style="--n:1"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (7)</b></div><div class="ft-body">$ claude<br>writing tests…</div></div>
-        <div class="floating-term" style="--n:2"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (1)</b></div><div class="ft-body">$ claude<br>fix migration</div></div>
-        <div class="floating-term" style="--n:3"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (12)</b></div><div class="ft-body">$ claude<br>build the dash…</div></div>
-        <div class="floating-term" style="--n:4"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (8)</b></div><div class="ft-body">$ claude<br>review pr 243</div></div>
-        <div class="floating-term" style="--n:5"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (4)</b></div><div class="ft-body">$ claude<br>doc the api…</div></div>
-        <div class="floating-term" style="--n:6"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (9)</b></div><div class="ft-body">$ claude<br>perf trace?</div></div>
-        <div class="floating-term" style="--n:7"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (2)</b></div><div class="ft-body">$ claude<br>wait which tab?</div></div>
-        <div class="floating-term" style="--n:8"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (11)</b></div><div class="ft-body">$ claude<br>postgres migrate</div></div>
-        <div class="floating-term" style="--n:9"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (6)</b></div><div class="ft-body">$ claude<br>add dark mode</div></div>
+        <div class="floating-term" style="--n:0"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (3)</b></div><div class="ft-body">$ claude<br>refactor the auth…</div></div>
+        <div class="floating-term" style="--n:1"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (7)</b></div><div class="ft-body">$ claude<br>writing tests…</div></div>
+        <div class="floating-term" style="--n:2"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (1)</b></div><div class="ft-body">$ claude<br>fix migration</div></div>
+        <div class="floating-term" style="--n:3"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (12)</b></div><div class="ft-body">$ claude<br>build the dash…</div></div>
+        <div class="floating-term" style="--n:4"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (8)</b></div><div class="ft-body">$ claude<br>review pr 243</div></div>
+        <div class="floating-term" style="--n:5"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (4)</b></div><div class="ft-body">$ claude<br>doc the api…</div></div>
+        <div class="floating-term" style="--n:6"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (9)</b></div><div class="ft-body">$ claude<br>perf trace?</div></div>
+        <div class="floating-term" style="--n:7"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (2)</b></div><div class="ft-body">$ claude<br>wait which tab?</div></div>
+        <div class="floating-term" style="--n:8"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (11)</b></div><div class="ft-body">$ claude<br>postgres migrate</div></div>
+        <div class="floating-term" style="--n:9"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (6)</b></div><div class="ft-body">$ claude<br>add dark mode</div></div>
         <div class="lost-cursor">⌘+`</div>
       </div>
       <!-- Phase 2: calm Mirador -->
@@ -485,7 +562,7 @@
               <span class="title">Auth bug fix</span>
               <span class="tid-pill">a3x7</span>
             </div>
-            <div class="mock-bubble user">JWT refresh sometimes returns 401 — same token works on retry. happens once or twice an hour.</div>
+            <div class="mock-bubble user">JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour.</div>
             <div class="mock-bubble assistant">
               Race condition in the refresh queue. Two requests trigger near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min.
             </div>
@@ -535,8 +612,8 @@
         </div>
         <div class="card">
           <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22A10 10 0 1 1 22 12a4 4 0 0 1-4 4h-2a2 2 0 0 0-2 2v.5a3.5 3.5 0 0 1-3.5 3.5z"/></svg></div>
-          <h3>15 themes, 5 typefaces</h3>
-          <p>Royal navy, Tokyo Night, Catppuccin Mocha, Solarized, Sakura, Cielo, Rosa Mexicano, Kluxy, Matrix rainfall, plus more. Each conversation remembers its own.</p>
+          <h3>14 themes, 5 typefaces</h3>
+          <p>14 themes including Royal Navy Dark, Tokyo Night, Catppuccin Mocha, Solarized, Sakura, Cielo, Rosa Mexicano, Kluxy, Matrix rainfall, plus more. Each conversation remembers its own.</p>
         </div>
         <div class="card">
           <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -598,7 +675,7 @@
 
       <div class="bento">
         <div class="tile dark">
-          <h3 style="color:white">15 themes, drifting glyph background</h3>
+          <h3 style="color:white">14 themes, drifting glyph background</h3>
           <p style="color:rgba(255,255,255,0.78)">Royal Navy Dark is the default. Tokyo Night, Catppuccin Mocha, Solarized, Sakura, Cielo, Kluxy, Matrix rainfall. Each per-conversation. Each with its own glyph tuning. Each with a paired font.</p>
           <div class="swatches">
             <div class="sw" style="background:linear-gradient(135deg,#0a1045 50%,#5668e0 50%)" title="Royal Navy Dark"></div>
@@ -639,61 +716,126 @@
     </div>
   </section>
 
-  <!-- ============ TESTIMONIALS ============ -->
+  <!-- ============ WHY ============ -->
   <section id="love">
     <div class="container">
-      <div class="kicker">What people are saying</div>
-      <h2 class="h2">Hardcore Claude Code users love it.</h2>
-      <p class="sub">Mirador was built side-by-side with practitioners who run 10+ Claude instances a day and refused to keep cmd-tabbing between terminal windows.</p>
+      <div class="kicker">What you're actually buying</div>
+      <h2 class="h2">A harness, not a chat skin.</h2>
+      <p class="sub">Claude Opus 4.7 is the engine. Mirador is everything around it that makes the engine do real work for a real person.</p>
 
       <div class="quotes">
         <div class="quote">
-          <p>This is the first time I've felt like I had a real cockpit for Claude. I had eight terminal tabs open. Now I have one window. I don't go back.</p>
-          <div class="who"><div class="av">RT</div><div><div class="name">Renzo Tanaka-Whitfield</div><div class="tag">Senior design principal</div></div></div>
+          <p>The personas come pre-loaded. The memory survives every reboot. Context flows between conversations because you tag a TID and it gets attached. The whole scaffold is here on day one.</p>
         </div>
         <div class="quote">
-          <p>The voice loop is the killer. Talk, edit, talk again. Hold-space push-to-talk feels like a real interface, not a feature.</p>
-          <div class="who"><div class="av">TG</div><div><div class="name">Theo Garza</div><div class="tag">Principal engineer</div></div></div>
+          <p>Everything lives on your Mac. Localhost-only HTTP server. No telemetry. No phone-home. No cloud. The conversations are yours, written to disk, exactly where you can grep them.</p>
         </div>
         <div class="quote">
-          <p>Auto-archive plus resurrection on next message is the most thoughtful piece of UX I've seen ship this year. It treats the user like a grownup who occasionally changes their mind.</p>
-          <div class="who"><div class="av">SP</div><div><div class="name">Sophie Park</div><div class="tag">Product architect</div></div></div>
-        </div>
-        <div class="quote">
-          <p>~2000 lines of stdlib Python and vanilla JS doing more than most VC-backed agent products. The restraint is the craft.</p>
-          <div class="who"><div class="av">FM</div><div><div class="name">Felix Marek</div><div class="tag">Security engineer</div></div></div>
+          <p>One person builds this. €19 a month is what keeps the work going. The first hundred subscribers lock €14.99 for life because you showed up before there was a reason to.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ INSTALL ============ -->
+  <!-- ============ PRICING ============ -->
+  <section id="pricing" class="edge-section">
+    <div class="container">
+      <div class="kicker">Pricing</div>
+      <h2 class="h2">One product. One price. Locked low for the first 100.</h2>
+      <p class="sub">14-day free trial. Cancel anytime, in one click, from the dashboard. Mac only for now.</p>
+
+      <div class="edge-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));max-width:840px;margin:0 auto">
+        <div class="edge-card edge-card-featured">
+          <div class="edge-badge edge-badge-edge">Founding-100</div>
+          <h3>Mirador</h3>
+          <div class="edge-price">
+            <span class="amount">€14.99</span><span class="per">/month</span>
+            <div class="edge-price-alt">£14.99 · $14.99 · locked for life</div>
+          </div>
+          <p class="edge-tag">First 100 subscribers, ever. Lock this price as long as the subscription is active.</p>
+          <ul class="edge-features">
+            <li>Every persona, every feature, every release</li>
+            <li>Localhost-only, no cloud, no telemetry</li>
+            <li>14-day free trial; no card up front</li>
+            <li>Founding badge in the app, visible to you</li>
+          </ul>
+          <a class="edge-cta edge-cta-primary" href="mailto:hello@victordelrosal.com?subject=Mirador%20founding-100">Start 14-day free trial</a>
+        </div>
+        <div class="edge-card">
+          <div class="edge-badge edge-badge-free">Standard</div>
+          <h3>Mirador</h3>
+          <div class="edge-price">
+            <span class="amount">€19</span><span class="per">/month</span>
+            <div class="edge-price-alt">£19 · $19 · after first 100</div>
+          </div>
+          <p class="edge-tag">Same product. Same harness. Same localhost-only architecture.</p>
+          <ul class="edge-features">
+            <li>Every persona, every feature, every release</li>
+            <li>Localhost-only, no cloud, no telemetry</li>
+            <li>14-day free trial; no card up front</li>
+            <li>Cancel anytime, one click, no friction</li>
+          </ul>
+          <a class="edge-cta edge-cta-secondary" href="mailto:hello@victordelrosal.com?subject=Mirador%20standard">Start 14-day free trial</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GET IT ============ -->
   <section id="install" class="tight">
     <div class="container">
       <div class="install">
         <div>
-          <div class="kicker" style="color:#fbbf24">Install</div>
-          <h2>Sixty seconds. No login. No cloud.</h2>
-          <p>One folder, one launcher symlink, one zshrc patch. Localhost. Off-switch always one env var away.</p>
-          <a class="btn-primary" style="background:white;color:var(--ink);margin-top:6px" href="#how">Read the architecture</a>
+          <div class="kicker" style="color:#fbbf24">Get Mirador</div>
+          <h2>Sixty seconds. No cloud. Mac only.</h2>
+          <p>Start the 14-day free trial. You'll get a one-line installer, a licence key, and the harness on your Mac. Localhost. Off-switch always one env var away. Cancel anytime, no questions, no friction.</p>
+          <a class="btn-primary" style="background:white;color:var(--ink);margin-top:6px" href="#pricing">See pricing</a>
         </div>
         <div>
-          <code><span class="c"># 1. Clone</span>
-git clone https://github.com/victordelrosal/mirador.git ~/mirador
-cd ~/mirador
-chmod +x bin/mirador hook/mirador-stop-hook.py server.py
-
-<span class="c"># 2. Symlink the launcher</span>
-ln -sf "$PWD/bin/mirador" ~/.local/bin/mirador
-
-<span class="c"># 3. Register the hook in ~/.claude/settings.json (see README)</span>
-<span class="c">#    + add the claudus() auto-wrap to ~/.zshrc</span>
-
-<span class="c"># 4. Run it</span>
+          <code><span class="c"># After you start the 14-day trial, you'll receive</span>
+<span class="c"># a private link to a one-line installer. It will:</span>
+<span class="c"></span>
+<span class="c">#   1. Drop the harness into ~/mirador</span>
+<span class="c">#   2. Symlink the launcher to ~/.local/bin/mirador</span>
+<span class="c">#   3. Register the Claude Code hook (with backup)</span>
+<span class="c">#   4. Patch ~/.zshrc with the claudus() wrapper</span>
+<span class="c">#   5. Cache your licence key locally (no phone-home)</span>
+<span class="c"></span>
+<span class="c"># Then in any Terminal tab:</span>
 <span class="h">mirador</span>
+<span class="c"></span>
+<span class="c"># Type `claudus` in a new tab. The conversation pops</span>
+<span class="c"># into your browser within ~1 second.</span>
+<span class="c"></span>
+<span class="c"># Localhost-only. No telemetry. Cancel anytime.</span></code>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<span class="c"># Done. Type `claudus` in any new Terminal tab.</span>
-<span class="c"># Conversation pops into the browser within ~1s.</span></code>
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="tight">
+    <div class="container">
+      <div class="kicker">FAQ</div>
+      <h2 class="h2" style="margin-bottom:8px">One question worth answering up front.</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>What does my subscription actually fund?</h3>
+          <p>
+            One person building, end to end, in public. Every persona that gets refined, every new theme, every memory feature, every security patch. The harness gets sharper because subscribers exist. There is no team behind a curtain; there is one Mac, one set of opinions, and a list of paying users who decided this was worth €19 a month. That's the model. That's the whole model.
+          </p>
+        </div>
+        <div class="faq-item" style="margin-top:18px">
+          <h3>What happens to my conversations if I cancel?</h3>
+          <p>
+            Everything lives on your Mac at <code>~/.mirador/sessions/</code> as plain JSONL files. Cancelling the subscription stops feature updates and disables the licence after the next restart. The conversations themselves stay on your disk, readable by you (or any tool you point at them), forever. We never had a copy.
+          </p>
+        </div>
+        <div class="faq-item" style="margin-top:18px">
+          <h3>Why Mac only?</h3>
+          <p>
+            Because shipping something great on one platform beats shipping something mediocre on three. macOS first, because that's where Victor builds and where the hooks have been hardened. Linux and Windows are on the radar; subscribers vote with their feet about which comes next.
+          </p>
         </div>
       </div>
     </div>
@@ -703,12 +845,16 @@ ln -sf "$PWD/bin/mirador" ~/.local/bin/mirador
     <div class="container">
       <div class="row">
         <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
         <a href="#how">How it works</a>
-        <a href="#install">Install</a>
-        <a href="https://github.com/victordelrosal/mirador">GitHub</a>
+        <a href="#install">Get it</a>
+        <a href="#faq">FAQ</a>
         <a href="https://github.com/anthropics/claude-code">Claude Code</a>
       </div>
-      <p class="copyright">Mirador. Spanish for <em>lookout</em>. Built for Claude Code. Localhost-only. MIT licensed. © 2026.</p>
+      <p class="copyright">
+        The harness for Claude Opus 4.7. Localhost-only. No telemetry. Cancel anytime.<br/>
+        Spanish for <em>lookout</em>. Built for Claude Code. Mac only. &copy; 2026.
+      </p>
     </div>
   </footer>
 
