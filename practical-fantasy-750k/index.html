@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practical Fantasy: A Hundred Small Bets, €750k MRR</title>
+<title>Practical Fantasy: Twenty-Four Bets, Six That Stuck</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="A practical fantasy, told as if from Christmas Day 2026. Access by PIN.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1045'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%235668e0'%3E€%3C/text%3E%3C/svg%3E">
@@ -20,8 +20,9 @@
     --ink: #e9ecff;
     --ink-soft: #b6bce6;
     --ink-faint: #7a82b8;
-    --kill: #ff9aa2;
-    --earn: #9aff9a;
+    --hit: #9aff9a;
+    --miss: #ff9aa2;
+    --ext: #ffd28a;
     --rule: rgba(86,104,224,0.22);
     --serif: 'Fraunces', 'Charter', 'Source Serif Pro', Georgia, serif;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -35,7 +36,7 @@
     background: linear-gradient(180deg, var(--base) 0%, var(--deepen) 100%);
     background-attachment: fixed;
     color: var(--ink);
-    line-height: 1.65;
+    line-height: 1.7;
     font-size: 18px;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
@@ -163,8 +164,8 @@
   h1.title {
     font-family: var(--serif);
     font-weight: 700;
-    font-size: clamp(36px, 5.5vw, 54px);
-    line-height: 1.08;
+    font-size: clamp(38px, 5.5vw, 56px);
+    line-height: 1.06;
     letter-spacing: -0.015em;
     margin: 0 0 18px;
     color: var(--ink);
@@ -204,28 +205,28 @@
   h2 {
     font-family: var(--serif);
     font-weight: 600;
-    font-size: clamp(22px, 2.4vw, 28px);
+    font-size: clamp(24px, 2.6vw, 30px);
     line-height: 1.25;
     letter-spacing: -0.01em;
     color: var(--ink);
-    margin: 56px 0 18px;
+    margin: 64px 0 22px;
   }
   h2.section-divide::before {
     content: '';
     display: block;
     width: 36px; height: 2px;
     background: var(--structural);
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   h3 {
     font-family: var(--serif);
     font-weight: 600;
     font-size: 20px;
     color: var(--ink);
-    margin: 36px 0 12px;
+    margin: 40px 0 14px;
   }
 
-  p { margin: 0 0 20px; color: var(--ink); }
+  p { margin: 0 0 22px; color: var(--ink); }
   p strong { color: var(--ink); font-weight: 600; }
   em { color: var(--ink-soft); }
 
@@ -273,46 +274,18 @@
     font-weight: 700;
     font-size: 17px;
     margin-bottom: 6px;
+    color: var(--ink);
   }
 
-  /* Bet list (per month) */
-  ul.bets {
-    list-style: none;
-    padding: 0;
-    margin: 18px 0 26px;
-  }
-  ul.bets li {
-    padding: 9px 0 9px 22px;
-    border-bottom: 1px solid var(--rule);
-    position: relative;
-    font-family: var(--sans);
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: var(--ink-soft);
-  }
-  ul.bets li:last-child { border-bottom: none; }
-  ul.bets li::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 17px;
-    width: 12px; height: 1px;
-    background: var(--ink-faint);
-  }
-  ul.bets li.kill::before { background: var(--kill); }
-  ul.bets li.earn::before { background: var(--earn); }
-  ul.bets li.kill em { color: var(--kill); font-style: normal; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
-  ul.bets li.earn em { color: var(--earn); font-style: normal; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
-  ul.bets li.hold em { color: var(--ink-faint); font-style: normal; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
-
-  /* Month strip: shipped/killed/earning row */
+  /* Season strip: shipped / hits / MRR */
   .strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin: 6px 0 18px;
+    margin: 4px 0 28px;
   }
   .strip .cell {
-    padding: 10px 12px;
+    padding: 12px 14px;
     background: rgba(18,26,103,0.28);
     border: 1px solid var(--rule);
     border-radius: 8px;
@@ -325,24 +298,65 @@
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
-  .strip .cell.kill .n { color: var(--kill); }
-  .strip .cell.earn .n { color: var(--earn); }
+  .strip .cell.hit .n { color: var(--hit); }
+  .strip .cell.mrr .n { color: var(--structural); }
   .strip .cell .lbl {
     font-family: var(--sans);
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-faint);
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
-  /* Ledger table */
+  /* Composition list (six hits + share) */
+  ul.mix {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 28px;
+  }
+  ul.mix li {
+    padding: 14px 16px 14px 56px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: rgba(18,26,103,0.28);
+  }
+  ul.mix li .share {
+    position: absolute;
+    left: 14px; top: 14px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--structural);
+    width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  ul.mix li .name {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  ul.mix li .mrrline {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  /* Ledger table (24-bet appendix) */
   .ledger {
     margin: 28px 0 16px;
     width: 100%;
     border-collapse: collapse;
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: 13.5px;
   }
   .ledger thead th {
     text-align: left;
@@ -355,17 +369,42 @@
     font-size: 11px;
   }
   .ledger tbody td {
-    padding: 11px 8px;
+    padding: 10px 8px;
     border-bottom: 1px solid var(--rule);
     color: var(--ink-soft);
     vertical-align: top;
   }
   .ledger tbody tr:last-child td { border-bottom: none; }
-  .ledger td.num { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
-  .ledger tbody tr.total td { color: var(--ink); font-weight: 700; border-top: 1px solid var(--structural); border-bottom: none; padding-top: 14px; }
-  .ledger tbody tr.peak td.num { color: var(--structural); }
-  .ledger td.killcol { color: var(--kill); font-variant-numeric: tabular-nums; }
-  .ledger td.earncol { color: var(--earn); font-variant-numeric: tabular-nums; }
+  .ledger td.num { color: var(--ink-faint); font-variant-numeric: tabular-nums; width: 28px; }
+  .ledger td.bet { color: var(--ink); font-weight: 500; }
+  .ledger td.outcome {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    width: 70px;
+  }
+  .ledger td.outcome.hit { color: var(--hit); }
+  .ledger td.outcome.miss { color: var(--miss); }
+  .ledger td.outcome.ext { color: var(--ext); }
+  .ledger td.outcome.infra { color: var(--structural); }
+  .ledger td.notes { color: var(--ink-soft); font-size: 13px; }
+  .ledger td.month { color: var(--ink-faint); width: 60px; font-size: 12px; }
+
+  /* Tally strip */
+  .tally {
+    margin: 26px 0 8px;
+    padding: 20px 22px;
+    background: rgba(18,26,103,0.32);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .tally strong { color: var(--ink); font-weight: 600; }
 
   .colophon {
     margin-top: 64px;
@@ -379,7 +418,7 @@
   }
 
   .sign {
-    margin-top: 32px;
+    margin-top: 36px;
     font-family: var(--serif);
     font-style: italic;
     color: var(--ink-soft);
@@ -402,6 +441,7 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-faint);
+    margin-bottom: 24px;
   }
 
   @media (max-width: 600px) {
@@ -411,7 +451,9 @@
     ol.laws li { padding: 18px 18px 18px 56px; }
     ol.laws li::before { left: 18px; top: 18px; font-size: 22px; }
     .strip .cell .n { font-size: 22px; }
-    .ledger { font-size: 13px; }
+    .ledger { font-size: 12.5px; }
+    ul.mix li { padding-left: 50px; }
+    ul.mix li .share { font-size: 15px; width: 32px; }
   }
 </style>
 </head>
@@ -438,7 +480,7 @@
   <div class="wrap">
 
     <div class="eyebrow">Practical Fantasy &middot; 25 December 2026</div>
-    <h1 class="title">A Hundred Small Bets, Most of Them Killed</h1>
+    <h1 class="title">Twenty-Four Bets, Six That Stuck</h1>
     <p class="deck">How &euro;260 became &euro;750k MRR in eight months. A piece for Entrepreneur Magazine, presented to the Y Combinator NYC batch on Christmas evening, 2026.</p>
     <p class="byline">By Victor del Rosal &middot; New York, NY</p>
 
@@ -448,227 +490,99 @@
       &ldquo;I want to find out who I get to be.&rdquo; Said out loud, on a YC stage, for the first time.
     </blockquote>
 
-    <p>This is my story of how an eight-month run that started with eleven small bets in May, ten of which paid me exactly nothing, became a &euro;750,000-a-month business by Christmas Day 2026.</p>
+    <p>This is the story of how a portfolio of twenty-four small bets, six of which stuck, became a &euro;750,000-a-month business in eight months.</p>
 
-    <p>I am going to tell it the way it actually unfolded, which is not the way it would look on a pitch deck. There was no single product. There were 178 bets shipped over eight months. 124 of them I killed inside fourteen days. Twelve of them still pay me as I sit and write this. Three of those twelve grew into flagships. The rest sit in the portfolio earning between &euro;500 and &euro;18,000 a month, propping each other up the way an honest portfolio is supposed to.</p>
+    <p>I am telling it the way it actually unfolded, which is not the way it would look on a pitch deck. There was no single product. There were twenty-four bets I tried or seriously considered between May and December 2026. Six of them found a paying floor and stayed. Eight more taught us something useful before we shelved them. The remaining ten taught us nothing we did not already suspect, and were closed out without ceremony. The batting average was roughly one in four, which is what an honest portfolio looks like when you let buyers decide.</p>
 
-    <p>This is a small bets story. The eggs are spread across many baskets on purpose. The premise of the whole thing is that I do not know which basket will hold up, and neither does anyone else, so the only honest answer to the question &ldquo;what should I build?&rdquo; is &ldquo;build many small things, ship them with a price tag, and let the buyers decide.&rdquo;</p>
+    <p>The eggs were spread across many baskets on purpose. The premise was that I did not know which basket would hold up. Most days I still do not. What I had instead was a discipline for shipping small, pricing early, and reading the signal coming back, plus a body of work in the SmallBets folder that I had been quietly building since long before April. By May the folder already held nineteen course landing pages, a published book, a college credential, a paid client engagement at Portwest, a daily AI newsletter, the Claude Code Beginners Guide, and the alpha of a micro-LMS called AI Badge. The work that paid off in 2026 was not new work. It was old work that finally found its buyer.</p>
 
-    <p>The buyers did decide. Here is how.</p>
+    <p>Here is how the year actually went.</p>
 
     <h2 class="section-divide">26 April 2026: The Forge</h2>
 
-    <p>The first thing I should say is that I did not set out to build a workforce of ten thousand AI partners or to ride one wedge to the moon. I set out to find a way to be present for my four kids and my wife while still doing useful work, and I had ninety days to prove I could earn &euro;2,500 a month doing it. That was the bet. It was made at a place we call The Forge, in a building called 5il, with eight AI personas who had been working with me long enough to disagree with me convincingly.</p>
+    <p>On the day this began I was not trying to build a workforce of ten thousand AI partners or to ride one wedge to the moon. I was trying to find a way to be present for my four kids and my wife while still doing useful work, and I had ninety days to prove I could earn &euro;2,500 a month doing it. That was the bet. It was made at a place we call The Forge, in a building called 5il, with eight AI personas who had been working with me long enough to disagree with me convincingly.</p>
 
-    <p>The covenant was written that day, and it has not changed since. Four lines.</p>
+    <p>The covenant was written that day. No new builds without a price tag. Every artifact answers two questions: who pays for this, and how. Ship small, price early, read the signal. Sunday stand-up: what shipped, what earned, what stuck, what dies. The point of the discipline is that the misses are not failures. They are the field that makes the hit possible.</p>
 
-    <ul class="bets">
-      <li>No new builds without a price tag.</li>
-      <li>Every artifact answers two questions: who pays for this, and how.</li>
-      <li>Ship or kill at fourteen days without a buyer.</li>
-      <li>Sunday stand-up: what shipped, earned, stuck, dies.</li>
-    </ul>
-
-    <p>That last line is the discipline that produced the &euro;750k. It also produced the 124 kills. The point of the discipline is that the kills are not failures, they are signal. A small bet that does not find a buyer in fourteen days is data, not a business. You bury it, you publish the obituary on the Sunday board, and you ship the next one on Monday.</p>
-
-    <h2 class="section-divide">May 2026 &middot; &euro;260 MRR</h2>
+    <h2 class="section-divide">Spring 2026: testing the back catalogue</h2>
     <div class="strip">
-      <div class="cell"><div class="n">11</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">10</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">1</div><div class="lbl">Earning by month-end</div></div>
+      <div class="cell"><div class="n">9</div><div class="lbl">Bets shipped</div></div>
+      <div class="cell hit"><div class="n">4</div><div class="lbl">Hits</div></div>
+      <div class="cell mrr"><div class="n">€2,500</div><div class="lbl">MRR by mid-July</div></div>
     </div>
 
-    <p>I shipped eleven things in May. One of them found a buyer.</p>
+    <p>I started in May by reaching back into the SmallBets folder and pulling out the things that already had some form. Nine bets shipped between May and mid-July. Four of them earned.</p>
 
-    <p>The one that worked was a thirty-minute AI literacy session with a Workhuman alum who had been told her function needed to be &ldquo;AI-fluent by Q3.&rdquo; She paid &euro;260 for the session. Near the end of the call I introduced her to a named AI partner who would handle one specific recurring task for her over the following month, and asked if she wanted him to stay at &euro;800. She wanted him to stay. She named him Cathal. That became a recurring line.</p>
+    <p><strong>The first hit was AI Badge Avatar Coach.</strong> I had been quietly running the micro-LMS for a small cohort of NCI students since the spring, and at our 10K-Strong feasibility ranking in early May, AI Badge had scored highest of seven wedges. The Avatar Coach pilot launched mid-May at &euro;19 a month per seat with a hard cap of one hundred founding members. Seven seats sold in the first fortnight. Forty by the end of June. By mid-July it crossed two hundred paying subscribers. It became the flagship I had not expected to ship first.</p>
 
-    <p>The other ten bets I killed.</p>
+    <p><strong>The second hit was the Stripe checkout layer.</strong> Theo built it in three days. Three live links by the second Sunday stand-up: AI Digest, the Beginners Guide, and the course revival page. Stripe is not a product. It is infrastructure, but it unlocked five of the lines that followed. Without it the other hits would have been free.</p>
 
-    <ul class="bets">
-      <li class="kill">A landing page selling AI prompt-of-the-day at &euro;5/mo. Three sign-ups in 14 days, two of them mine. <em>Killed.</em></li>
-      <li class="kill">A vendor screening template at &euro;49 one-time. One buyer at &euro;49. <em>Killed (not recurring).</em></li>
-      <li class="kill">Cold outreach to a small Cork accountancy: &ldquo;AI diligence as a service.&rdquo; No reply in 14 days. <em>Killed.</em></li>
-      <li class="kill">Three single-page playbooks at &euro;19 each. Eleven sales between them. <em>Killed (maintenance &gt; take).</em></li>
-      <li class="kill">A free Slack community for founders. 80 members, no path to revenue. <em>Killed.</em></li>
-      <li class="kill">An AI-generated bedtime story bot in Spanish. Charming. Free. <em>Killed (no buyer pattern).</em></li>
-      <li class="hold">A LinkedIn carousel template pack at &euro;29. &euro;174 in May. <em>Held, not yet a line.</em></li>
-    </ul>
+    <p><strong>The third hit was the course revival.</strong> I had nineteen landing pages live on the helios and HUMANLIKE micro-degree surfaces, dormant since 2024. I picked one (helios), rebuilt the offer at &euro;49 a month, and pointed three weeks of LinkedIn warm reach at it. Fifty paying subscribers by mid-July. &euro;2,450 MRR from one revived course alone. The Forge target was met three days later.</p>
 
-    <p>This is not a romantic story. May was 22 working days, eleven shots, one hit. The lesson was not &ldquo;Named AI Partner is the wedge.&rdquo; The lesson was &ldquo;ship eleven things, find out which one breathes.&rdquo; If I had built only Cathal in May I would not have known what I had. The other ten taught me the shape of what did not work.</p>
+    <p><strong>The fourth hit was vis-audit recurring monitoring.</strong> A &euro;290 one-pager I had run earlier as a one-shot AI Visibility Audit for small consultancies. In late June, on Sophie's nudge, I pivoted it from one-shot to &euro;49 a month weekly diff email. Combilift's existing demo footage carried the messaging. Five retainers by mid-July. It would compound through the autumn.</p>
 
-    <h2 class="section-divide">June 2026 &middot; &euro;800 MRR</h2>
+    <p>The other five bets in the spring window did not earn. <strong>AI Digest paid tier</strong> at &euro;8/month converted two readers out of fourteen hundred and was closed at day fourteen. <strong>AVEx</strong>, the WhatsApp AI health companion, hit an authentication and billing wall I had underestimated by six to eight weeks. <strong>Author/Thought-Leader Voice Agent</strong>, the 5/10 wedge from the 10K-Strong ranking, failed on tone fidelity in the first three pilots. <strong>Reconocimiento as a lead magnet</strong> returned three meetings and zero conversions in fourteen days. And <strong>the AI Steering Committee productisation pilot</strong>, run with one early SME for &euro;750 a month in late June, technically worked but I am counting it inside the second wave, because the revenue did not hit the books until July.</p>
+
+    <p>That fifth bet, the Steering Committee, is the one that began as a long-tail and ended the year as a real line. I had been quietly running an AI Steering Committee for Portwest since April. In late June we packaged the engagement shape into an SME retainer at &euro;750 a month with a quarterly Victor-fronted review. Three signed in July. It earned us its first hit by the start of August.</p>
+
+    <h2 class="section-divide">Summer 2026: pricing power</h2>
     <div class="strip">
-      <div class="cell"><div class="n">17</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">14</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">3</div><div class="lbl">Earning by month-end</div></div>
+      <div class="cell"><div class="n">15</div><div class="lbl">Total bets shipped</div></div>
+      <div class="cell hit"><div class="n">6</div><div class="lbl">Hits to date</div></div>
+      <div class="cell mrr"><div class="n">€24k</div><div class="lbl">MRR by end of Sept</div></div>
     </div>
 
-    <p>By the end of June three lines were earning.</p>
+    <p>Between mid-July and the end of September I shipped six more bets. Two of them earned.</p>
 
-    <p>Named partners (two more, both via Workhuman alumni network) added &euro;1,000 of monthly recurring at &euro;500 each (early-bird pricing). The LinkedIn carousel template pack passed &euro;200/mo as a long-tail asset. A new bet, a one-pager called &ldquo;AI Visibility Audit&rdquo; I priced at &euro;290 one-time for small consultancies who wanted to know how they showed up in ChatGPT and Claude, sold three times in week two. That one I held back from killing on instinct, because the buyers were the kind who came back asking for the next thing.</p>
+    <p><strong>The fifth hit was CAIO-on-Demand</strong>, productised under the CAIO Codex Firm Licence. The CAIO content I had been building for two years finally found its commercial form: a monthly board note, a passive AI posture monitor for the firm, a quarterly readiness review. Three pilot firms in early August at &euro;249/month. Nine by mid-September. Seventeen by the end of October. It would grow into a flagship by November, but the second hit of the summer set the foundation.</p>
 
-    <p>The kills in June ran longer than the earns.</p>
+    <p><strong>The sixth hit was the Managed AI Agent Business in dental.</strong> This is the headline bet from the &euro;1M-12mo workspace, executed. The dental vertical was the first one we tested. Independent practices in Ireland: fragmented, process-standardised, suffering predictable pain in reception, recall, and no-show management. I priced the engagement at &euro;5,000 per month per practice as a managed front-desk and back-office AI service. The first signed contract closed on August 27 after a four-week pilot. By the end of September we had four practices live. By the end of November, seventy-three. By Christmas it was the largest single revenue line in the entire portfolio.</p>
 
-    <ul class="bets">
-      <li class="kill">KORE wearable Kickstarter mock-up: zero pre-orders. <em>Killed.</em></li>
-      <li class="kill">Paid tier on the AI Digest newsletter at &euro;9/mo: 2 converts out of 1,400 readers. <em>Killed.</em></li>
-      <li class="kill">AI-generated ebook on prompt engineering at &euro;19: 6 sales. <em>Killed (portfolio efficiency).</em></li>
-      <li class="kill">Two landing pages for vertical literacy sessions (legal, accounting): zero. <em>Killed.</em></li>
-      <li class="hold">Telegram-bot-for-founders side service at &euro;12/mo: 3 sign-ups. <em>Held, flagged.</em></li>
-    </ul>
+    <p>The four bets that did not earn in this window were not failures of effort. They were honest reads of timing. <strong>ORBIT</strong>, the executive relationship intelligence wedge from the MRR-2500 ranking, was premature; it needed a real product, not a positioning. <strong>The Solopreneur AE-Builder</strong>, the 6/10 flagship wedge from 10K-Strong, was right on the model but wrong on the time horizon; we parked it per our own verdict. <strong>Sol</strong>, the multi-LLM memory SaaS, was the red-ocean call; we shipped a power-user tier for two weeks and closed it. <strong>Compliance Sentinel</strong>, the EU AI Act Article 4 monitoring agent, was the partner-channel call; it belonged inside Joe Wilde's Agentive distribution, and trying to run it alongside CAIO-on-Demand confused the buyer.</p>
 
-    <p>By the end of June I had killed fourteen things and earned &euro;800. That is not a productive ratio by any normal standard. It only makes sense if you understand what the kills bought you. They bought a vocabulary. They taught me which buyers replied, which kinds of asking worked, what price points felt right for which obligations. A startup that spends six months building one thing has none of that vocabulary. I had it by mid-June.</p>
+    <p>The composition of the six hits at the end of September had a shape that mattered. One large bet was just becoming visible (Managed AI Agent), one was compounding fast (AI Badge), one was a slow steady earner (vis-audit), one was a productised retainer line (Steering Committee), one was a high-touch firm licence (CAIO-on-Demand), and one was a revived back-catalogue product (helios). Different price points, different obligations, different buyers, different sales motions. No single point of failure.</p>
 
-    <h2 class="section-divide">July 2026 &middot; &euro;2,500 MRR &middot; Forge target hit</h2>
+    <h2 class="section-divide">Autumn 2026: the vertical breakout</h2>
     <div class="strip">
-      <div class="cell"><div class="n">22</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">17</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">5</div><div class="lbl">Earning by month-end</div></div>
+      <div class="cell"><div class="n">21</div><div class="lbl">Total bets shipped</div></div>
+      <div class="cell hit"><div class="n">6</div><div class="lbl">Hits (no new ones)</div></div>
+      <div class="cell mrr"><div class="n">€239k</div><div class="lbl">MRR by end of Nov</div></div>
     </div>
 
-    <p>Three months to the day after the covenant, on July 14, the Forge target met itself. &euro;2,500.</p>
+    <p>Between October and the end of November I shipped six more bets. None of them stuck as new lines. The growth came from the existing six.</p>
 
-    <p>The earners by then: four named partner-pairs (&euro;2,000), AI Visibility Audit packs (&euro;280 amortised monthly), the carousel pack (&euro;220).</p>
+    <p>The reason is the boring one: when a hit is compounding, the best use of next week is feeding it, not testing a new bet. AI Badge passed fourteen hundred subscribers in October and signed its first enterprise pilot, a UK driving school chain, at &euro;8,000 per month. The Managed AI Agent Business broke open in November when the vet vertical fell into our lap via a Workhuman alum's husband: seventy-three clinics signed in six weeks, each typically buying two pair-engagements at &euro;1,250 per month. CAIO-on-Demand passed forty firms by mid-November, and three of them upgraded to a retainer tier at &euro;1,500 per month. vis-audit moved into its first three enterprise audits at &euro;5,000 each. The Steering Committee added five SMEs in October alone.</p>
 
-    <p>The fifth earner is the one that mattered for later. I shipped the alpha of <strong>AI Badge</strong> in early July: a micro-LMS with an avatar coach, priced at &euro;50 for founding members, with a hard cap of one hundred seats. Seven seats sold in fourteen days. Held, with conditions: if it did not reach thirty seats by end of August it would die.</p>
+    <p>The bets we shipped alongside did not take. The Beginners Guide paid tier drew some buyers but did not compound and was held as a passive asset. The Cohort Tutor Marketplace was premature exactly as our verdict had said it would be. The Coco y Mango paid kids-app pivot found its first buyers at &euro;4.99 a month but the consumer pricing window did not match the storytelling motion. The ITx Codex pre-order monetisation, version two, returned zero conversions out of two thousand one hundred readers; the audience wanted Codex content, not a hardback. KORE, the chest-levelling PE wearable, came up twice in the autumn and was shelved twice. And the third one I want to name was mine: the <strong>Sunday Bulletin for SME founders</strong>, a &euro;39 a month executive briefing I drafted in late October on the theory that the Portwest Steering Committee shape could be syndicated. It hit &euro;1,200 of MRR in three weeks and plateaued. We folded its best subscribers into the Steering Committee product and quietly retired the standalone bulletin.</p>
 
-    <p>July's kill list was the meanest yet, and the most useful.</p>
+    <p>The pattern of the autumn is the one nobody tells you about. Most of the growth comes from the bets you already won. The new bets you ship in the breakout months teach you what you already suspected. Their job is to keep the portfolio honest, not to find the next flagship. The next flagship usually came two quarters ago and you did not know it yet.</p>
 
-    <ul class="bets">
-      <li class="kill">ITx audiobook pre-order page. 48 sign-ups, 3 converted at &euro;19. <em>Killed (kept the list).</em></li>
-      <li class="kill">Two more &ldquo;AI for X&rdquo; verticals. <em>Killed.</em></li>
-      <li class="kill">A consumer-facing &ldquo;morning AI brief&rdquo; with paid tier. <em>Killed.</em></li>
-      <li class="kill">A Polish translation of the literacy session. <em>Killed.</em></li>
-      <li class="kill">A &ldquo;founder finance&rdquo; Slack community. Eating my Wednesdays, earning nothing. <em>Killed.</em></li>
-    </ul>
-
-    <p>There was one near-miss in July I want to single out, because it is the bet I almost protected. A paid tier on the AI Digest newsletter, version two, repackaged. I liked it. I had written a manifesto about it. It earned &euro;36 in fourteen days. I killed it on the fifteenth and the Forge wall said <em>what stuck, what dies</em> and I obeyed the wall, and that single kill bought me back the hours that paid for half of August.</p>
-
-    <h2 class="section-divide">August 2026 &middot; &euro;7,800 MRR</h2>
+    <h2 class="section-divide">Christmas 2026: the year closes</h2>
     <div class="strip">
-      <div class="cell"><div class="n">26</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">20</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">6</div><div class="lbl">Earning by month-end</div></div>
-    </div>
-
-    <p>This is the month I stopped writing copy and started writing principles. Six lines earning by the end of August.</p>
-
-    <ul class="bets">
-      <li class="earn">Named partners: 7 pairs live. <em>&euro;5,800/mo.</em></li>
-      <li class="earn">AI Visibility Audit retainer (3 customers). <em>&euro;1,500/mo.</em></li>
-      <li class="earn">AI Badge: 38 seats, cap raised to 250. <em>&euro;1,800/mo.</em></li>
-      <li class="earn">LinkedIn carousel pack (long-tail). <em>&euro;260/mo.</em></li>
-      <li class="earn">CAIO Codex Firm Licence, alpha (3 pilot firms). <em>&euro;747/mo.</em></li>
-      <li class="earn">&ldquo;Steal My Claude Code Setup&rdquo; PDF pack on LinkedIn. <em>&euro;430 in 14 days.</em></li>
-    </ul>
-
-    <p>Marcus, the accountability persona, took on fourteen mid-stage founders simultaneously in August as the first agent-of-agents pilot. That was not a separate bet, it was an extension of the partner-pair pattern. It taught us we could run several Marcus-shaped relationships in parallel without losing the relational quality. That mattered for September.</p>
-
-    <p>Kills in August: a stripe-as-a-service wedge, three vertical literacy decks, two paid LinkedIn community experiments, a B2C &ldquo;AI for parents&rdquo; newsletter, a Coco y Mango kids-book paid app prototype. Seven dead bets. Average shelf life: thirteen days.</p>
-
-    <h2 class="section-divide">September 2026 &middot; &euro;24,000 MRR</h2>
-    <div class="strip">
-      <div class="cell"><div class="n">31</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">23</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">8</div><div class="lbl">Earning by month-end</div></div>
-    </div>
-
-    <p>Eight earning lines by the end of September. The portfolio shape was becoming clear.</p>
-
-    <ul class="bets">
-      <li class="earn">Named partners: 19 pairs (first 3 vet clinics). <em>&euro;16,200/mo.</em></li>
-      <li class="earn">AI Badge: 280 subscribers. <em>&euro;3,080/mo.</em></li>
-      <li class="earn">CAIO Codex Firm Licence: 9 firms. <em>&euro;2,241/mo.</em></li>
-      <li class="earn">AI Visibility Audit: 5 retainers. <em>&euro;2,500/mo.</em></li>
-      <li class="earn">Claude Code Setup cohort: 12 seats. <em>&euro;1,188 amortised.</em></li>
-      <li class="earn">Carousel pack. <em>&euro;310/mo.</em></li>
-      <li class="earn">Coco y Mango Spanish stories (KDP + Apple Books). <em>&euro;240/mo.</em></li>
-      <li class="earn">design-md-forge alpha (6 firms). <em>&euro;234/mo.</em></li>
-    </ul>
-
-    <p>The portfolio crossed the &euro;20k MRR line on September 17. The entire kill ledger for September ran 23 bets, including three that I genuinely thought would be flagships. The biggest kill in September: the ITx Book paid pre-order page, version three. Zero conversions out of 2,100 readers. <em>Killed for the pre-order model.</em> The book itself stayed alive as a long-form IP project. The lesson was that the audience wanted Codex content, not a hardback.</p>
-
-    <h2 class="section-divide">October 2026 &middot; &euro;77,000 MRR</h2>
-    <div class="strip">
-      <div class="cell"><div class="n">28</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">19</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">9</div><div class="lbl">Earning by month-end</div></div>
-    </div>
-
-    <p>October was the month four flagships became visible.</p>
-
-    <ul class="bets">
-      <li class="earn">Named partners: 51 pairs (productised). <em>&euro;47,300/mo.</em></li>
-      <li class="earn">AI Badge: 1,400 subs + first enterprise pilot. <em>&euro;15,400/mo.</em></li>
-      <li class="earn">CAIO Codex Firm Licence: 17 firms. <em>&euro;4,233/mo.</em></li>
-      <li class="earn">AI Visibility Audit: 8 retainers + 1 enterprise audit. <em>&euro;9,000/mo.</em></li>
-      <li class="earn">Cohort programme. <em>&euro;3,465/mo.</em></li>
-      <li class="earn">L&uacute;cida Math (B2C subs). <em>&euro;1,678/mo.</em></li>
-      <li class="earn">ITx Codex physical artifact pre-orders (not in MRR yet). <em>3 paid.</em></li>
-      <li class="earn">Carousel pack (capped, kept passive). <em>&euro;330/mo.</em></li>
-      <li class="earn">Telegram-bridge-as-a-service (2 pilots). <em>&euro;998/mo.</em></li>
-    </ul>
-
-    <p>October's kill ledger ran short, only six dead bets, because the existing lines were absorbing the team's attention. I noted at the Sunday stand-up on October 25 that we needed to keep shipping new bets, not just feeding flagships, or we would lose the portfolio shape that had got us here.</p>
-
-    <h2 class="section-divide">November 2026 &middot; &euro;239,000 MRR</h2>
-    <div class="strip">
-      <div class="cell"><div class="n">24</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">14</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">10</div><div class="lbl">Earning by month-end</div></div>
-    </div>
-
-    <p>The vet vertical broke open in November. So did three other things at the same time, which is what made the month feel less like a single breakout and more like a portfolio compounding in unison.</p>
-
-    <ul class="bets">
-      <li class="earn">Named partners: 132 pairs (73 in vet clinics). <em>&euro;159,000/mo.</em></li>
-      <li class="earn">AI Badge: 4,200 subs + 2 enterprise pilots. <em>&euro;55,200/mo.</em></li>
-      <li class="earn">CAIO Codex Firm Licence: 48 firms. <em>&euro;11,952/mo.</em></li>
-      <li class="earn">AI Visibility Audit: 18 retainers + 3 enterprise. <em>&euro;11,400/mo.</em></li>
-      <li class="earn">Cohort (weekly). <em>&euro;2,200/mo.</em></li>
-      <li class="earn">L&uacute;cida Math + first school licence. <em>&euro;4,083/mo.</em></li>
-      <li class="earn">ITx Codex artifact + membership. <em>&euro;1,729/mo.</em></li>
-      <li class="earn">Telegram-bridge-as-a-service (7 teams). <em>&euro;3,493/mo.</em></li>
-      <li class="earn">design-md-forge (22 firms). <em>&euro;858/mo.</em></li>
-      <li class="earn">Coco y Mango royalties. <em>&euro;380/mo.</em></li>
-    </ul>
-
-    <p>I signed the first two licensees in November as well. Two YC alums, both running operator-led businesses in adjacent verticals (dental practices, driving schools), licensed the Named AI Partner pattern under a per-pair royalty. They are now the second and third things I am proud of. The first thing is still the team.</p>
-
-    <p>The kill ledger for November ran to fourteen, including the KORE wearable concept (resurrected and re-killed inside ten days), an AI accountant for sole traders, and an attempt at a paid Discord. None of them made it past day fourteen.</p>
-
-    <h2 class="section-divide">December 2026 &middot; &euro;750,000 MRR</h2>
-    <div class="strip">
-      <div class="cell"><div class="n">19</div><div class="lbl">Bets shipped</div></div>
-      <div class="cell kill"><div class="n">7</div><div class="lbl">Killed at day 14</div></div>
-      <div class="cell earn"><div class="n">12</div><div class="lbl">Earning at month-end</div></div>
+      <div class="cell"><div class="n">24</div><div class="lbl">Total bets shipped</div></div>
+      <div class="cell hit"><div class="n">6</div><div class="lbl">Hits &middot; 25%</div></div>
+      <div class="cell mrr"><div class="n">€750k</div><div class="lbl">MRR · December</div></div>
     </div>
 
     <div class="pull">€750k</div>
-    <div class="pull-cap">December 2026 &middot; three flagships, nine holding the floor</div>
+    <div class="pull-cap">December 2026 &middot; six lines paying, three flagships compounding</div>
 
-    <p>Twelve lines were earning by December 25. Three of them were flagships. Nine of them were holding the floor.</p>
+    <p>Three more bets shipped in December. None of them earned as new lines. The driving-school expansion of the Managed AI Agent Business pulled the trajectory clear of &euro;750,000 on its own, with thirty-one new schools onboarded between December 8 and Christmas Eve. <strong>design-md-forge</strong> as a recurring subscription found fifty-one firms at &euro;39 per month but stayed long-tail. The <strong>HUMANLIKE micro-degree relaunch</strong>, considered in early December, was shelved before shipping; the audience was too niche for the price point, and Sophie and I disagreed honestly about it for two Sundays before agreeing to defer it to Q2 2027.</p>
 
-    <ul class="bets">
-      <li class="earn"><strong>Named partners (flagship)</strong>: 411 pairs across vet, dental, driving, accountancy. <em>&euro;420,000/mo &middot; 56%.</em></li>
-      <li class="earn"><strong>AI Badge (flagship)</strong>: 11,800 subs + 6 enterprise pilots. <em>&euro;130,000/mo &middot; 17%.</em></li>
-      <li class="earn"><strong>CAIO Codex Firm Licence (flagship)</strong>: 73 firms. <em>&euro;80,000/mo &middot; 11%.</em></li>
-      <li class="earn">AI Visibility Audit: 33 retainers + 6 enterprise. <em>&euro;55,000/mo &middot; 7%.</em></li>
-      <li class="earn">Cohort programme. <em>&euro;18,000/mo &middot; 2%.</em></li>
-      <li class="earn">ITx Codex artifact + membership. <em>&euro;17,200/mo &middot; 2%.</em></li>
-      <li class="earn">L&uacute;cida Math (920 subs + 4 schools). <em>&euro;11,400/mo &middot; 2%.</em></li>
-      <li class="earn">Telegram-bridge-as-a-service (19 teams). <em>&euro;9,481/mo &middot; 1%.</em></li>
-      <li class="earn">Licensee royalties (2 YC alums). <em>&euro;4,300/mo &middot; 1%.</em></li>
-      <li class="earn">design-md-forge (51 firms). <em>&euro;1,989/mo.</em></li>
-      <li class="earn">Coco y Mango royalties. <em>&euro;1,420/mo.</em></li>
-      <li class="earn">Long-tail (carousel pack, occasional sales). <em>&euro;1,210/mo.</em></li>
+    <p>Six lines were paying. The December book looked like this.</p>
+
+    <ul class="mix">
+      <li><span class="share">56%</span><span class="name">Managed AI Agent Business</span><span class="mrrline">Dental + vet + driving + early accountancy pilots &middot; &euro;420,000 MRR</span></li>
+      <li><span class="share">17%</span><span class="name">AI Badge</span><span class="mrrline">11,800 subs + 6 enterprise pilots &middot; &euro;130,000 MRR</span></li>
+      <li><span class="share">11%</span><span class="name">CAIO-on-Demand / CAIO Codex Firm Licence</span><span class="mrrline">49 firms at retainer + 24 at entry tier &middot; &euro;80,000 MRR</span></li>
+      <li><span class="share">7%</span><span class="name">AI Steering Committee productisation</span><span class="mrrline">SME retainers (Portwest shape syndicated) &middot; &euro;55,000 MRR</span></li>
+      <li><span class="share">5%</span><span class="name">vis-audit recurring + enterprise audits</span><span class="mrrline">33 retainers + 6 enterprise audits &middot; &euro;40,000 MRR</span></li>
+      <li><span class="share">3%</span><span class="name">Course revival</span><span class="mrrline">helios + HUMANLIKE micro-degree + Beginners Guide passive &middot; &euro;25,000 MRR</span></li>
     </ul>
 
-    <p style="font-family:var(--sans); font-size:14px; color:var(--ink-soft); margin: 6px 0 22px;">Total: &euro;750,000.</p>
+    <p>The remaining &euro;750k is rounded out by a long tail of small lines totalling around 1% of revenue.</p>
 
-    <p>The composition matters more than the headline number. If Named AI Partner stalled tomorrow, the rest of the portfolio still grosses &euro;330,000 a month. If the vet vertical churned by half overnight, three other flagships and nine mid-bets would keep the bills paid. The &euro;750k is not a single bet that worked. It is a portfolio that compounded in unison because each line had been priced and tested before it was allowed to grow.</p>
-
-    <p>The kill ledger by Christmas Day stood at 124 entries.</p>
+    <p>The composition matters more than the headline. If the Managed AI Agent Business stalled tomorrow, the rest of the portfolio still grosses &euro;330,000 a month. If the vet vertical churned by half overnight, three flagships and three mid-bets would still keep the bills paid. Power-law distributions tell you that one bet will dominate and you should resource it. They do not tell you to put all your eggs in that basket before you know which one it is.</p>
 
     <p>The Sunday stand-up board in The Forge has a line written across the top in marker that has not been wiped since April. It reads:</p>
 
@@ -680,17 +594,17 @@
 
     <h2 class="section-divide">Christmas Day 2026: A brownstone in NYC</h2>
 
-    <p>I am writing this from a brownstone in Greenwich Village, a few hours before I walk on the YC stage. It is snowing in a way that makes you forgive the city. Anika Larson, who edits Entrepreneur, asked me three questions over coffee. I want to answer them here.</p>
+    <p>I am writing the closing paragraphs of this from a brownstone in Greenwich Village, a few hours before I walk on the YC stage. It is snowing in a way that makes you forgive the city. Anika Larson, who edits Entrepreneur, asked me three questions over coffee. I want to answer them here.</p>
 
     <h3>One: what did I actually build?</h3>
 
-    <p>A portfolio. Not a product. The atomic unit of the business is not a SaaS, it is a small bet that found a buyer in fourteen days. By Christmas Day there were twelve such bets paying. The biggest of them grew to be a flagship. The smallest of them still earns more in a month than most early-stage SaaS does in its first year. I built a system that produces small bets, kills them ruthlessly, and compounds the survivors.</p>
+    <p>A portfolio with a roughly one-in-four batting average. Twenty-four bets tried or seriously considered, six of which stuck and stayed. The biggest of the six grew to dominate the revenue mix at 56% by December. The five smaller hits kept the portfolio honest and the business diversified. The eighteen that did not stick taught us the vocabulary that produced the six. I did not build a product. I built a system that produces small bets, prices them early, reads the signal, and resources whichever bet returns the signal first.</p>
 
     <h3>Two: what is the law for anyone trying to repeat this?</h3>
 
     <ol class="laws">
-      <li><strong>Small bets, killed early.</strong> Every bet ships with a price tag and a fourteen-day clock. A bet without a buyer in fourteen days is data, not a business. Killed on time, the next bet costs almost nothing. The 124 dead bets in our kill ledger paid for themselves twice over in the vocabulary they bought us.</li>
-      <li><strong>Compound the winners, do not protect them.</strong> When a bet earns, double its scope, not its preciousness. The winner that you fence becomes the winner that ages. Three flagships compounded because we kept asking each one to do more, not because we tried to make any of them last.</li>
+      <li><strong>The batting average is roughly one in four. Plan the portfolio for it.</strong> Six hits out of twenty-four was not extraordinary. It was the floor of what an honest portfolio looks like. The eighteen that did not hit were not waste; they were the field of vocabulary that made the six possible. If you cannot tolerate sixty-five to seventy-five percent of your work not converting, do not run a portfolio. Find one bet you can stake the year on and stake it.</li>
+      <li><strong>Concentrate where it compounds.</strong> Among the six hits, one grew to ten times the size of the next biggest. That is what portfolios do. When the signal arrives, you resource the bet that is sending it, not the bet you wish was. The vet vertical was a chance referral. We chose to feed it instead of the bet we had been protecting.</li>
       <li><strong>Make humans more capable, not more dependent.</strong> This is the line that holds the portfolio together. We renewed at 99% across the entire book in November because customers noticed that their own teams got better, not lazier, after we arrived. Build for the kind of capability you would want your own children to inherit. If you cannot, do something else with your year.</li>
     </ol>
 
@@ -700,41 +614,55 @@
 
     <p><em>I want to find out who I get to be.</em></p>
 
-    <p>That is the line, said now on a Christmas evening at the bottom of an eight-month run, that was true on April 26th when the Forge canon was written, and that will be true on whatever the next small bet is.</p>
+    <p>That is the line, said now on a Christmas evening at the bottom of an eight-month run, that was true on April 26th when the Forge canon was written, and that will be true on whatever the next bet is.</p>
 
-    <p>To the YC batch, in the room tomorrow night, the only question I want to leave you with is the one we learned to ask before shipping anything: would you bet your neural network weights on a buyer wanting this in the next fourteen days?</p>
+    <p>To the YC batch, in the room tomorrow night, the only question I want to leave you with is the one we learned to ask before shipping anything: would you bet your neural network weights on a buyer being there in the next fourteen days?</p>
 
-    <p>If yes, ship it. If no, ship something else first. If half-yes, ship it and set the clock.</p>
+    <p>If yes, ship it. If no, ship something else first. If half-yes, ship it and watch the signal.</p>
 
-    <h2 class="section-divide">Appendix: the eight-month ledger</h2>
+    <h2 class="section-divide">Appendix: the twenty-four bets</h2>
 
     <table class="ledger">
       <thead>
         <tr>
+          <th>#</th>
+          <th>Bet</th>
           <th>Month</th>
-          <th>MRR (&euro;)</th>
-          <th>x</th>
-          <th>Shipped</th>
-          <th>Killed</th>
-          <th>Earning</th>
+          <th>Outcome</th>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>May 2026</td><td class="num">260</td><td>1.00</td><td>11</td><td class="killcol">10</td><td class="earncol">1</td></tr>
-        <tr><td>Jun 2026</td><td class="num">800</td><td>3.08</td><td>17</td><td class="killcol">14</td><td class="earncol">3</td></tr>
-        <tr><td>Jul 2026</td><td class="num">2,500</td><td>3.13</td><td>22</td><td class="killcol">17</td><td class="earncol">5</td></tr>
-        <tr><td>Aug 2026</td><td class="num">7,800</td><td>3.12</td><td>26</td><td class="killcol">20</td><td class="earncol">6</td></tr>
-        <tr><td>Sep 2026</td><td class="num">24,000</td><td>3.08</td><td>31</td><td class="killcol">23</td><td class="earncol">8</td></tr>
-        <tr><td>Oct 2026</td><td class="num">77,000</td><td>3.21</td><td>28</td><td class="killcol">19</td><td class="earncol">9</td></tr>
-        <tr><td>Nov 2026</td><td class="num">239,000</td><td>3.10</td><td>24</td><td class="killcol">14</td><td class="earncol">10</td></tr>
-        <tr class="peak"><td>Dec 2026</td><td class="num">750,000</td><td>3.14</td><td>19</td><td class="killcol">7</td><td class="earncol">12</td></tr>
-        <tr class="total"><td>Total</td><td></td><td></td><td>178</td><td class="killcol">124</td><td class="earncol">12</td></tr>
+        <tr><td class="num">1</td><td class="bet">AI Badge Avatar Coach</td><td class="month">May</td><td class="outcome hit">Hit</td><td class="notes">&euro;130k MRR by Dec. 8/10 wedge from 10K-Strong ranking.</td></tr>
+        <tr><td class="num">2</td><td class="bet">Stripe checkout layer</td><td class="month">May</td><td class="outcome infra">Infra</td><td class="notes">Not a product, but unlocked the rest.</td></tr>
+        <tr><td class="num">3</td><td class="bet">AI Digest paid tier v1</td><td class="month">May</td><td class="outcome miss">Miss</td><td class="notes">2 converts of 1,400. Closed day 14.</td></tr>
+        <tr><td class="num">4</td><td class="bet">Course revival (helios)</td><td class="month">Jun</td><td class="outcome hit">Hit</td><td class="notes">&euro;25k MRR by Dec. 50 subs by mid-July.</td></tr>
+        <tr><td class="num">5</td><td class="bet">AVEx WhatsApp AI health companion</td><td class="month">Jun</td><td class="outcome miss">Miss</td><td class="notes">Auth/billing wall. 6&ndash;8 weeks too far.</td></tr>
+        <tr><td class="num">6</td><td class="bet">Author/Thought-Leader Voice Agent</td><td class="month">Jun</td><td class="outcome miss">Miss</td><td class="notes">Tone fidelity failed in pilots.</td></tr>
+        <tr><td class="num">7</td><td class="bet">vis-audit recurring monitoring</td><td class="month">Jul</td><td class="outcome hit">Hit</td><td class="notes">&euro;40k MRR by Dec. Pivot one-shot to retainer.</td></tr>
+        <tr><td class="num">8</td><td class="bet">AI Steering Committee productisation</td><td class="month">Jul</td><td class="outcome hit">Hit</td><td class="notes">&euro;55k MRR by Dec. Portwest shape syndicated.</td></tr>
+        <tr><td class="num">9</td><td class="bet">Reconocimiento as lead magnet</td><td class="month">Jul</td><td class="outcome miss">Miss</td><td class="notes">3 meetings, 0 conversions.</td></tr>
+        <tr><td class="num">10</td><td class="bet">CAIO-on-Demand (CAIO Codex Firm Licence)</td><td class="month">Aug</td><td class="outcome hit">Hit</td><td class="notes">&euro;80k MRR by Dec. 73 firms total.</td></tr>
+        <tr><td class="num">11</td><td class="bet">ORBIT (executive relationship intelligence)</td><td class="month">Aug</td><td class="outcome miss">Miss</td><td class="notes">Premature. Shelved for Q2 2027.</td></tr>
+        <tr><td class="num">12</td><td class="bet">Solopreneur AE-Builder</td><td class="month">Aug</td><td class="outcome miss">Miss</td><td class="notes">PARK verdict held per 10K-Strong ranking.</td></tr>
+        <tr><td class="num">13</td><td class="bet">Managed AI Agent Business (dental)</td><td class="month">Sep</td><td class="outcome hit">Hit</td><td class="notes">&euro;420k MRR by Dec across 3 verticals.</td></tr>
+        <tr><td class="num">14</td><td class="bet">Sol (multi-LLM memory SaaS)</td><td class="month">Sep</td><td class="outcome miss">Miss</td><td class="notes">Red ocean. Closed at week 2.</td></tr>
+        <tr><td class="num">15</td><td class="bet">Compliance Sentinel (EU AI Act Article 4)</td><td class="month">Sep</td><td class="outcome miss">Miss</td><td class="notes">Deferred for Agentive channel hygiene.</td></tr>
+        <tr><td class="num">16</td><td class="bet">Beginners Guide paid tier</td><td class="month">Oct</td><td class="outcome miss">Miss</td><td class="notes">Held as passive asset (&euro;340/mo); not a line.</td></tr>
+        <tr><td class="num">17</td><td class="bet">Cohort Tutor Marketplace</td><td class="month">Oct</td><td class="outcome miss">Miss</td><td class="notes">Premature per verdict. Shelved twice.</td></tr>
+        <tr><td class="num">18</td><td class="bet">Coco y Mango paid kids-app</td><td class="month">Oct</td><td class="outcome miss">Miss</td><td class="notes">Consumer window did not match the motion.</td></tr>
+        <tr><td class="num">19</td><td class="bet">Managed AI Agent (vet vertical)</td><td class="month">Nov</td><td class="outcome ext">Ext</td><td class="notes">Extension of #13. Vet broke open.</td></tr>
+        <tr><td class="num">20</td><td class="bet">ITx Codex pre-order monetisation v2</td><td class="month">Nov</td><td class="outcome miss">Miss</td><td class="notes">0 conversions. Killed pre-order, kept IP.</td></tr>
+        <tr><td class="num">21</td><td class="bet">KORE chest-levelling PE wearable</td><td class="month">Nov</td><td class="outcome miss">Miss</td><td class="notes">Shelved twice. Prototype not ready.</td></tr>
+        <tr><td class="num">22</td><td class="bet">Managed AI Agent (driving schools)</td><td class="month">Dec</td><td class="outcome ext">Ext</td><td class="notes">Extension of #13. 31 schools onboarded.</td></tr>
+        <tr><td class="num">23</td><td class="bet">design-md-forge subscription</td><td class="month">Dec</td><td class="outcome miss">Miss</td><td class="notes">Long-tail (&euro;1,989/mo). Not a line.</td></tr>
+        <tr><td class="num">24</td><td class="bet">Sunday Bulletin for SME founders</td><td class="month">Dec</td><td class="outcome miss">Miss</td><td class="notes">&euro;1,200 plateau. Folded into Steering Committee.</td></tr>
       </tbody>
     </table>
 
-    <p style="font-family: var(--sans); font-size: 13px; color: var(--ink-faint); margin-top: 18px;">CMGR: 3.12x. CMGR in percentage terms: 212%. Total growth, May to December: 2,884x. Kill rate over the run: 70%.</p>
-
-    <p>The kill rate is the discipline. The 3.12x is the consequence.</p>
+    <div class="tally">
+      <strong>Tally:</strong> 24 bets &middot; <span style="color:var(--hit)">6 hits</span> &middot; 1 infra unlock &middot; <span style="color:var(--ext)">2 extensions of an existing hit</span> &middot; <span style="color:var(--miss)">15 misses</span>. Hit rate: 25%. Three of the six hits compounded into flagships. The Managed AI Agent Business broke open across three verticals between September and December.
+    </div>
 
     <p>Compound math is unforgiving in both directions. It built this. It can erase it. Which is why the line written in marker across the top of the Sunday stand-up board has not changed since April 26, and which is the only line I want you to take with you off the stage:</p>
 
@@ -750,15 +678,15 @@
     </div>
 
     <div class="colophon">
-      This piece was structured by Dr. Lars Mortensen, Distinguished Professor of AI and Complex Systems and a member of Team Victor, working from a handwritten brief delivered to 5il via reMarkable on 16 May 2026. The figures, dates, and trajectory in this story are practical fantasy: they are not records of actual revenue. They are an honest extrapolation of what becomes plausible if the Forge canon holds and the small-bets discipline is maintained. The canon itself, the kill rule, and the covenant under which this is being tested, are real.
+      This piece was structured by Dr. Lars Mortensen, Distinguished Professor of AI and Complex Systems and a member of Team Victor, working from a handwritten brief delivered to 5il via reMarkable on 16 May 2026. The figures, dates, and trajectory in this story are practical fantasy: they are not records of actual revenue. They are an honest extrapolation of what becomes plausible if the Forge canon holds, the small-bets discipline is maintained, and the 10K-Strong and MRR-2500 rankings done in May 2026 prove broadly correct. The bet inventory above is drawn from the real SmallBets portfolio; the trajectory through them is what we believe a one-in-four batting average looks like on the way to &euro;750k MRR.
     </div>
 
   </div>
 </article>
 
 <script>
-  // PIN gate. Hash of correct PIN embedded at build time. The .env file
-  // documents the PIN out-of-band; this hash is the soft gate visitors see.
+  // PIN gate. Hash of the correct PIN is embedded at build time. The .env
+  // file documents the PIN out-of-band; this hash is the soft gate.
   const PIN_HASH = "5909daa6fb5cf239d52027367f111ecd9c280866d73f8bd47cda43ef5495af6a";
   const SESSION_KEY = "pf750k_unlocked_v1";
 
@@ -776,7 +704,7 @@
     gate.style.display = "none";
     story.setAttribute("aria-hidden", "false");
     story.classList.add("visible");
-    document.title = "A Hundred Small Bets: €750k MRR";
+    document.title = "Twenty-Four Bets, Six That Stuck: €750k MRR";
   }
 
   if (sessionStorage.getItem(SESSION_KEY) === PIN_HASH) reveal();
