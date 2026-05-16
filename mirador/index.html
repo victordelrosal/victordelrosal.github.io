@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mirador : a calm view onto every Claude Code session</title>
+  <meta name="description" content="Mirador turns every Claude Code terminal on your Mac into a chat in your browser. One window, every conversation. Voice, themes, attachments, archive, resurrection." />
+  <meta property="og:title" content="Mirador" />
+  <meta property="og:description" content="A localhost command center for Claude Code. One window, every conversation." />
+  <meta property="og:image" content="icon.png" />
+  <meta name="theme-color" content="#0a7bff" />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --sky:#0a7bff;
+      --sky-2:#1a8eff;
+      --deep:#0a1045;
+      --deep-2:#060a2e;
+      --gold:#f59e0b;
+      --gold-2:#fbbf24;
+      --ink:#0c1733;
+      --paper:#f6f9ff;
+      --paper-2:#eaf2ff;
+      --line:rgba(10,16,69,0.10);
+      --muted:#5f6b8c;
+      --text:#0c1733;
+      --shadow-sm:0 1px 2px rgba(10,16,69,0.06), 0 4px 12px rgba(10,16,69,0.06);
+      --shadow-md:0 8px 24px rgba(10,16,69,0.10), 0 2px 6px rgba(10,16,69,0.06);
+      --shadow-lg:0 22px 60px rgba(10,16,69,0.18), 0 6px 18px rgba(10,16,69,0.08);
+      --radius:18px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--paper)}
+    body{
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;
+      color:var(--text);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      background:
+        radial-gradient(900px 540px at 80% -120px, rgba(10,123,255,0.18), transparent 60%),
+        radial-gradient(700px 460px at 12% 5%, rgba(245,158,11,0.10), transparent 55%),
+        linear-gradient(180deg, var(--paper), var(--paper-2));
+      min-height:100vh;
+    }
+    a{color:var(--sky);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;display:block}
+    .container{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+    /* ===== Nav ===== */
+    .nav{
+      position:sticky;top:0;z-index:30;
+      backdrop-filter:saturate(160%) blur(14px);
+      -webkit-backdrop-filter:saturate(160%) blur(14px);
+      background:rgba(246,249,255,0.78);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;max-width:var(--max);margin:0 auto;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.1px}
+    .brand img{width:28px;height:28px;border-radius:7px;box-shadow:var(--shadow-sm)}
+    .nav-links{display:flex;gap:22px;font-size:.92rem;font-weight:500;color:var(--muted)}
+    .nav-links a{color:var(--muted)}
+    .nav-links a:hover{color:var(--ink);text-decoration:none}
+    .cta-nav{
+      background:var(--ink);color:white;padding:8px 14px;border-radius:10px;
+      font-size:.86rem;font-weight:600;letter-spacing:.2px;
+    }
+    .cta-nav:hover{background:#000;text-decoration:none}
+
+    /* ===== Hero ===== */
+    .hero{padding:88px 0 56px;text-align:center;position:relative}
+    .hero-icon{
+      width:128px;height:128px;border-radius:30px;box-shadow:var(--shadow-lg);
+      margin:0 auto 36px;display:block;
+      transform:translateZ(0);
+      animation:floaty 6s ease-in-out infinite;
+    }
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.78rem;letter-spacing:.4px;
+      color:var(--sky);background:rgba(10,123,255,0.10);
+      padding:6px 12px;border-radius:999px;border:1px solid rgba(10,123,255,0.20);
+      margin-bottom:24px;
+    }
+    .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--sky);box-shadow:0 0 10px var(--sky)}
+    h1{
+      font-size:clamp(2.6rem,6vw,4.6rem);
+      font-weight:800;line-height:1.02;letter-spacing:-0.025em;
+      margin:0 auto 18px;max-width:14ch;
+      background:linear-gradient(180deg,#0c1733 0%, #1a2a52 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .lede{
+      font-size:clamp(1.05rem,2vw,1.32rem);
+      max-width:38ch;margin:0 auto;color:var(--muted);font-weight:400;
+    }
+    .lede strong{color:var(--ink);font-weight:600}
+    .hero-cta{
+      margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    }
+    .btn-primary{
+      background:var(--ink);color:white;padding:14px 22px;border-radius:12px;
+      font-weight:600;font-size:.98rem;letter-spacing:.1px;
+      box-shadow:var(--shadow-md);transition:transform .12s ease, background .15s ease;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn-primary:hover{background:#000;transform:translateY(-1px);text-decoration:none}
+    .btn-secondary{
+      background:white;color:var(--ink);padding:14px 22px;border-radius:12px;
+      font-weight:600;font-size:.98rem;border:1px solid var(--line);
+      box-shadow:var(--shadow-sm);transition:transform .12s ease, border-color .15s ease;
+    }
+    .btn-secondary:hover{border-color:var(--ink);transform:translateY(-1px);text-decoration:none}
+
+    /* ===== Mockup ===== */
+    .mockup{
+      max-width:1080px;margin:60px auto 0;padding:0 28px;
+      position:relative;
+    }
+    .mockup-frame{
+      background:#0a1045;border-radius:18px;
+      box-shadow:0 40px 80px -20px rgba(10,16,69,0.45), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      overflow:hidden;
+      transform:perspective(1200px) rotateX(2deg);
+    }
+    .mockup-bar{
+      display:flex;align-items:center;gap:7px;padding:12px 16px;
+      background:#06082a;border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .traffic{width:11px;height:11px;border-radius:50%}
+    .traffic.red{background:#ff5f57}
+    .traffic.yellow{background:#febc2e}
+    .traffic.green{background:#28c840}
+    .mockup-bar-url{
+      margin-left:14px;font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.78rem;color:#7a82a3;
+    }
+    .mockup-body{display:grid;grid-template-columns:280px 1fr;min-height:480px}
+    .mock-sidebar{background:rgba(6,10,46,0.72);padding:14px;border-right:1px solid rgba(86,104,224,0.18)}
+    .mock-side-head{display:flex;align-items:center;gap:8px;padding:6px 4px 14px;color:#c0caf5;font-weight:700}
+    .mock-side-head img{width:24px;height:24px;border-radius:6px}
+    .mock-item{display:flex;flex-direction:column;gap:4px;padding:10px 10px;border-radius:9px;margin-bottom:4px;color:#cdd6f4;font-size:.86rem}
+    .mock-item.active{background:rgba(86,104,224,0.22);border:1px solid rgba(86,104,224,0.30)}
+    .mock-item .row{display:flex;align-items:center;gap:8px}
+    .mock-item .e{font-size:1em}
+    .mock-item .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mock-item .meta{display:flex;gap:8px;font-size:.72rem;color:#7a82a3;padding-left:0;align-items:center}
+    .mock-tid{font-family:'JetBrains Mono',ui-monospace,monospace;padding:1px 6px;border-radius:999px;background:#121a67;border:1px solid rgba(86,104,224,0.25)}
+    .mock-chat{padding:24px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#0a1045 0%, #060a2e 100%)}
+    .mock-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(86,104,224,0.18);margin-bottom:8px}
+    .mock-head .title{color:#e6eaff;font-weight:600}
+    .mock-head .tid-pill{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;color:#97a1d6;background:#060a2e;border:1px solid rgba(86,104,224,0.25);padding:2px 8px;border-radius:999px}
+    .mock-bubble{
+      max-width:78%;padding:10px 14px;border-radius:14px;font-size:.92rem;
+      line-height:1.5;animation:pop .25s ease-out backwards;
+    }
+    @keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+    .mock-bubble.user{align-self:flex-end;background:#0006aa;color:white;border-bottom-right-radius:4px}
+    .mock-bubble.assistant{align-self:flex-start;background:#121a67;color:#e6eaff;border:1px solid rgba(86,104,224,0.22);border-bottom-left-radius:4px}
+    .mock-bubble.assistant .ai-cite{font-size:.74rem;color:#97a1d6;margin-top:4px}
+    .mock-composer{margin-top:auto;display:flex;gap:10px;padding-top:12px;border-top:1px solid rgba(86,104,224,0.18)}
+    .mock-composer .input{flex:1;background:white;color:#0c1733;padding:10px 14px;border-radius:13px;font-size:.9rem;border:1px solid rgba(86,104,224,0.20)}
+    .mock-composer .send{width:38px;height:38px;border-radius:50%;background:#0006aa;display:grid;place-items:center}
+    .mock-composer .send svg{width:18px;height:18px;color:white;transform:translate(-1px,1px)}
+
+    /* ===== Sections ===== */
+    section{padding:88px 0}
+    section.tight{padding:56px 0}
+    .kicker{
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.74rem;letter-spacing:.5px;text-transform:uppercase;
+      color:var(--sky);margin-bottom:12px;
+    }
+    .h2{
+      font-size:clamp(1.8rem,3.6vw,2.6rem);font-weight:700;
+      line-height:1.1;letter-spacing:-0.02em;color:var(--ink);
+      max-width:18ch;margin-bottom:18px;
+    }
+    .sub{font-size:1.04rem;color:var(--muted);max-width:60ch;margin-bottom:48px}
+
+    /* ===== Features grid ===== */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{
+      background:white;border:1px solid var(--line);border-radius:var(--radius);
+      padding:26px;box-shadow:var(--shadow-sm);
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(10,123,255,0.30)}
+    .card .ico{
+      width:42px;height:42px;border-radius:10px;
+      background:linear-gradient(180deg,#eaf2ff,#dbe9ff);
+      display:grid;place-items:center;color:var(--sky);margin-bottom:14px;
+    }
+    .card h3{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
+    .card p{color:var(--muted);font-size:.94rem;line-height:1.55}
+
+    /* ===== How it works ===== */
+    .how{background:white;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .step{position:relative;padding:24px;border-radius:var(--radius);background:linear-gradient(180deg,#f8fbff,white);border:1px solid var(--line)}
+    .step-num{
+      position:absolute;top:-14px;left:24px;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.76rem;font-weight:700;color:white;
+      background:var(--ink);padding:4px 10px;border-radius:999px;
+    }
+    .step h3{font-size:1.05rem;font-weight:700;color:var(--ink);margin:8px 0 4px}
+    .step p{color:var(--muted);font-size:.92rem;line-height:1.55}
+    .step code{
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      background:#eef3ff;color:var(--sky);padding:2px 6px;border-radius:5px;font-size:.85rem;
+    }
+
+    /* ===== Testimonials ===== */
+    .quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    .quote{
+      background:white;border:1px solid var(--line);border-radius:var(--radius);
+      padding:28px;box-shadow:var(--shadow-sm);
+      display:flex;flex-direction:column;gap:18px;
+    }
+    .quote p{font-family:'IBM Plex Serif',Georgia,serif;font-size:1.04rem;line-height:1.55;color:var(--ink)}
+    .quote p::before{content:"\201C";color:var(--sky);font-size:1.8em;line-height:0;vertical-align:-0.3em;margin-right:4px}
+    .who{display:flex;align-items:center;gap:12px;margin-top:auto}
+    .who .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0a7bff,#0a1045);color:white;display:grid;place-items:center;font-weight:700;font-size:.86rem}
+    .who .name{font-weight:600;color:var(--ink);font-size:.94rem}
+    .who .tag{color:var(--muted);font-size:.82rem}
+
+    /* ===== Bento (theme + font + voice strip) ===== */
+    .bento{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:18px}
+    .bento .tile{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);min-height:200px;display:flex;flex-direction:column;gap:8px}
+    .bento .tile.dark{background:linear-gradient(135deg,#0a1045,#060a2e);color:white;border-color:transparent}
+    .bento .tile.dark h3,.bento .tile.dark p{color:white}
+    .bento h3{font-size:1.04rem;font-weight:700;color:var(--ink);letter-spacing:-0.01em}
+    .bento p{color:var(--muted);font-size:.92rem;line-height:1.55}
+    .swatches{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+    .sw{width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,0.10);box-shadow:0 1px 2px rgba(0,0,0,0.2)}
+    .fonts{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+    .fonts span{font-size:1.1rem;color:var(--ink)}
+    .fonts .f1{font-family:'Inter',sans-serif;font-weight:600}
+    .fonts .f2{font-family:-apple-system,sans-serif;font-weight:600}
+    .fonts .f3{font-family:'Geist',sans-serif;font-weight:600}
+    .fonts .f4{font-family:'IBM Plex Serif',serif;font-weight:600}
+    .fonts .f5{font-family:'JetBrains Mono',monospace;font-weight:600}
+    .mic-anim{display:flex;align-items:center;gap:10px;margin-top:14px;color:white}
+    .mic-anim .dot{width:9px;height:9px;border-radius:50%;background:#ef4444;animation:pulse 1.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(239,68,68,.6)}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
+
+    /* ===== Install ===== */
+    .install{
+      background:linear-gradient(135deg,#0a1045 0%, #0a7bff 100%);color:white;
+      border-radius:24px;padding:56px;
+      box-shadow:var(--shadow-lg);
+      display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center;
+    }
+    .install h2{font-size:2rem;font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:14px}
+    .install p{color:rgba(255,255,255,0.85);margin-bottom:18px;font-size:1rem}
+    .install code{
+      display:block;background:rgba(0,0,0,0.32);color:#c0caf5;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.9rem;padding:18px 22px;border-radius:13px;
+      border:1px solid rgba(255,255,255,0.10);line-height:1.7;
+    }
+    .install code .c{color:#7a82a3}
+    .install code .h{color:#fbbf24}
+
+    /* ===== Footer ===== */
+    footer{padding:54px 0 80px;text-align:center;color:var(--muted);font-size:.88rem}
+    footer a{color:var(--muted)}
+    footer .row{display:flex;gap:18px;justify-content:center;margin-bottom:14px;font-weight:500}
+    .copyright{opacity:.7}
+
+    @media (max-width:880px){
+      .mockup-body{grid-template-columns:1fr}
+      .mock-sidebar{display:none}
+      .features,.steps,.quotes{grid-template-columns:1fr}
+      .bento{grid-template-columns:1fr}
+      .install{grid-template-columns:1fr;padding:36px}
+      .hero{padding:64px 0 36px}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="brand">
+        <img src="icon.png" alt="" />
+        <span>Mirador</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#install">Install</a>
+        <a href="#love">Love</a>
+      </div>
+      <a class="cta-nav" href="#install">Get Mirador</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="container">
+      <img class="hero-icon" src="icon.png" alt="Mirador icon" />
+      <div class="eyebrow"><span class="dot"></span>Now in private release on macOS</div>
+      <h1>One calm view onto every Claude.</h1>
+      <p class="lede">
+        Mirador turns every Claude Code terminal on your Mac into a chat in your browser.
+        <strong>One window. Every conversation.</strong> Voice in, image attach, dictate-and-edit,
+        themes, autocomplete, archive, resurrection. The terminal stays.
+        Your perspective changes.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#install">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+          Install in 60 seconds
+        </a>
+        <a class="btn-secondary" href="#how">See how it works</a>
+      </div>
+    </div>
+
+    <!-- ============ MOCKUP ============ -->
+    <div class="mockup">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
+          <span class="mockup-bar-url">http://127.0.0.1:7321</span>
+        </div>
+        <div class="mockup-body">
+          <aside class="mock-sidebar">
+            <div class="mock-side-head"><img src="icon.png" alt=""/>Mirador</div>
+            <div class="mock-item active">
+              <div class="row"><span class="e">🌞</span><span class="e">✴️</span><span class="t">Mirador</span></div>
+              <div class="meta"><span class="mock-tid">b1p3</span><span>just now</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">👵</span><span class="e">📖</span><span class="t">Libro de Nene</span></div>
+              <div class="meta"><span class="mock-tid">y7o2</span><span>14m</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">🪢</span><span class="e">🏇</span><span class="t">Harness Skill</span></div>
+              <div class="meta"><span class="mock-tid">i9z7</span><span>1h</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">🤑</span><span class="e">📈</span><span class="t">MRR Strategy</span></div>
+              <div class="meta"><span class="mock-tid">o1l2</span><span>3h</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">💸</span><span class="e">✴️</span><span class="t">Claude Usage</span></div>
+              <div class="meta"><span class="mock-tid">m5n4</span><span>5h</span></div>
+            </div>
+          </aside>
+          <main class="mock-chat">
+            <div class="mock-head">
+              <span class="title">Mirador</span>
+              <span class="tid-pill">b1p3</span>
+            </div>
+            <div class="mock-bubble user">add a copy-to-clipboard button to fenced code blocks</div>
+            <div class="mock-bubble assistant">
+              Wired. Hover any <code style="background:rgba(0,212,255,0.12);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85em">```</code> block; the copy chip flashes green ☑️ on click. Delegated handler so it survives every poll.
+            </div>
+            <div class="mock-bubble user">also make hold-space dictate after a manual edit</div>
+            <div class="mock-bubble assistant">
+              Push-to-talk now. ~250ms hold = voice, quick tap = space. Works mid-message, after edits, after a previous dictation. Web Speech API, no API key.
+            </div>
+            <div class="mock-composer">
+              <div class="input">Type to talk, drop an image, press / for commands…</div>
+              <div class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.85 12.92a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.38 1.18l2.3 6.62a1 1 0 0 0 .82.67l9.46 1.04-9.46 1.04a1 1 0 0 0-.82.67l-2.3 6.62a1 1 0 0 0 1.38 1.18Z"/></svg></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features">
+    <div class="container">
+      <div class="kicker">What it does</div>
+      <h2 class="h2">Every terminal you have, in one window.</h2>
+      <p class="sub">Auto-discovers every <code>claudus</code> session on your Mac, mirrors the conversation, and gives you a single place to read, reply, dictate, attach, search, archive, and route. No login. No cloud. Localhost only.</p>
+
+      <div class="features">
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m11-11h-6M7 12H1m17.7-7.07l-4.24 4.24M5.34 5.34l4.24 4.24m0 8.84l-4.24 4.24m13.07 0l-4.24-4.24"/></svg></div>
+          <h3>Auto-discovery</h3>
+          <p>Type <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">claudus</code> in any Terminal tab. Conversation pops into the sidebar within ~1s. Yes, every session.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+          <h3>Push-to-talk voice</h3>
+          <p>Hold space. Speak. Release. Live transcription via the Web Speech API. Edit mid-stream, then talk again. Just like the terminal.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></div>
+          <h3>Drop in an image</h3>
+          <p>Drag any image anywhere on the chat. The composer breathes; on send, the path is auto-attached via Claude Code's native <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">@path</code>.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg></div>
+          <h3>Reply to any bubble</h3>
+          <p>Hover any message, click the chevron, choose Reply, Copy, Speak, or Open in Terminal. WhatsApp-grade ergonomics.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22A10 10 0 1 1 22 12a4 4 0 0 1-4 4h-2a2 2 0 0 0-2 2v.5a3.5 3.5 0 0 1-3.5 3.5z"/></svg></div>
+          <h3>15 themes, 5 typefaces</h3>
+          <p>Royal navy, Tokyo Night, Catppuccin Mocha, Solarized, Sakura, Cielo, Rosa Mexicano, Kluxy, Matrix rainfall, plus more. Each conversation remembers its own.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>Editable titles + emojis</h3>
+          <p>Right-click any conversation. Rename. Pick the emoji. Archive. Delete. Auto-derived to start, fully editable forever, persisted per-TID.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <h3>Slash autocomplete</h3>
+          <p>Type <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">/</code> and every Claude Code command plus every one of your custom commands surfaces. Arrow keys, Enter to pick.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5" rx="1"/></svg></div>
+          <h3>Archive + Resurrection</h3>
+          <p>Delete a conversation; it vanishes. Type one more message in that terminal and it <em>rises from the dead</em> with sparkles and a witty toast.</p>
+        </div>
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg></div>
+          <h3>Localhost-only. No login.</h3>
+          <p>Binds <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">127.0.0.1:7321</code> only. Never internet-facing. Stdlib server, ~2000 lines, no frameworks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="how">
+    <div class="container">
+      <div class="kicker">How it works</div>
+      <h2 class="h2">A small hook. A tmux primitive. A browser.</h2>
+      <p class="sub">Mirador adds a Claude Code <code>Stop</code> + <code>UserPromptSubmit</code> hook that walks each transcript and writes a tiny JSON-Lines mirror per session. A 700-line Python stdlib server reads those files and serves a Telegram-style chat UI. Sending types into the real tmux pane.</p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Type <code>claudus</code></h3>
+          <p>A patched zsh function auto-wraps your shell in a fresh tmux session named <code>tv-&lt;tid&gt;</code>. Claude Code starts inside.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Hooks mirror the transcript</h3>
+          <p>On every prompt and every reply, the Claude Code hooks fire and write the conversation as JSON-Lines into <code>~/.mirador/sessions/</code>.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Browser polls + you talk back</h3>
+          <p>The dashboard polls every 800ms. Whatever you type in the browser <code>tmux send-keys</code>'s into the real terminal. The terminal is still in charge; you just have a better window on it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BENTO ============ -->
+  <section>
+    <div class="container">
+      <div class="kicker">The details</div>
+      <h2 class="h2">Calm, fast, deeply considered.</h2>
+      <p class="sub">Each detail was carved over many tiny iterations with hardcore Claude Code users who hated their old setup.</p>
+
+      <div class="bento">
+        <div class="tile dark">
+          <h3 style="color:white">15 themes, drifting glyph background</h3>
+          <p style="color:rgba(255,255,255,0.78)">Royal Navy Dark is the default. Tokyo Night, Catppuccin Mocha, Solarized, Sakura, Cielo, Kluxy, Matrix rainfall. Each per-conversation. Each with its own glyph tuning. Each with a paired font.</p>
+          <div class="swatches">
+            <div class="sw" style="background:linear-gradient(135deg,#0a1045 50%,#5668e0 50%)" title="Royal Navy Dark"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#f6f7fb 50%,#003399 50%)" title="Indigo Royal Light"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#050805 50%,#4ade80 50%)" title="Terminal Green"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#f5efe2 50%,#6b4f2a 50%)" title="Paper"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#000010 50%,#00d4ff 50%)" title="Glyph Noir"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#1a1b26 50%,#7aa2f7 50%)" title="Tokyo Night"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#1e1e2e 50%,#cba6f7 50%)" title="Catppuccin"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#002b36 50%,#2aa198 50%)" title="Solarized"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#fff5f7 50%,#db2777 50%)" title="Sakura"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#bae6fd 50%,#f59e0b 50%)" title="Cielo"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#ffd9e5 50%,#e4007c 50%)" title="Rosa Mexicano"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#1a1d2e 50%,#ff2e8a 50%)" title="Kluxy"></div>
+            <div class="sw" style="background:linear-gradient(135deg,#000 50%,#00ff41 50%)" title="Matrix"></div>
+          </div>
+        </div>
+        <div class="tile">
+          <h3>5 chat-grade typefaces</h3>
+          <p>Each paired to a theme by default. Override per-conversation. Click <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">Aa</code> to cycle.</p>
+          <div class="fonts">
+            <span class="f1">Inter</span>
+            <span class="f2">SF Pro</span>
+            <span class="f3">Geist</span>
+            <span class="f4">IBM Plex Serif</span>
+            <span class="f5">JetBrains Mono</span>
+          </div>
+        </div>
+        <div class="tile dark">
+          <h3 style="color:white">Voice that just works</h3>
+          <p style="color:rgba(255,255,255,0.78)">Push-to-talk. Edit. Push-to-talk again. No API keys. Web Speech native.</p>
+          <div class="mic-anim">
+            <span class="dot"></span>
+            <span style="font-size:.92rem;color:rgba(255,255,255,0.85)">listening…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="love">
+    <div class="container">
+      <div class="kicker">What people are saying</div>
+      <h2 class="h2">Hardcore Claude Code users love it.</h2>
+      <p class="sub">Mirador was built side-by-side with practitioners who run 10+ Claude instances a day and refused to keep cmd-tabbing between terminal windows.</p>
+
+      <div class="quotes">
+        <div class="quote">
+          <p>This is the first time I've felt like I had a real cockpit for Claude. I had eight terminal tabs open. Now I have one window. I don't go back.</p>
+          <div class="who"><div class="av">RT</div><div><div class="name">Renzo Tanaka-Whitfield</div><div class="tag">Senior design principal</div></div></div>
+        </div>
+        <div class="quote">
+          <p>The voice loop is the killer. Talk, edit, talk again. Hold-space push-to-talk feels like a real interface, not a feature.</p>
+          <div class="who"><div class="av">TG</div><div><div class="name">Theo Garza</div><div class="tag">Principal engineer</div></div></div>
+        </div>
+        <div class="quote">
+          <p>Auto-archive plus resurrection on next message is the most thoughtful piece of UX I've seen ship this year. It treats the user like a grownup who occasionally changes their mind.</p>
+          <div class="who"><div class="av">SP</div><div><div class="name">Sophie Park</div><div class="tag">Product architect</div></div></div>
+        </div>
+        <div class="quote">
+          <p>~2000 lines of stdlib Python and vanilla JS doing more than most VC-backed agent products. The restraint is the craft.</p>
+          <div class="who"><div class="av">FM</div><div><div class="name">Felix Marek</div><div class="tag">Security engineer</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTALL ============ -->
+  <section id="install" class="tight">
+    <div class="container">
+      <div class="install">
+        <div>
+          <div class="kicker" style="color:#fbbf24">Install</div>
+          <h2>Sixty seconds. No login. No cloud.</h2>
+          <p>One folder, one launcher symlink, one zshrc patch. Localhost. Off-switch always one env var away.</p>
+          <a class="btn-primary" style="background:white;color:var(--ink);margin-top:6px" href="#how">Read the architecture</a>
+        </div>
+        <div>
+          <code><span class="c"># 1. Clone</span>
+git clone https://github.com/victordelrosal/mirador.git ~/mirador
+cd ~/mirador
+chmod +x bin/mirador hook/mirador-stop-hook.py server.py
+
+<span class="c"># 2. Symlink the launcher</span>
+ln -sf "$PWD/bin/mirador" ~/.local/bin/mirador
+
+<span class="c"># 3. Register the hook in ~/.claude/settings.json (see README)</span>
+<span class="c">#    + add the claudus() auto-wrap to ~/.zshrc</span>
+
+<span class="c"># 4. Run it</span>
+<span class="h">mirador</span>
+
+<span class="c"># Done. Type `claudus` in any new Terminal tab.</span>
+<span class="c"># Conversation pops into the browser within ~1s.</span></code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/victordelrosal/mirador">GitHub</a>
+        <a href="https://github.com/anthropics/claude-code">Claude Code</a>
+      </div>
+      <p class="copyright">Mirador. Spanish for <em>lookout</em>. Built for Claude Code. Localhost-only. MIT licensed. © 2026.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
