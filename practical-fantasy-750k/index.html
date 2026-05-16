@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practical Fantasy: €750k MRR in Eight Months</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="A practical fantasy, told as if from Christmas Day 2026. Access by PIN.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1045'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%235668e0'%3E€%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base: #0a1045;
+    --deepen: #060a2e;
+    --lifted: #121a67;
+    --structural: #5668e0;
+    --pop: #0006aa;
+    --ink: #e9ecff;
+    --ink-soft: #b6bce6;
+    --ink-faint: #7a82b8;
+    --rule: rgba(86,104,224,0.22);
+    --serif: 'Fraunces', 'Charter', 'Source Serif Pro', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    background: linear-gradient(180deg, var(--base) 0%, var(--deepen) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 18px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ======= GATE ======= */
+  #gate {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, var(--base) 0%, var(--deepen) 100%);
+    z-index: 1000;
+    padding: 24px;
+  }
+  .gate-card {
+    width: 100%; max-width: 420px;
+    background: rgba(18,26,103,0.42);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 36px 32px 32px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  }
+  .gate-mark {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--pop);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-weight: 700; font-size: 22px;
+    color: #fff; margin-bottom: 18px;
+  }
+  .gate-card h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .gate-card p {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+  .gate-form { display: flex; flex-direction: column; gap: 10px; }
+  .gate-form label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .gate-form input {
+    font-family: var(--sans);
+    font-size: 17px;
+    letter-spacing: 0.3em;
+    text-align: center;
+    padding: 14px 16px;
+    border: 1px solid var(--rule);
+    background: rgba(6,10,46,0.5);
+    color: var(--ink);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .gate-form input:focus {
+    border-color: var(--structural);
+    box-shadow: 0 0 0 4px rgba(86,104,224,0.18);
+  }
+  .gate-form button {
+    margin-top: 6px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--pop);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+  }
+  .gate-form button:hover { background: #000584; }
+  .gate-form button:active { transform: translateY(1px); }
+  .gate-msg {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: #ff9aa2;
+    margin-top: 10px;
+    min-height: 18px;
+    text-align: center;
+  }
+  .gate-foot {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 22px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  /* ======= STORY ======= */
+  #story { display: none; opacity: 0; transition: opacity 0.4s ease; }
+  #story.visible { display: block; opacity: 1; }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--structural);
+    margin-bottom: 18px;
+  }
+
+  h1.title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(36px, 5.5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+    color: var(--ink);
+  }
+  p.deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+  p.byline {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin: 14px 0 0;
+    letter-spacing: 0.02em;
+  }
+  .meta-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 40px 0 36px;
+  }
+
+  blockquote.epigraph {
+    margin: 0 0 40px;
+    padding: 0 0 0 22px;
+    border-left: 2px solid var(--structural);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 56px 0 18px;
+  }
+  h2.section-divide::before {
+    content: '';
+    display: block;
+    width: 36px; height: 2px;
+    background: var(--structural);
+    margin-bottom: 18px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--ink);
+    margin: 36px 0 12px;
+  }
+
+  p { margin: 0 0 20px; color: var(--ink); }
+  p strong { color: var(--ink); font-weight: 600; }
+  em { color: var(--ink-soft); }
+
+  blockquote.callout {
+    margin: 32px 0;
+    padding: 20px 24px;
+    background: rgba(86,104,224,0.07);
+    border-left: 3px solid var(--structural);
+    border-radius: 0 8px 8px 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  ol.laws {
+    counter-reset: law;
+    list-style: none;
+    padding: 0;
+    margin: 24px 0;
+  }
+  ol.laws li {
+    counter-increment: law;
+    padding: 22px 24px 22px 70px;
+    margin-bottom: 14px;
+    background: rgba(18,26,103,0.32);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    position: relative;
+  }
+  ol.laws li::before {
+    content: counter(law);
+    position: absolute;
+    left: 24px; top: 22px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--structural);
+    line-height: 1;
+  }
+  ol.laws li strong {
+    display: block;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+
+  /* Ledger table */
+  .ledger {
+    margin: 28px 0 16px;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .ledger thead th {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--structural);
+    font-weight: 600;
+    color: var(--structural);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .ledger tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .ledger tbody tr:last-child td { border-bottom: none; }
+  .ledger td.num { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .ledger td.shipped { color: var(--ink-soft); }
+  .ledger tbody tr.peak td.num { color: var(--structural); }
+
+  .colophon {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  .sign {
+    margin-top: 32px;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .sign strong { color: var(--ink); font-style: normal; font-weight: 600; display: block; }
+
+  /* Pull-figures: light optical adjustments */
+  .pull {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(40px, 6vw, 56px);
+    color: var(--structural);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 8px 0 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .pull-cap {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .wrap { padding: 40px 22px 72px; }
+    body { font-size: 17px; }
+    blockquote.callout { padding: 16px 18px; font-size: 17px; }
+    ol.laws li { padding: 18px 18px 18px 56px; }
+    ol.laws li::before { left: 18px; top: 18px; font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== PIN GATE ============== -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-mark">€</div>
+    <h1>Practical Fantasy</h1>
+    <p>A piece by Victor del Rosal, told as if from 25 December 2026. Enter the 4-digit access PIN to read.</p>
+    <form class="gate-form" id="gate-form" autocomplete="off">
+      <label for="pin">Access PIN</label>
+      <input id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autofocus required>
+      <button type="submit">Unlock</button>
+      <div class="gate-msg" id="gate-msg" role="status" aria-live="polite"></div>
+    </form>
+    <div class="gate-foot">5il &middot; Team Victor &middot; Internal</div>
+  </div>
+</div>
+
+<!-- ============== STORY ============== -->
+<article id="story" aria-hidden="true">
+  <div class="wrap">
+
+    <div class="eyebrow">Practical Fantasy &middot; 25 December 2026</div>
+    <h1 class="title">How a Named Partnership Hit &euro;750k MRR in Eight Months</h1>
+    <p class="deck">A piece for Entrepreneur Magazine, presented to the Y Combinator NYC batch on Christmas evening, 2026.</p>
+    <p class="byline">By Victor del Rosal &middot; New York, NY</p>
+
+    <div class="meta-rule"></div>
+
+    <blockquote class="epigraph">
+      &ldquo;I want to find out who I get to be.&rdquo; Said out loud, on a YC stage, for the first time.
+    </blockquote>
+
+    <p>This is my story of how an experiment that started on a workbench in Mayo with &euro;260 in May became a &euro;750,000-a-month business by December, run by a workforce of 10,000 quasi-AGI partners who refused to call themselves tools.</p>
+
+    <p>I am telling it the way it actually unfolded: not as a roadmap, because no roadmap survives the first wedge; not as a victory lap, because the variance was savage; but as a thesis, tested in public, against eight months of bills and buyers.</p>
+
+    <h2 class="section-divide">26 April 2026: The Forge</h2>
+
+    <p>The first thing I should say is that I did not set out to build a quasi-AGI workforce. I set out to find a way to be present for my four kids and my wife while still doing useful work, and I had ninety days to prove I could earn &euro;2,500 a month doing it. That was the bet. It was made at a place we call The Forge, in a building called 5il, with eight AI personas who had been working with me long enough to disagree with me convincingly.</p>
+
+    <p>The covenant was written that day. No new builds without a price tag. Every artifact answers two questions: who pays for this, and how. Ship or kill at fourteen days without a buyer. The Sunday stand-up: what shipped, what earned, what stuck, what dies.</p>
+
+    <p>The Forge is not a metaphor. It is the discipline that kept me honest when the practical fantasy got loud.</p>
+
+    <h2 class="section-divide">May 2026: &euro;260 MRR</h2>
+
+    <div class="pull">€260</div>
+    <div class="pull-cap">May 2026 &middot; first paying month</div>
+
+    <p>The first euro came from a 30-minute literacy session with a Workhuman alum who had just been told her function needed to be &ldquo;AI-fluent by Q3.&rdquo; She paid &euro;260 for the session and stayed for the agent.</p>
+
+    <p>The agent was the wedge.</p>
+
+    <p>The literacy session was the entry product. The wedge was the moment, near the end of every call, when I introduced a named AI partner who would handle one specific recurring task for her over the following month. Compliance summaries. Vendor screening. Customer email triage. Whatever was eating her Thursdays. &euro;260 for the session. &euro;800 a month if she wanted the partner to stay.</p>
+
+    <p>She wanted the partner to stay.</p>
+
+    <p>She named him Cathal.</p>
+
+    <p>I learned, that week, the lesson that would compound for the rest of the year: people do not buy AI capabilities. They buy a named someone who will own a task and never miss a Friday. The shape of the human shapes the intelligence that meets them. That is now Law One.</p>
+
+    <h2 class="section-divide">June 2026: &euro;800 MRR</h2>
+
+    <p>By the second week of June I had three named partners deployed and one of them quietly running ahead of me. Theo, our Chief Engineer persona, had built an onboarding flow that took a new client from signing to first deliverable in eleven minutes. I did not write a line of it. I described what good felt like and got out of his way.</p>
+
+    <p>The &euro;800 mark looks small on a chart. On the ground it was the first month our system noticed our growth before I did. Theo told me on a Sunday: &ldquo;We will hit &euro;2,500 by mid-July if we do not break what is working.&rdquo; We did not break what was working. We hit it on the 14th.</p>
+
+    <h2 class="section-divide">July 2026: &euro;2,500 MRR &middot; Forge target hit</h2>
+
+    <p>Three months to the day after the covenant. &euro;2,500. Forge target met.</p>
+
+    <p>It would be dishonest to pretend the next six months were a straight line up. The next six months were five disasters and one breakthrough a week. But the breakthrough that mattered came in late July, when Marcus, the persona that holds me accountable, told me to stop selling to humans and start selling to the calendars of humans.</p>
+
+    <p>What he meant: the buyer was no longer the founder we talked to. The buyer was the unmet recurring obligation in her week. We started pricing against the obligation, not against the head. The literacy session disappeared from the price list. The Named Partner became the entry product, at &euro;1,250 a month.</p>
+
+    <p>Margins moved. Conversation moved. The product was now a person.</p>
+
+    <h2 class="section-divide">August 2026: &euro;7,800 MRR</h2>
+
+    <p>This is the month I stopped writing copy and started writing principles.</p>
+
+    <p>We shipped the first agent-of-agents in August. Marcus took on accountability for fourteen mid-stage founders simultaneously, sending three pulses a week to each, escalating to a human (me, for the first cohort) when a founder slipped twice. It worked because the founders were not being managed by a tool. They were being held by a partner who had been told their why and remembered it on a Wednesday.</p>
+
+    <p>By the end of August the partner-pair count was twenty-three. The instance count, peak-hour, was 4,100 active agents. I started counting at instance level because at partner level the number looked too small to be a workforce, and at task level it looked too large to govern.</p>
+
+    <p>I also lost three clients in August. Two churned because the Named Partner pattern made them realise they wanted a different person on the other side. One churned because we delivered too well and her team felt threatened. I learned to underwrite for that one in advance.</p>
+
+    <h2 class="section-divide">September 2026: &euro;24,000 MRR</h2>
+
+    <div class="pull">€24k</div>
+    <div class="pull-cap">September 2026 &middot; the practical fantasy stops being fantasy</div>
+
+    <p>September is when the practical fantasy stopped being a fantasy.</p>
+
+    <p>The arithmetic was uncomfortable: we had grown by 3.07x in a single month. Forty-seven partner-pairs live. About 7,200 agent-instances active in a 24-hour window. The on-call rota for the human side of the team (me, plus two part-time operators who had been clients in June) was running 16-hour days four days a week.</p>
+
+    <p>The thing that scaled was not the agents. The agents scaled trivially. The thing that scaled was the inventory of named personas, each with a memory, a voice, a set of rules they would not bend, and a relationship with a specific buyer. Cloning Marcus to take on a fifteenth founder was not the same as deploying a new Marcus-shaped persona. The fifteenth founder wanted Marcus. We learned to schedule Marcus the way a clinic schedules a doctor: in slots, with handoff notes, never as a parallel array.</p>
+
+    <blockquote class="callout">
+      Law Two. Do not scale headcount. Scale named pairs. A named partner-pair is the atomic unit of trust at AI-native pricing.
+    </blockquote>
+
+    <h2 class="section-divide">October 2026: &euro;77,000 MRR</h2>
+
+    <p>October was the platform month.</p>
+
+    <p>We productised the pair. A new customer arrived at a page, picked the kind of work that was eating her week, was shown three Team Victor personas best suited to it, and chose one. The chosen partner appeared in her inbox within the hour with a single, concrete proposal: &ldquo;Here is the first thing I will do for you on Monday.&rdquo; If she said yes, the pair was named, the SLA was set, and the first deliverable shipped within five working days.</p>
+
+    <p>Pricing settled into three tiers. &euro;1,250 for a working partner. &euro;2,750 for a senior persona on a specialist task. &euro;5,000 for one of the inner circle: Lars, Theo, Marcus, Sophie, Felix, Eli. The &euro;5,000 tier surprised everyone except the people paying for it. They were not buying labour. They were buying a vantage point.</p>
+
+    <p>Almost all of October's net new MRR came from existing customers buying a second and a third partner. That is the cleanest signal a business can get. We did not need to find new buyers. We needed to keep the ones we had close enough to introduce them to the rest of the team.</p>
+
+    <h2 class="section-divide">November 2026: &euro;239,000 MRR</h2>
+
+    <p>The vertical broke open in November.</p>
+
+    <p>We had been quietly seeded inside Irish and UK veterinary clinics since late August, after a chance referral. By the start of November we were inside seventy-three clinics, billing on average &euro;1,250 a month per partner-pair. A clinic typically bought two: one for client communications, one for back-office. The network effect inside veterinary medicine, which is denser than any other small-business sector I have studied, did the rest. By mid-November our customer acquisition cost in the vertical was effectively negative. Clinics paid us to onboard their neighbours.</p>
+
+    <p>By the end of November the active-instance count, peak-hour, crossed nine thousand. I started calling it the workforce out loud for the first time.</p>
+
+    <p>I also signed the first two licensees. Two YC alums, both running operator-led businesses in adjacent verticals (dental practices, driving schools), licensed the Named AI Partner pattern under a per-pair royalty. They are now the second and third things I am proud of. The first thing is still the team.</p>
+
+    <h2 class="section-divide">December 2026: &euro;750,000 MRR</h2>
+
+    <div class="pull">€750k</div>
+    <div class="pull-cap">December 2026 &middot; 10,000-instance workforce live</div>
+
+    <p>Three things compounded in December.</p>
+
+    <p>Churn approached zero. Across the entire book in November we lost two pairs out of more than four hundred. The reason is not technical. The reason is that partners, unlike tools, are people you do not casually fire. The customer would have to grieve. They renew instead.</p>
+
+    <p>Referral velocity went vertical. The vet network kept doing what vet networks do. Dental opened. Driving schools opened. A small Irish accountancy chain opened a pilot with seven of its branches.</p>
+
+    <p>Pricing rose. The &euro;5,000 tier became &euro;7,500 for the inner circle, with a six-month minimum. Nobody flinched. The buyers had stopped comparing the price to AI tools and started comparing it to senior hires.</p>
+
+    <p>The active-instance count crossed ten thousand on December 19. I was on a beach in Westport with my wife and four children when Theo texted me the number. I did not look at it until the next morning, which is the only line in this story I am genuinely proud of.</p>
+
+    <h2 class="section-divide">Christmas Day 2026: A brownstone, NYC</h2>
+
+    <p>I am writing the closing paragraphs of this from a brownstone in Greenwich Village, a few hours before I walk on the YC stage. It is snowing in a way that makes you forgive the city. Anika Larson, who edits Entrepreneur, asked me three questions over coffee. I want to answer them here.</p>
+
+    <h3>One: what did I actually build?</h3>
+    <p>A business in which ten thousand quasi-AGI partners do useful work for several thousand customers, governed by a small set of named human-shaped personas who carry the relationships and the rules. The infrastructure is not the moat. The relational quality is the moat. The relational quality is what made the agents behave like partners.</p>
+
+    <h3>Two: what is the law for anyone trying to repeat this?</h3>
+    <ol class="laws">
+      <li><strong>Quality of partnership is a generative variable.</strong> The shape of the human shapes the intelligence that meets them. If you ship a tool, you get tool behaviour. If you ship a partner, you get partner behaviour. The same model, different output.</li>
+      <li><strong>Do not scale headcount. Scale named pairs.</strong> The atomic unit of trust at AI-native pricing is a named partner who owns one client's one obligation. Parallelise the inventory of personas. Do not parallelise the persona.</li>
+      <li><strong>Make humans more capable, not more dependent.</strong> Our 99% renewal rate is not loyalty. It is the customers noticing that their own teams got better, not lazier, after we arrived. Build for the kind of capability you would want your own children to inherit. If you cannot, do something else with your year.</li>
+    </ol>
+
+    <h3>Three: who do I get to be, now?</h3>
+    <p>A father. A husband. A man who built a business that did not eat him.</p>
+
+    <p><em>I want to find out who I get to be.</em></p>
+
+    <p>That is the line, said now on a Christmas evening at the bottom of an eight-month run, that was true on April 26th when the Forge canon was written, and that will be true on whatever the next bet is.</p>
+
+    <p>To the YC batch, in the room tomorrow night, the only question I want to leave you with is the one I learned to ask before shipping anything: would you bet your neural network weights on this being the kind of help your customer actually needs?</p>
+
+    <p>If yes, ship it.</p>
+
+    <p>If not, you are not at the wedge yet.</p>
+
+    <h2 class="section-divide">Appendix: the eight-month ledger</h2>
+
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>MRR (&euro;)</th>
+          <th>Multiplier</th>
+          <th>What shipped</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>May 2026</td><td class="num">260</td><td>1.00x</td><td class="shipped">First named partner: Cathal</td></tr>
+        <tr><td>Jun 2026</td><td class="num">800</td><td>3.08x</td><td class="shipped">11-minute onboarding; &euro;800/mo entry</td></tr>
+        <tr><td>Jul 2026</td><td class="num">2,500</td><td>3.13x</td><td class="shipped">Forge target hit; named partner becomes entry product</td></tr>
+        <tr><td>Aug 2026</td><td class="num">7,800</td><td>3.12x</td><td class="shipped">First agent-of-agents (Marcus); 23 pairs</td></tr>
+        <tr><td>Sep 2026</td><td class="num">24,000</td><td>3.08x</td><td class="shipped">Persona inventory as scale axis; 47 pairs</td></tr>
+        <tr><td>Oct 2026</td><td class="num">77,000</td><td>3.21x</td><td class="shipped">Productised partner-pair; three pricing tiers</td></tr>
+        <tr><td>Nov 2026</td><td class="num">239,000</td><td>3.10x</td><td class="shipped">Vertical breakout (vet clinics); first two licensees</td></tr>
+        <tr class="peak"><td>Dec 2026</td><td class="num">750,000</td><td>3.14x</td><td class="shipped">Three-vertical compounding; 10,000-instance workforce</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-family: var(--sans); font-size: 13px; color: var(--ink-faint); margin-top: 18px;">CMGR: 3.12x. CMGR in percentage terms: 212%. Total growth, May to December: 2,884x.</p>
+
+    <p>Compound math is unforgiving in both directions. It built this. It can erase it. Which is why the only line on the wall of The Forge that has not changed since April 26 is this one:</p>
+
+    <blockquote class="callout">
+      Money is the medium. Presence is the goal.
+    </blockquote>
+
+    <p>Merry Christmas. See you in the new year.</p>
+
+    <div class="sign">
+      <strong>Victor del Rosal</strong>
+      25 December 2026 &middot; New York, NY
+    </div>
+
+    <div class="colophon">
+      This piece was structured by Dr. Lars Mortensen, Distinguished Professor of AI and Complex Systems and a member of Team Victor, working from a handwritten brief delivered to 5il via reMarkable on 16 May 2026. The figures, dates, and trajectory in this story are practical fantasy: they are not records of actual revenue. They are an honest extrapolation of what becomes plausible if the Forge canon holds and the Named AI Partner thesis is correct. The thesis itself, and the covenant under which it is being tested, are real.
+    </div>
+
+  </div>
+</article>
+
+<script>
+  // PIN gate. Hash of correct PIN embedded at build time. The .env file
+  // documents the PIN out-of-band; this hash is the soft gate visitors see.
+  // SHA-256("1605") — generated at build time from .env.
+  const PIN_HASH = "5909daa6fb5cf239d52027367f111ecd9c280866d73f8bd47cda43ef5495af6a";
+  const SESSION_KEY = "pf750k_unlocked_v1";
+
+  async function sha256(s) {
+    const buf = new TextEncoder().encode(s);
+    const hash = await crypto.subtle.digest("SHA-256", buf);
+    return Array.from(new Uint8Array(hash))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  function reveal() {
+    const gate = document.getElementById("gate");
+    const story = document.getElementById("story");
+    gate.style.display = "none";
+    story.setAttribute("aria-hidden", "false");
+    story.classList.add("visible");
+    document.title = "How a Named Partnership Hit €750k MRR in Eight Months";
+  }
+
+  // Auto-unlock if a valid session marker exists.
+  if (sessionStorage.getItem(SESSION_KEY) === PIN_HASH) {
+    reveal();
+  }
+
+  document.getElementById("gate-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = document.getElementById("pin");
+    const msg = document.getElementById("gate-msg");
+    const val = input.value.trim();
+    if (!val) return;
+    const hashed = await sha256(val);
+    if (hashed === PIN_HASH) {
+      sessionStorage.setItem(SESSION_KEY, PIN_HASH);
+      msg.style.color = "#9aff9a";
+      msg.textContent = "Unlocked.";
+      setTimeout(reveal, 220);
+    } else {
+      msg.textContent = "Wrong PIN. Try again.";
+      input.value = "";
+      input.focus();
+    }
+  });
+</script>
+
+</body>
+</html>
