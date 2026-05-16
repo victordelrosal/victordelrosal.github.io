@@ -6,40 +6,70 @@
 <title>The Wall in Westport · A practical fantasy</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="A practical fantasy, told as if from Christmas Day 2026. Access by PIN.">
-<meta name="theme-color" content="#F0EEE6">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23F0EEE6'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Iowan Old Style, Georgia, serif' font-size='20' font-weight='400' fill='%23CC785C'%3E&%23167;%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0F1730">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='k' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%234A6CFF'/%3E%3Cstop offset='.25' stop-color='%239D5CFF'/%3E%3Cstop offset='.5' stop-color='%23FF3D7F'/%3E%3Cstop offset='.75' stop-color='%23FF8A1A'/%3E%3Cstop offset='1' stop-color='%2319C57A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='%230F1730'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Iowan Old Style, Georgia, serif' font-size='22' font-weight='400' fill='url(%23k)'%3E%C2%A7%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Surface (light, default): "Book" */
-    --book: #F0EEE6;
-    --faded: #E5E2D6;
-    --border: rgba(24,24,24,0.12);
-    --border-strong: rgba(24,24,24,0.22);
+    /* Kluxy palette (sampled from logo) */
+    --kx-blue: #4A6CFF;
+    --kx-purple: #9D5CFF;
+    --kx-pink: #FF3D7F;
+    --kx-orange: #FF8A1A;
+    --kx-green: #19C57A;
+
+    /* Surface (deep nightscape) */
+    --bg-1: #0F1730;
+    --bg-2: #060A1C;
+    --bg-elev: rgba(157, 92, 255, 0.06);
+    --border: rgba(242, 244, 255, 0.10);
+    --border-strong: rgba(242, 244, 255, 0.20);
 
     /* Text */
-    --ink: #181818;
-    --ink-secondary: rgba(24,24,24,0.7);
-    --ink-tertiary: rgba(24,24,24,0.5);
-
-    /* Accent */
-    --clay: #CC785C;
-    --clay-deep: #A65843;
-    --clay-soft: #E8D6CC;
+    --ink: #F2F4FF;
+    --ink-soft: #B6BCD9;
+    --ink-faint: #7A82AB;
 
     /* Type */
     --display: 'Iowan Old Style', 'GT Super', 'Tiempos Headline', Georgia, serif;
     --editorial: 'Iowan Old Style', 'Tiempos Text', Georgia, serif;
-    --ui: 'Inter', 'Styrene B', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --ui: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+    --rainbow: linear-gradient(
+      90deg,
+      var(--kx-blue) 0%,
+      var(--kx-purple) 24%,
+      var(--kx-pink) 50%,
+      var(--kx-orange) 76%,
+      var(--kx-green) 100%
+    );
+    --rainbow-wide: linear-gradient(
+      90deg,
+      var(--kx-blue) 0%,
+      var(--kx-purple) 20%,
+      var(--kx-pink) 40%,
+      var(--kx-orange) 60%,
+      var(--kx-green) 80%,
+      var(--kx-blue) 100%
+    );
+  }
+
+  @keyframes drift {
+    0%   { background-position:   0% 50%; }
+    100% { background-position: 200% 50%; }
   }
 
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     font-family: var(--editorial);
-    background: var(--book);
+    background:
+      radial-gradient(1200px 700px at 20% -10%, rgba(74,108,255,0.10), transparent 60%),
+      radial-gradient(900px 600px at 90% 100%, rgba(25,197,122,0.08), transparent 60%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
     color: var(--ink);
     line-height: 1.65;
     font-size: 19px;
@@ -53,24 +83,43 @@
   #gate {
     position: fixed; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    background: var(--book);
+    background:
+      radial-gradient(1000px 600px at 50% -20%, rgba(157,92,255,0.18), transparent 60%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
     z-index: 1000;
     padding: 24px;
   }
   .gate-card {
     width: 100%; max-width: 420px;
-    background: var(--book);
+    background: rgba(15,23,48,0.55);
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 14px;
     padding: 40px 36px 32px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--rainbow-wide);
+    background-size: 200% 100%;
+    animation: drift 16s linear infinite;
   }
   .gate-mark {
     font-family: var(--display);
-    font-size: 28px;
-    color: var(--clay);
+    font-size: 36px;
+    line-height: 1;
     margin-bottom: 22px;
     letter-spacing: -0.02em;
-    line-height: 1;
+    background: var(--rainbow-wide);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 12s linear infinite;
   }
   .gate-card h1 {
     font-family: var(--display);
@@ -84,7 +133,7 @@
   .gate-card p {
     font-family: var(--ui);
     font-size: 14px;
-    color: var(--ink-secondary);
+    color: var(--ink-soft);
     margin: 0 0 24px;
     line-height: 1.55;
   }
@@ -93,7 +142,7 @@
     font-family: var(--ui);
     font-size: 12px;
     font-weight: 500;
-    color: var(--ink-tertiary);
+    color: var(--ink-faint);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -104,34 +153,38 @@
     text-align: center;
     padding: 13px 16px;
     border: 1px solid var(--border-strong);
-    background: var(--book);
+    background: rgba(6,10,28,0.55);
     color: var(--ink);
-    border-radius: 4px;
+    border-radius: 8px;
     outline: none;
-    transition: border-color 300ms ease;
+    transition: border-color 300ms ease, box-shadow 300ms ease;
   }
   .gate-form input:focus {
-    border-color: var(--clay);
+    border-color: var(--kx-pink);
+    box-shadow: 0 0 0 4px rgba(255,61,127,0.18);
   }
   .gate-form button {
     margin-top: 8px;
     font-family: var(--ui);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 15px;
     padding: 13px 20px;
     border: none;
-    border-radius: 4px;
-    background: var(--ink);
-    color: var(--book);
+    border-radius: 8px;
+    background: var(--rainbow);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    color: white;
     cursor: pointer;
     letter-spacing: -0.003em;
-    transition: background 300ms ease;
+    transition: background-position 400ms ease, transform 100ms ease;
   }
-  .gate-form button:hover { background: var(--clay); }
+  .gate-form button:hover { background-position: 100% 50%; }
+  .gate-form button:active { transform: translateY(1px); }
   .gate-msg {
     font-family: var(--ui);
     font-size: 13px;
-    color: var(--clay-deep);
+    color: var(--kx-pink);
     margin-top: 8px;
     min-height: 18px;
     text-align: center;
@@ -139,10 +192,10 @@
   .gate-foot {
     font-family: var(--ui);
     font-size: 11px;
-    color: var(--ink-tertiary);
+    color: var(--ink-faint);
     margin-top: 24px;
     text-align: center;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
   }
 
@@ -151,51 +204,68 @@
   #story.visible { display: block; opacity: 1; }
 
   .wrap {
-    max-width: 640px;
+    max-width: 660px;
     margin: 0 auto;
-    padding: 80px 28px 96px;
+    padding: 88px 28px 96px;
   }
 
   .masthead {
     font-family: var(--ui);
     font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-weight: 600;
+    letter-spacing: 0.20em;
     text-transform: uppercase;
-    color: var(--clay);
     text-align: center;
     margin-bottom: 36px;
+    background: var(--rainbow-wide);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 18s linear infinite;
   }
   .masthead .sep {
     display: inline-block;
     margin: 0 10px;
-    color: var(--ink-tertiary);
+    color: var(--ink-faint);
+    -webkit-text-fill-color: var(--ink-faint);
   }
 
+  /* Title: each word a kluxy colour */
   h1.title {
     font-family: var(--display);
     font-weight: 400;
-    font-size: clamp(44px, 6.2vw, 64px);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
-    margin: 0 0 18px;
-    color: var(--ink);
+    font-size: clamp(46px, 7vw, 72px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
     text-align: center;
   }
+  h1.title .w1 { color: var(--kx-pink); }
+  h1.title .w2 { color: var(--kx-orange); }
+  h1.title .w3 { color: var(--kx-green); }
+  h1.title .w4 {
+    background: linear-gradient(95deg, var(--kx-blue), var(--kx-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  h1.title .w0 { color: var(--ink); }
+
   p.deck {
     font-family: var(--editorial);
     font-style: italic;
     font-size: 19px;
     line-height: 1.5;
-    color: var(--ink-secondary);
-    margin: 0 auto 8px;
+    color: var(--ink-soft);
+    margin: 0 auto 12px;
     text-align: center;
-    max-width: 520px;
+    max-width: 540px;
   }
   p.byline {
     font-family: var(--ui);
     font-size: 12px;
-    color: var(--ink-tertiary);
+    color: var(--ink-faint);
     margin: 26px 0 0;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -204,21 +274,26 @@
 
   .ornament {
     text-align: center;
-    color: var(--clay);
     font-family: var(--display);
-    font-size: 26px;
-    margin: 52px 0 44px;
+    font-size: 30px;
+    margin: 56px 0 44px;
     line-height: 1;
     user-select: none;
+    background: var(--rainbow-wide);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 14s linear infinite;
+    position: relative;
   }
   .ornament::before, .ornament::after {
     content: '';
     display: inline-block;
-    width: 36px;
-    height: 1px;
+    width: 40px; height: 1px;
     background: var(--border-strong);
     vertical-align: middle;
-    margin: 0 18px 6px;
+    margin: 0 18px 8px;
   }
 
   p {
@@ -227,45 +302,53 @@
     font-family: var(--editorial);
   }
   p strong { color: var(--ink); font-weight: 600; }
-  em { color: var(--ink); font-style: italic; }
+  em {
+    color: var(--kx-orange);
+    font-style: italic;
+  }
 
-  /* Drop the first phrase in small caps */
+  /* Small caps lede */
   p.lede::first-line {
     font-variant: small-caps;
     letter-spacing: 0.06em;
     color: var(--ink);
   }
 
-  /* Pull quote */
+  /* Pull quote: rainbow gradient text on dark */
   blockquote.pull {
     font-family: var(--display);
-    font-size: clamp(26px, 3.6vw, 34px);
-    line-height: 1.25;
-    color: var(--ink);
+    font-size: clamp(28px, 4.2vw, 38px);
+    line-height: 1.22;
     text-align: center;
-    margin: 44px 0;
+    margin: 52px 0;
     padding: 0 12px;
     border: none;
     letter-spacing: -0.012em;
     font-style: normal;
+    background: var(--rainbow-wide);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 22s linear infinite;
   }
 
-  /* Clay link style (used in colophon) */
+  /* Subtle rule under section breaks where useful */
   a {
     color: var(--ink);
     text-decoration: underline;
-    text-decoration-color: var(--clay);
+    text-decoration-color: var(--kx-pink);
     text-decoration-thickness: 1.5px;
     text-underline-offset: 4px;
     transition: text-decoration-color 300ms ease;
   }
-  a:hover { text-decoration-color: var(--clay-deep); }
+  a:hover { text-decoration-color: var(--kx-orange); }
 
   .sign {
-    margin-top: 44px;
+    margin-top: 48px;
     font-family: var(--editorial);
     font-style: italic;
-    color: var(--ink-secondary);
+    color: var(--ink-soft);
     text-align: right;
   }
   .sign strong {
@@ -274,35 +357,48 @@
     font-weight: 600;
     display: block;
     font-family: var(--display);
-    font-size: 22px;
+    font-size: 24px;
     letter-spacing: -0.008em;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    background: linear-gradient(95deg, var(--kx-purple), var(--kx-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .colophon {
-    margin-top: 56px;
-    padding-top: 28px;
+    margin-top: 60px;
+    padding-top: 30px;
     border-top: 1px solid var(--border);
     font-family: var(--ui);
     font-size: 12.5px;
     line-height: 1.65;
-    color: var(--ink-secondary);
+    color: var(--ink-soft);
     font-style: italic;
+    position: relative;
+  }
+  .colophon::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 50%;
+    width: 64px; height: 2px;
+    transform: translateX(-50%);
+    background: var(--rainbow);
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: rgba(255, 61, 127, 0.40);
+    color: var(--ink);
   }
 
   @media (max-width: 600px) {
     .wrap { padding: 56px 22px 80px; }
-    body { font-size: 17.5px; line-height: 1.6; }
-    .masthead { font-size: 10px; letter-spacing: 0.14em; }
-    .ornament { margin: 40px 0 32px; }
-    .ornament::before, .ornament::after { width: 24px; margin: 0 12px 6px; }
-    blockquote.pull { font-size: 24px; margin: 32px 0; }
-  }
-
-  /* Selection in the brand colour */
-  ::selection {
-    background: var(--clay-soft);
-    color: var(--ink);
+    body { font-size: 17.5px; line-height: 1.62; }
+    .masthead { font-size: 10px; letter-spacing: 0.16em; }
+    .ornament { margin: 40px 0 32px; font-size: 26px; }
+    .ornament::before, .ornament::after { width: 28px; margin: 0 12px 6px; }
+    blockquote.pull { font-size: 26px; margin: 40px 0; }
   }
 </style>
 </head>
@@ -330,7 +426,9 @@
 
     <div class="masthead">Practical Fantasy<span class="sep">·</span>25 December 2026</div>
 
-    <h1 class="title">The Wall in Westport</h1>
+    <h1 class="title">
+      <span class="w0">The</span> <span class="w1">Wall</span> <span class="w0">in</span> <span class="w4">Westport</span>
+    </h1>
     <p class="deck">How &euro;260 became &euro;750k MRR in eight months, told from a brownstone two hours before a Y Combinator keynote.</p>
     <p class="byline">By Victor del Rosal</p>
 
@@ -381,7 +479,7 @@
 </article>
 
 <script>
-  // PIN gate. Hash of the correct PIN is embedded at build time.
+  // PIN gate.
   const PIN_HASH = "5909daa6fb5cf239d52027367f111ecd9c280866d73f8bd47cda43ef5495af6a";
   const SESSION_KEY = "pf750k_unlocked_v1";
 
@@ -413,7 +511,7 @@
     const hashed = await sha256(val);
     if (hashed === PIN_HASH) {
       sessionStorage.setItem(SESSION_KEY, PIN_HASH);
-      msg.style.color = "#7C8C7A";
+      msg.style.color = "#19C57A";
       msg.textContent = "Unlocked.";
       setTimeout(reveal, 220);
     } else {
