@@ -6,36 +6,46 @@
 <title>The Wall in Westport · A practical fantasy</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="A practical fantasy, told as if from Christmas Day 2026. Access by PIN.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1045'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='17' font-weight='700' fill='%235668e0'%3E€%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#F0EEE6">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23F0EEE6'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='Iowan Old Style, Georgia, serif' font-size='20' font-weight='400' fill='%23CC785C'%3E&%23167;%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --base: #0a1045;
-    --deepen: #060a2e;
-    --lifted: #121a67;
-    --structural: #5668e0;
-    --pop: #0006aa;
-    --ink: #ecefff;
-    --ink-soft: #b6bce6;
-    --ink-faint: #7a82b8;
-    --rule: rgba(86,104,224,0.22);
-    --serif: 'Fraunces', 'Charter', 'Source Serif Pro', Georgia, serif;
-    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    /* Surface (light, default): "Book" */
+    --book: #F0EEE6;
+    --faded: #E5E2D6;
+    --border: rgba(24,24,24,0.12);
+    --border-strong: rgba(24,24,24,0.22);
+
+    /* Text */
+    --ink: #181818;
+    --ink-secondary: rgba(24,24,24,0.7);
+    --ink-tertiary: rgba(24,24,24,0.5);
+
+    /* Accent */
+    --clay: #CC785C;
+    --clay-deep: #A65843;
+    --clay-soft: #E8D6CC;
+
+    /* Type */
+    --display: 'Iowan Old Style', 'GT Super', 'Tiempos Headline', Georgia, serif;
+    --editorial: 'Iowan Old Style', 'Tiempos Text', Georgia, serif;
+    --ui: 'Inter', 'Styrene B', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: var(--serif);
-    background: linear-gradient(180deg, var(--base) 0%, var(--deepen) 100%);
-    background-attachment: fixed;
+    font-family: var(--editorial);
+    background: var(--book);
     color: var(--ink);
-    line-height: 1.75;
+    line-height: 1.65;
     font-size: 19px;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
@@ -43,149 +53,150 @@
   #gate {
     position: fixed; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(180deg, var(--base) 0%, var(--deepen) 100%);
+    background: var(--book);
     z-index: 1000;
     padding: 24px;
   }
   .gate-card {
     width: 100%; max-width: 420px;
-    background: rgba(18,26,103,0.42);
-    border: 1px solid var(--rule);
-    border-radius: 16px;
-    padding: 36px 32px 32px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    background: var(--book);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px 36px 32px;
   }
   .gate-mark {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    background: var(--pop);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--serif); font-weight: 700; font-size: 22px;
-    color: #fff; margin-bottom: 18px;
+    font-family: var(--display);
+    font-size: 28px;
+    color: var(--clay);
+    margin-bottom: 22px;
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
   .gate-card h1 {
-    font-family: var(--serif);
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 1.25;
-    margin: 0 0 8px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+    margin: 0 0 10px;
     color: var(--ink);
   }
   .gate-card p {
-    font-family: var(--sans);
+    font-family: var(--ui);
     font-size: 14px;
-    color: var(--ink-soft);
-    margin: 0 0 22px;
+    color: var(--ink-secondary);
+    margin: 0 0 24px;
+    line-height: 1.55;
   }
   .gate-form { display: flex; flex-direction: column; gap: 10px; }
   .gate-form label {
-    font-family: var(--sans);
-    font-size: 12px; font-weight: 500;
-    color: var(--ink-faint);
-    letter-spacing: 0.04em; text-transform: uppercase;
+    font-family: var(--ui);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-tertiary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   .gate-form input {
-    font-family: var(--sans);
-    font-size: 17px;
-    letter-spacing: 0.3em;
+    font-family: var(--ui);
+    font-size: 16px;
+    letter-spacing: 0.28em;
     text-align: center;
-    padding: 14px 16px;
-    border: 1px solid var(--rule);
-    background: rgba(6,10,46,0.5);
+    padding: 13px 16px;
+    border: 1px solid var(--border-strong);
+    background: var(--book);
     color: var(--ink);
-    border-radius: 10px;
+    border-radius: 4px;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 300ms ease;
   }
   .gate-form input:focus {
-    border-color: var(--structural);
-    box-shadow: 0 0 0 4px rgba(86,104,224,0.18);
+    border-color: var(--clay);
   }
   .gate-form button {
-    margin-top: 6px;
-    font-family: var(--sans);
-    font-weight: 600;
+    margin-top: 8px;
+    font-family: var(--ui);
+    font-weight: 500;
     font-size: 15px;
-    padding: 13px 16px;
+    padding: 13px 20px;
     border: none;
-    border-radius: 10px;
-    background: var(--pop);
-    color: #fff;
+    border-radius: 4px;
+    background: var(--ink);
+    color: var(--book);
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.05s ease;
+    letter-spacing: -0.003em;
+    transition: background 300ms ease;
   }
-  .gate-form button:hover { background: #000584; }
-  .gate-form button:active { transform: translateY(1px); }
+  .gate-form button:hover { background: var(--clay); }
   .gate-msg {
-    font-family: var(--sans);
+    font-family: var(--ui);
     font-size: 13px;
-    color: #ff9aa2;
-    margin-top: 10px;
+    color: var(--clay-deep);
+    margin-top: 8px;
     min-height: 18px;
     text-align: center;
   }
   .gate-foot {
-    font-family: var(--sans);
+    font-family: var(--ui);
     font-size: 11px;
-    color: var(--ink-faint);
-    margin-top: 22px;
+    color: var(--ink-tertiary);
+    margin-top: 24px;
     text-align: center;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* ======= STORY ======= */
-  #story { display: none; opacity: 0; transition: opacity 0.4s ease; }
+  #story { display: none; opacity: 0; transition: opacity 600ms ease; }
   #story.visible { display: block; opacity: 1; }
 
   .wrap {
     max-width: 640px;
     margin: 0 auto;
-    padding: 72px 28px 96px;
+    padding: 80px 28px 96px;
   }
 
   .masthead {
-    font-family: var(--sans);
+    font-family: var(--ui);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.22em;
+    font-weight: 500;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--structural);
+    color: var(--clay);
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 36px;
   }
   .masthead .sep {
     display: inline-block;
     margin: 0 10px;
-    color: var(--ink-faint);
-    letter-spacing: 0;
+    color: var(--ink-tertiary);
   }
 
   h1.title {
-    font-family: var(--serif);
-    font-weight: 700;
-    font-size: clamp(40px, 6vw, 60px);
-    line-height: 1.04;
-    letter-spacing: -0.02em;
-    margin: 0 0 14px;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(44px, 6.2vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
     color: var(--ink);
     text-align: center;
   }
   p.deck {
-    font-family: var(--serif);
+    font-family: var(--editorial);
     font-style: italic;
     font-size: 19px;
     line-height: 1.5;
-    color: var(--ink-soft);
-    margin: 0 0 6px;
+    color: var(--ink-secondary);
+    margin: 0 auto 8px;
     text-align: center;
+    max-width: 520px;
   }
   p.byline {
-    font-family: var(--sans);
+    font-family: var(--ui);
     font-size: 12px;
-    color: var(--ink-faint);
-    margin: 22px 0 0;
+    color: var(--ink-tertiary);
+    margin: 26px 0 0;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     text-align: center;
@@ -193,51 +204,68 @@
 
   .ornament {
     text-align: center;
-    color: var(--structural);
-    font-family: var(--serif);
-    font-size: 18px;
-    margin: 44px 0;
-    letter-spacing: 0.5em;
+    color: var(--clay);
+    font-family: var(--display);
+    font-size: 26px;
+    margin: 52px 0 44px;
+    line-height: 1;
     user-select: none;
   }
   .ornament::before, .ornament::after {
     content: '';
     display: inline-block;
-    width: 32px; height: 1px;
-    background: var(--rule);
+    width: 36px;
+    height: 1px;
+    background: var(--border-strong);
     vertical-align: middle;
-    margin: 0 14px;
+    margin: 0 18px 6px;
   }
 
-  p { margin: 0 0 22px; color: var(--ink); }
+  p {
+    margin: 0 0 24px;
+    color: var(--ink);
+    font-family: var(--editorial);
+  }
   p strong { color: var(--ink); font-weight: 600; }
-  em { color: var(--ink-soft); }
+  em { color: var(--ink); font-style: italic; }
 
-  /* First paragraph small caps lede */
+  /* Drop the first phrase in small caps */
   p.lede::first-line {
     font-variant: small-caps;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: var(--ink);
   }
 
-  /* Optional pull-quote, used sparingly */
+  /* Pull quote */
   blockquote.pull {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 22px;
-    line-height: 1.45;
+    font-family: var(--display);
+    font-size: clamp(26px, 3.6vw, 34px);
+    line-height: 1.25;
     color: var(--ink);
     text-align: center;
-    margin: 36px 0;
-    padding: 0 8px;
+    margin: 44px 0;
+    padding: 0 12px;
     border: none;
+    letter-spacing: -0.012em;
+    font-style: normal;
   }
 
+  /* Clay link style (used in colophon) */
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--clay);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 300ms ease;
+  }
+  a:hover { text-decoration-color: var(--clay-deep); }
+
   .sign {
-    margin-top: 40px;
-    font-family: var(--serif);
+    margin-top: 44px;
+    font-family: var(--editorial);
     font-style: italic;
-    color: var(--ink-soft);
+    color: var(--ink-secondary);
     text-align: right;
   }
   .sign strong {
@@ -245,24 +273,36 @@
     font-style: normal;
     font-weight: 600;
     display: block;
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: -0.008em;
+    margin-bottom: 4px;
   }
 
   .colophon {
     margin-top: 56px;
     padding-top: 28px;
-    border-top: 1px solid var(--rule);
-    font-family: var(--sans);
+    border-top: 1px solid var(--border);
+    font-family: var(--ui);
     font-size: 12.5px;
-    line-height: 1.6;
-    color: var(--ink-faint);
+    line-height: 1.65;
+    color: var(--ink-secondary);
     font-style: italic;
   }
 
   @media (max-width: 600px) {
-    .wrap { padding: 48px 22px 72px; }
-    body { font-size: 17.5px; line-height: 1.7; }
-    .masthead { font-size: 10px; }
-    blockquote.pull { font-size: 19px; }
+    .wrap { padding: 56px 22px 80px; }
+    body { font-size: 17.5px; line-height: 1.6; }
+    .masthead { font-size: 10px; letter-spacing: 0.14em; }
+    .ornament { margin: 40px 0 32px; }
+    .ornament::before, .ornament::after { width: 24px; margin: 0 12px 6px; }
+    blockquote.pull { font-size: 24px; margin: 32px 0; }
+  }
+
+  /* Selection in the brand colour */
+  ::selection {
+    background: var(--clay-soft);
+    color: var(--ink);
   }
 </style>
 </head>
@@ -271,7 +311,7 @@
 <!-- ============== PIN GATE ============== -->
 <div id="gate">
   <div class="gate-card">
-    <div class="gate-mark">€</div>
+    <div class="gate-mark">&sect;</div>
     <h1>The Wall in Westport</h1>
     <p>A practical fantasy by Victor del Rosal, told as if from Christmas Day 2026. Enter the 4-digit access PIN to read.</p>
     <form class="gate-form" id="gate-form" autocomplete="off">
@@ -371,7 +411,7 @@
     const hashed = await sha256(val);
     if (hashed === PIN_HASH) {
       sessionStorage.setItem(SESSION_KEY, PIN_HASH);
-      msg.style.color = "#9aff9a";
+      msg.style.color = "#7C8C7A";
       msg.textContent = "Unlocked.";
       setTimeout(reveal, 220);
     } else {
