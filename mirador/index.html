@@ -380,7 +380,26 @@
       padding:4px 10px;border-radius:999px;
     }
     .edge-badge-free{ background:rgba(94,118,160,0.12); color:#3a4566; border:1px solid rgba(94,118,160,0.22); }
-    .edge-badge-edge{ background:rgba(10,16,69,0.10); color:var(--ink); border:1px solid rgba(10,16,69,0.18); }
+    /* Metallic gold FOUNDING-100 chip, modeled on the Agentive wordmark:
+       polished-brass linear-gradient with a top highlight, mid gold, deep
+       antique base, plus inset bevel shadows and a warm outer glow. */
+    .edge-badge-edge{
+      background:
+        linear-gradient(180deg,
+          #fff4c2 0%,
+          #f8d96b 14%,
+          #e9b339 32%,
+          #c98a1a 55%,
+          #8a5b10 82%,
+          #5b3a08 100%);
+      color:#231a05;
+      border:1px solid #b07414;
+      box-shadow:
+        inset 0 1px 0 rgba(255,248,210,0.85),
+        inset 0 -1px 0 rgba(0,0,0,0.35),
+        0 3px 10px rgba(176,116,20,0.35);
+      text-shadow:0 1px 0 rgba(255,245,190,0.55);
+    }
     .edge-badge-covenant{ background:rgba(10,123,255,0.10); color:var(--sky); border:1px solid rgba(10,123,255,0.22); }
     .edge-card h3{
       font-size:1.18rem;font-weight:700;color:var(--ink);letter-spacing:-0.014em;margin:0;
@@ -407,46 +426,10 @@
       padding:11px 18px;border-radius:11px;font-weight:600;font-size:.92rem;
       transition:transform .12s ease, background .15s ease;
     }
-    /* Metallic gold founding-100 CTA, modeled on the Agentive wordmark:
-       a layered linear-gradient that reads as polished brass with a top
-       highlight, mid gold, deep antique-gold base, plus inset bevel shadows
-       and a warm outer glow. Ink-dark label keeps contrast accessible. */
     .edge-cta-primary{
-      background:
-        linear-gradient(180deg,
-          #fff4c2 0%,
-          #f8d96b 14%,
-          #e9b339 32%,
-          #c98a1a 55%,
-          #8a5b10 82%,
-          #5b3a08 100%);
-      color:#231a05;
-      border:1px solid #b07414;
-      box-shadow:
-        inset 0 1px 0 rgba(255,248,210,0.85),
-        inset 0 -1px 0 rgba(0,0,0,0.35),
-        0 6px 18px rgba(176,116,20,0.40),
-        0 1px 2px rgba(0,0,0,0.18);
-      text-shadow: 0 1px 0 rgba(255,245,190,0.55);
-      letter-spacing: 0.01em;
+      background:var(--ink);color:white;
     }
-    .edge-cta-primary:hover{
-      background:
-        linear-gradient(180deg,
-          #fff8d4 0%,
-          #fce285 14%,
-          #f1bf45 32%,
-          #d29422 55%,
-          #95620f 82%,
-          #5f3d08 100%);
-      text-decoration:none;
-      transform:translateY(-1px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,250,220,0.95),
-        inset 0 -1px 0 rgba(0,0,0,0.30),
-        0 10px 24px rgba(202,138,4,0.50),
-        0 1px 2px rgba(0,0,0,0.18);
-    }
+    .edge-cta-primary:hover{ background:#000;text-decoration:none;transform:translateY(-1px); }
     .edge-cta-secondary{
       background:white;color:var(--ink);border:1px solid var(--line);
     }
@@ -548,6 +531,43 @@
     }
     .mcp-card h3{font-size:1.04rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
     .mcp-card p{color:var(--muted);font-size:.92rem;line-height:1.55}
+
+    /* ===== Ground (cloud-vs-local contrast) ===== */
+    .ground-section{padding:64px 0;background:linear-gradient(180deg,rgba(10,16,69,0.02),rgba(10,123,255,0.05))}
+    .ground-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media (max-width:720px){.ground-row{grid-template-columns:1fr}}
+    .ground-card{
+      padding:32px 28px 30px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+    }
+    .ground-card .kicker{margin-bottom:14px}
+    .ground-card h3{font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:12px;letter-spacing:-0.015em;line-height:1.18}
+    .ground-card p{font-size:.98rem;line-height:1.55}
+    .ground-card.cloud-card{
+      background:white;
+      border:1px solid var(--line);
+      opacity:.94;
+    }
+    .ground-card.cloud-card .kicker{color:var(--muted)}
+    .ground-card.cloud-card h3{color:var(--muted)}
+    .ground-card.cloud-card p{color:var(--muted)}
+    .ground-card.local-card{
+      background:linear-gradient(135deg,#0a1045,#060a2e);
+      border:1px solid transparent;
+      color:white;
+    }
+    .ground-card.local-card .kicker{color:var(--sky-2)}
+    .ground-card.local-card h3{color:white}
+    .ground-card.local-card p{color:rgba(255,255,255,0.82)}
+    .ground-card.local-card code{
+      background:rgba(255,255,255,0.10);
+      color:white;
+      padding:1px 6px;
+      border-radius:4px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:.86em;
+    }
 
     /* ===== Footer ===== */
     footer{padding:54px 0 80px;text-align:center;color:var(--muted);font-size:.88rem}
@@ -678,6 +698,125 @@
     </div><!-- /.story -->
   </header>
 
+  <!-- ============ PERSONAS ============ -->
+  <section id="personas">
+    <div class="container">
+      <div class="kicker">Your digital colleagues</div>
+      <h2 class="h2">A room full of thinking partners.</h2>
+      <p class="sub">Mirador comes pre-loaded with a roster of personas Victor talks to every day. Each one is a character with a domain, a voice, and an opinion. None of them is a real person. None claims a credential. All of them make the work better.</p>
+
+      <div class="personas-grid">
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/marcus.jpg" alt="Marcus Sorensen" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Marcus Sorensen</h3>
+          <p class="persona-role">Managing Agent</p>
+          <p class="persona-quote">"Money is the medium; presence is the goal."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/sophie.jpg" alt="Sophie Park" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Sophie Park</h3>
+          <p class="persona-role">Product Architect</p>
+          <p class="persona-quote">"What problem are we solving, really?"</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/lars.jpg" alt="Lars Mortensen" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Lars Mortensen</h3>
+          <p class="persona-role">Professor</p>
+          <p class="persona-quote">"Teach it before you ship it."</p>
+          <p class="persona-tag">Thinking partner, not credentialed academic</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/kat.jpg" alt="Kat Jacobs" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Kat Jacobs</h3>
+          <p class="persona-role">Campus Director</p>
+          <p class="persona-quote">"The room is ready when you are."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/theo.jpg" alt="Theo Garza" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Theo Garza</h3>
+          <p class="persona-role">Principal Engineer</p>
+          <p class="persona-quote">"Smallest change that proves the hypothesis."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/ciaran.jpg" alt="Ciaran Foley" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Ciaran Foley</h3>
+          <p class="persona-role">Solicitor (persona)</p>
+          <p class="persona-quote">"Risk is rarely where you think it is."</p>
+          <p class="persona-tag">Persona, not licensed legal advice</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/soren.jpg" alt="Soren Aksel" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Soren Aksel</h3>
+          <p class="persona-role">Enterprise AI Architect</p>
+          <p class="persona-quote">"Architecture is the part that doesn't change."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/rian.jpg" alt="Rian Fitzgerald" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Rian Fitzgerald</h3>
+          <p class="persona-role">Chief AI Officer</p>
+          <p class="persona-quote">"Compounds quietly, until it doesn't."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/darya.jpg" alt="Darya Nakamura-Botha" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Darya Nakamura-Botha</h3>
+          <p class="persona-role">CMO</p>
+          <p class="persona-quote">"Distribution is the product, eventually."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/clark.jpg" alt="Clark MacDonald" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Clark MacDonald</h3>
+          <p class="persona-role">Solopreneur Strategist</p>
+          <p class="persona-quote">"One person. Many leverage points."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/declan.jpg" alt="Declan Ward" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Declan Ward</h3>
+          <p class="persona-role">Digital Creator</p>
+          <p class="persona-quote">"Show, then explain."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/anika.jpg" alt="Anika Schreiber" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Anika Schreiber</h3>
+          <p class="persona-role">Strategic Advisor (persona)</p>
+          <p class="persona-quote">"Where does this lose money quietly?"</p>
+          <p class="persona-tag">Advisor persona, no firm implied</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/tamar.jpg" alt="Tamar Ben-Ari" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Tamar Ben-Ari</h3>
+          <p class="persona-role">Security &amp; Privacy</p>
+          <p class="persona-quote">"Localhost is the default for a reason."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/renzo.jpg" alt="Renzo Tanaka-Whitfield" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Renzo Tanaka-Whitfield</h3>
+          <p class="persona-role">Design, with restraint</p>
+          <p class="persona-quote">"Take one thing away, then look again."</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/felix.jpg" alt="Felix Marek" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Felix Marek</h3>
+          <p class="persona-role">Contrarian / Critique</p>
+          <p class="persona-quote">"Where is the argument weakest?"</p>
+          <p class="persona-tag">AI persona</p>
+        </article>
+      </div>
+
+      <p class="evolves-note">The roster evolves. New personas join, others step back. Each release tightens who lives in the room and why.</p>
+    </div>
+  </section>
+
   <!-- ============ FEATURES ============ -->
   <section id="features">
     <div class="container">
@@ -686,6 +825,11 @@
       <p class="sub">Auto-discovers every <code>claudus</code> session on your Mac, mirrors the conversation, and gives you a single place to read, reply, dictate, attach, search, archive, and route. No login. No cloud. Localhost only.</p>
 
       <div class="features">
+        <div class="card">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="0.6" fill="currentColor"/><circle cx="12" cy="10" r="0.6" fill="currentColor"/><circle cx="15" cy="10" r="0.6" fill="currentColor"/></svg></div>
+          <h3>Memory that survives reboots</h3>
+          <p>Every conversation is plain JSONL on disk, tagged per <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">TID</code>. Greppable forever. Survives crashes, updates, and laptop swaps when you sync the folder.</p>
+        </div>
         <div class="card">
           <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m11-11h-6M7 12H1m17.7-7.07l-4.24 4.24M5.34 5.34l4.24 4.24m0 8.84l-4.24 4.24m13.07 0l-4.24-4.24"/></svg></div>
           <h3>Auto-discovery</h3>
@@ -809,125 +953,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ PERSONAS ============ -->
-  <section id="personas">
-    <div class="container">
-      <div class="kicker">Your digital colleagues</div>
-      <h2 class="h2">A room full of thinking partners.</h2>
-      <p class="sub">Mirador comes pre-loaded with a roster of personas Victor talks to every day. Each one is a character with a domain, a voice, and an opinion. None of them is a real person. None claims a credential. All of them make the work better.</p>
-
-      <div class="personas-grid">
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/marcus.jpg" alt="Marcus Sorensen" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Marcus Sorensen</h3>
-          <p class="persona-role">Managing Agent</p>
-          <p class="persona-quote">"Money is the medium; presence is the goal."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/sophie.jpg" alt="Sophie Park" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Sophie Park</h3>
-          <p class="persona-role">Product Architect</p>
-          <p class="persona-quote">"What problem are we solving, really?"</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/lars.jpg" alt="Lars Mortensen" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Lars Mortensen</h3>
-          <p class="persona-role">Professor</p>
-          <p class="persona-quote">"Teach it before you ship it."</p>
-          <p class="persona-tag">Thinking partner, not credentialed academic</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/kat.jpg" alt="Kat Jacobs" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Kat Jacobs</h3>
-          <p class="persona-role">Campus Director</p>
-          <p class="persona-quote">"The room is ready when you are."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/theo.jpg" alt="Theo Garza" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Theo Garza</h3>
-          <p class="persona-role">Principal Engineer</p>
-          <p class="persona-quote">"Smallest change that proves the hypothesis."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/ciaran.jpg" alt="Ciaran Foley" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Ciaran Foley</h3>
-          <p class="persona-role">Solicitor (persona)</p>
-          <p class="persona-quote">"Risk is rarely where you think it is."</p>
-          <p class="persona-tag">Persona, not licensed legal advice</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/soren.jpg" alt="Soren Aksel" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Soren Aksel</h3>
-          <p class="persona-role">Enterprise AI Architect</p>
-          <p class="persona-quote">"Architecture is the part that doesn't change."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/rian.jpg" alt="Rian Fitzgerald" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Rian Fitzgerald</h3>
-          <p class="persona-role">Chief AI Officer</p>
-          <p class="persona-quote">"Compounds quietly, until it doesn't."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/darya.jpg" alt="Darya Nakamura-Botha" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Darya Nakamura-Botha</h3>
-          <p class="persona-role">CMO</p>
-          <p class="persona-quote">"Distribution is the product, eventually."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/clark.jpg" alt="Clark MacDonald" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Clark MacDonald</h3>
-          <p class="persona-role">Solopreneur Strategist</p>
-          <p class="persona-quote">"One person. Many leverage points."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/declan.jpg" alt="Declan Ward" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Declan Ward</h3>
-          <p class="persona-role">Digital Creator</p>
-          <p class="persona-quote">"Show, then explain."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/anika.jpg" alt="Anika Schreiber" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Anika Schreiber</h3>
-          <p class="persona-role">Strategic Advisor (persona)</p>
-          <p class="persona-quote">"Where does this lose money quietly?"</p>
-          <p class="persona-tag">Advisor persona, no firm implied</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/tamar.jpg" alt="Tamar Ben-Ari" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Tamar Ben-Ari</h3>
-          <p class="persona-role">Security &amp; Privacy</p>
-          <p class="persona-quote">"Localhost is the default for a reason."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/renzo.jpg" alt="Renzo Tanaka-Whitfield" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Renzo Tanaka-Whitfield</h3>
-          <p class="persona-role">Design, with restraint</p>
-          <p class="persona-quote">"Take one thing away, then look again."</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-        <article class="persona-card">
-          <img class="persona-portrait" src="personas/felix.jpg" alt="Felix Marek" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Felix Marek</h3>
-          <p class="persona-role">Contrarian / Critique</p>
-          <p class="persona-quote">"Where is the argument weakest?"</p>
-          <p class="persona-tag">AI persona</p>
-        </article>
-      </div>
-
-      <p class="evolves-note">The roster evolves. New personas join, others step back. Each release tightens who lives in the room and why.</p>
     </div>
   </section>
 
@@ -1074,6 +1099,24 @@
       </div>
 
       <p class="evolves-note">The ecosystem grows weekly. Drop a server config into the harness and it appears in the slash menu. The catalogue is a floor, never a ceiling.</p>
+    </div>
+  </section>
+
+  <!-- ============ GROUND (cloud vs local) ============ -->
+  <section id="ground" class="ground-section">
+    <div class="container">
+      <div class="ground-row">
+        <div class="ground-card cloud-card">
+          <div class="kicker">Cloud agents</div>
+          <h3>Send your work to their servers.</h3>
+          <p>Conversations, files, secrets, all cross the public internet. Usage caps and per-task pricing. An outage on their end means downtime on yours.</p>
+        </div>
+        <div class="ground-card local-card">
+          <div class="kicker">Mirador</div>
+          <h3>Runs on yours.</h3>
+          <p>Localhost bind, never internet-facing. No telemetry. No data exfil. The harness lives in <code>~/.mirador/</code>. You can grep it, move it, delete it.</p>
+        </div>
+      </div>
     </div>
   </section>
 
