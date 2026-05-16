@@ -692,7 +692,9 @@
       input.disabled = false;
       sendBtn.disabled = false;
       input.placeholder = "Type to talk. Press / for commands. Replies are pre-baked in this sandbox.";
-      input.focus();
+      // Only auto-focus when running standalone, not when embedded in the landing page hero
+      // (focusing inside an iframe causes the parent to scroll the iframe into view).
+      if (window.top === window) input.focus();
     }
 
     function showFatal(msg) {
@@ -888,7 +890,7 @@
         }
         sendBtn.disabled = false;
         input.disabled = false;
-        input.focus();
+        if (window.top === window) input.focus();
       }
     }
 

@@ -532,6 +532,68 @@
     .mcp-card h3{font-size:1.04rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
     .mcp-card p{color:var(--muted);font-size:.92rem;line-height:1.55}
 
+    /* ===== Flap board (Solari-style station notice) ===== */
+    .flap-board{
+      display:inline-flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+      gap:6px 8px;
+      margin:26px auto 0;
+      padding:10px 16px;
+      background:linear-gradient(180deg,#0b0d18 0%,#15192a 60%,#0b0d18 100%);
+      border-radius:8px;
+      border:1px solid #000;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.4),
+        0 4px 14px rgba(10,16,69,0.18);
+      max-width:min(720px,calc(100vw - 56px));
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+    }
+    .flap-word{display:inline-flex;gap:2px;flex-shrink:0}
+    .flap{
+      display:inline-block;
+      position:relative;
+      min-width:.74em;
+      padding:6px 1px 5px;
+      background:linear-gradient(180deg,#1a1d2e 0%,#0e1020 50%,#1a1d2e 51%,#0a0c18 100%);
+      color:#fbbf24;
+      text-shadow:0 0 4px rgba(251,191,36,0.30);
+      font-size:.96rem;
+      font-weight:700;
+      text-align:center;
+      border-radius:2px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        inset 0 -1px 0 rgba(0,0,0,0.5);
+      letter-spacing:0;
+      line-height:1;
+    }
+    .flap::before{
+      content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+      background:rgba(0,0,0,0.55);pointer-events:none;
+    }
+    .flap.space{
+      background:transparent;box-shadow:none;color:transparent;
+      min-width:.4em;
+    }
+    .flap.flipping{
+      animation:flapJiggle .08s ease;
+    }
+    @keyframes flapJiggle{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(.5px)}
+      100%{transform:translateY(0)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .flap.flipping{animation:none}
+    }
+    @media (max-width:560px){
+      .flap{font-size:.84rem;min-width:.66em;padding:5px 0 4px}
+      .flap-board{padding:8px 12px}
+    }
+
     /* ===== Hero embed (live sandbox iframe) ===== */
     .hero-embed{
       position:relative;
@@ -678,6 +740,7 @@
       <div class="eyebrow"><span class="dot"></span>Mac only · Localhost-only · Cancel anytime</div>
       <h1>The harness for Claude Opus 4.7.</h1>
       <p class="lede"><strong>Personas, memory, context, calm.</strong> One window. Every Claude. The whole scaffold.</p>
+      <div class="flap-board" id="flapBoard" role="status" aria-live="polite" aria-label="Mirador tagline"></div>
       <div class="hero-cta">
         <a class="btn-primary" href="#pricing">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1348,5 +1411,80 @@
     </div>
   </footer>
 
+  <script>
+    /* Split-flap board: cycles short messages with a Solari-style scramble-then-settle animation. */
+    (function(){
+      var board = document.getElementById('flapBoard');
+      if (!board) return;
+      var messages = [
+        "YOU'VE GOT THE INTELLIGENCE. YOU WANT THE HARNESS.",
+        "PERSONAS. MEMORY. CONTEXT. CALM.",
+        "FROM TEN TABS TO ONE WINDOW.",
+        "LOCALHOST ONLY. NO TELEMETRY. CANCEL ANYTIME."
+      ];
+      var CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'";
+      var current = "";
+      var msgIdx = 0;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function buildStructure(target){
+        board.innerHTML = '';
+        var tokens = target.split(/(\s+)/);
+        var nodes = [];
+        var targets = [];
+        for (var t = 0; t < tokens.length; t++) {
+          var tok = tokens[t];
+          if (!tok || /^\s+$/.test(tok)) continue;
+          var wordEl = document.createElement('span');
+          wordEl.className = 'flap-word';
+          for (var c = 0; c < tok.length; c++) {
+            var span = document.createElement('span');
+            span.className = 'flap';
+            span.textContent = ' ';
+            wordEl.appendChild(span);
+            nodes.push(span);
+            targets.push(tok.charAt(c));
+          }
+          board.appendChild(wordEl);
+        }
+        return { nodes: nodes, targets: targets };
+      }
+
+      function setTarget(target){
+        var built = buildStructure(target);
+        var nodes = built.nodes;
+        var targets = built.targets;
+        var perChar = reduce ? 1 : (16 + Math.floor(Math.random() * 10));
+        for (var i = 0; i < nodes.length; i++) {
+          (function(node, ch, idx){
+            if (reduce) { node.textContent = ch; return; }
+            var ticks = perChar + idx;
+            var tt = 0;
+            node.classList.add('flipping');
+            var iv = setInterval(function(){
+              if (tt >= ticks) {
+                clearInterval(iv);
+                node.textContent = ch;
+                node.classList.remove('flipping');
+                return;
+              }
+              node.textContent = CHARSET[Math.floor(Math.random() * CHARSET.length)];
+              tt++;
+            }, 38);
+          })(nodes[i], targets[i], i);
+        }
+        current = target;
+      }
+
+      function next(){
+        msgIdx = (msgIdx + 1) % messages.length;
+        setTarget(messages[msgIdx]);
+      }
+
+      // initial: show first message, then cycle every ~5.5s
+      setTarget(messages[0]);
+      setInterval(next, 5500);
+    })();
+  </script>
 </body>
 </html>
