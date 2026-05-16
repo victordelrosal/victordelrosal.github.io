@@ -341,38 +341,38 @@
           <aside class="mock-sidebar">
             <div class="mock-side-head"><img src="icon.png" alt=""/>Mirador</div>
             <div class="mock-item active">
-              <div class="row"><span class="e">🌞</span><span class="e">✴️</span><span class="t">Mirador</span></div>
-              <div class="meta"><span class="mock-tid">b1p3</span><span>just now</span></div>
+              <div class="row"><span class="e">🛡️</span><span class="e">🔧</span><span class="t">Auth bug fix</span></div>
+              <div class="meta"><span class="mock-tid">a3x7</span><span>just now</span></div>
             </div>
             <div class="mock-item">
-              <div class="row"><span class="e">👵</span><span class="e">📖</span><span class="t">Libro de Nene</span></div>
-              <div class="meta"><span class="mock-tid">y7o2</span><span>14m</span></div>
+              <div class="row"><span class="e">🎨</span><span class="e">🌙</span><span class="t">Add dark mode</span></div>
+              <div class="meta"><span class="mock-tid">b9k2</span><span>12m</span></div>
             </div>
             <div class="mock-item">
-              <div class="row"><span class="e">🪢</span><span class="e">🏇</span><span class="t">Harness Skill</span></div>
-              <div class="meta"><span class="mock-tid">i9z7</span><span>1h</span></div>
+              <div class="row"><span class="e">🧪</span><span class="e">📈</span><span class="t">Boost test coverage</span></div>
+              <div class="meta"><span class="mock-tid">c4n5</span><span>34m</span></div>
             </div>
             <div class="mock-item">
-              <div class="row"><span class="e">🤑</span><span class="e">📈</span><span class="t">MRR Strategy</span></div>
-              <div class="meta"><span class="mock-tid">o1l2</span><span>3h</span></div>
+              <div class="row"><span class="e">🗄️</span><span class="e">🚀</span><span class="t">Postgres migration</span></div>
+              <div class="meta"><span class="mock-tid">d8j1</span><span>1h</span></div>
             </div>
             <div class="mock-item">
-              <div class="row"><span class="e">💸</span><span class="e">✴️</span><span class="t">Claude Usage</span></div>
-              <div class="meta"><span class="mock-tid">m5n4</span><span>5h</span></div>
+              <div class="row"><span class="e">📋</span><span class="e">✴️</span><span class="t">Review PR #243</span></div>
+              <div class="meta"><span class="mock-tid">e6m3</span><span>3h</span></div>
             </div>
           </aside>
           <main class="mock-chat">
             <div class="mock-head">
-              <span class="title">Mirador</span>
-              <span class="tid-pill">b1p3</span>
+              <span class="title">Auth bug fix</span>
+              <span class="tid-pill">a3x7</span>
             </div>
-            <div class="mock-bubble user">add a copy-to-clipboard button to fenced code blocks</div>
+            <div class="mock-bubble user">JWT refresh sometimes returns 401 — same token works on retry. happens once or twice an hour.</div>
             <div class="mock-bubble assistant">
-              Wired. Hover any <code style="background:rgba(0,212,255,0.12);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85em">```</code> block; the copy chip flashes green ☑️ on click. Delegated handler so it survives every poll.
+              Race condition in the refresh queue. Two requests trigger near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min.
             </div>
-            <div class="mock-bubble user">also make hold-space dictate after a manual edit</div>
+            <div class="mock-bubble user">ship it. also add a test that proves the race is fixed.</div>
             <div class="mock-bubble assistant">
-              Push-to-talk now. ~250ms hold = voice, quick tap = space. Works mid-message, after edits, after a previous dictation. Web Speech API, no API key.
+              Test added: simulates two concurrent calls during the refresh window, asserts exactly one network refresh fires and both callers get the same fresh token. Green.
             </div>
             <div class="mock-composer">
               <div class="input">Type to talk, drop an image, press / for commands…</div>
