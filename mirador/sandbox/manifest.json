@@ -16,16 +16,27 @@
       "emojis": "🛡️ 🔧",
       "meta": "just now",
       "bubbles": [
-        { "role": "user", "text": "JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour." },
-        { "role": "assistant", "text": "Race condition in the refresh queue. Two requests trigger a near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min." },
-        { "role": "user", "text": "ship it. also add a test that proves the race is fixed." },
-        { "role": "assistant", "text": "Test added: simulates two concurrent calls during the refresh window, asserts exactly one network refresh fires and both callers get the same fresh token. Green locally and on CI." }
+        { "role": "user", "text": "@Theo JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour." },
+        { "role": "assistant", "text": "Theo Garza: Race condition in the refresh queue. Two requests trigger a near-simultaneous refresh, the second beats the first to the cache. Plan below." },
+        { "kind": "tasks", "head": "Theo Garza · Plan",
+          "items": [
+            { "state": "done", "text": "Pull latest, sync test suite" },
+            { "state": "done", "text": "Reproduce the race in a failing test" },
+            { "state": "run",  "text": "Serialize refresh through one in-flight promise" },
+            { "state": "todo", "text": "Add a concurrent-call assertion" },
+            { "state": "todo", "text": "Open PR with rollback plan" }
+          ]
+        },
+        { "kind": "tool", "tool": "Bash", "cmd": "pytest -k test_jwt_refresh", "out": "tests/auth/test_jwt.py::test_jwt_refresh_race PASSED [100%]\n1 passed in 0.84s" },
+        { "role": "assistant", "text": "Theo Garza: Race is fixed. Tests green locally and on CI. Branch fix/jwt-refresh-race is ready." },
+        { "kind": "options", "ask": "Ship the PR now?",
+          "choices": ["Yes, ship to staging", "Show me the diff first", "Run the full suite", "Cancel for now"]
+        }
       ],
       "queue": [
-        "Deployed to staging at 14:32 UTC. Watching the 401 rate dashboard now. Should drop within five minutes if the fix holds.",
-        "401 rate at 0.01% over the last 30 min vs 1.4% before. The race is gone. Want me to roll to production?",
-        "Rolled to production. Auto-rollback armed at >0.5%. I'll watch for an hour and flag if anything drifts.",
-        "All quiet. Closing out the incident. Want me to write the post-mortem, or skip it given the size?"
+        "Theo Garza: Pushed to staging at 14:32 UTC. Auto-rollback armed at >0.5% error rate. Watching the 401 dashboard now.",
+        "Theo Garza: 401 rate at 0.01% over 30 min vs 1.4% before. The race is gone. Promoting to production.",
+        "Theo Garza: All quiet for an hour. Closing the incident. Post-mortem optional given the size; flag me if you want one."
       ]
     },
     {

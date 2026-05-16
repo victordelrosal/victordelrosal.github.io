@@ -329,6 +329,95 @@
       align-self:flex-start;
       border-bottom-left-radius:6px;
     }
+    /* Rich Claude Code state bubbles */
+    .bubble.tasks{
+      background:var(--assistant-bubble);
+      border:1px solid var(--panel-border);
+      align-self:flex-start;
+      max-width:78%;
+      padding:14px 16px;
+    }
+    .bubble.tasks .head{
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.74rem;letter-spacing:.4px;text-transform:uppercase;
+      color:var(--accent-bright);
+      margin-bottom:10px;
+      font-weight:700;
+    }
+    .bubble.tasks .task{
+      padding:4px 0;display:flex;align-items:center;gap:10px;
+      font-size:.94rem;line-height:1.4;
+    }
+    .bubble.tasks .task .box{
+      display:inline-block;width:15px;height:15px;
+      border:1.5px solid var(--muted);border-radius:3px;flex-shrink:0;
+      position:relative;
+    }
+    .bubble.tasks .task.done{opacity:.62}
+    .bubble.tasks .task.done .box{background:var(--accent-bright);border-color:var(--accent-bright)}
+    .bubble.tasks .task.done .box::before{
+      content:"";position:absolute;left:3px;top:1px;
+      width:5px;height:9px;border:solid white;border-width:0 2px 2px 0;
+      transform:rotate(45deg);
+    }
+    .bubble.tasks .task.run{color:var(--accent-bright);font-weight:600}
+    .bubble.tasks .task.run .box{border-color:var(--accent-bright);background:rgba(10,123,255,0.15)}
+    .bubble.tasks .task.run .box::before{
+      content:"";position:absolute;left:3px;top:3px;width:0;height:0;
+      border-left:6px solid var(--accent-bright);border-top:4px solid transparent;border-bottom:4px solid transparent;
+    }
+
+    .bubble.tool{
+      background:rgba(0,0,0,0.20);
+      border:1px solid var(--panel-border);
+      align-self:flex-start;
+      max-width:78%;
+      padding:12px 14px;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.86rem;
+      color:var(--text);
+    }
+    body[data-theme="light"] .bubble.tool{background:rgba(10,16,69,0.04)}
+    body[data-theme="sakura"] .bubble.tool{background:rgba(74,29,51,0.05)}
+    .bubble.tool .head{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-weight:700}
+    .bubble.tool .head .ico{color:var(--accent-bright);font-size:1rem}
+    .bubble.tool .cmd{color:var(--muted);font-size:.84rem;word-break:break-all}
+    .bubble.tool .out{
+      border-top:1px dashed var(--panel-border);
+      margin-top:9px;padding-top:9px;
+      font-size:.8rem;color:var(--muted);white-space:pre-wrap;
+    }
+
+    .bubble.options{
+      background:var(--assistant-bubble);
+      border:1px solid var(--panel-border);
+      align-self:flex-start;
+      max-width:78%;
+      padding:14px 16px;
+    }
+    .bubble.options .ask{margin-bottom:12px;font-size:.96rem;line-height:1.45}
+    .bubble.options .opts{display:grid;gap:6px}
+    .bubble.options .opt-btn{
+      text-align:left;
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:8px;
+      font-family:inherit;
+      font-size:.92rem;
+      cursor:pointer;
+      display:flex;align-items:center;gap:10px;
+      transition:background .15s ease,border-color .15s ease,color .15s ease;
+    }
+    .bubble.options .opt-btn:hover{background:var(--accent-bright);color:white;border-color:transparent}
+    .bubble.options .opt-btn .num{
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.78rem;opacity:.65;
+      min-width:20px;
+    }
+    .bubble.options .opt-btn:hover .num{opacity:.95}
+
     .bubble.typing{color:var(--muted)}
     .bubble.typing .dots{display:inline-flex;gap:3px;align-items:center;height:1em}
     .bubble.typing .dots span{
@@ -588,7 +677,7 @@
       chatTitleEl.textContent = c.title;
       chatTidEl.textContent = c.tid;
       bubblesEl.innerHTML = "";
-      for (const b of c.bubbles) addBubble(b.role, b.text, false);
+      for (const b of c.bubbles) renderBubble(b, false);
       bubblesEl.scrollTop = bubblesEl.scrollHeight;
       sendBtn.disabled = false;
       input.disabled = false;
@@ -598,11 +687,67 @@
       });
     }
 
+    function renderBubble(b, animate = true) {
+      if (b.kind === "tasks") return addTasksBubble(b, animate);
+      if (b.kind === "tool")  return addToolBubble(b, animate);
+      if (b.kind === "options") return addOptionsBubble(b, animate);
+      return addBubble(b.role, b.text, animate);
+    }
+
     function addBubble(role, text, animate = true) {
       const el = document.createElement("div");
       el.className = "bubble " + role;
       el.textContent = text;
       if (!animate) el.style.animation = "none";
+      bubblesEl.appendChild(el);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      return el;
+    }
+
+    function addTasksBubble(b, animate = true) {
+      const el = document.createElement("div");
+      el.className = "bubble tasks";
+      el.innerHTML =
+        '<div class="head">' + escapeHtml(b.head || "Tasks") + '</div>' +
+        (b.items || []).map(t =>
+          '<div class="task ' + escapeHtml(t.state || "todo") + '"><span class="box"></span><span>' + escapeHtml(t.text) + '</span></div>'
+        ).join("");
+      if (!animate) el.style.animation = "none";
+      bubblesEl.appendChild(el);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      return el;
+    }
+
+    function addToolBubble(b, animate = true) {
+      const el = document.createElement("div");
+      el.className = "bubble tool";
+      el.innerHTML =
+        '<div class="head"><span class="ico">⏺</span><span>' + escapeHtml(b.tool || "Tool") + '</span></div>' +
+        '<div class="cmd">' + escapeHtml(b.cmd || "") + '</div>' +
+        (b.out ? '<div class="out">' + escapeHtml(b.out) + '</div>' : "");
+      if (!animate) el.style.animation = "none";
+      bubblesEl.appendChild(el);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      return el;
+    }
+
+    function addOptionsBubble(b, animate = true) {
+      const el = document.createElement("div");
+      el.className = "bubble options";
+      const optsHtml = (b.choices || []).map((c, i) =>
+        '<button class="opt-btn" type="button" data-choice="' + escapeHtml(c) + '"><span class="num">' + (i+1) + '.</span><span>' + escapeHtml(c) + '</span></button>'
+      ).join("");
+      el.innerHTML =
+        '<div class="ask">' + escapeHtml(b.ask || "Pick one:") + '</div>' +
+        '<div class="opts">' + optsHtml + '</div>';
+      if (!animate) el.style.animation = "none";
+      el.querySelectorAll(".opt-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const choice = btn.dataset.choice;
+          el.remove();
+          handleUserInput(choice);
+        });
+      });
       bubblesEl.appendChild(el);
       bubblesEl.scrollTop = bubblesEl.scrollHeight;
       return el;
@@ -643,9 +788,7 @@
       input.style.height = Math.min(input.scrollHeight, 140) + "px";
     });
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
+    async function handleUserInput(text) {
       if (!text || !activeConv) return;
       const queue = queueMap[activeConv];
 
@@ -653,6 +796,7 @@
       input.value = "";
       input.style.height = "auto";
       sendBtn.disabled = true;
+      input.disabled = true;
 
       const typing = addTyping();
       await new Promise(r => setTimeout(r, 850 + Math.random() * 700));
@@ -671,10 +815,21 @@
         input.disabled = true;
         input.placeholder = "Demo complete. Start the trial to keep going.";
       } else {
-        const reply = queue.shift();
-        addBubble("assistant", reply);
+        const next = queue.shift();
+        if (typeof next === "string") {
+          addBubble("assistant", next);
+        } else {
+          renderBubble(next, true);
+        }
         sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
       }
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleUserInput(input.value.trim());
     });
 
     loadManifest();
