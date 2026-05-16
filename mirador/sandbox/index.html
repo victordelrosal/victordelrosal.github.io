@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mirador Sandbox · Try the harness for Claude Opus 4.7</title>
+  <meta name="description" content="A live-feel demo of Mirador. No tokens, no cloud, no login. Click conversations, type messages, try the themes." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="../icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0a1045;
+      --bg-2:#060a2e;
+      --panel:rgba(255,255,255,0.06);
+      --panel-2:rgba(255,255,255,0.10);
+      --panel-border:rgba(255,255,255,0.10);
+      --side:rgba(0,0,0,0.28);
+      --text:#e8ecff;
+      --muted:#98a4d0;
+      --accent:#5668e0;
+      --accent-bright:#0a7bff;
+      --user-bubble:linear-gradient(135deg,#0a7bff,#1a8eff);
+      --assistant-bubble:rgba(255,255,255,0.07);
+      --shadow:0 10px 30px rgba(0,0,0,0.30);
+      --banner-bg:#0a7bff;
+      --banner-text:white;
+    }
+    body[data-theme="light"]{
+      --bg:#f6f9ff;
+      --bg-2:#eaf2ff;
+      --panel:white;
+      --panel-2:#eef3ff;
+      --panel-border:rgba(10,16,69,0.10);
+      --side:rgba(255,255,255,0.85);
+      --text:#0c1733;
+      --muted:#5f6b8c;
+      --accent:#0a1045;
+      --accent-bright:#0a7bff;
+      --user-bubble:linear-gradient(135deg,#0a7bff,#1a8eff);
+      --assistant-bubble:rgba(10,16,69,0.05);
+      --shadow:0 10px 30px rgba(10,16,69,0.10);
+      --banner-bg:#0a7bff;
+      --banner-text:white;
+    }
+    body[data-theme="sakura"]{
+      --bg:#fff5f7;
+      --bg-2:#ffe4ec;
+      --panel:white;
+      --panel-2:#ffe9f0;
+      --panel-border:rgba(219,39,119,0.18);
+      --side:rgba(255,229,237,0.80);
+      --text:#4a1d33;
+      --muted:#ad6680;
+      --accent:#db2777;
+      --accent-bright:#ec4899;
+      --user-bubble:linear-gradient(135deg,#db2777,#ff6f9c);
+      --assistant-bubble:rgba(219,39,119,0.08);
+      --shadow:0 10px 30px rgba(219,39,119,0.15);
+      --banner-bg:#db2777;
+      --banner-text:white;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg),var(--bg-2));
+      color:var(--text);
+      overflow:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    a{color:var(--accent-bright)}
+
+    .demo-banner{
+      background:var(--banner-bg);
+      color:var(--banner-text);
+      padding:9px 20px;
+      text-align:center;
+      font-size:.86rem;
+      font-weight:500;
+      letter-spacing:.1px;
+      box-shadow:0 1px 0 rgba(0,0,0,0.10);
+      position:relative;
+      z-index:2;
+    }
+    .demo-banner strong{font-weight:700}
+    .demo-banner a{
+      color:var(--banner-text);
+      text-decoration:underline;
+      font-weight:700;
+      margin-left:8px;
+    }
+    .demo-banner a:hover{text-decoration:none}
+    .demo-banner .sync{
+      display:inline-block;
+      font-family:'JetBrains Mono',monospace;
+      font-size:.72rem;
+      opacity:.85;
+      margin-left:12px;
+      padding:1px 8px;
+      border-radius:6px;
+      background:rgba(255,255,255,0.15);
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns:300px 1fr;
+      height:calc(100vh - 38px);
+    }
+
+    .sidebar{
+      background:var(--side);
+      border-right:1px solid var(--panel-border);
+      display:flex;
+      flex-direction:column;
+      padding:14px 10px;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .sidebar-head{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:6px 10px 14px;
+      border-bottom:1px solid var(--panel-border);
+      margin-bottom:10px;
+    }
+    .sidebar-head img{width:28px;height:28px;border-radius:7px}
+    .sidebar-head .name{font-weight:700;letter-spacing:.1px;font-size:1rem}
+    .sidebar-head .sub{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);margin-left:auto;letter-spacing:.4px}
+
+    .conv-list{
+      overflow-y:auto;
+      flex:1;
+      padding-right:4px;
+    }
+    .conv-list::-webkit-scrollbar{width:6px}
+    .conv-list::-webkit-scrollbar-thumb{background:var(--panel-border);border-radius:3px}
+
+    .conv-item{
+      width:100%;
+      text-align:left;
+      background:transparent;
+      border:1px solid transparent;
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      margin-bottom:4px;
+      font-family:inherit;
+      transition:background .12s ease,border-color .12s ease;
+    }
+    .conv-item:hover{background:var(--panel)}
+    .conv-item.active{
+      background:var(--panel);
+      border-color:var(--panel-border);
+    }
+    .conv-item .row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:4px;
+    }
+    .conv-item .e{font-size:.92rem}
+    .conv-item .t{
+      font-size:.92rem;
+      font-weight:600;
+      flex:1;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .conv-item .meta{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.7rem;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+    }
+    .conv-item .meta .tid{
+      background:var(--panel-2);
+      padding:2px 6px;
+      border-radius:5px;
+      color:var(--text);
+      opacity:.85;
+    }
+
+    .theme-bar{
+      padding:12px 4px 4px;
+      border-top:1px solid var(--panel-border);
+      margin-top:10px;
+    }
+    .theme-bar .label{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.66rem;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      color:var(--muted);
+      padding:0 6px 8px;
+    }
+    .theme-row{display:flex;gap:6px;flex-wrap:wrap}
+    .theme-btn{
+      flex:1;
+      min-width:80px;
+      background:transparent;
+      border:1px solid var(--panel-border);
+      color:var(--text);
+      padding:7px 8px;
+      border-radius:8px;
+      font-family:inherit;
+      font-size:.76rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:background .12s ease,border-color .12s ease;
+      white-space:nowrap;
+    }
+    .theme-btn:hover{background:var(--panel)}
+    .theme-btn.active{
+      background:var(--accent-bright);
+      color:white;
+      border-color:transparent;
+    }
+
+    .chat{
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      background:transparent;
+    }
+    .chat-head{
+      padding:14px 24px;
+      border-bottom:1px solid var(--panel-border);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:var(--side);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .chat-head .title{font-weight:700;font-size:1.04rem;letter-spacing:-0.01em}
+    .chat-head .tid-pill{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.72rem;
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      padding:3px 9px;
+      border-radius:8px;
+      color:var(--muted);
+    }
+    .chat-head .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .chat-head .pill{
+      font-family:'JetBrains Mono',monospace;
+      font-size:.68rem;
+      letter-spacing:.4px;
+      color:var(--muted);
+      background:var(--panel);
+      padding:4px 9px;
+      border-radius:8px;
+      border:1px solid var(--panel-border);
+    }
+    .chat-head .pill .dot{
+      display:inline-block;
+      width:6px;height:6px;
+      border-radius:50%;
+      background:#4ade80;
+      box-shadow:0 0 6px #4ade80;
+      margin-right:6px;
+      vertical-align:1px;
+    }
+
+    .bubbles{
+      flex:1;
+      overflow-y:auto;
+      padding:24px 24px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .bubbles::-webkit-scrollbar{width:8px}
+    .bubbles::-webkit-scrollbar-thumb{background:var(--panel-border);border-radius:4px}
+
+    .bubble{
+      max-width:72%;
+      padding:12px 16px;
+      border-radius:16px;
+      font-size:.96rem;
+      line-height:1.55;
+      animation:pop .22s ease;
+      word-wrap:break-word;
+    }
+    @keyframes pop{
+      from{opacity:0;transform:translateY(6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .bubble.user{
+      background:var(--user-bubble);
+      color:white;
+      align-self:flex-end;
+      border-bottom-right-radius:6px;
+      box-shadow:0 2px 10px rgba(10,123,255,0.25);
+    }
+    .bubble.assistant{
+      background:var(--assistant-bubble);
+      border:1px solid var(--panel-border);
+      align-self:flex-start;
+      border-bottom-left-radius:6px;
+    }
+    .bubble.typing{color:var(--muted)}
+    .bubble.typing .dots{display:inline-flex;gap:3px;align-items:center;height:1em}
+    .bubble.typing .dots span{
+      width:6px;height:6px;
+      border-radius:50%;
+      background:currentColor;
+      animation:blink 1.2s infinite;
+    }
+    .bubble.typing .dots span:nth-child(2){animation-delay:.18s}
+    .bubble.typing .dots span:nth-child(3){animation-delay:.36s}
+    @keyframes blink{0%,80%,100%{opacity:.25;transform:scale(0.9)}40%{opacity:1;transform:scale(1)}}
+
+    .composer{
+      padding:14px 22px 22px;
+      border-top:1px solid var(--panel-border);
+      background:var(--side);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+    .composer textarea{
+      flex:1;
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      border-radius:12px;
+      color:var(--text);
+      font-family:inherit;
+      font-size:.95rem;
+      padding:12px 14px;
+      resize:none;
+      max-height:140px;
+      line-height:1.45;
+      outline:none;
+      transition:border-color .12s ease,box-shadow .12s ease;
+    }
+    .composer textarea::placeholder{color:var(--muted)}
+    .composer textarea:focus{
+      border-color:var(--accent-bright);
+      box-shadow:0 0 0 3px rgba(10,123,255,0.15);
+    }
+    .send-btn{
+      background:var(--accent-bright);
+      color:white;
+      border:none;
+      border-radius:12px;
+      width:44px;height:44px;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition:transform .12s ease,opacity .12s ease;
+    }
+    .send-btn:hover{transform:translateY(-1px)}
+    .send-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+    .demo-end{
+      align-self:stretch;
+      text-align:center;
+      padding:22px 24px;
+      margin:18px auto 6px;
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      border-radius:14px;
+      max-width:520px;
+    }
+    .demo-end h3{font-size:1.06rem;margin-bottom:6px;letter-spacing:-0.01em}
+    .demo-end p{color:var(--muted);font-size:.92rem;margin-bottom:14px;font-family:'IBM Plex Serif',Georgia,serif;font-style:italic}
+    .demo-end a{
+      display:inline-block;
+      background:var(--accent-bright);
+      color:white;
+      padding:11px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:.94rem;
+      transition:transform .12s ease;
+    }
+    .demo-end a:hover{transform:translateY(-1px)}
+
+    .loading{
+      display:flex;align-items:center;justify-content:center;
+      height:100%;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.86rem;
+      letter-spacing:.4px;
+    }
+
+    .back-link{
+      position:fixed;
+      top:52px;
+      left:14px;
+      z-index:3;
+      font-family:'JetBrains Mono',monospace;
+      font-size:.72rem;
+      color:var(--muted);
+      text-decoration:none;
+      padding:5px 10px;
+      border-radius:6px;
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      backdrop-filter:blur(8px);
+    }
+    .back-link:hover{color:var(--text)}
+
+    @media (max-width:760px){
+      .app{grid-template-columns:1fr}
+      .sidebar{display:none}
+      .back-link{display:none}
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="demo-banner">
+    <strong>This is a sandbox.</strong> No tokens used; replies are pre-baked. Real Mirador runs entirely on your Mac.
+    <a href="../#pricing">Start the 14-day trial →</a>
+    <span class="sync" id="syncStamp">loading…</span>
+  </div>
+
+  <a class="back-link" href="../">&larr; Back to mirador.com</a>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <img src="../icon.png" alt="" />
+        <span class="name">Mirador</span>
+        <span class="sub">DEMO</span>
+      </div>
+      <div class="conv-list" id="convList">
+        <div class="loading">loading conversations…</div>
+      </div>
+      <div class="theme-bar">
+        <div class="label">Theme</div>
+        <div class="theme-row" id="themeRow"></div>
+      </div>
+    </aside>
+
+    <main class="chat">
+      <header class="chat-head">
+        <span class="title" id="chatTitle">Loading…</span>
+        <span class="tid-pill" id="chatTid">····</span>
+        <div class="right">
+          <span class="pill"><span class="dot"></span>127.0.0.1:7321</span>
+        </div>
+      </header>
+      <div class="bubbles" id="bubbles">
+        <div class="loading">loading sandbox…</div>
+      </div>
+      <form class="composer" id="composer" autocomplete="off">
+        <textarea id="composerInput" placeholder="Loading sandbox manifest…" rows="1" disabled></textarea>
+        <button class="send-btn" type="submit" aria-label="Send" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.85 12.92a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.38 1.18l2.3 6.62a1 1 0 0 0 .82.67l9.46 1.04-9.46 1.04a1 1 0 0 0-.82.67l-2.3 6.62a1 1 0 0 0 1.38 1.18Z"/></svg>
+        </button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    /*
+     * SOURCE OF TRUTH: ./manifest.json
+     * Edit conversations, themes, and lastUpdated there.
+     * The sandbox stays synced with mirador because every deploy ships a fresh manifest.
+     */
+
+    const convListEl   = document.getElementById("convList");
+    const bubblesEl    = document.getElementById("bubbles");
+    const chatTitleEl  = document.getElementById("chatTitle");
+    const chatTidEl    = document.getElementById("chatTid");
+    const themeRowEl   = document.getElementById("themeRow");
+    const syncStampEl  = document.getElementById("syncStamp");
+    const form         = document.getElementById("composer");
+    const input        = document.getElementById("composerInput");
+    const sendBtn      = form.querySelector(".send-btn");
+
+    let MANIFEST = null;
+    let convMap = {};
+    let queueMap = {};
+    let activeConv = null;
+
+    async function loadManifest() {
+      try {
+        const res = await fetch("./manifest.json?_=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("manifest " + res.status);
+        MANIFEST = await res.json();
+      } catch (e) {
+        showFatal("Couldn't load the sandbox manifest. Try refreshing.");
+        throw e;
+      }
+
+      convMap = {};
+      queueMap = {};
+      for (const c of MANIFEST.conversations) {
+        convMap[c.id] = c;
+        queueMap[c.id] = [...(c.queue || [])];
+      }
+
+      syncStampEl.textContent = "synced " + MANIFEST.lastUpdated;
+
+      buildThemes(MANIFEST.themes);
+      buildSidebar();
+
+      const firstId = MANIFEST.conversations[0] && MANIFEST.conversations[0].id;
+      if (firstId) {
+        activeConv = firstId;
+        renderConv();
+      }
+
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.placeholder = "Type to talk. Press / for commands. Replies are pre-baked in this sandbox.";
+      input.focus();
+    }
+
+    function showFatal(msg) {
+      bubblesEl.innerHTML = '<div class="loading">' + msg + '</div>';
+      convListEl.innerHTML = '';
+      syncStampEl.textContent = "offline";
+    }
+
+    function buildThemes(themes) {
+      themeRowEl.innerHTML = "";
+      const defaultTheme = (themes.find(t => t.default) || themes[0]).id;
+      document.body.dataset.theme = defaultTheme;
+      for (const t of themes) {
+        const btn = document.createElement("button");
+        btn.className = "theme-btn" + (t.id === defaultTheme ? " active" : "");
+        btn.dataset.theme = t.id;
+        btn.textContent = t.name;
+        btn.addEventListener("click", () => {
+          document.body.dataset.theme = t.id;
+          themeRowEl.querySelectorAll(".theme-btn").forEach(b => b.classList.toggle("active", b === btn));
+        });
+        themeRowEl.appendChild(btn);
+      }
+    }
+
+    function buildSidebar() {
+      convListEl.innerHTML = "";
+      for (const c of MANIFEST.conversations) {
+        const btn = document.createElement("button");
+        btn.className = "conv-item" + (c.id === activeConv ? " active" : "");
+        btn.dataset.conv = c.id;
+        btn.innerHTML = `
+          <div class="row">
+            <span class="e">${escapeHtml(c.emojis || "")}</span>
+            <span class="t">${escapeHtml(c.title)}</span>
+          </div>
+          <div class="meta"><span class="tid">${escapeHtml(c.tid)}</span><span>${escapeHtml(c.meta || "")}</span></div>
+        `;
+        btn.addEventListener("click", () => switchConv(c.id));
+        convListEl.appendChild(btn);
+      }
+    }
+
+    function renderConv() {
+      const c = convMap[activeConv];
+      if (!c) return;
+      chatTitleEl.textContent = c.title;
+      chatTidEl.textContent = c.tid;
+      bubblesEl.innerHTML = "";
+      for (const b of c.bubbles) addBubble(b.role, b.text, false);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      sendBtn.disabled = false;
+      input.disabled = false;
+      input.placeholder = "Type to talk. Press / for commands. Replies are pre-baked in this sandbox.";
+      convListEl.querySelectorAll(".conv-item").forEach(b => {
+        b.classList.toggle("active", b.dataset.conv === activeConv);
+      });
+    }
+
+    function addBubble(role, text, animate = true) {
+      const el = document.createElement("div");
+      el.className = "bubble " + role;
+      el.textContent = text;
+      if (!animate) el.style.animation = "none";
+      bubblesEl.appendChild(el);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      return el;
+    }
+
+    function addTyping() {
+      const el = document.createElement("div");
+      el.className = "bubble assistant typing";
+      el.innerHTML = '<span class="dots"><span></span><span></span><span></span></span>';
+      bubblesEl.appendChild(el);
+      bubblesEl.scrollTop = bubblesEl.scrollHeight;
+      return el;
+    }
+
+    function switchConv(id) {
+      activeConv = id;
+      renderConv();
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    input.addEventListener("input", () => {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 140) + "px";
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text || !activeConv) return;
+      const queue = queueMap[activeConv];
+
+      addBubble("user", text);
+      input.value = "";
+      input.style.height = "auto";
+      sendBtn.disabled = true;
+
+      const typing = addTyping();
+      await new Promise(r => setTimeout(r, 850 + Math.random() * 700));
+      typing.remove();
+
+      if (!queue || queue.length === 0) {
+        const endEl = document.createElement("div");
+        endEl.className = "demo-end";
+        endEl.innerHTML =
+          '<h3>That\'s the sandbox.</h3>' +
+          '<p>Real Mirador talks to Claude Opus 4.7, runs on your Mac, and never runs out of replies.</p>' +
+          '<a href="../#pricing">Start the 14-day trial →</a>';
+        bubblesEl.appendChild(endEl);
+        bubblesEl.scrollTop = bubblesEl.scrollHeight;
+        sendBtn.disabled = true;
+        input.disabled = true;
+        input.placeholder = "Demo complete. Start the trial to keep going.";
+      } else {
+        const reply = queue.shift();
+        addBubble("assistant", reply);
+        sendBtn.disabled = false;
+      }
+    });
+
+    loadManifest();
+  </script>
+</body>
+</html>

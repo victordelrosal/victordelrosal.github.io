@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-05-16",
+  "subtitle": "Live-feel demo of the harness for Claude Opus 4.7",
+  "themes": [
+    { "id": "dark", "name": "Royal Navy", "default": true },
+    { "id": "light", "name": "Indigo Light" },
+    { "id": "sakura", "name": "Sakura" }
+  ],
+  "conversations": [
+    {
+      "id": "auth",
+      "title": "Auth bug fix",
+      "tid": "a3x7",
+      "emojis": "🛡️ 🔧",
+      "meta": "just now",
+      "bubbles": [
+        { "role": "user", "text": "JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour." },
+        { "role": "assistant", "text": "Race condition in the refresh queue. Two requests trigger a near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min." },
+        { "role": "user", "text": "ship it. also add a test that proves the race is fixed." },
+        { "role": "assistant", "text": "Test added: simulates two concurrent calls during the refresh window, asserts exactly one network refresh fires and both callers get the same fresh token. Green locally and on CI." }
+      ],
+      "queue": [
+        "Deployed to staging at 14:32 UTC. Watching the 401 rate dashboard now. Should drop within five minutes if the fix holds.",
+        "401 rate at 0.01% over the last 30 min vs 1.4% before. The race is gone. Want me to roll to production?",
+        "Rolled to production. Auto-rollback armed at >0.5%. I'll watch for an hour and flag if anything drifts.",
+        "All quiet. Closing out the incident. Want me to write the post-mortem, or skip it given the size?"
+      ]
+    },
+    {
+      "id": "pricing",
+      "title": "Pricing strategy",
+      "tid": "b9k2",
+      "emojis": "💰 📊",
+      "meta": "12m",
+      "bubbles": [
+        { "role": "user", "text": "@Marcus @Sophie should I price Mirador at €14.99 or €19 for the founding 100?" },
+        { "role": "assistant", "text": "Marcus Sorensen: €14.99 'locked for life' is a sharper trigger than €19. The story 'first hundred ever' is the asset. Lower price funds the story; story funds the next thousand." },
+        { "role": "assistant", "text": "Sophie Park: Both are right. €14.99 founding-100 is the conversion lever; €19 standard is the long-run unit economics. Ship both prices on the same page, founding visible first, with a counter that ticks down." },
+        { "role": "user", "text": "what if I'm wrong about the €19 and people churn?" },
+        { "role": "assistant", "text": "Marcus Sorensen: Then you learn at month two and re-price at month three. Cancel-anytime means the cost of being wrong is one month's revenue per wrong customer. Worth the test." }
+      ],
+      "queue": [
+        "Sophie Park: Add a small 'why this price' explainer below the pricing cards. Founding signals investment; €19 signals seriousness. Both feed the same trust.",
+        "Marcus Sorensen: One more thing. The 14-day trial is doing more work than the price. Make sure the install in those 14 days is frictionless.",
+        "Sophie Park: Track per-cohort retention: founding-100 vs standard. If founding churns less, the price-as-loyalty hypothesis holds. If not, you've learned something."
+      ]
+    },
+    {
+      "id": "landing",
+      "title": "New landing page",
+      "tid": "c4n5",
+      "emojis": "🎨 ✨",
+      "meta": "34m",
+      "bubbles": [
+        { "role": "user", "text": "@Renzo the hero feels generic. fix it." },
+        { "role": "assistant", "text": "Renzo Tanaka-Whitfield: One sentence first. What's the Whisper? Before I touch a pixel I need it." },
+        { "role": "user", "text": "'the harness for Claude Opus 4.7'" },
+        { "role": "assistant", "text": "Renzo Tanaka-Whitfield: Then the hero should show the harness, not describe it. Cut the icon-and-headline pattern. Replace with a chaos-to-calm split: ten floating terminals on the left, one calm Mirador window on the right. The transformation is the story; the words just label it." }
+      ],
+      "queue": [
+        "Renzo Tanaka-Whitfield: Ship the chaos-to-calm hero. Keep the headline at 'The harness for Claude Opus 4.7.' Subhead: 'Personas, memory, context, calm. One window. Every Claude.' Two CTAs: trial primary, demo secondary.",
+        "Renzo Tanaka-Whitfield: Whisper test. Every section after the hero should answer 'what does the harness do that an empty terminal can't?' If a section doesn't, cut it or rewrite it.",
+        "Renzo Tanaka-Whitfield: Final pass. The 60-point craft checklist: optical alignment on the icon, contrast on the CTA, persona portraits cropped tight, no orphan widows in the headings. Final hour or it doesn't ship."
+      ]
+    },
+    {
+      "id": "pentest",
+      "title": "Pentest the Worker",
+      "tid": "d8j1",
+      "emojis": "🔒 🛡️",
+      "meta": "1h",
+      "bubbles": [
+        { "role": "user", "text": "/shannon team-inbox Cloudflare Worker. find anything that bites." },
+        { "role": "assistant", "text": "Tamar Ben-Ari: Running the harness against the Worker. Five passes: input validation, auth surface, KV namespace permissions, secret leakage, error verbosity." },
+        { "role": "assistant", "text": "Tamar Ben-Ari: Three findings. (1) The /inbound endpoint accepts arbitrary Telegram payload sizes; rate-limit it. (2) The KV write path uses the same token as read; split into two scoped tokens. (3) Error responses include stack traces with no notion of prod vs dev. Force production-mode by default." },
+        { "role": "user", "text": "fix all three. PR with tests please." }
+      ],
+      "queue": [
+        "Tamar Ben-Ari: PR up. Rate limit set to 60 req/min per IP via a small KV counter. Scoped tokens TEAM_INBOX_READ and TEAM_INBOX_WRITE with mutually exclusive permissions. ENV=production forced unless WORKER_DEBUG=1 is explicitly set in wrangler config.",
+        "Tamar Ben-Ari: Tests: one for rate limit (sends 70 requests, asserts the 61st returns 429), one for scoped tokens (verifies read token can't write and vice versa), one for error verbosity (production responses contain no stack, dev responses do).",
+        "Tamar Ben-Ari: Merged. Re-ran the harness. All five passes clean. The Worker is now boring, which is the highest praise I have."
+      ]
+    },
+    {
+      "id": "quiz",
+      "title": "Quiz video for kids",
+      "tid": "e6m3",
+      "emojis": "📺 🎬",
+      "meta": "3h",
+      "bubbles": [
+        { "role": "user", "text": "@Declan make a 60-second 'guess the country' quiz video for Alex's YouTube channel. 5 questions, kid-friendly." },
+        { "role": "assistant", "text": "Declan Ward: On it. Pulling the youtube-quiz-video skill. Five questions, ten seconds each on screen, eight-second voiceover per question with three-second reveal. Background music ducked under VO. Title card and outro included." },
+        { "role": "assistant", "text": "Declan Ward: Question set: (1) flag with red and white maple leaf, (2) country shaped like a boot, (3) Eiffel Tower city, (4) country where the pyramids are oldest, (5) home of the kangaroo. Voiceover in a warm, kid-friendly tone. Sound effects on the reveal." },
+        { "role": "user", "text": "thumbnail and description please. public on Alex's channel." }
+      ],
+      "queue": [
+        "Declan Ward: Thumbnail: bold yellow text 'GUESS THE COUNTRY' over a globe, kid-bright background. Description has the chapter timestamps (10. France, 20. Italy, 30. Canada...) at the top so YouTube auto-chapters pick them up. Privacy: public, embeddable: true, publicStatsViewable: true per Alex's channel defaults.",
+        "Declan Ward: Rendered. 60.4 seconds total. Voiceover sounds natural, music ducks cleanly under each question. No audio scratches. Uploaded to Alex's channel as public. Watch link in your inbox.",
+        "Declan Ward: First 100 views are in. Audience retention is 78% which is strong for the format. Want me to queue three more quiz videos this week or wait for the data?"
+      ]
+    }
+  ]
+}

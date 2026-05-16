@@ -407,10 +407,46 @@
       padding:11px 18px;border-radius:11px;font-weight:600;font-size:.92rem;
       transition:transform .12s ease, background .15s ease;
     }
+    /* Metallic gold founding-100 CTA, modeled on the Agentive wordmark:
+       a layered linear-gradient that reads as polished brass with a top
+       highlight, mid gold, deep antique-gold base, plus inset bevel shadows
+       and a warm outer glow. Ink-dark label keeps contrast accessible. */
     .edge-cta-primary{
-      background:var(--ink);color:white;
+      background:
+        linear-gradient(180deg,
+          #fff4c2 0%,
+          #f8d96b 14%,
+          #e9b339 32%,
+          #c98a1a 55%,
+          #8a5b10 82%,
+          #5b3a08 100%);
+      color:#231a05;
+      border:1px solid #b07414;
+      box-shadow:
+        inset 0 1px 0 rgba(255,248,210,0.85),
+        inset 0 -1px 0 rgba(0,0,0,0.35),
+        0 6px 18px rgba(176,116,20,0.40),
+        0 1px 2px rgba(0,0,0,0.18);
+      text-shadow: 0 1px 0 rgba(255,245,190,0.55);
+      letter-spacing: 0.01em;
     }
-    .edge-cta-primary:hover{ background:#000;text-decoration:none;transform:translateY(-1px); }
+    .edge-cta-primary:hover{
+      background:
+        linear-gradient(180deg,
+          #fff8d4 0%,
+          #fce285 14%,
+          #f1bf45 32%,
+          #d29422 55%,
+          #95620f 82%,
+          #5f3d08 100%);
+      text-decoration:none;
+      transform:translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,250,220,0.95),
+        inset 0 -1px 0 rgba(0,0,0,0.30),
+        0 10px 24px rgba(202,138,4,0.50),
+        0 1px 2px rgba(0,0,0,0.18);
+    }
     .edge-cta-secondary{
       background:white;color:var(--ink);border:1px solid var(--line);
     }
@@ -562,7 +598,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           Start 14-day free trial
         </a>
-        <a class="btn-secondary" href="#pricing">See pricing</a>
+        <a class="btn-secondary" href="sandbox/">Try the live sandbox</a>
       </div>
     </div>
 
@@ -789,14 +825,14 @@
           <h3 class="persona-name">Marcus Sorensen</h3>
           <p class="persona-role">Managing Agent</p>
           <p class="persona-quote">"Money is the medium; presence is the goal."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/sophie.jpg" alt="Sophie Park" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Sophie Park</h3>
           <p class="persona-role">Product Architect</p>
           <p class="persona-quote">"What problem are we solving, really?"</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/lars.jpg" alt="Lars Mortensen" loading="lazy" width="124" height="124" />
@@ -810,14 +846,14 @@
           <h3 class="persona-name">Kat Jacobs</h3>
           <p class="persona-role">Campus Director</p>
           <p class="persona-quote">"The room is ready when you are."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/theo.jpg" alt="Theo Garza" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Theo Garza</h3>
           <p class="persona-role">Principal Engineer</p>
           <p class="persona-quote">"Smallest change that proves the hypothesis."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/ciaran.jpg" alt="Ciaran Foley" loading="lazy" width="124" height="124" />
@@ -831,35 +867,35 @@
           <h3 class="persona-name">Soren Aksel</h3>
           <p class="persona-role">Enterprise AI Architect</p>
           <p class="persona-quote">"Architecture is the part that doesn't change."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/rian.jpg" alt="Rian Fitzgerald" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Rian Fitzgerald</h3>
           <p class="persona-role">Chief AI Officer</p>
           <p class="persona-quote">"Compounds quietly, until it doesn't."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/darya.jpg" alt="Darya Nakamura-Botha" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Darya Nakamura-Botha</h3>
           <p class="persona-role">CMO</p>
           <p class="persona-quote">"Distribution is the product, eventually."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/clark.jpg" alt="Clark MacDonald" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Clark MacDonald</h3>
           <p class="persona-role">Solopreneur Strategist</p>
           <p class="persona-quote">"One person. Many leverage points."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/declan.jpg" alt="Declan Ward" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Declan Ward</h3>
           <p class="persona-role">Digital Creator</p>
           <p class="persona-quote">"Show, then explain."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/anika.jpg" alt="Anika Schreiber" loading="lazy" width="124" height="124" />
@@ -869,32 +905,25 @@
           <p class="persona-tag">Advisor persona, no firm implied</p>
         </article>
         <article class="persona-card">
-          <img class="persona-portrait" src="personas/martin.jpg" alt="Martin Kellner" loading="lazy" width="124" height="124" />
-          <h3 class="persona-name">Martin Kellner</h3>
-          <p class="persona-role">Wealth Architect (persona)</p>
-          <p class="persona-quote">"Time first, then price."</p>
-          <p class="persona-tag">Persona, not licensed financial advice</p>
-        </article>
-        <article class="persona-card">
           <img class="persona-portrait" src="personas/tamar.jpg" alt="Tamar Ben-Ari" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Tamar Ben-Ari</h3>
           <p class="persona-role">Security &amp; Privacy</p>
           <p class="persona-quote">"Localhost is the default for a reason."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/renzo.jpg" alt="Renzo Tanaka-Whitfield" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Renzo Tanaka-Whitfield</h3>
           <p class="persona-role">Design, with restraint</p>
           <p class="persona-quote">"Take one thing away, then look again."</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
         <article class="persona-card">
           <img class="persona-portrait" src="personas/felix.jpg" alt="Felix Marek" loading="lazy" width="124" height="124" />
           <h3 class="persona-name">Felix Marek</h3>
           <p class="persona-role">Contrarian / Critique</p>
           <p class="persona-quote">"Where is the argument weakest?"</p>
-          <p class="persona-tag">Team Victor persona</p>
+          <p class="persona-tag">AI persona</p>
         </article>
       </div>
 
@@ -993,8 +1022,8 @@
   <section id="mcp">
     <div class="container">
       <div class="kicker">Where it reaches</div>
-      <h2 class="h2">MCP servers, on tap.</h2>
-      <p class="sub">Model Context Protocol servers are the harness's hands. Connect once, then read, write, search, and ship across the tools you already use. Mirador surfaces them in the same calm window.</p>
+      <h2 class="h2">A growing catalogue of MCP servers.</h2>
+      <p class="sub">Model Context Protocol servers are the harness's hands. Connect once, then read, write, search, and ship across the tools you already pay for. The list below is a starting point. The full ecosystem is dozens deep and growing weekly; rolling your own takes minutes.</p>
 
       <div class="mcp-grid">
         <div class="mcp-card">
@@ -1027,9 +1056,24 @@
           <h3>Microsoft 365</h3>
           <p>Mail, calendar, files, contacts via Microsoft Graph. Read-only by default.</p>
         </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+          <h3>Slack</h3>
+          <p>Read channels, send messages, file in threads. Treat chat as another data source.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+          <h3>Notion</h3>
+          <p>Search pages, append blocks, query databases. Your second brain, on chat's terms.</p>
+        </div>
+        <div class="mcp-card" style="background:linear-gradient(180deg,#eaf2ff,#f6f9ff);border-style:dashed;border-color:rgba(10,123,255,0.40)">
+          <div class="ico" style="background:linear-gradient(180deg,#0a7bff,#0a1045);color:white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          <h3>Roll your own</h3>
+          <p>Linear, Stripe, Postgres, Cloudflare, Sentry, Filesystem, Fetch, Memory, plus dozens more on the marketplace. Any API can become a Mirador tool with a small JSON config.</p>
+        </div>
       </div>
 
-      <p class="evolves-note">More servers come online with each release. Drop a config into the harness and the server appears in the slash menu. Mirador surfaces what your Claude already knows.</p>
+      <p class="evolves-note">The ecosystem grows weekly. Drop a server config into the harness and it appears in the slash menu. The catalogue is a floor, never a ceiling.</p>
     </div>
   </section>
 
@@ -1168,6 +1212,7 @@
         <a href="#pricing">Pricing</a>
         <a href="#how">How it works</a>
         <a href="#install">Get it</a>
+        <a href="sandbox/">Sandbox</a>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/anthropics/claude-code">Claude Code</a>
       </div>
