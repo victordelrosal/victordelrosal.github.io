@@ -27,6 +27,8 @@
       --shadow:0 10px 30px rgba(0,0,0,0.30);
       --banner-bg:#0a7bff;
       --banner-text:white;
+      --glyph-opacity:0.05;
+      --glyph-filter:hue-rotate(40deg) saturate(1.2);
     }
     body[data-theme="light"]{
       --bg:#f6f9ff;
@@ -44,6 +46,8 @@
       --shadow:0 10px 30px rgba(10,16,69,0.10);
       --banner-bg:#0a7bff;
       --banner-text:white;
+      --glyph-opacity:0.07;
+      --glyph-filter:invert(1) hue-rotate(180deg);
     }
     body[data-theme="sakura"]{
       --bg:#fff5f7;
@@ -61,27 +65,88 @@
       --shadow:0 10px 30px rgba(219,39,119,0.15);
       --banner-bg:#db2777;
       --banner-text:white;
+      --glyph-opacity:0.08;
+      --glyph-filter:hue-rotate(110deg) saturate(2);
     }
+    /* Kluxy: the real brand palette. Five vivid letters (blue, purple, pink, orange, green) on a deep navy ground, blooming as fixed radial gradients. The user bubble walks the pink to orange brand rainbow. The glyph layer hue-drifts slowly across the spectrum. Ported from sBs/mirador/static/styles.css. */
     body[data-theme="kluxy"]{
       --bg:#1a1d2e;
-      --bg-2:#0f1020;
-      --panel:rgba(255,46,138,0.07);
-      --panel-2:rgba(255,46,138,0.13);
-      --panel-border:rgba(255,46,138,0.22);
-      --side:rgba(0,0,0,0.40);
-      --text:#fce7f3;
-      --muted:#a98cb4;
-      --accent:#ff2e8a;
+      --bg-2:#0a0c18;
+      --panel:rgba(37,42,63,0.92);
+      --panel-2:rgba(255,46,138,0.14);
+      --panel-border:rgba(160,97,255,0.32);
+      --side:rgba(10,12,24,0.82);
+      --text:#ffffff;
+      --muted:#aab3d6;
+      --accent:#a061ff;
       --accent-bright:#ff2e8a;
-      --user-bubble:linear-gradient(135deg,#ff2e8a,#ec4899);
-      --assistant-bubble:rgba(255,46,138,0.09);
-      --shadow:0 10px 30px rgba(255,46,138,0.22);
-      --banner-bg:linear-gradient(90deg,#ff2e8a,#b91372);
+      --user-bubble:linear-gradient(135deg,#ff2e8a 0%,#ff5e6e 45%,#ff9d2e 100%);
+      --assistant-bubble:rgba(37,42,63,0.78);
+      --shadow:0 14px 40px rgba(0,0,0,0.6),0 0 24px rgba(255,46,138,0.10);
+      --banner-bg:linear-gradient(90deg,#ff2e8a 0%,#ff9d2e 100%);
       --banner-text:white;
+      --glyph-opacity:0.07;
+      --glyph-filter:hue-rotate(0deg) saturate(2.2);
+      animation:kluxyHueDrift 28s linear infinite;
     }
-    body[data-theme="kluxy"] .bubble.user{box-shadow:0 2px 14px rgba(255,46,138,0.40)}
+    @keyframes kluxyHueDrift{
+      0%  {--glyph-filter:hue-rotate(0deg)   saturate(2.2)}
+      25% {--glyph-filter:hue-rotate(90deg)  saturate(2.2)}
+      50% {--glyph-filter:hue-rotate(180deg) saturate(2.2)}
+      75% {--glyph-filter:hue-rotate(270deg) saturate(2.2)}
+      100%{--glyph-filter:hue-rotate(360deg) saturate(2.2)}
+    }
+    body[data-theme="kluxy"]{
+      background:
+        radial-gradient(580px 420px at 0% 0%,    rgba(74,143,255,0.42), transparent 70%),
+        radial-gradient(560px 400px at 30% 0%,   rgba(160,97,255,0.36), transparent 70%),
+        radial-gradient(620px 460px at 55% 100%, rgba(255,46,138,0.40), transparent 70%),
+        radial-gradient(560px 420px at 82% 0%,   rgba(255,157,46,0.40), transparent 70%),
+        radial-gradient(680px 500px at 100% 100%,rgba(31,201,124,0.36), transparent 70%),
+        linear-gradient(180deg,#1a1d2e,#0a0c18);
+      background-attachment:fixed;
+    }
+    body[data-theme="kluxy"] .bubble.user{
+      box-shadow:0 8px 24px rgba(255,46,138,0.32), 0 0 0 1px rgba(255,157,46,0.30) inset;
+    }
+    body[data-theme="kluxy"] .send-btn{
+      background:linear-gradient(135deg,#ff2e8a,#ff9d2e);
+      box-shadow:0 10px 22px rgba(255,46,138,0.40);
+    }
     body[data-theme="kluxy"] .chat-head .pill .dot{background:#ff2e8a;box-shadow:0 0 8px #ff2e8a}
     body[data-theme="kluxy"] .composer textarea:focus{box-shadow:0 0 0 3px rgba(255,46,138,0.22)}
+    body[data-theme="kluxy"] .theme-btn.active{background:linear-gradient(135deg,#ff2e8a,#ff9d2e);color:white}
+    body[data-theme="kluxy"] .conv-item .row .e{filter:saturate(1.4)}
+    body[data-theme="kluxy"] .bubble.tasks .head{
+      background:linear-gradient(90deg,#4a8fff,#a061ff,#ff2e8a,#ff9d2e,#1fc97c);
+      -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;
+    }
+
+    /* Drifting glyph layer, featured across every theme. Tuned per-theme via --glyph-opacity and --glyph-filter. Ported from real Mirador (sBs/mirador/static/styles.css). */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:url("pattern-bg.png");
+      background-repeat:repeat;
+      background-size:560px 560px;
+      opacity:var(--glyph-opacity,0.05);
+      filter:var(--glyph-filter,none);
+      pointer-events:none;
+      z-index:0;
+      animation:bgScroll 90s linear infinite;
+      will-change:background-position;
+    }
+    @keyframes bgScroll{
+      from{background-position:0 0}
+      to  {background-position:560px 0}
+    }
+    @media (prefers-reduced-motion:reduce){
+      body::before{animation:none}
+      body[data-theme="kluxy"]{animation:none}
+    }
+    /* Lift app content above the glyph layer */
+    .demo-banner,.app,.back-link{position:relative;z-index:1}
 
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
