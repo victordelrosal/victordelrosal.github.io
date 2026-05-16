@@ -123,6 +123,105 @@
     }
     .btn-secondary:hover{border-color:var(--ink);transform:translateY(-1px);text-decoration:none}
 
+    /* ===== Story: chaos -> calm ===== */
+    .story{
+      position:relative;max-width:1080px;margin:60px auto 0;padding:0 28px;
+      min-height:560px;
+    }
+    .chaos-stage,.calm-stage{position:relative;width:100%}
+    .chaos-stage{
+      height:560px;border-radius:18px;overflow:hidden;
+      background:linear-gradient(180deg,#eaf2ff 0%,#dbe9ff 100%);
+      box-shadow:var(--shadow-md);
+      animation:chaosFade 14s ease-in-out infinite;
+    }
+    .calm-stage{
+      position:absolute;inset:0;
+      animation:calmFade 14s ease-in-out infinite;
+      opacity:0;
+    }
+    @keyframes chaosFade{
+      0%,42%{opacity:1;transform:scale(1)}
+      50%{opacity:0;transform:scale(.94)}
+      90%,100%{opacity:0;transform:scale(.94)}
+    }
+    @keyframes calmFade{
+      0%,42%{opacity:0;transform:scale(1.05)}
+      55%,100%{opacity:1;transform:scale(1)}
+    }
+    .chaos-label,.calm-label{
+      position:absolute;top:14px;left:18px;z-index:5;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.72rem;letter-spacing:.6px;text-transform:uppercase;
+      padding:4px 10px;border-radius:999px;
+      background:rgba(255,255,255,0.78);backdrop-filter:blur(8px);
+      color:var(--ink);font-weight:600;
+    }
+    .chaos-label{color:#b91c1c}
+    .calm-label{color:var(--sky)}
+    .floating-term{
+      position:absolute;
+      width:200px;background:#0a1045;border-radius:9px;
+      box-shadow:0 10px 22px rgba(10,16,69,0.35);
+      overflow:hidden;font-family:'JetBrains Mono',ui-monospace,monospace;
+      animation:jitter 1.4s ease-in-out infinite alternate;
+      transform-origin:center center;
+      opacity:0;
+      animation:fadeIn .6s ease-out forwards, jitter 1.4s ease-in-out infinite alternate;
+      animation-delay:calc(var(--n) * 0.10s), calc(var(--n) * 0.10s + 0.6s);
+    }
+    @keyframes fadeIn{
+      from{opacity:0;transform:scale(.8) rotate(0deg)}
+      to{opacity:1}
+    }
+    .floating-term .ft-bar{
+      display:flex;align-items:center;gap:4px;
+      padding:6px 8px;background:#060a2e;border-bottom:1px solid rgba(86,104,224,0.20);
+      font-size:.62rem;color:#97a1d6;
+    }
+    .floating-term .ft-bar span{width:7px;height:7px;border-radius:50%}
+    .floating-term .ft-bar span:nth-child(1){background:#ff5f57}
+    .floating-term .ft-bar span:nth-child(2){background:#febc2e}
+    .floating-term .ft-bar span:nth-child(3){background:#28c840}
+    .floating-term .ft-bar b{margin-left:6px;font-weight:600;color:#c0caf5;font-size:.62rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .floating-term .ft-body{
+      padding:8px 10px;color:#e6eaff;font-size:.66rem;line-height:1.5;min-height:46px;
+    }
+    /* Position each floating terminal randomly across the chaos area */
+    .floating-term[style*="--n:0"]{top:36px;left:34px;transform:rotate(-3deg)}
+    .floating-term[style*="--n:1"]{top:62px;left:230px;transform:rotate(2deg)}
+    .floating-term[style*="--n:2"]{top:30px;left:430px;transform:rotate(-1deg)}
+    .floating-term[style*="--n:3"]{top:54px;left:640px;transform:rotate(4deg)}
+    .floating-term[style*="--n:4"]{top:46px;left:820px;transform:rotate(-2deg)}
+    .floating-term[style*="--n:5"]{top:220px;left:80px;transform:rotate(3deg)}
+    .floating-term[style*="--n:6"]{top:240px;left:300px;transform:rotate(-2deg)}
+    .floating-term[style*="--n:7"]{top:210px;left:520px;transform:rotate(1deg)}
+    .floating-term[style*="--n:8"]{top:260px;left:720px;transform:rotate(-3deg)}
+    .floating-term[style*="--n:9"]{top:230px;left:880px;transform:rotate(2deg);width:160px}
+    /* Bottom row for density */
+    .floating-term[style*="--n:0"]{ animation-duration:.6s, 1.6s }
+    @keyframes jitter{
+      0%{transform:translate(0,0) rotate(var(--r,-2deg))}
+      50%{transform:translate(3px,-2px) rotate(calc(var(--r,-2deg) + 1.5deg))}
+      100%{transform:translate(-2px,3px) rotate(calc(var(--r,-2deg) - 1.5deg))}
+    }
+    .lost-cursor{
+      position:absolute;left:50%;bottom:32px;transform:translateX(-50%);
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.86rem;font-weight:700;color:white;
+      background:rgba(220,38,38,0.94);padding:8px 14px;border-radius:10px;
+      animation:cursorThrash 1.3s ease-in-out infinite alternate;
+      box-shadow:0 8px 22px rgba(220,38,38,0.35);
+      z-index:6;
+    }
+    .lost-cursor::before{content:"😩 ";font-size:1.1em}
+    @keyframes cursorThrash{
+      0%{transform:translate(-50%, 0)}
+      33%{transform:translate(-70%, -8px) rotate(-2deg)}
+      66%{transform:translate(-30%, 4px) rotate(3deg)}
+      100%{transform:translate(-60%, -4px) rotate(-1deg)}
+    }
+
     /* ===== Mockup ===== */
     .mockup{
       max-width:1080px;margin:60px auto 0;padding:0 28px;
@@ -314,12 +413,12 @@
     <div class="container">
       <img class="hero-icon" src="icon.png" alt="Mirador icon" />
       <div class="eyebrow"><span class="dot"></span>Now in private release on macOS</div>
-      <h1>One calm view onto every Claude.</h1>
+      <h1>No more madness managing multiple Claudes.</h1>
       <p class="lede">
-        Mirador turns every Claude Code terminal on your Mac into a chat in your browser.
-        <strong>One window. Every conversation.</strong> Voice in, image attach, dictate-and-edit,
-        themes, autocomplete, archive, resurrection. The terminal stays.
-        Your perspective changes.
+        Twelve terminal tabs. Eight Cmd-Tabs. Three wrong sessions before you find the right one.
+        Mirador ends it. <strong>One window. Every conversation. Every Claude.</strong>
+        Voice in, image attach, dictate-and-edit, themes, autocomplete, archive, resurrection.
+        The terminal stays. Your perspective changes.
       </p>
       <div class="hero-cta">
         <a class="btn-primary" href="#install">
@@ -330,8 +429,28 @@
       </div>
     </div>
 
-    <!-- ============ MOCKUP ============ -->
-    <div class="mockup">
+    <!-- ============ STORY: chaos -> Mirador ============ -->
+    <div class="story" aria-hidden="true">
+      <!-- Phase 1: chaos -- floating overlapping terminal windows -->
+      <div class="chaos-stage">
+        <div class="chaos-label">Before</div>
+        <div class="floating-term" style="--n:0"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (3)</b></div><div class="ft-body">$ claude<br>refactor the auth…</div></div>
+        <div class="floating-term" style="--n:1"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (7)</b></div><div class="ft-body">$ claude<br>writing tests…</div></div>
+        <div class="floating-term" style="--n:2"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (1)</b></div><div class="ft-body">$ claude<br>fix migration</div></div>
+        <div class="floating-term" style="--n:3"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (12)</b></div><div class="ft-body">$ claude<br>build the dash…</div></div>
+        <div class="floating-term" style="--n:4"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (8)</b></div><div class="ft-body">$ claude<br>review pr 243</div></div>
+        <div class="floating-term" style="--n:5"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (4)</b></div><div class="ft-body">$ claude<br>doc the api…</div></div>
+        <div class="floating-term" style="--n:6"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (9)</b></div><div class="ft-body">$ claude<br>perf trace?</div></div>
+        <div class="floating-term" style="--n:7"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (2)</b></div><div class="ft-body">$ claude<br>wait which tab?</div></div>
+        <div class="floating-term" style="--n:8"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (11)</b></div><div class="ft-body">$ claude<br>postgres migrate</div></div>
+        <div class="floating-term" style="--n:9"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal — claude (6)</b></div><div class="ft-body">$ claude<br>add dark mode</div></div>
+        <div class="lost-cursor">⌘+`</div>
+      </div>
+      <!-- Phase 2: calm Mirador -->
+      <div class="calm-stage">
+        <div class="calm-label">After</div>
+
+    <div class="mockup" style="margin:0 auto">
       <div class="mockup-frame">
         <div class="mockup-bar">
           <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
@@ -382,6 +501,8 @@
         </div>
       </div>
     </div>
+      </div><!-- /.calm-stage -->
+    </div><!-- /.story -->
   </header>
 
   <!-- ============ FEATURES ============ -->
@@ -389,13 +510,13 @@
     <div class="container">
       <div class="kicker">What it does</div>
       <h2 class="h2">Every terminal you have, in one window.</h2>
-      <p class="sub">Auto-discovers every <code>claude</code> session on your Mac, mirrors the conversation, and gives you a single place to read, reply, dictate, attach, search, archive, and route. No login. No cloud. Localhost only.</p>
+      <p class="sub">Auto-discovers every <code>claudus</code> session on your Mac, mirrors the conversation, and gives you a single place to read, reply, dictate, attach, search, archive, and route. No login. No cloud. Localhost only.</p>
 
       <div class="features">
         <div class="card">
           <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m11-11h-6M7 12H1m17.7-7.07l-4.24 4.24M5.34 5.34l4.24 4.24m0 8.84l-4.24 4.24m13.07 0l-4.24-4.24"/></svg></div>
           <h3>Auto-discovery</h3>
-          <p>Type <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">claude</code> in any Terminal tab. Conversation pops into the sidebar within ~1s. Yes, every session.</p>
+          <p>Type <code style="background:#eef3ff;padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.86em">claudus</code> in any Terminal tab. Conversation pops into the sidebar within ~1s. Yes, every session.</p>
         </div>
         <div class="card">
           <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
@@ -451,7 +572,7 @@
       <div class="steps">
         <div class="step">
           <span class="step-num">01</span>
-          <h3>Type <code>claude</code></h3>
+          <h3>Type <code>claudus</code></h3>
           <p>A patched zsh function auto-wraps your shell in a fresh tmux session named <code>tv-&lt;tid&gt;</code>. Claude Code starts inside.</p>
         </div>
         <div class="step">
@@ -566,12 +687,12 @@ chmod +x bin/mirador hook/mirador-stop-hook.py server.py
 ln -sf "$PWD/bin/mirador" ~/.local/bin/mirador
 
 <span class="c"># 3. Register the hook in ~/.claude/settings.json (see README)</span>
-<span class="c">#    setup.sh installs the auto-wrap function automatically</span>
+<span class="c">#    + add the claudus() auto-wrap to ~/.zshrc</span>
 
 <span class="c"># 4. Run it</span>
 <span class="h">mirador</span>
 
-<span class="c"># Done. Type `claude` in any new Terminal tab.</span>
+<span class="c"># Done. Type `claudus` in any new Terminal tab.</span>
 <span class="c"># Conversation pops into the browser within ~1s.</span></code>
         </div>
       </div>
