@@ -5,7 +5,8 @@
   "themes": [
     { "id": "dark", "name": "Royal Navy", "default": true },
     { "id": "light", "name": "Indigo Light" },
-    { "id": "sakura", "name": "Sakura" }
+    { "id": "sakura", "name": "Sakura" },
+    { "id": "kluxy", "name": "Kluxy" }
   ],
   "conversations": [
     {

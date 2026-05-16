@@ -532,6 +532,71 @@
     .mcp-card h3{font-size:1.04rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
     .mcp-card p{color:var(--muted);font-size:.92rem;line-height:1.55}
 
+    /* ===== Hero embed (live sandbox iframe) ===== */
+    .hero-embed{
+      position:relative;
+      max-width:1180px;
+      margin:48px auto 0;
+      padding:0 28px;
+    }
+    .hero-embed-frame{
+      position:relative;
+      background:#0a1045;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow-lg);
+      border:1px solid rgba(10,16,69,0.16);
+    }
+    .hero-embed iframe{
+      display:block;
+      width:100%;
+      height:640px;
+      border:0;
+      background:#0a1045;
+    }
+    .hero-embed-label{
+      position:absolute;
+      top:14px;right:18px;
+      z-index:5;
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;
+      padding:5px 12px;border-radius:999px;
+      background:rgba(255,255,255,0.92);
+      color:var(--sky);font-weight:700;
+      display:inline-flex;align-items:center;gap:7px;
+      backdrop-filter:blur(8px);
+      box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    }
+    .hero-embed-label .live-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:#4ade80;
+      box-shadow:0 0 8px #4ade80;
+      animation:livePulse 1.6s ease-in-out infinite;
+    }
+    @keyframes livePulse{
+      0%,100%{opacity:1}
+      50%{opacity:.45}
+    }
+    .hero-embed-hint{
+      text-align:center;
+      max-width:60ch;
+      margin:18px auto 0;
+      font-size:.92rem;
+      color:var(--muted);
+      font-family:'IBM Plex Serif',Georgia,serif;
+      font-style:italic;
+      line-height:1.5;
+    }
+    @media (max-width:760px){
+      .hero-embed iframe{height:540px}
+      .hero-embed-label{top:10px;right:12px;font-size:.66rem;padding:4px 9px}
+    }
+
+    /* ===== Story section (relocated chaos -> calm) ===== */
+    .story-section{padding:88px 0 64px}
+    .story-section .container{position:relative}
+    .story-section .story{margin:36px auto 0}
+
     /* ===== Ground (cloud-vs-local contrast) ===== */
     .ground-section{padding:64px 0;background:linear-gradient(180deg,rgba(10,16,69,0.02),rgba(10,123,255,0.05))}
     .ground-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -622,80 +687,14 @@
       </div>
     </div>
 
-    <!-- ============ STORY: chaos -> Mirador ============ -->
-    <div class="story" aria-hidden="true">
-      <!-- Phase 1: chaos -- floating overlapping terminal windows -->
-      <div class="chaos-stage">
-        <div class="chaos-label">Before</div>
-        <div class="floating-term" style="--n:0"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (3)</b></div><div class="ft-body">$ claude<br>refactor the auth…</div></div>
-        <div class="floating-term" style="--n:1"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (7)</b></div><div class="ft-body">$ claude<br>writing tests…</div></div>
-        <div class="floating-term" style="--n:2"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (1)</b></div><div class="ft-body">$ claude<br>fix migration</div></div>
-        <div class="floating-term" style="--n:3"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (12)</b></div><div class="ft-body">$ claude<br>build the dash…</div></div>
-        <div class="floating-term" style="--n:4"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (8)</b></div><div class="ft-body">$ claude<br>review pr 243</div></div>
-        <div class="floating-term" style="--n:5"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (4)</b></div><div class="ft-body">$ claude<br>doc the api…</div></div>
-        <div class="floating-term" style="--n:6"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (9)</b></div><div class="ft-body">$ claude<br>perf trace?</div></div>
-        <div class="floating-term" style="--n:7"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (2)</b></div><div class="ft-body">$ claude<br>wait which tab?</div></div>
-        <div class="floating-term" style="--n:8"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (11)</b></div><div class="ft-body">$ claude<br>postgres migrate</div></div>
-        <div class="floating-term" style="--n:9"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (6)</b></div><div class="ft-body">$ claude<br>add dark mode</div></div>
-        <div class="lost-cursor">⌘+`</div>
+    <!-- ============ HERO EMBED: live sandbox ============ -->
+    <div class="hero-embed">
+      <div class="hero-embed-frame">
+        <span class="hero-embed-label"><span class="live-dot"></span>Live sandbox, no tokens</span>
+        <iframe src="sandbox/" title="Mirador live sandbox" loading="lazy"></iframe>
       </div>
-      <!-- Phase 2: calm Mirador -->
-      <div class="calm-stage">
-        <div class="calm-label">After</div>
-
-    <div class="mockup" style="margin:0 auto">
-      <div class="mockup-frame">
-        <div class="mockup-bar">
-          <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
-          <span class="mockup-bar-url">http://127.0.0.1:7321</span>
-        </div>
-        <div class="mockup-body">
-          <aside class="mock-sidebar">
-            <div class="mock-side-head"><img src="icon.png" alt=""/>Mirador</div>
-            <div class="mock-item active">
-              <div class="row"><span class="e">🛡️</span><span class="e">🔧</span><span class="t">Auth bug fix</span></div>
-              <div class="meta"><span class="mock-tid">a3x7</span><span>just now</span></div>
-            </div>
-            <div class="mock-item">
-              <div class="row"><span class="e">🎨</span><span class="e">🌙</span><span class="t">Add dark mode</span></div>
-              <div class="meta"><span class="mock-tid">b9k2</span><span>12m</span></div>
-            </div>
-            <div class="mock-item">
-              <div class="row"><span class="e">🧪</span><span class="e">📈</span><span class="t">Boost test coverage</span></div>
-              <div class="meta"><span class="mock-tid">c4n5</span><span>34m</span></div>
-            </div>
-            <div class="mock-item">
-              <div class="row"><span class="e">🗄️</span><span class="e">🚀</span><span class="t">Postgres migration</span></div>
-              <div class="meta"><span class="mock-tid">d8j1</span><span>1h</span></div>
-            </div>
-            <div class="mock-item">
-              <div class="row"><span class="e">📋</span><span class="e">✴️</span><span class="t">Review PR #243</span></div>
-              <div class="meta"><span class="mock-tid">e6m3</span><span>3h</span></div>
-            </div>
-          </aside>
-          <main class="mock-chat">
-            <div class="mock-head">
-              <span class="title">Auth bug fix</span>
-              <span class="tid-pill">a3x7</span>
-            </div>
-            <div class="mock-bubble user">JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour.</div>
-            <div class="mock-bubble assistant">
-              Race condition in the refresh queue. Two requests trigger near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min.
-            </div>
-            <div class="mock-bubble user">ship it. also add a test that proves the race is fixed.</div>
-            <div class="mock-bubble assistant">
-              Test added: simulates two concurrent calls during the refresh window, asserts exactly one network refresh fires and both callers get the same fresh token. Green.
-            </div>
-            <div class="mock-composer">
-              <div class="input">Type to talk, drop an image, press / for commands…</div>
-              <div class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.85 12.92a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.38 1.18l2.3 6.62a1 1 0 0 0 .82.67l9.46 1.04-9.46 1.04a1 1 0 0 0-.82.67l-2.3 6.62a1 1 0 0 0 1.38 1.18Z"/></svg></div>
-            </div>
-          </main>
-        </div>
-      </div>
+      <p class="hero-embed-hint">Click any conversation, type into the composer, try the themes. This is a real working sandbox; replies are pre-baked. Real Mirador talks to Claude Opus 4.7 on your Mac.</p>
     </div>
-      </div><!-- /.calm-stage -->
-    </div><!-- /.story -->
   </header>
 
   <!-- ============ PERSONAS ============ -->
@@ -1118,6 +1117,89 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ============ STORY (relocated chaos -> calm) ============ -->
+  <section id="story" class="story-section">
+    <div class="container">
+      <div class="kicker">Before &amp; after</div>
+      <h2 class="h2">From ten tabs to one window.</h2>
+      <p class="sub">Before Mirador, every Claude session is its own Terminal tab. You lose them, mix them up, forget which is which. After Mirador, every Claude session is a card you can read, reply to, archive, or rename, in one quiet window.</p>
+    </div>
+    <!-- ============ STORY: chaos -> Mirador ============ -->
+    <div class="story" aria-hidden="true">
+      <!-- Phase 1: chaos -- floating overlapping terminal windows -->
+      <div class="chaos-stage">
+        <div class="chaos-label">Before</div>
+        <div class="floating-term" style="--n:0"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (3)</b></div><div class="ft-body">$ claude<br>refactor the auth…</div></div>
+        <div class="floating-term" style="--n:1"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (7)</b></div><div class="ft-body">$ claude<br>writing tests…</div></div>
+        <div class="floating-term" style="--n:2"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (1)</b></div><div class="ft-body">$ claude<br>fix migration</div></div>
+        <div class="floating-term" style="--n:3"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (12)</b></div><div class="ft-body">$ claude<br>build the dash…</div></div>
+        <div class="floating-term" style="--n:4"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (8)</b></div><div class="ft-body">$ claude<br>review pr 243</div></div>
+        <div class="floating-term" style="--n:5"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (4)</b></div><div class="ft-body">$ claude<br>doc the api…</div></div>
+        <div class="floating-term" style="--n:6"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (9)</b></div><div class="ft-body">$ claude<br>perf trace?</div></div>
+        <div class="floating-term" style="--n:7"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (2)</b></div><div class="ft-body">$ claude<br>wait which tab?</div></div>
+        <div class="floating-term" style="--n:8"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (11)</b></div><div class="ft-body">$ claude<br>postgres migrate</div></div>
+        <div class="floating-term" style="--n:9"><div class="ft-bar"><span></span><span></span><span></span><b>Terminal · claude (6)</b></div><div class="ft-body">$ claude<br>add dark mode</div></div>
+        <div class="lost-cursor">⌘+`</div>
+      </div>
+      <!-- Phase 2: calm Mirador -->
+      <div class="calm-stage">
+        <div class="calm-label">After</div>
+
+    <div class="mockup" style="margin:0 auto">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
+          <span class="mockup-bar-url">http://127.0.0.1:7321</span>
+        </div>
+        <div class="mockup-body">
+          <aside class="mock-sidebar">
+            <div class="mock-side-head"><img src="icon.png" alt=""/>Mirador</div>
+            <div class="mock-item active">
+              <div class="row"><span class="e">🛡️</span><span class="e">🔧</span><span class="t">Auth bug fix</span></div>
+              <div class="meta"><span class="mock-tid">a3x7</span><span>just now</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">🎨</span><span class="e">🌙</span><span class="t">Add dark mode</span></div>
+              <div class="meta"><span class="mock-tid">b9k2</span><span>12m</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">🧪</span><span class="e">📈</span><span class="t">Boost test coverage</span></div>
+              <div class="meta"><span class="mock-tid">c4n5</span><span>34m</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">🗄️</span><span class="e">🚀</span><span class="t">Postgres migration</span></div>
+              <div class="meta"><span class="mock-tid">d8j1</span><span>1h</span></div>
+            </div>
+            <div class="mock-item">
+              <div class="row"><span class="e">📋</span><span class="e">✴️</span><span class="t">Review PR #243</span></div>
+              <div class="meta"><span class="mock-tid">e6m3</span><span>3h</span></div>
+            </div>
+          </aside>
+          <main class="mock-chat">
+            <div class="mock-head">
+              <span class="title">Auth bug fix</span>
+              <span class="tid-pill">a3x7</span>
+            </div>
+            <div class="mock-bubble user">JWT refresh sometimes returns 401 (same token works on retry). happens once or twice an hour.</div>
+            <div class="mock-bubble assistant">
+              Race condition in the refresh queue. Two requests trigger near-simultaneous refresh, the second beats the first to the cache. Fix: serialize refreshes through a single in-flight promise. PR ready in 2 min.
+            </div>
+            <div class="mock-bubble user">ship it. also add a test that proves the race is fixed.</div>
+            <div class="mock-bubble assistant">
+              Test added: simulates two concurrent calls during the refresh window, asserts exactly one network refresh fires and both callers get the same fresh token. Green.
+            </div>
+            <div class="mock-composer">
+              <div class="input">Type to talk, drop an image, press / for commands…</div>
+              <div class="send"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21.85 12.92a1 1 0 0 0 0-1.84L3.4 3.6a1 1 0 0 0-1.38 1.18l2.3 6.62a1 1 0 0 0 .82.67l9.46 1.04-9.46 1.04a1 1 0 0 0-.82.67l-2.3 6.62a1 1 0 0 0 1.38 1.18Z"/></svg></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+      </div><!-- /.calm-stage -->
+    </div><!-- /.story -->
   </section>
 
   <!-- ============ WHY ============ -->
