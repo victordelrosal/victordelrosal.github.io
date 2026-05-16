@@ -454,6 +454,65 @@
     .install code .c{color:#7a82a3}
     .install code .h{color:#fbbf24}
 
+    /* ===== Personas ===== */
+    .personas-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:4px}
+    @media (max-width:980px){.personas-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media (max-width:720px){.personas-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:460px){.personas-grid{grid-template-columns:1fr}}
+    .persona-card{
+      background:white;border:1px solid var(--line);border-radius:var(--radius);
+      padding:22px 20px 18px;box-shadow:var(--shadow-sm);text-align:center;
+      display:flex;flex-direction:column;
+      transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+    }
+    .persona-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:rgba(10,123,255,0.30)}
+    .persona-portrait{
+      width:124px;height:124px;border-radius:50%;object-fit:cover;
+      margin:0 auto 14px;border:3px solid white;background:var(--paper-2);
+      box-shadow:0 8px 22px rgba(10,16,69,0.14);
+    }
+    .persona-name{font-size:1.02rem;font-weight:700;color:var(--ink);margin:0 0 3px;letter-spacing:-0.01em}
+    .persona-role{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.74rem;letter-spacing:.4px;color:var(--sky);text-transform:uppercase;margin-bottom:12px}
+    .persona-quote{font-family:'IBM Plex Serif',Georgia,serif;font-style:italic;color:var(--text);font-size:.94rem;line-height:1.5;margin-bottom:12px;flex:1}
+    .persona-tag{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.68rem;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+    .evolves-note{
+      text-align:center;font-family:'IBM Plex Serif',Georgia,serif;font-style:italic;
+      color:var(--muted);font-size:1rem;margin:44px auto 0;max-width:60ch;line-height:1.55;
+    }
+
+    /* ===== Skills ===== */
+    .skills-section{background:linear-gradient(180deg,rgba(10,123,255,0.045),rgba(10,16,69,0.02))}
+    .skill-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:4px}
+    @media (max-width:760px){.skill-groups{grid-template-columns:1fr}}
+    .skill-group{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 18px;box-shadow:var(--shadow-sm)}
+    .skill-group h3{font-size:.78rem;font-family:'JetBrains Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.7px;color:var(--sky);margin-bottom:14px}
+    .skill-chips{display:flex;flex-wrap:wrap;gap:7px}
+    .skill-chip{
+      display:inline-block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem;
+      color:var(--ink);background:var(--paper-2);padding:6px 11px;border-radius:8px;
+      border:1px solid var(--line);transition:background .15s ease,color .15s ease,transform .12s ease;
+      cursor:default;
+    }
+    .skill-chip:hover{background:var(--ink);color:white;transform:translateY(-1px)}
+
+    /* ===== MCP ===== */
+    .mcp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:4px}
+    @media (max-width:880px){.mcp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:520px){.mcp-grid{grid-template-columns:1fr}}
+    .mcp-card{
+      background:white;border:1px solid var(--line);border-radius:var(--radius);
+      padding:22px;box-shadow:var(--shadow-sm);
+      transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+    }
+    .mcp-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:rgba(10,123,255,0.30)}
+    .mcp-card .ico{
+      width:40px;height:40px;border-radius:10px;
+      background:linear-gradient(180deg,#eaf2ff,#dbe9ff);
+      display:grid;place-items:center;color:var(--sky);margin-bottom:14px;
+    }
+    .mcp-card h3{font-size:1.04rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em}
+    .mcp-card p{color:var(--muted);font-size:.92rem;line-height:1.55}
+
     /* ===== Footer ===== */
     footer{padding:54px 0 80px;text-align:center;color:var(--muted);font-size:.88rem}
     footer a{color:var(--muted)}
@@ -481,9 +540,10 @@
       </a>
       <div class="nav-links">
         <a href="#features">Features</a>
-        <a href="#how">How it works</a>
+        <a href="#personas">Personas</a>
+        <a href="#skills">Skills</a>
+        <a href="#mcp">Reach</a>
         <a href="#pricing">Pricing</a>
-        <a href="#love">Why</a>
         <a href="#faq">FAQ</a>
       </div>
       <a class="cta-nav" href="#pricing">Start trial</a>
@@ -716,6 +776,263 @@
     </div>
   </section>
 
+  <!-- ============ PERSONAS ============ -->
+  <section id="personas">
+    <div class="container">
+      <div class="kicker">Your digital colleagues</div>
+      <h2 class="h2">A room full of thinking partners.</h2>
+      <p class="sub">Mirador comes pre-loaded with a roster of personas Victor talks to every day. Each one is a character with a domain, a voice, and an opinion. None of them is a real person. None claims a credential. All of them make the work better.</p>
+
+      <div class="personas-grid">
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/marcus.jpg" alt="Marcus Sorensen" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Marcus Sorensen</h3>
+          <p class="persona-role">Managing Agent</p>
+          <p class="persona-quote">"Money is the medium; presence is the goal."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/sophie.jpg" alt="Sophie Park" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Sophie Park</h3>
+          <p class="persona-role">Product Architect</p>
+          <p class="persona-quote">"What problem are we solving, really?"</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/lars.jpg" alt="Lars Mortensen" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Lars Mortensen</h3>
+          <p class="persona-role">Professor</p>
+          <p class="persona-quote">"Teach it before you ship it."</p>
+          <p class="persona-tag">Thinking partner, not credentialed academic</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/kat.jpg" alt="Kat Jacobs" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Kat Jacobs</h3>
+          <p class="persona-role">Campus Director</p>
+          <p class="persona-quote">"The room is ready when you are."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/theo.jpg" alt="Theo Garza" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Theo Garza</h3>
+          <p class="persona-role">Principal Engineer</p>
+          <p class="persona-quote">"Smallest change that proves the hypothesis."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/ciaran.jpg" alt="Ciaran Foley" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Ciaran Foley</h3>
+          <p class="persona-role">Solicitor (persona)</p>
+          <p class="persona-quote">"Risk is rarely where you think it is."</p>
+          <p class="persona-tag">Persona, not licensed legal advice</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/soren.jpg" alt="Soren Aksel" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Soren Aksel</h3>
+          <p class="persona-role">Enterprise AI Architect</p>
+          <p class="persona-quote">"Architecture is the part that doesn't change."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/rian.jpg" alt="Rian Fitzgerald" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Rian Fitzgerald</h3>
+          <p class="persona-role">Chief AI Officer</p>
+          <p class="persona-quote">"Compounds quietly, until it doesn't."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/darya.jpg" alt="Darya Nakamura-Botha" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Darya Nakamura-Botha</h3>
+          <p class="persona-role">CMO</p>
+          <p class="persona-quote">"Distribution is the product, eventually."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/clark.jpg" alt="Clark MacDonald" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Clark MacDonald</h3>
+          <p class="persona-role">Solopreneur Strategist</p>
+          <p class="persona-quote">"One person. Many leverage points."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/declan.jpg" alt="Declan Ward" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Declan Ward</h3>
+          <p class="persona-role">Digital Creator</p>
+          <p class="persona-quote">"Show, then explain."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/anika.jpg" alt="Anika Schreiber" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Anika Schreiber</h3>
+          <p class="persona-role">Strategic Advisor (persona)</p>
+          <p class="persona-quote">"Where does this lose money quietly?"</p>
+          <p class="persona-tag">Advisor persona, no firm implied</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/martin.jpg" alt="Martin Kellner" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Martin Kellner</h3>
+          <p class="persona-role">Wealth Architect (persona)</p>
+          <p class="persona-quote">"Time first, then price."</p>
+          <p class="persona-tag">Persona, not licensed financial advice</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/tamar.jpg" alt="Tamar Ben-Ari" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Tamar Ben-Ari</h3>
+          <p class="persona-role">Security &amp; Privacy</p>
+          <p class="persona-quote">"Localhost is the default for a reason."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/renzo.jpg" alt="Renzo Tanaka-Whitfield" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Renzo Tanaka-Whitfield</h3>
+          <p class="persona-role">Design, with restraint</p>
+          <p class="persona-quote">"Take one thing away, then look again."</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+        <article class="persona-card">
+          <img class="persona-portrait" src="personas/felix.jpg" alt="Felix Marek" loading="lazy" width="124" height="124" />
+          <h3 class="persona-name">Felix Marek</h3>
+          <p class="persona-role">Contrarian / Critique</p>
+          <p class="persona-quote">"Where is the argument weakest?"</p>
+          <p class="persona-tag">Team Victor persona</p>
+        </article>
+      </div>
+
+      <p class="evolves-note">The roster evolves. New personas join, others step back. Each release tightens who lives in the room and why.</p>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="skills-section">
+    <div class="container">
+      <div class="kicker">What it can do</div>
+      <h2 class="h2">Skills, on demand. One slash away.</h2>
+      <p class="sub">Skills are recipes the harness loads when needed: how to write a PRD, how to pentest a worker, how to design a landing page, how to ship a YouTube quiz. Type a slash and the right one surfaces. Drop your own into a folder; the harness picks them up.</p>
+
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Build</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">/diy</span>
+            <span class="skill-chip">/ralph</span>
+            <span class="skill-chip">/loop</span>
+            <span class="skill-chip">/schedule</span>
+            <span class="skill-chip">agentic-orchestration</span>
+            <span class="skill-chip">firebase-web</span>
+            <span class="skill-chip">stripe-projects</span>
+            <span class="skill-chip">cloudflare-worker</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Design</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">renzo-landing</span>
+            <span class="skill-chip">renzo-craft</span>
+            <span class="skill-chip">renzo-whisper</span>
+            <span class="skill-chip">apple-design-language</span>
+            <span class="skill-chip">web-design-standard</span>
+            <span class="skill-chip">design-md</span>
+            <span class="skill-chip">image-gen</span>
+            <span class="skill-chip">p5js-sketch</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Write &amp; publish</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">sophie-prd</span>
+            <span class="skill-chip">formal-report-standard</span>
+            <span class="skill-chip">humanizer</span>
+            <span class="skill-chip">weekly-column</span>
+            <span class="skill-chip">citation-integrity</span>
+            <span class="skill-chip">kb</span>
+            <span class="skill-chip">echo5ify</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Strategy &amp; critique</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">/unicorn</span>
+            <span class="skill-chip">unicorn-validate</span>
+            <span class="skill-chip">unicorn-gtm</span>
+            <span class="skill-chip">unicorn-finance</span>
+            <span class="skill-chip">brutal</span>
+            <span class="skill-chip">sophie-critique</span>
+            <span class="skill-chip">red-blue-team</span>
+            <span class="skill-chip">bet-weights</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Govern</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">shannon</span>
+            <span class="skill-chip">lockdown</span>
+            <span class="skill-chip">security-review</span>
+            <span class="skill-chip">code-reviewer</span>
+            <span class="skill-chip">simplify</span>
+            <span class="skill-chip">verification-before-completion</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Personal</h3>
+          <div class="skill-chips">
+            <span class="skill-chip">people</span>
+            <span class="skill-chip">marcus-check-in</span>
+            <span class="skill-chip">breadcrumbs</span>
+            <span class="skill-chip">/exitlog</span>
+            <span class="skill-chip">/readlogs</span>
+            <span class="skill-chip">stay-awake</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="evolves-note">New skills land every week. Disable the ones you don't want. Write your own in markdown; the harness picks them up automatically.</p>
+    </div>
+  </section>
+
+  <!-- ============ MCP ============ -->
+  <section id="mcp">
+    <div class="container">
+      <div class="kicker">Where it reaches</div>
+      <h2 class="h2">MCP servers, on tap.</h2>
+      <p class="sub">Model Context Protocol servers are the harness's hands. Connect once, then read, write, search, and ship across the tools you already use. Mirador surfaces them in the same calm window.</p>
+
+      <div class="mcp-grid">
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+          <h3>GitHub</h3>
+          <p>Issues, pull requests, code search, releases. Branch, commit, review, merge.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <h3>Gmail</h3>
+          <p>Search threads, draft, label, file. Across personal and team aliases.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <h3>Google Calendar</h3>
+          <p>Suggest times, create events, respond to invites. Across calendars.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Google Drive</h3>
+          <p>Read and reference files. Pull context from documents without leaving the chat.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+          <h3>Canva</h3>
+          <p>Design surfaces and presentations, called from the chat window.</p>
+        </div>
+        <div class="mcp-card">
+          <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+          <h3>Microsoft 365</h3>
+          <p>Mail, calendar, files, contacts via Microsoft Graph. Read-only by default.</p>
+        </div>
+      </div>
+
+      <p class="evolves-note">More servers come online with each release. Drop a config into the harness and the server appears in the slash menu. Mirador surfaces what your Claude already knows.</p>
+    </div>
+  </section>
+
   <!-- ============ WHY ============ -->
   <section id="love">
     <div class="container">
@@ -845,6 +1162,9 @@
     <div class="container">
       <div class="row">
         <a href="#features">Features</a>
+        <a href="#personas">Personas</a>
+        <a href="#skills">Skills</a>
+        <a href="#mcp">Reach</a>
         <a href="#pricing">Pricing</a>
         <a href="#how">How it works</a>
         <a href="#install">Get it</a>
