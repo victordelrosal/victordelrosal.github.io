@@ -406,7 +406,7 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
   console.log('\nCalling Claude for synthesis...');
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',  // Was claude-sonnet-4-20250514, retired June 15, 2026 (caused the 2026-06-16 DAINS failure)
     max_tokens: 4500,  // Increased from 3000 to prevent truncation (Jan 3, 2026 incident)
     system: SYSTEM_PROMPT,
     messages: [
