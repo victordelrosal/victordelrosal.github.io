@@ -419,6 +419,16 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
     throw new Error('Unexpected response type from Claude');
   }
 
+  // Strip a surrounding markdown code fence if present (Jun 16, 2026 incident):
+  // claude-sonnet-4-6 wraps HTML output in ```html ... ```, whereas the older
+  // claude-sonnet-4 returned raw HTML. Left in place it breaks the footer check
+  // below and stores fenced markdown in Supabase.
+  let cleanText = content.text.trim();
+  const fenceMatch = cleanText.match(/^```(?:html)?\s*\n([\s\S]*?)\n?```$/i);
+  if (fenceMatch) {
+    cleanText = fenceMatch[1].trim();
+  }
+
   // Truncation detection (Jan 3, 2026 incident)
   // Check if Claude hit the token limit
   if (response.stop_reason === 'max_tokens') {
@@ -427,16 +437,16 @@ async function synthesizeBriefing(stories, isNewsletterRanked) {
 
   // Validate output ends with expected footer
   const expectedFooterPattern = /How this works<\/a><\/em><\/p>\s*$/;
-  if (!expectedFooterPattern.test(content.text)) {
+  if (!expectedFooterPattern.test(cleanText)) {
     console.error('\n⚠️  WARNING: Output appears truncated - missing expected footer!');
     console.error('    Expected ending: "How this works</a></em></p>"');
-    console.error('    Actual ending: "...' + content.text.slice(-100) + '"');
+    console.error('    Actual ending: "...' + cleanText.slice(-100) + '"');
     throw new Error('DAINS output truncated - missing footer. Aborting to prevent publishing incomplete content.');
   }
 
   // Insert header image AFTER the <h1> tag
   const headerImageHtml = `<img src="${HEADER_IMAGE_URL}" alt="Daily AI News Scan" style="width: 100%; max-width: 800px; height: auto; margin-bottom: 2rem; border-radius: 8px;">`;
-  const htmlWithImage = content.text.replace(/<\/h1>/i, `</h1>\n${headerImageHtml}\n`);
+  const htmlWithImage = cleanText.replace(/<\/h1>/i, `</h1>\n${headerImageHtml}\n`);
 
   return {
     html: htmlWithImage,
