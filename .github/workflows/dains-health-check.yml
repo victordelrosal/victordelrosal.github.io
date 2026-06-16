@@ -36,14 +36,16 @@ jobs:
             ATTEMPT=$((ATTEMPT + 1))
             echo "Attempt $ATTEMPT of $MAX_RETRIES..."
 
-            # Make minimal API call to validate key
+            # Make minimal API call. Use the SAME model DAINS publishes with
+            # (claude-sonnet-4-6) so a model retirement is caught here at 5pm,
+            # 12+ hours before the morning run — see the 2026-06-16 incident.
             RESPONSE=$(curl -s -w "\n%{http_code}" \
               -X POST "https://api.anthropic.com/v1/messages" \
               -H "Content-Type: application/json" \
               -H "x-api-key: ${ANTHROPIC_API_KEY}" \
               -H "anthropic-version: 2023-06-01" \
               -d '{
-                "model": "claude-3-haiku-20240307",
+                "model": "claude-sonnet-4-6",
                 "max_tokens": 1,
                 "messages": [{"role": "user", "content": "hi"}]
               }')
@@ -54,8 +56,9 @@ jobs:
 
             echo "HTTP Status: $HTTP_CODE"
 
-            # 200 = success, 401/403 = definitive auth failure (no retry needed)
-            if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "401" ] || [ "$HTTP_CODE" = "403" ]; then
+            # 200 = success; 401/403 = definitive auth failure; 404 = model
+            # retired/invalid. None are retryable.
+            if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "401" ] || [ "$HTTP_CODE" = "403" ] || [ "$HTTP_CODE" = "404" ]; then
               break
             fi
 
@@ -77,6 +80,10 @@ jobs:
             echo "status=invalid" >> $GITHUB_OUTPUT
             echo "error=Permission denied - API key may be disabled or rate limited" >> $GITHUB_OUTPUT
             echo "❌ Anthropic API key has permission issues"
+          elif [ "$HTTP_CODE" = "404" ]; then
+            echo "status=invalid" >> $GITHUB_OUTPUT
+            echo "error=DAINS model (claude-sonnet-4-6) returned 404 - it may have been RETIRED. Update the model in ai-daily-intel/build-scan.js before tomorrow's run." >> $GITHUB_OUTPUT
+            echo "❌ DAINS model not found (404) - likely retired"
           else
             echo "status=transient" >> $GITHUB_OUTPUT
             echo "error=Anthropic API returned HTTP $HTTP_CODE after $MAX_RETRIES attempts (likely a temporary service issue, not an API key problem)" >> $GITHUB_OUTPUT

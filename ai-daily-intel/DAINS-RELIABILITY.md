@@ -4,6 +4,28 @@
 
 ---
 
+## Incident: June 16, 2026 — Model Retirement (silent + cascading)
+
+### What Happened
+All scheduled runs failed within ~25s with `404 not_found_error: claude-sonnet-4-20250514`. The fallback placeholder published and the alert fired.
+
+### Root Causes
+1. **Primary:** `build-scan.js` pinned `claude-sonnet-4-20250514` (old Sonnet 4), which Anthropic **retired June 15, 2026**. The first scheduled run after retirement 404'd. NOT a credits or API-key problem (the key authenticated fine; a 404 is model-not-found).
+2. **Second, surfaced by the fix:** the replacement model `claude-sonnet-4-6` wraps its HTML output in a ```` ```html … ``` ```` markdown code fence; the legacy model returned raw HTML. The trailing backticks broke the footer-truncation guard and aborted an otherwise-complete scan.
+3. **Latent, ~4 months silent:** the `newsletter-ingest` Cloudflare worker pinned `claude-3-5-haiku-20241022`, retired **Feb 19, 2026**. Newsletter ingestion had been failing since, which is why DAINS reported "0 newsletter clusters" and silently degraded to RSS-only.
+
+### Resolution
+1. **Corrective:** `claude-sonnet-4-20250514` → `claude-sonnet-4-6`; strip a surrounding markdown code fence before validation/storage; force-republished a real scan.
+2. **Corrective:** `newsletter-ingest` worker `claude-3-5-haiku-20241022` → `claude-haiku-4-5`, deployed via wrangler.
+3. **Preventive:** the 5pm health check now pings the **actual** DAINS production model (`claude-sonnet-4-6`) instead of a throwaway model, and treats a `404` as an alert — so a future retirement is caught 12+ hours before the morning run instead of failing it.
+
+### Lessons
+- Model IDs are silent time bombs: a pinned dated model (`-YYYYMMDD`) WILL be retired. Prefer rolling aliases (`claude-sonnet-4-6`), and health-check the exact model in production, treating 404 as actionable.
+- A swap to a newer model can change output formatting (e.g. code-fence wrapping). Normalize model output before strict structural validation.
+- A degraded-but-not-failed dependency (newsletter worker → RSS fallback) hides for months. Surfacing it required reading the "fell back to RSS" log line, not just the fatal error.
+
+---
+
 ## Incident: January 3, 2026 — Content Truncation
 
 ### What Happened

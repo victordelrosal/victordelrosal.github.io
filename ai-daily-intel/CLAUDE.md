@@ -19,6 +19,12 @@ Before modifying ANY DAINS code, read these files:
 - Always validate output ends with expected footer before publishing
 - If content appears truncated, ABORT — do not publish partial content
 
+### Model Retirements (Jun 16, 2026 Incident)
+- DAINS pins a Claude model in `build-scan.js`. Dated model IDs (`claude-sonnet-4-YYYYMMDD`) get **retired** and then 404. A 404 is model-not-found, NOT a credits/API-key problem.
+- Use rolling aliases (e.g. `claude-sonnet-4-6`), not dated snapshots.
+- The 5pm health check pings the SAME model DAINS publishes with; a 404 there alerts 12h early. If you change the model in `build-scan.js`, update it in `dains-health-check.yml` too.
+- Newer models may wrap HTML in a ```` ```html … ``` ```` fence. `synthesizeBriefing()` strips a surrounding fence before validation — do NOT remove that.
+
 ### Output Validation
 The `synthesizeBriefing()` function includes truncation detection:
 ```javascript
