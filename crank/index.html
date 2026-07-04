@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crank — design loops that prompt the agent</title>
+<title>Crank: design loops that prompt the agent</title>
 <meta name="description" content="Crank is an open-source Claude Code skill: it sets its own acceptance criteria, runs a fleet of agents, and a separate cold verifier tries to fail the work before it reaches you. Turn the crank. The loop runs.">
 <link rel="canonical" href="https://victordelrosal.com/crank/">
 <meta name="theme-color" content="#171310">
@@ -11,14 +11,14 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Crank">
-<meta property="og:title" content="Crank — design loops that prompt the agent">
+<meta property="og:title" content="Crank: design loops that prompt the agent">
 <meta property="og:description" content="An open-source Claude Code skill with a check it can't talk its way past: self-set binary criteria, a fleet of agents, and a cold verifier that gates the stop.">
 <meta property="og:url" content="https://victordelrosal.com/crank/">
 <meta property="og:image" content="https://victordelrosal.com/crank/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Crank — design loops that prompt the agent">
+<meta name="twitter:title" content="Crank: design loops that prompt the agent">
 <meta name="twitter:description" content="An open-source Claude Code skill with a check it can't talk its way past.">
 <meta name="twitter:image" content="https://victordelrosal.com/crank/og.png">
 
@@ -100,10 +100,11 @@ nav .word em{font-style:normal;color:var(--brass-hi)}
 nav .links{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2.4vw,28px);font:500 13.5px/1 var(--mono)}
 nav .links a{color:var(--parch-dim);text-decoration:none;letter-spacing:.04em;padding:8px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
 nav .links a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-.gh{display:inline-flex;align-items:center;gap:9px;background:var(--brass);color:#1a140c!important;padding:10px 16px;border-radius:8px;
-  font:600 13.5px/1 var(--mono);text-decoration:none;letter-spacing:.02em;border:1px solid var(--brass-hi);transition:transform .18s,box-shadow .18s;will-change:transform}
-.gh:hover{box-shadow:0 4px 26px rgba(201,161,90,.35)}
-.gh svg{width:16px;height:16px;fill:#1a140c}
+.gh{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:#1a140c!important;padding:10px 15px 10px 13px;border-radius:9px;
+  font:600 13px/1 var(--mono);text-decoration:none;letter-spacing:.02em;border:1px solid var(--brass-hi);transition:transform .18s,box-shadow .18s,background .18s;will-change:transform}
+.gh:hover{box-shadow:0 6px 24px rgba(201,161,90,.38);background:var(--brass-hi)}
+.gh svg{width:15px;height:15px;fill:#1a140c;flex:0 0 auto}
+.ghlabel{white-space:nowrap}
 .iconT{width:38px;height:38px;border-radius:10px;border:1px solid rgba(201,161,90,.4);background:transparent;color:var(--parch-dim);
   cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s}
 .iconT:hover{color:var(--brass);border-color:var(--brass)}
@@ -201,6 +202,33 @@ h2 .b{color:var(--brass-hi)}
 .plaque p{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.5;color:var(--parch)}
 .plaque .who{font:500 12.5px/1 var(--mono);letter-spacing:.24em;color:var(--mute);margin-top:18px}
 
+/* kintsugi: the flaw repaired in gold. lapis panel, both themes (kintsugi ware is dark ceramic) */
+.kintsugi-note{max-width:760px;margin:56px 0 0;font-family:var(--serif);font-size:clamp(16px,1.9vw,19px);
+  font-style:italic;color:var(--parch-dim)}
+.kintsugi{position:relative;max-width:760px;margin-top:22px;border-radius:16px;overflow:hidden;
+  background:linear-gradient(152deg,#132a54 0%,#0d1d3d 55%,#0a1631 100%);
+  border:1px solid rgba(201,161,90,.45);
+  box-shadow:0 24px 70px rgba(8,14,30,.5), inset 0 0 70px rgba(24,52,104,.35)}
+.kintsugi .kv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.kintsugi .plaque{position:relative;z-index:1;margin:0;max-width:none;border:none;box-shadow:none;
+  background:transparent;padding:36px 36px 32px}
+.kintsugi .plaque::before,.kintsugi .plaque::after{border-color:var(--brass-hi)}
+.kintsugi .plaque p{color:#eadecb}
+.kintsugi .plaque .who{color:#93aed6}
+.kv .vein{fill:none;stroke:url(#kgold);stroke-linecap:round;stroke-linejoin:round;stroke-width:4.2;
+  stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.7s cubic-bezier(.4,.7,.3,1)}
+.kv .vein.b{stroke-width:2.6}
+.kv .veinGlow{fill:none;stroke:url(#kgold);stroke-linecap:round;stroke-linejoin:round;stroke-width:9;
+  filter:url(#kglow);opacity:0;transition:opacity 1.5s ease-out .45s}
+.kv .kdust circle{fill:#e8c675;opacity:0;transition:opacity 1s ease-out .6s}
+.kintsugi.drawn .kv .vein{stroke-dashoffset:0}
+.kintsugi.drawn .kv .veinGlow{opacity:.8}
+.kintsugi.drawn .kv .kdust circle{opacity:.7;animation:ktwinkle 3.4s ease-in-out infinite}
+.kv .kdust circle:nth-child(2n){animation-delay:.8s}
+.kv .kdust circle:nth-child(3n){animation-delay:1.6s}
+@keyframes ktwinkle{50%{opacity:.22}}
+[data-theme="light"] .kintsugi{box-shadow:0 24px 60px rgba(30,40,70,.28), inset 0 0 70px rgba(24,52,104,.3)}
+
 /* provenance */
 .prov{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:rgba(201,161,90,.14);border:1px solid rgba(201,161,90,.14);border-radius:14px;overflow:hidden;margin-top:54px;font:500 13px/1.6 var(--mono)}
 .prov div{background:var(--wood-0);padding:20px 22px;color:var(--parch-dim)}
@@ -267,7 +295,7 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
     <a href="#start">Install</a>
     <a class="gh" id="ghBtn" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-      Star<span class="ghl">&nbsp;on GitHub</span>
+      <span class="ghlabel">Star<span class="ghl"> on GitHub</span></span>
     </a>
   </div>
 </nav>
@@ -364,9 +392,40 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
     <div class="commit reveal"><p class="h">d9f0e9a &middot; ROUND 2</p><p>The field benchmark: Karpathy's autoresearch, the Ralph loop, Anthropic's harnesses, Reflexion, LATS, Voyager, GEPA, AlphaEvolve and more. Six new mechanisms adopted; six fashionable ideas rejected with written rationale, including the never-stop directive.</p></div>
     <div class="commit reveal"><p class="h">5a0c3b3 &middot; THE RECORD</p><p>README, benchmark, bet-weights and both verifier verdicts, published. Nothing quantified from unverified coverage.</p></div>
   </div>
-  <div class="plaque reveal">
-    <p>The second verifier caught the loop recording a fix it had not yet written. The catch, and the correction, are preserved in the run log verbatim. That is the design working: a check the loop cannot talk its way past, even when the work being checked is its own upgrade.</p>
-    <p class="who">.LOOP/LOG.MD &middot; VERIFIER 2, DEFECT 1</p>
+  <p class="kintsugi-note reveal">The flaw was not hidden. It was repaired in gold and kept as proof, the way a broken bowl is mended with lacquer so the crack becomes the most valuable line on it.</p>
+  <div class="kintsugi reveal" id="kintsugi">
+    <svg class="kv" viewBox="0 0 900 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="kgold" x1="0" y1="0" x2="1" y2="0.2">
+          <stop offset="0" stop-color="#6e4a12"/>
+          <stop offset="0.28" stop-color="#b8912f"/>
+          <stop offset="0.52" stop-color="#f3dc94"/>
+          <stop offset="0.74" stop-color="#c69a3c"/>
+          <stop offset="1" stop-color="#795316"/>
+        </linearGradient>
+        <filter id="kglow" x="-30%" y="-60%" width="160%" height="220%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="b"/></feMerge>
+        </filter>
+      </defs>
+      <g class="veins">
+        <path class="veinGlow" d="M-20,66 L128,104 L210,74 L338,166 L430,146 L560,232 L690,204 L822,286 L940,300"/>
+        <path class="veinGlow" d="M338,166 L300,206 L252,246 L214,300"/>
+        <path class="veinGlow" d="M560,232 L636,150 L698,120 L760,54"/>
+        <path class="vein" pathLength="1" d="M-20,66 L128,104 L210,74 L338,166 L430,146 L560,232 L690,204 L822,286 L940,300"/>
+        <path class="vein b" pathLength="1" d="M338,166 L300,206 L252,246 L214,300"/>
+        <path class="vein b" pathLength="1" d="M560,232 L636,150 L698,120 L760,54"/>
+      </g>
+      <g class="kdust">
+        <circle cx="180" cy="92" r="2.4"/><circle cx="360" cy="150" r="2"/><circle cx="470" cy="160" r="2.6"/>
+        <circle cx="600" cy="210" r="2.2"/><circle cx="712" cy="196" r="2"/><circle cx="284" cy="228" r="1.8"/>
+        <circle cx="662" cy="140" r="2.2"/><circle cx="405" cy="138" r="1.7"/>
+      </g>
+    </svg>
+    <div class="plaque">
+      <p>The second verifier caught the loop recording a fix it had not yet written. The catch, and the correction, are preserved in the run log verbatim. That is the design working: a check the loop cannot talk its way past, even when the work being checked is its own upgrade.</p>
+      <p class="who">.LOOP/LOG.MD &middot; VERIFIER 2, DEFECT 1</p>
+    </div>
   </div>
 </section>
 
@@ -429,6 +488,10 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
+import {EffectComposer} from './vendor/three-addons/postprocessing/EffectComposer.js';
+import {RenderPass} from './vendor/three-addons/postprocessing/RenderPass.js';
+import {ShaderPass} from './vendor/three-addons/postprocessing/ShaderPass.js';
+import {UnrealBloomPass} from './vendor/three-addons/postprocessing/UnrealBloomPass.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const still = new URLSearchParams(location.search).has('still');
@@ -470,9 +533,13 @@ try{
 const scene=new THREE.Scene();
 const cam=new THREE.PerspectiveCamera(38,1,0.1,100);
 cam.position.set(0,0.4,10);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
 stage.appendChild(renderer.domElement);
+// opaque hero buffer so bloom runs clean; clear colour = the wood/parchment field
+const CLEAR={dark:0x141009, light:0xf3ecdc};
+function isLight(){return document.documentElement.dataset.theme==='light';}
+renderer.setClearColor(isLight()?CLEAR.light:CLEAR.dark,1);
 
 const ROWS=46, COLS=110, RAD=2.35, LEN=11.5;
 const N=ROWS*COLS;
@@ -565,7 +632,8 @@ function applyStageTheme(light){
   uni.uLight.value=light?1:0;
   mat.blending=light?THREE.NormalBlending:THREE.AdditiveBlending;
   mat.needsUpdate=true;
-  if(reduced||still) renderer.render(scene,cam);
+  if(typeof applyBloomTheme==='function') applyBloomTheme(light);
+  if(reduced||still) composer.render();
 }
 addEventListener('cranktheme',e=>applyStageTheme(e.detail==='light'));
 mat.blending=uni.uLight.value?THREE.NormalBlending:THREE.AdditiveBlending;
@@ -585,9 +653,50 @@ const comb=new THREE.LineSegments(combGeo,new THREE.LineBasicMaterial({color:0x8
 comb.rotation.z=-0.18;
 scene.add(comb);
 
+// ---- bloom pipeline: the pins bloom like hot metal (ported from eye-candy's
+//      bright/blur/ACES finish, run through three's EffectComposer) ----
+const iw=stage.clientWidth||960, ih=stage.clientHeight||600;
+const composer=new EffectComposer(renderer);
+composer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+composer.setSize(iw,ih);
+composer.addPass(new RenderPass(scene,cam));
+const bloomPass=new UnrealBloomPass(new THREE.Vector2(iw,ih), 0.85, 0.55, 0.22);
+composer.addPass(bloomPass);
+// eye-candy's finish: ACES filmic tonemap + vignette + dithered grain, theme-aware
+const FinishShader={
+  uniforms:{ tDiffuse:{value:null}, uExposure:{value:0.92}, uVig:{value:0.46}, uLight:{value:isLight()?1:0} },
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`
+    uniform sampler2D tDiffuse; uniform float uExposure; uniform float uVig; uniform float uLight;
+    varying vec2 vUv;
+    float h21(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+    void main(){
+      vec3 c=texture2D(tDiffuse,vUv).rgb;
+      if(uLight<0.5){
+        c*=uExposure;
+        c=(c*(2.51*c+0.03))/(c*(2.43*c+0.59)+0.14);   // ACES filmic
+        c=pow(max(c,vec3(0.0)),vec3(0.92));
+        c+=(h21(gl_FragCoord.xy)-0.5)*(1.5/255.0);     // dithered grain
+      }
+      c*=1.0 - uVig*dot(vUv-0.5,vUv-0.5)*2.0;          // vignette (both themes)
+      gl_FragColor=vec4(c,1.0);
+    }`
+};
+const finishPass=new ShaderPass(FinishShader);
+composer.addPass(finishPass);
+function applyBloomTheme(light){
+  renderer.setClearColor(light?CLEAR.light:CLEAR.dark,1);
+  bloomPass.enabled=!light;              // hot-metal bloom is a dark-mode effect; parchment has nothing to bloom
+  finishPass.uniforms.uLight.value=light?1:0;
+  finishPass.uniforms.uVig.value=light?0.22:0.46;
+}
+applyBloomTheme(isLight());
+
 function size(){
   const w=stage.clientWidth,h=stage.clientHeight;
   renderer.setSize(w,h);
+  composer.setSize(w,h);
+  bloomPass.setSize(w,h);
   cam.aspect=w/h;cam.updateProjectionMatrix();
 }
 size();addEventListener('resize',size);
@@ -600,12 +709,12 @@ function frame(){
     if(!reduced) idle+=dt*0.12;
     uni.uRot.value=idle+scrollRot;
     points.userData.last=scrollRot;
-    renderer.render(scene,cam);
+    composer.render();
   }
   requestAnimationFrame(frame);
 }
-if(reduced){uni.uRot.value=1.2;renderer.render(scene,cam);}
-frame();
+if(reduced){uni.uRot.value=1.2;composer.render();}   // one composed frame, no loop
+else frame();
 document.addEventListener('visibilitychange',()=>{playing=!document.hidden;if(playing)clock.getDelta();});
 new IntersectionObserver(e=>{heroVisible=e[0].isIntersecting;},{threshold:0}).observe(stage);
 }catch(err){
@@ -637,9 +746,14 @@ if(!reduced && !still){
     ScrollTrigger.create({trigger:el,start:'top 78%',
       onEnter:()=>setTimeout(()=>el.classList.add('lit'),k*90)});
   });
+  // kintsugi: the crack draws and floods with gold as the plaque enters
+  const kel=document.getElementById('kintsugi');
+  if(kel) ScrollTrigger.create({trigger:kel,start:'top 74%',once:true,
+    onEnter:()=>kel.classList.add('drawn')});
 }else{
   document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
   document.querySelectorAll('.rule').forEach(el=>el.classList.add('lit'));
+  const kel=document.getElementById('kintsugi'); if(kel) kel.classList.add('drawn');
 }
 
 /* ---------- magnetic CTA (pointer devices only) ---------- */
