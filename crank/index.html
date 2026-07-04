@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crank — design loops that prompt the agent</title>
+<meta name="description" content="Crank is an open-source Claude Code skill: it sets its own acceptance criteria, runs a fleet of agents, and a separate cold verifier tries to fail the work before it reaches you. Turn the crank. The loop runs.">
+<link rel="canonical" href="https://victordelrosal.com/crank/">
+<meta name="theme-color" content="#171310">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crank">
+<meta property="og:title" content="Crank — design loops that prompt the agent">
+<meta property="og:description" content="An open-source Claude Code skill with a check it can't talk its way past: self-set binary criteria, a fleet of agents, and a cold verifier that gates the stop.">
+<meta property="og:url" content="https://victordelrosal.com/crank/">
+<meta property="og:image" content="https://victordelrosal.com/crank/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crank — design loops that prompt the agent">
+<meta name="twitter:description" content="An open-source Claude Code skill with a check it can't talk its way past.">
+<meta name="twitter:image" content="https://victordelrosal.com/crank/og.png">
+
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --wood-0:#0f0c0a; --wood-1:#171310; --wood-2:#221a13; --wood-3:#2d2318;
+  --brass:#c9a15a; --brass-hi:#e8c675; --brass-lo:#8a6c34;
+  --parch:#e9ddc8; --parch-dim:#cbb896; --mute:#9c8a68;
+  --ember:#d97a52;
+  --serif:'Fraunces',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{background:var(--wood-1)}
+body{color:var(--parch);font:400 17px/1.7 var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--brass);color:var(--wood-0)}
+a{color:var(--brass-hi)}
+:focus-visible{outline:2px solid var(--brass-hi);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--brass);color:var(--wood-0);padding:10px 16px;z-index:300;font-family:var(--mono)}
+.skip:focus{left:0}
+
+/* grain */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:90;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  animation:grain 7s steps(9) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}40%{transform:translate(1%,-2%)}60%{transform:translate(-1%,2%)}80%{transform:translate(2%,1%)}}
+
+/* loader */
+#loader{position:fixed;inset:0;background:var(--wood-0);z-index:200;display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#loader.done{opacity:0;visibility:hidden}
+#loader .ns{font:600 13px/1 var(--mono);letter-spacing:.42em;color:var(--ember);margin-bottom:18px;text-align:center}
+#loader .word{font-family:var(--serif);font-optical-sizing:auto;font-weight:760;font-size:clamp(52px,10vw,110px);color:var(--brass-hi);letter-spacing:.02em;text-align:center}
+#loader .word span{opacity:0;display:inline-block}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;gap:14px;padding:0 clamp(18px,4vw,44px);
+  background:color-mix(in srgb,var(--wood-0) 72%,transparent);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);
+  border-bottom:1px solid rgba(201,161,90,.18)}
+nav .mark{width:34px;height:34px;border-radius:9px;flex:0 0 34px}
+nav .word{font:700 20px/1 var(--serif);color:var(--parch);letter-spacing:.04em;text-decoration:none}
+nav .word em{font-style:normal;color:var(--brass-hi)}
+nav .links{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2.4vw,28px);font:500 13.5px/1 var(--mono)}
+nav .links a{color:var(--parch-dim);text-decoration:none;letter-spacing:.04em;padding:8px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
+nav .links a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+.gh{display:inline-flex;align-items:center;gap:9px;background:var(--brass);color:#1a140c!important;padding:10px 16px;border-radius:8px;
+  font:600 13.5px/1 var(--mono);text-decoration:none;letter-spacing:.02em;border:1px solid var(--brass-hi);transition:transform .18s,box-shadow .18s;will-change:transform}
+.gh:hover{box-shadow:0 4px 26px rgba(201,161,90,.35)}
+.gh svg{width:16px;height:16px;fill:#1a140c}
+@media(max-width:820px){nav .links a.hideS{display:none}}
+@media(max-width:560px){.ghl{display:none}.nowline{letter-spacing:.24em;font-size:11px}h1{line-height:1.02}}
+
+/* hero */
+header{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
+#stage{position:absolute;inset:0;z-index:1}
+.heroInner{position:relative;z-index:2;text-align:center;padding:120px 20px 90px;max-width:1000px}
+.nowline{font:600 13px/1 var(--mono);letter-spacing:.42em;color:var(--ember);margin-bottom:26px}
+h1{font-family:var(--serif);font-optical-sizing:auto;font-weight:740;font-variation-settings:'opsz' 144;
+  font-size:clamp(40px,10.5vw,132px);line-height:.95;color:var(--parch);letter-spacing:.005em;text-shadow:0 2px 40px rgba(15,12,10,.8)}
+h1 .b{color:var(--brass-hi)}
+.heroSub{font-size:clamp(18px,2.3vw,23px);color:var(--parch-dim);max-width:34em;margin:28px auto 0;font-weight:420}
+.heroCtas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:42px}
+.install{display:flex;align-items:center;flex-wrap:wrap;gap:14px;background:rgba(15,12,10,.75);border:1px solid rgba(201,161,90,.4);border-radius:10px;
+  padding:13px 16px;font:500 clamp(12px,3.4vw,14px)/1 var(--mono);color:var(--brass-hi)}
+.install button{font:600 12px/1 var(--mono);background:transparent;border:1px solid rgba(201,161,90,.5);color:var(--parch-dim);
+  border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s}
+.install button:hover{color:var(--brass-hi);border-color:var(--brass-hi)}
+.install button.ok{background:#243d2a;border-color:#4f8f5f;color:#8fd6a0}
+.scrollHint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:var(--mute);font:500 11.5px/1.6 var(--mono);letter-spacing:.3em;text-align:center}
+.scrollHint svg{display:block;margin:8px auto 0;width:22px;height:22px;stroke:var(--brass);animation:crankspin 5s linear infinite;transform-origin:50% 50%}
+@keyframes crankspin{to{transform:rotate(360deg)}}
+
+/* ticker */
+.ticker{border-top:1px solid rgba(201,161,90,.22);border-bottom:1px solid rgba(201,161,90,.22);background:var(--wood-0);
+  overflow:hidden;white-space:nowrap;padding:13px 0;position:relative;z-index:2}
+.ticker .track{display:inline-block;animation:tick 36s linear infinite;font:600 12.5px/1 var(--mono);letter-spacing:.34em;color:var(--brass)}
+.ticker .track em{font-style:normal;color:var(--ember)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* sections */
+main{position:relative;z-index:2}
+section{padding:clamp(80px,12vw,150px) clamp(20px,6vw,72px);max-width:1180px;margin:0 auto}
+.kicker{font:600 12.5px/1 var(--mono);letter-spacing:.4em;color:var(--ember);margin-bottom:20px}
+h2{font-family:var(--serif);font-optical-sizing:auto;font-weight:680;font-size:clamp(27px,5.4vw,60px);line-height:1.06;color:var(--parch);max-width:18em;overflow-wrap:break-word}
+h2 .b{color:var(--brass-hi)}
+.lede{font-size:clamp(17px,1.9vw,20px);color:var(--parch-dim);max-width:38em;margin-top:22px}
+.lede a{text-decoration-color:rgba(201,161,90,.5)}
+
+/* loop plates */
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:54px}
+.plate{position:relative;background:linear-gradient(160deg,var(--wood-2),var(--wood-1) 70%);border:1px solid rgba(201,161,90,.28);border-radius:12px;padding:26px 24px 24px;overflow:hidden}
+.plate::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,198,117,.7),transparent)}
+.plate .n{font:600 12px/1 var(--mono);color:var(--ember);letter-spacing:.28em}
+.plate h3{font:640 23px/1.2 var(--serif);color:var(--brass-hi);margin:13px 0 10px}
+.plate p{font-size:15px;color:var(--parch-dim)}
+.pull{margin:70px auto 0;max-width:20em;text-align:center;font-family:var(--serif);font-weight:600;font-optical-sizing:auto;
+  font-size:clamp(22px,4vw,44px);line-height:1.25;color:var(--parch)}
+.pull .b{color:var(--brass-hi)}
+.pull footer{font:500 12.5px/1 var(--mono);letter-spacing:.3em;color:var(--mute);margin-top:22px}
+
+/* rules: pins */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:rgba(201,161,90,.16);border:1px solid rgba(201,161,90,.16);border-radius:14px;overflow:hidden;margin-top:54px}
+.rule{background:var(--wood-1);padding:30px 28px}
+.rule .pin{width:11px;height:11px;border-radius:50%;background:var(--brass-lo);box-shadow:0 0 0 3px rgba(201,161,90,.14);margin-bottom:18px;transition:background .5s,box-shadow .5s}
+.rule.lit .pin{background:var(--brass-hi);box-shadow:0 0 18px rgba(232,198,117,.75),0 0 0 3px rgba(232,198,117,.25)}
+.rule h3{font:640 20px/1.25 var(--serif);color:var(--parch);margin-bottom:9px}
+.rule p{font-size:14.5px;color:var(--parch-dim)}
+.rule .src{display:block;margin-top:12px;font:500 11.5px/1.5 var(--mono);letter-spacing:.06em;color:var(--mute)}
+
+/* modes */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:54px}
+@media(max-width:860px){.modes{grid-template-columns:1fr}}
+.mode{border:1px solid rgba(201,161,90,.3);border-radius:14px;padding:34px 30px;background:
+  radial-gradient(120% 100% at 50% 0%,rgba(201,161,90,.07),transparent 60%),var(--wood-1)}
+.mode .tag{display:inline-block;font:600 11.5px/1 var(--mono);letter-spacing:.3em;color:var(--wood-0);background:var(--brass);border-radius:5px;padding:7px 10px}
+.mode.night .tag{background:var(--ember)}
+.mode h3{font:660 26px/1.15 var(--serif);color:var(--brass-hi);margin:18px 0 12px}
+.mode p{font-size:15px;color:var(--parch-dim)}
+.mode ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.mode li{font:500 13.5px/1.55 var(--mono);color:var(--parch-dim);padding-left:20px;position:relative}
+.mode li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--brass)}
+.mode.night li::before{background:var(--ember)}
+.mode code{color:var(--brass-hi)}
+
+/* upgrade timeline */
+.commits{margin-top:54px;border-left:1px solid rgba(201,161,90,.35);padding-left:34px;display:grid;gap:34px;max-width:760px}
+.commit{position:relative}
+.commit::before{content:"";position:absolute;left:-40px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--brass-hi);box-shadow:0 0 14px rgba(232,198,117,.6)}
+.commit .h{font:600 13px/1 var(--mono);color:var(--brass);letter-spacing:.06em;margin-bottom:8px}
+.commit p{font-size:15px;color:var(--parch-dim)}
+.plaque{margin-top:64px;max-width:760px;border:1px solid rgba(201,161,90,.4);border-radius:14px;padding:34px 34px 30px;
+  background:linear-gradient(150deg,var(--wood-2),var(--wood-1));position:relative}
+.plaque::before,.plaque::after{content:"";position:absolute;width:12px;height:12px;border-color:var(--brass-hi);border-style:solid}
+.plaque::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.plaque::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.plaque p{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.5;color:var(--parch)}
+.plaque .who{font:500 12.5px/1 var(--mono);letter-spacing:.24em;color:var(--mute);margin-top:18px}
+
+/* provenance */
+.prov{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:rgba(201,161,90,.14);border:1px solid rgba(201,161,90,.14);border-radius:14px;overflow:hidden;margin-top:54px;font:500 13px/1.6 var(--mono)}
+.prov div{background:var(--wood-0);padding:20px 22px;color:var(--parch-dim)}
+.prov b{display:block;color:var(--brass);font-weight:600;letter-spacing:.04em;margin-bottom:4px}
+.provNote{font:500 12.5px/1.7 var(--mono);color:var(--mute);margin-top:18px;letter-spacing:.03em}
+
+/* quickstart terminal */
+.term{margin-top:54px;background:#0b0908;border:1px solid rgba(201,161,90,.35);border-radius:14px;overflow:hidden;max-width:860px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.term .bar{display:flex;align-items:center;gap:8px;background:var(--wood-2);border-bottom:1px solid rgba(201,161,90,.25);padding:12px 16px}
+.term .dot{width:11px;height:11px;border-radius:50%;background:var(--brass-lo)}
+.term .dot:nth-child(2){background:var(--brass)}
+.term .dot:nth-child(3){background:var(--brass-hi)}
+.term .title{margin-left:8px;font:500 12px/1 var(--mono);color:var(--mute);letter-spacing:.14em}
+.term .body{padding:24px 24px 26px;font:500 14px/2.1 var(--mono);color:var(--parch-dim);overflow-x:auto}
+.term .c{color:var(--mute)}
+.term .p{color:var(--ember)}
+.term .g{color:var(--brass-hi)}
+.termRow{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.termRow button{flex:0 0 auto;font:600 11.5px/1 var(--mono);background:transparent;border:1px solid rgba(201,161,90,.4);color:var(--mute);border-radius:6px;padding:6px 9px;cursor:pointer;margin-top:6px;transition:all .15s}
+.termRow button:hover{color:var(--brass-hi);border-color:var(--brass-hi)}
+.termRow button.ok{background:#243d2a;border-color:#4f8f5f;color:#8fd6a0}
+
+/* footer */
+footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);padding:56px clamp(20px,6vw,72px);position:relative;z-index:2}
+.footInner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:22px;justify-content:space-between}
+.footInner .left{display:flex;align-items:center;gap:14px}
+.footInner img{width:30px;height:30px;border-radius:8px}
+.footInner .fm{font:500 13px/1.8 var(--mono);color:var(--mute)}
+.footInner .fm a{color:var(--parch-dim);text-decoration:none}
+.footInner .fm a:hover{color:var(--brass-hi)}
+
+.reveal{opacity:0;transform:translateY(34px)}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .rule .pin{background:var(--brass-hi)}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="loader" aria-hidden="true">
+  <div>
+    <div class="ns" id="ns"></div>
+    <div class="word" id="lw"><span>C</span><span>R</span><span>A</span><span>N</span><span>K</span></div>
+  </div>
+</div>
+
+<nav aria-label="Main">
+  <img class="mark" src="icon-192.png" alt="" width="34" height="34">
+  <a class="word" href="./">CRANK<em>.</em></a>
+  <div class="links">
+    <a class="hideS" href="#loop">The loop</a>
+    <a class="hideS" href="#discipline">Discipline</a>
+    <a class="hideS" href="#upgrade">Self-upgrade</a>
+    <a class="hideS" href="#research">Research</a>
+    <a href="#start">Install</a>
+    <a class="gh" id="ghBtn" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      Star<span class="ghl">&nbsp;on GitHub</span>
+    </a>
+  </div>
+</nav>
+
+<header id="top">
+  <div id="stage" aria-hidden="true"></div>
+  <div class="heroInner">
+    <p class="nowline">NOW SHOWING &middot; AN OPEN-SOURCE CLAUDE CODE SKILL</p>
+    <h1 id="heroH">Turn the crank.<br><span class="b">The loop runs.</span></h1>
+    <p class="heroSub">Crank sets its own acceptance criteria, runs a fleet of agents, and hands the work to a
+    separate cold verifier whose only job is to fail it before it reaches you. Stop being the thing inside the loop.</p>
+    <div class="heroCtas">
+      <div class="install"><span id="inst">/crank make me proud</span><button data-copy="inst" aria-label="Copy command">COPY</button></div>
+      <a class="gh" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+  <div class="scrollHint">SCROLL TO TURN
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3.4"/><path d="M12 8.6V4.5M15 13.8l3.4 2.4"/></svg>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <span class="track" id="tick"></span>
+</div>
+
+<main id="main">
+
+<section id="loop">
+  <p class="kicker reveal">THE MECHANISM</p>
+  <h2 class="reveal">Strip the mystique and every agent loop is <span class="b">four parts.</span></h2>
+  <p class="lede reveal">The prompt is the cheap part now. The art is almost entirely in parts three and four.</p>
+  <div class="plates">
+    <div class="plate reveal"><p class="n">01 &middot; GENERATOR</p><h3>The next prompt</h3><p>A template, a task list, or a mutation of the last attempt. In Crank, the director writes its own brief and binary criteria before spending a token.</p></div>
+    <div class="plate reveal"><p class="n">02 &middot; AGENT RUN</p><h3>The work</h3><p>A fleet of specialists, one per independent workstream, each opening with a three-line readback so misalignment dies at line three, not in the artifact.</p></div>
+    <div class="plate reveal"><p class="n">03 &middot; EVALUATOR</p><h3>The cold verifier</h3><p>A separate agent, fresh context every round, sees only the criteria and the artifacts, and is instructed to fail the work. For anything runnable, it drives the artifact like a user.</p></div>
+    <div class="plate reveal"><p class="n">04 &middot; CONTROLLER</p><h3>The decision</h3><p>Investigate why a criterion failed, then iterate structurally, fork rival candidates when stuck, or stop honestly. The verifier's verdict gates the stop, not the builder's feelings.</p></div>
+  </div>
+  <div class="pull reveal">
+    &ldquo;A loop with a weak evaluator <span class="b">fails confidently a thousand times</span> and bills you for it.&rdquo;
+    <footer>THE WHOLE SKILL IN ONE SENTENCE</footer>
+  </div>
+</section>
+
+<section id="discipline">
+  <p class="kicker reveal">THE DISCIPLINE</p>
+  <h2 class="reveal">Every pin on the cylinder is a rule that <span class="b">earned its place.</span></h2>
+  <p class="lede reveal">Crank is benchmarked against the field and upgraded under hostile verification. Each rule traces to a named, fetch-verified source.</p>
+  <div class="rules">
+    <div class="rule reveal"><div class="pin"></div><h3>The verifier gates the stop</h3><p>The loop cannot declare done while any binary criterion fails. Self-grading is systematically lenient; the grader lives in a separate context window.</p><span class="src">Anthropic loop experiments &middot; CMA Outcomes</span></div>
+    <div class="rule reveal"><div class="pin"></div><h3>The evaluation surface is frozen</h3><p>Criteria, check scripts and verifier instructions are part of the contract. A fix that edits the test instead of the work is a downgrade in disguise.</p><span class="src">Karpathy autoresearch &middot; Anthropic harness law</span></div>
+    <div class="rule reveal"><div class="pin"></div><h3>Ground before you frame</h3><p>Locate the real artifacts and write an explain-back, every claim marked VERIFIED or ASSUMED, before the contract freezes. The expensive bugs are shared misunderstanding.</p><span class="src">Uriostegui &middot; ClineFlow</span></div>
+    <div class="rule reveal"><div class="pin"></div><h3>Baseline before you improve</h3><p>Measure the unmodified starting state first. Every claim of improvement is proved against the baseline, not against memory of it.</p><span class="src">Karpathy autoresearch</span></div>
+    <div class="rule reveal"><div class="pin"></div><h3>Memory that compounds</h3><p>Verified rules distill to LEARNINGS; reusable scripts promote to a tools library. Run N+1 starts from competence, not from scratch.</p><span class="src">Lance Martin &middot; Voyager &middot; AWM</span></div>
+    <div class="rule reveal"><div class="pin"></div><h3>Freedom stops at the gate</h3><p>Money, reach, publishing, deletion: anything irreversible pauses for a human, or parks in an approval queue when running unattended. The gate never lowers because no one is watching.</p><span class="src">Crank doctrine &middot; scheduled mode</span></div>
+  </div>
+</section>
+
+<section id="modes">
+  <p class="kicker reveal">TWO WAYS TO TURN IT</p>
+  <h2 class="reveal">Present between rounds, <span class="b">or asleep while it runs.</span></h2>
+  <div class="modes">
+    <div class="mode reveal">
+      <span class="tag">INTERACTIVE</span>
+      <h3>/crank</h3>
+      <p>You hand over the wheel: it grasps intent, writes the contract, dispatches the fleet, red-teams, iterates. Gates pause in-session and wait for you.</p>
+      <ul>
+        <li>ORIENT &rarr; FRAME &rarr; DECOMPOSE &rarr; EXECUTE &rarr; RED-TEAM &rarr; DECIDE</li>
+        <li>Binary criteria frozen at FRAME, downgrades always surfaced</li>
+        <li>Fresh cold verifier every round</li>
+      </ul>
+    </div>
+    <div class="mode night reveal">
+      <span class="tag">SCHEDULED</span>
+      <h3>/crank scheduled</h3>
+      <p>The same loop with the human out of the room. It has to survive a closed laptop and a cold context, so three things become mandatory.</p>
+      <ul>
+        <li>Gates become an async approval queue, never auto-approval</li>
+        <li>A hard budget ceiling that aborts, not asks nicely</li>
+        <li>Crash-safe <code>STATE.json</code>: a cron cold-start resumes mid-run</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="upgrade">
+  <p class="kicker reveal">PROOF OF DISCIPLINE</p>
+  <h2 class="reveal">On 4 July 2026, <span class="b">the loop upgraded itself.</span></h2>
+  <p class="lede reveal">Crank was pointed at Crank: benchmark your own operating manual against 23 approaches, upgrade, and ship only what a hostile reviewer passes. The full run record is public in the repo.</p>
+  <div class="commits">
+    <div class="commit reveal"><p class="h">6f0ee70 &middot; ROUND 1</p><p>Absorbed Uriostegui and ClineFlow: the grounding discipline, the run journal, the builder readback. Also caught its own manual citing a log no section defined, and its public repo three weeks behind the installed skill.</p></div>
+    <div class="commit reveal"><p class="h">d9f0e9a &middot; ROUND 2</p><p>The field benchmark: Karpathy's autoresearch, the Ralph loop, Anthropic's harnesses, Reflexion, LATS, Voyager, GEPA, AlphaEvolve and more. Six new mechanisms adopted; six fashionable ideas rejected with written rationale, including the never-stop directive.</p></div>
+    <div class="commit reveal"><p class="h">5a0c3b3 &middot; THE RECORD</p><p>README, benchmark, bet-weights and both verifier verdicts, published. Nothing quantified from unverified coverage.</p></div>
+  </div>
+  <div class="plaque reveal">
+    <p>The second verifier caught the loop recording a fix it had not yet written. The catch, and the correction, are preserved in the run log verbatim. That is the design working: a check the loop cannot talk its way past, even when the work being checked is its own upgrade.</p>
+    <p class="who">.LOOP/LOG.MD &middot; VERIFIER 2, DEFECT 1</p>
+  </div>
+</section>
+
+<section id="research">
+  <p class="kicker reveal">STANDING ON NAMED SHOULDERS</p>
+  <h2 class="reveal">Every source in the canon is <span class="b">fetched and verified.</span></h2>
+  <div class="prov">
+    <div class="reveal"><b>Anthropic</b>Long-running harness experiments v1 + v2; verifier subagents beat self-critique (Lance Martin)</div>
+    <div class="reveal"><b>Karpathy</b>autoresearch: frozen evals, mandatory baselines, git as the undo mechanism</div>
+    <div class="reveal"><b>Practitioners</b>Ralph loop, ClineFlow, Cline Memory Bank, Spec Kit, Kiro, BMAD, Task Master</div>
+    <div class="reveal"><b>arXiv</b>Reflexion 2303.11366 &middot; LATS 2310.04406 &middot; Voyager 2305.16291 &middot; SWE-agent 2405.15793</div>
+    <div class="reveal"><b>arXiv</b>GEPA 2507.19457 &middot; Darwin G&ouml;del Machine 2505.22954 &middot; AlphaEvolve 2506.13131 &middot; AWM 2409.07429</div>
+    <div class="reveal"><b>The record</b>23-approach benchmark, bet-weights for accepted and rejected, full run journal, all in the repo</div>
+  </div>
+  <p class="provNote reveal">Secondary coverage that could not be verified is marked UNVERIFIED in the captures and never quoted. MIT licensed.</p>
+</section>
+
+<section id="start">
+  <p class="kicker reveal">QUICK START</p>
+  <h2 class="reveal">Install it, then <span class="b">stay the engineer.</span></h2>
+  <div class="term reveal">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">claude-code &mdash; ~/projects</span></div>
+    <div class="body">
+      <div class="termRow"><div>
+<span class="c"># install the skill</span><br>
+<span class="p">$</span> <span id="cmd1">git clone https://github.com/victordelrosal/crank.git<br>$ mkdir -p ~/.claude/skills/crank<br>$ cp crank/skill/SKILL.md ~/.claude/skills/crank/SKILL.md</span>
+      </div><button data-copy="cmd1" aria-label="Copy install commands">COPY</button></div>
+      <br>
+      <div class="termRow"><div>
+<span class="c"># hand over the wheel, stay for the gates</span><br>
+<span class="p">&gt;</span> <span class="g" id="cmd2">/crank turn this research report into a publishable pitch package, make me proud</span>
+      </div><button data-copy="cmd2" aria-label="Copy example">COPY</button></div>
+      <br>
+      <div class="termRow"><div>
+<span class="c"># or unattended, on a heartbeat, with a hard ceiling</span><br>
+<span class="p">&gt;</span> <span class="g" id="cmd3">/crank scheduled babysit my open PRs overnight; queue anything that needs my call</span>
+      </div><button data-copy="cmd3" aria-label="Copy scheduled example">COPY</button></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="footInner">
+    <div class="left">
+      <img src="icon-192.png" alt="Crank mark" width="30" height="30">
+      <span class="fm">CRANK &middot; MIT License &middot; built and dogfooded with Claude Code</span>
+    </div>
+    <span class="fm">
+      <a href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp;
+      <a href="https://github.com/victordelrosal/crank/tree/master/research" target="_blank" rel="noopener">Research</a> &nbsp;&middot;&nbsp;
+      <a href="https://victordelrosal.com">victordelrosal.com</a>
+    </span>
+  </div>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const still = new URLSearchParams(location.search).has('still');
+if(still){
+  document.documentElement.style.scrollBehavior='auto';
+  const s=document.createElement('style');
+  s.textContent='header{min-height:900px!important;max-height:900px;overflow:hidden}';
+  document.head.appendChild(s);
+}
+
+/* ---------- ticker ---------- */
+const tickText='CRANK v2 <em>&#9679;</em> THE VERIFIER GATES THE STOP <em>&#9679;</em> 23 SOURCES FETCH-VERIFIED <em>&#9679;</em> 11 RULES, EACH WITH A NAMED LINEAGE <em>&#9679;</em> MIT LICENSED <em>&#9679;</em> ';
+document.getElementById('tick').innerHTML=tickText+tickText;
+
+/* ---------- loader ---------- */
+const loader=document.getElementById('loader');
+const NS='NOW SHOWING';
+if(reduced||still||sessionStorage.getItem('crankSeen')){
+  document.getElementById('ns').textContent=NS;
+  loader.classList.add('done');
+}else{
+  sessionStorage.setItem('crankSeen','1');
+  const nsEl=document.getElementById('ns');
+  const glyphs='&#9679;&#9675;·:*+';
+  let step=0;
+  const dec=setInterval(()=>{
+    step++;
+    nsEl.textContent=NS.split('').map((ch,i)=> i<step? ch : '·:*+●○'[Math.floor((i*7+step*3)%6)]).join('');
+    if(step>NS.length){clearInterval(dec);}
+  },40);
+  gsap.to('#lw span',{opacity:1,duration:.07,stagger:.09,delay:.45,ease:'none'});
+  gsap.to(loader,{opacity:0,duration:.6,delay:1.7,onComplete:()=>loader.classList.add('done')});
+}
+
+/* ---------- three.js: the punched cylinder ---------- */
+const stage=document.getElementById('stage');
+let scrollRot=0;
+try{
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(38,1,0.1,100);
+cam.position.set(0,0.4,10);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+stage.appendChild(renderer.domElement);
+
+const ROWS=46, COLS=110, RAD=2.35, LEN=11.5;
+const N=ROWS*COLS;
+const pos=new Float32Array(N*3), aAng=new Float32Array(N), aPin=new Float32Array(N), aRnd=new Float32Array(N);
+let i=0;
+for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+    const x=(r/(ROWS-1)-0.5)*LEN;
+    const ang=(c/COLS)*Math.PI*2;
+    pos[i*3]=x; pos[i*3+1]=0; pos[i*3+2]=0;
+    aAng[i]=ang;
+    // deterministic pin pattern: a sparse punched score
+    aPin[i]=((r*17+c*29)%13===0 || (r*7+c*11)%31===0)?1:0;
+    aRnd[i]=((r*37+c*53)%100)/100;
+    i++;
+  }
+}
+const geo=new THREE.BufferGeometry();
+geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+geo.setAttribute('aAng',new THREE.BufferAttribute(aAng,1));
+geo.setAttribute('aPin',new THREE.BufferAttribute(aPin,1));
+geo.setAttribute('aRnd',new THREE.BufferAttribute(aRnd,1));
+
+const uni={
+  uRot:{value:0},
+  uPx:{value:Math.min(devicePixelRatio,1.75)},
+  uFlashAng:{value:0.9} // comb position (radians, front-upper)
+};
+const mat=new THREE.ShaderMaterial({
+  uniforms:uni,
+  transparent:true,
+  depthWrite:false,
+  blending:THREE.AdditiveBlending,
+  vertexShader:`
+    attribute float aAng; attribute float aPin; attribute float aRnd;
+    uniform float uRot; uniform float uPx; uniform float uFlashAng;
+    varying float vGlow; varying float vPin; varying float vDepth;
+    const float R=${RAD.toFixed(2)};
+    void main(){
+      float ang=aAng+uRot;
+      vec3 p=vec3(position.x, cos(ang)*R, sin(ang)*R);
+      // pins protrude
+      if(aPin>0.5){ p.y=cos(ang)*(R+0.09); p.z=sin(ang)*(R+0.09); }
+      vec4 mv=modelViewMatrix*vec4(p,1.0);
+      float depth=sin(ang); // 1 = front
+      vDepth=depth;
+      // comb strike: pin near comb angle flashes
+      float d=abs(mod(ang-uFlashAng+3.14159,6.28318)-3.14159);
+      float strike=aPin*smoothstep(0.28,0.0,d);
+      vGlow=strike; vPin=aPin;
+      float size=(aPin>0.5? 3.6:1.8)+strike*4.5;
+      gl_PointSize=size*uPx*(300.0/-mv.z)*0.05*(0.6+0.4*depth);
+      gl_Position=projectionMatrix*mv;
+    }`,
+  fragmentShader:`
+    varying float vGlow; varying float vPin; varying float vDepth;
+    void main(){
+      vec2 uv=gl_PointCoord-0.5;
+      float d=length(uv);
+      if(d>0.5) discard;
+      float soft=smoothstep(0.5,0.08,d);
+      vec3 brass=vec3(0.788,0.631,0.353);
+      vec3 hi=vec3(0.910,0.776,0.459);
+      vec3 ember=vec3(0.851,0.478,0.322);
+      vec3 col=mix(brass*0.55,hi,vPin*0.7);
+      col=mix(col,ember,vGlow*0.8);
+      float alpha=soft*(0.16+0.62*max(vDepth,0.0)+vPin*0.30+vGlow*0.6);
+      alpha*=smoothstep(-0.12,0.30,vDepth);
+      gl_FragColor=vec4(col*(0.9+vGlow*1.6),alpha);
+    }`
+});
+const points=new THREE.Points(geo,mat);
+points.rotation.z=-0.18;
+scene.add(points);
+
+// comb: a thin row of teeth (line segments) at the strike angle
+const combGeo=new THREE.BufferGeometry();
+const combPts=[];
+const combAng=uni.uFlashAng.value;
+for(let r=0;r<ROWS;r+=1){
+  const x=(r/(ROWS-1)-0.5)*LEN;
+  const y0=Math.cos(combAng)*(RAD+0.16), z0=Math.sin(combAng)*(RAD+0.16);
+  const y1=Math.cos(combAng)*(RAD+0.42), z1=Math.sin(combAng)*(RAD+0.42);
+  combPts.push(x,y0,z0,x,y1,z1);
+}
+combGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(combPts),3));
+const comb=new THREE.LineSegments(combGeo,new THREE.LineBasicMaterial({color:0x8a6c34,transparent:true,opacity:0.5}));
+comb.rotation.z=-0.18;
+scene.add(comb);
+
+function size(){
+  const w=stage.clientWidth,h=stage.clientHeight;
+  renderer.setSize(w,h);
+  cam.aspect=w/h;cam.updateProjectionMatrix();
+}
+size();addEventListener('resize',size);
+
+let idle=0, playing=true, heroVisible=true;
+const clock=new THREE.Clock();
+function frame(){
+  if(playing&&(heroVisible||scrollRot!==points.userData.last)){
+    const dt=Math.min(clock.getDelta(),0.05);
+    if(!reduced) idle+=dt*0.12;
+    uni.uRot.value=idle+scrollRot;
+    points.userData.last=scrollRot;
+    renderer.render(scene,cam);
+  }
+  requestAnimationFrame(frame);
+}
+if(reduced){uni.uRot.value=1.2;renderer.render(scene,cam);}
+frame();
+document.addEventListener('visibilitychange',()=>{playing=!document.hidden;if(playing)clock.getDelta();});
+new IntersectionObserver(e=>{heroVisible=e[0].isIntersecting;},{threshold:0}).observe(stage);
+}catch(err){
+  // No WebGL: the page must still fully work. Quiet brass-glow fallback.
+  stage.style.background='radial-gradient(60% 45% at 50% 42%, rgba(201,161,90,.14), transparent 70%)';
+  console.warn('Crank: WebGL unavailable, static hero fallback.',err);
+}
+
+/* ---------- GSAP choreography ---------- */
+gsap.registerPlugin(ScrollTrigger);
+if(!reduced && !still){
+  // scroll turns the crank: whole-page scrub adds rotation
+  ScrollTrigger.create({
+    trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.6,
+    onUpdate:self=>{scrollRot=self.progress*Math.PI*4;}
+  });
+  // hero headline: kinetic weight + drift
+  gsap.to('#heroH',{
+    fontVariationSettings:"'opsz' 144, 'wght' 380",yPercent:-14,opacity:0.25,ease:'none',
+    scrollTrigger:{trigger:'#top',start:'top top',end:'bottom 25%',scrub:true}
+  });
+  // reveals
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:0.9,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 86%'}});
+  });
+  // pins light as rules enter
+  gsap.utils.toArray('.rule').forEach((el,k)=>{
+    ScrollTrigger.create({trigger:el,start:'top 78%',
+      onEnter:()=>setTimeout(()=>el.classList.add('lit'),k*90)});
+  });
+}else{
+  document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
+  document.querySelectorAll('.rule').forEach(el=>el.classList.add('lit'));
+}
+
+/* ---------- magnetic CTA (pointer devices only) ---------- */
+if(matchMedia('(pointer:fine)').matches&&!reduced&&!still){
+  document.querySelectorAll('.gh').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*0.25,y:(e.clientY-r.top-r.height/2)*0.35,duration:0.3});
+    });
+    btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:0.45,ease:'elastic.out(1,0.4)'}));
+  });
+}
+
+/* ---------- copy buttons ---------- */
+document.querySelectorAll('[data-copy]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const src=document.getElementById(btn.dataset.copy);
+    const text=src.innerText.replace(/\n?\$ /g,'\n').replace(/^\n/,'');
+    navigator.clipboard.writeText(text).then(()=>{
+      const o=btn.textContent;btn.textContent='COPIED';btn.classList.add('ok');
+      setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},1800);
+    });
+  });
+});
+</script>
+</body>
+</html>
