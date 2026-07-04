@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crank: design loops that prompt the agent</title>
-<meta name="description" content="Crank is an open-source Claude Code skill: it sets its own acceptance criteria, runs a fleet of agents, and a separate cold verifier tries to fail the work before it reaches you. Turn the crank. The loop runs.">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Crank: the loop with a check it cannot talk its way past</title>
+<meta name="description" content="Crank is an open-source Claude Code skill. It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it. Turn the crank. The loop runs.">
 <link rel="canonical" href="https://victordelrosal.com/crank/">
 <meta name="theme-color" content="#171310">
-<script>document.documentElement.dataset.theme=(function(){try{var q=new URLSearchParams(location.search).get('theme');if(q==='light'||q==='dark')return q;return localStorage.getItem('crank-theme')||'dark'}catch(e){return 'dark'}})();</script>
+<script>document.documentElement.dataset.theme=(function(){try{var q=new URLSearchParams(location.search).get('theme');if(q==='light'||q==='dark')return q;return localStorage.getItem('crank-theme')||'dark'}catch(e){return 'dark'}})();document.documentElement.classList.add('js');try{if(new URLSearchParams(location.search).has('flat'))document.documentElement.classList.add('flat');}catch(e){}</script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Crank">
-<meta property="og:title" content="Crank: design loops that prompt the agent">
-<meta property="og:description" content="An open-source Claude Code skill with a check it can't talk its way past: self-set binary criteria, a fleet of agents, and a cold verifier that gates the stop.">
+<meta property="og:title" content="Crank: the loop with a check it cannot talk its way past">
+<meta property="og:description" content="An open-source Claude Code skill: self-set binary criteria, a fleet of agents, and a cold verifier that gates the stop. On 4 July 2026 it upgraded itself under hostile verification.">
 <meta property="og:url" content="https://victordelrosal.com/crank/">
 <meta property="og:image" content="https://victordelrosal.com/crank/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Crank: design loops that prompt the agent">
-<meta name="twitter:description" content="An open-source Claude Code skill with a check it can't talk its way past.">
+<meta name="twitter:title" content="Crank: the loop with a check it cannot talk its way past">
+<meta name="twitter:description" content="An open-source Claude Code skill with a check it cannot talk its way past.">
 <meta name="twitter:image" content="https://victordelrosal.com/crank/og.png">
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -29,7 +29,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -37,191 +37,251 @@
   --brass:#c9a15a; --brass-hi:#e8c675; --brass-lo:#8a6c34;
   --parch:#e9ddc8; --parch-dim:#cbb896; --mute:#9c8a68;
   --ember:#d97a52;
+  --field:radial-gradient(130% 100% at 50% 0%,#1b1510 0%,#100c0a 68%);
   --serif:'Fraunces',Georgia,serif;
   --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --eng-strong:var(--brass-hi); --eng-mid:var(--brass); --eng-hair:rgba(201,161,90,.30);
+  --eng-pin:var(--brass-hi); --eng-tooth:rgba(201,161,90,.55); --eng-tooth-lit:var(--brass-hi);
+  --eng-glow:rgba(232,198,117,.5);
+  --line:rgba(201,161,90,.20); --line-2:rgba(201,161,90,.34);
+  --panel:linear-gradient(160deg,var(--wood-2),var(--wood-1) 72%);
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 [data-theme="light"]{
   --wood-0:#ece1cb; --wood-1:#f6efe0; --wood-2:#eee3cd; --wood-3:#e4d6ba;
   --parch:#241c12; --parch-dim:#5a4c36; --mute:#8a7a5d;
   --brass:#8a6c34; --brass-hi:#6e5120; --brass-lo:#b08c4a;
   --ember:#b0512c;
+  --field:radial-gradient(130% 100% at 50% 0%,#faf4e7 0%,#e9dcc3 78%);
+  --eng-strong:#5a4526; --eng-mid:#7a5f30; --eng-hair:rgba(110,81,32,.40);
+  --eng-pin:#5a4526; --eng-tooth:rgba(110,81,32,.6); --eng-tooth-lit:#5a4526; --eng-glow:rgba(110,81,32,.26);
+  --line:rgba(110,81,32,.22); --line-2:rgba(110,81,32,.34);
+  --panel:linear-gradient(160deg,#efe4cf,#f6efe0 72%);
 }
-[data-theme="light"] nav{border-bottom-color:rgba(110,81,32,.28)}
-[data-theme="light"] h1{text-shadow:0 2px 40px rgba(246,239,224,.7)}
-[data-theme="light"] .install{background:rgba(246,239,224,.8);border-color:rgba(110,81,32,.4)}
-[data-theme="light"] .gh{color:#f6efe0!important;border-color:#6e5120}
-[data-theme="light"] .gh svg{fill:#f6efe0}
-[data-theme="light"] .ticker{border-color:rgba(110,81,32,.3)}
-[data-theme="light"] .plate,[data-theme="light"] .mode,[data-theme="light"] .plaque{border-color:rgba(110,81,32,.32)}
-[data-theme="light"] .plate::before{background:linear-gradient(90deg,transparent,rgba(110,81,32,.5),transparent)}
-[data-theme="light"] .rules,[data-theme="light"] .prov{background:rgba(110,81,32,.22);border-color:rgba(110,81,32,.22)}
-[data-theme="light"] .rule .pin{box-shadow:0 0 0 3px rgba(110,81,32,.14)}
-[data-theme="light"] .rule.lit .pin{background:var(--brass);box-shadow:0 0 12px rgba(138,108,52,.55),0 0 0 3px rgba(138,108,52,.25)}
-[data-theme="light"] .commits{border-left-color:rgba(110,81,32,.4)}
-[data-theme="light"] .commit::before{background:var(--brass);box-shadow:0 0 10px rgba(138,108,52,.5)}
-[data-theme="light"] .plaque::before,[data-theme="light"] .plaque::after{border-color:var(--brass)}
-[data-theme="light"] .grain{opacity:.06}
-[data-theme="light"] .term{background:#171310;border-color:rgba(110,81,32,.45)}
-[data-theme="light"] .term .body{color:#cbb896}
-[data-theme="light"] .term .g{color:#e8c675}
-[data-theme="light"] .term .bar{background:#221a13}
-[data-theme="light"] .term .title{color:#9c8a68}
-[data-theme="light"] footer.site{border-top-color:rgba(110,81,32,.3)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:84px;overflow-x:hidden}
 html,body{background:var(--wood-1)}
-body{color:var(--parch);font:400 17px/1.7 var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{color:var(--parch);font:400 17px/1.7 var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--field) fixed}
 ::selection{background:var(--brass);color:var(--wood-0)}
 a{color:var(--brass-hi)}
 :focus-visible{outline:2px solid var(--brass-hi);outline-offset:3px;border-radius:2px}
 .skip{position:absolute;left:-9999px;top:0;background:var(--brass);color:var(--wood-0);padding:10px 16px;z-index:300;font-family:var(--mono)}
 .skip:focus{left:0}
+img{max-width:100%}
 
 /* grain */
-.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:90;opacity:.05;
+.grain{position:fixed;inset:-4%;width:108%;height:108%;pointer-events:none;z-index:90;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   animation:grain 7s steps(9) infinite}
+[data-theme="light"] .grain{opacity:.045}
 @keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}40%{transform:translate(1%,-2%)}60%{transform:translate(-1%,2%)}80%{transform:translate(2%,1%)}}
 
-/* loader */
-#loader{position:fixed;inset:0;background:#0f0c0a;z-index:200;display:grid;place-items:center;transition:opacity .6s,visibility .6s}
-#loader.done{opacity:0;visibility:hidden}
-#loader .ns{font:600 13px/1 var(--mono);letter-spacing:.42em;color:var(--ember);margin-bottom:18px;text-align:center}
-#loader .word{font-family:var(--serif);font-optical-sizing:auto;font-weight:760;font-size:clamp(52px,10vw,110px);color:var(--brass-hi);letter-spacing:.02em;text-align:center}
-#loader .word span{opacity:0;display:inline-block}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--brass-hi);box-shadow:0 0 12px var(--eng-glow);z-index:120}
 
 /* nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;gap:14px;padding:0 clamp(18px,4vw,44px);
-  background:color-mix(in srgb,var(--wood-0) 72%,transparent);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);
-  border-bottom:1px solid rgba(201,161,90,.18)}
-nav .mark{width:34px;height:34px;border-radius:9px;flex:0 0 34px}
-nav .word{font:700 20px/1 var(--serif);color:var(--parch);letter-spacing:.04em;text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:66px;display:flex;align-items:center;gap:14px;padding:0 clamp(16px,4vw,44px);
+  background:color-mix(in srgb,var(--wood-0) 74%,transparent);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);
+  border-bottom:1px solid var(--line)}
+nav .mark{width:32px;height:32px;border-radius:9px;flex:0 0 32px}
+nav .word{font:700 20px/1 var(--serif);color:var(--parch);letter-spacing:.03em;text-decoration:none}
 nav .word em{font-style:normal;color:var(--brass-hi)}
-nav .links{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2.4vw,28px);font:500 13.5px/1 var(--mono)}
-nav .links a{color:var(--parch-dim);text-decoration:none;letter-spacing:.04em;padding:8px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
-nav .links a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-.gh{display:inline-flex;align-items:center;gap:10px;background:var(--brass);color:#1a140c!important;padding:12px 22px;border-radius:10px;
+nav .links{margin-left:auto;display:flex;align-items:center;gap:clamp(10px,2.2vw,26px);font:500 13px/1 var(--mono)}
+nav .links a.anchor{color:var(--parch-dim);text-decoration:none;letter-spacing:.04em;padding:8px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
+nav .links a.anchor:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+.gh{display:inline-flex;align-items:center;gap:9px;background:var(--brass);color:#1a140c!important;padding:11px 18px;border-radius:10px;
   font:600 13px/1 var(--mono);text-decoration:none;letter-spacing:.02em;border:1px solid var(--brass-hi);transition:transform .18s,box-shadow .18s,background .18s;will-change:transform}
 .gh:hover{box-shadow:0 5px 20px rgba(201,161,90,.4);background:var(--brass-hi)}
 .gh svg{width:15px;height:15px;fill:#1a140c;flex:0 0 auto}
+[data-theme="light"] .gh{color:#f6efe0!important;border-color:#6e5120}
+[data-theme="light"] .gh svg{fill:#f6efe0}
 .ghstar{transition:transform .22s ease,fill .22s ease}
 .gh:hover .ghstar{fill:#fff6e2;transform:scale(1.18) rotate(14deg)}
-.ghlabel{white-space:nowrap}
-.iconT{width:38px;height:38px;border-radius:10px;border:1px solid rgba(201,161,90,.4);background:transparent;color:var(--parch-dim);
-  cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s}
+.iconT{width:38px;height:38px;border-radius:10px;border:1px solid var(--line-2);background:transparent;color:var(--parch-dim);
+  cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s;flex:0 0 auto}
 .iconT:hover{color:var(--brass);border-color:var(--brass)}
 .iconT svg{width:17px;height:17px}
 .iconT .sun{display:none}
 [data-theme="light"] .iconT .sun{display:block}
 [data-theme="light"] .iconT .moon{display:none}
 html:not([data-theme="light"]) .iconT .moon{display:block}
-@media(max-width:820px){nav .links a.hideS{display:none}}
-@media(max-width:560px){.ghl{display:none}.nowline{letter-spacing:.24em;font-size:11px}h1{line-height:1.02}}
+@media(max-width:860px){nav .links a.anchor.hideS{display:none}}
+@media(max-width:520px){.ghl{display:none}}
 
 /* hero */
-header{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
-#stage{position:absolute;inset:0;z-index:1}
-.heroInner{position:relative;z-index:2;text-align:center;padding:120px 20px 90px;max-width:1000px}
-.nowline{font:600 13px/1 var(--mono);letter-spacing:.42em;color:var(--ember);margin-bottom:26px}
+header{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;
+  padding:clamp(96px,14vh,150px) clamp(18px,5vw,40px) 0;overflow:hidden}
+.ghost{position:absolute;inset:0;display:grid;place-items:center;z-index:0;pointer-events:none}
+.ghost span{font:800 clamp(140px,34vw,460px)/1 var(--serif);color:var(--brass);opacity:.04;letter-spacing:-.02em;user-select:none}
+.heroInner{position:relative;z-index:3;text-align:center;max-width:900px;margin:0 auto;width:100%}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.4em;color:var(--ember);text-transform:uppercase}
+.release{display:inline-flex;align-items:center;margin:22px auto 0;border-radius:999px;overflow:hidden;border:1px solid var(--line-2);
+  font:600 11.5px/1 var(--mono);letter-spacing:.06em;text-decoration:none;box-shadow:0 2px 14px rgba(0,0,0,.22)}
+[data-theme="light"] .release{box-shadow:0 2px 12px rgba(110,81,32,.14)}
+.release .v{background:var(--brass);color:#1a140c;padding:8px 12px}
+.release .n{background:transparent;color:var(--parch-dim);padding:8px 14px;transition:color .16s}
+.release:hover .n{color:var(--brass-hi)}
 h1{font-family:var(--serif);font-optical-sizing:auto;font-weight:740;font-variation-settings:'opsz' 144;
-  font-size:clamp(40px,10.5vw,132px);line-height:.95;color:var(--parch);letter-spacing:.005em;text-shadow:0 2px 40px rgba(15,12,10,.8)}
+  font-size:clamp(31px,8vw,116px);line-height:.96;color:var(--parch);letter-spacing:.004em;margin:18px 0 0;text-shadow:0 2px 40px rgba(15,12,10,.5)}
+[data-theme="light"] h1{text-shadow:0 2px 40px rgba(246,239,224,.7)}
 h1 .b{color:var(--brass-hi)}
-.heroSub{font-size:clamp(18px,2.3vw,23px);color:var(--parch-dim);max-width:34em;margin:28px auto 0;font-weight:420}
-.heroCtas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:42px}
-.install{display:flex;align-items:center;flex-wrap:wrap;gap:14px;background:rgba(15,12,10,.75);border:1px solid rgba(201,161,90,.4);border-radius:10px;
-  padding:13px 16px;font:500 clamp(12px,3.4vw,14px)/1 var(--mono);color:var(--brass-hi)}
-.install button{font:600 12px/1 var(--mono);background:transparent;border:1px solid rgba(201,161,90,.5);color:var(--parch-dim);
+.category{font-size:clamp(16px,2vw,20px);color:var(--parch-dim);max-width:40em;margin:22px auto 0;line-height:1.5}
+.heroCtas{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:30px}
+.install{display:inline-flex;align-items:center;gap:12px;background:rgba(15,12,10,.62);border:1px solid var(--line-2);border-radius:10px;
+  padding:11px 12px 11px 16px;font:500 clamp(11px,2.7vw,13.5px)/1 var(--mono);color:var(--brass-hi);max-width:100%}
+[data-theme="light"] .install{background:rgba(246,239,224,.8)}
+.install code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(64vw,520px)}
+.install button{flex:0 0 auto;font:600 11px/1 var(--mono);background:transparent;border:1px solid var(--line-2);color:var(--parch-dim);
   border-radius:6px;padding:7px 10px;cursor:pointer;transition:all .15s}
 .install button:hover{color:var(--brass-hi);border-color:var(--brass-hi)}
 .install button.ok{background:#243d2a;border-color:#4f8f5f;color:#8fd6a0}
-.scrollHint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:var(--mute);font:500 11.5px/1.6 var(--mono);letter-spacing:.3em;text-align:center}
-.scrollHint svg{display:block;margin:8px auto 0;width:22px;height:22px;stroke:var(--brass);animation:crankspin 5s linear infinite;transform-origin:50% 50%}
+.ghostlink{font:600 13px/1 var(--mono);color:var(--parch-dim);text-decoration:none;letter-spacing:.02em;border-bottom:1px solid transparent;padding-bottom:3px;transition:color .16s,border-color .16s}
+.ghostlink:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
+
+/* hero stage: the engraved mechanism */
+.stage{position:relative;z-index:2;flex:1;display:flex;align-items:flex-end;justify-content:center;margin-top:10px;min-height:0}
+.cyl{width:min(1040px,94vw);max-height:46vh;height:auto;filter:drop-shadow(0 22px 46px rgba(0,0,0,.42))}
+[data-theme="light"] .cyl{filter:drop-shadow(0 20px 38px rgba(60,44,20,.16))}
+.eng line,.eng path,.eng ellipse,.eng circle{vector-effect:non-scaling-stroke;fill:none}
+.eng-2{stroke:var(--eng-mid);stroke-width:2}
+.eng-1{stroke:var(--eng-strong);stroke-width:2.4}
+.eng-hair{stroke:var(--eng-hair);stroke-width:1}
+.hoop{opacity:.5}
+.eng-pin{stroke:var(--eng-pin);stroke-width:2.2;stroke-linecap:round}
+.eng-pindot{fill:var(--eng-pin);stroke:none}
+.eng-tooth{stroke:var(--eng-tooth);stroke-width:2;stroke-linecap:round}
+.eng-tooth-lit{stroke:var(--eng-tooth-lit);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--eng-glow))}
+.eng-strike{stroke:var(--ember);stroke-width:1.5;stroke-dasharray:2 5;opacity:.75}
+.eng-crankarm{stroke:var(--eng-strong);stroke-width:5;stroke-linecap:round}
+.eng-hatch{stroke:var(--eng-hair);stroke-width:.75}
+.crankknob{fill:none;stroke:var(--eng-strong);stroke-width:3}
+html:not([data-theme="light"]) .eng-1,html:not([data-theme="light"]) .eng-pin{filter:drop-shadow(0 0 3px var(--eng-glow))}
+#crankGroup{cursor:pointer}
+.crankLabel{position:absolute;right:2%;top:2%;z-index:4;text-align:right}
+.crankLabel .t{font:600 11px/1.5 var(--mono);letter-spacing:.24em;color:var(--brass);text-transform:uppercase}
+.crankLabel .o{font:500 11px/1.6 var(--mono);letter-spacing:.16em;color:var(--mute);margin-top:4px}
+@media(max-width:640px){.crankLabel{position:static;text-align:center;margin:4px 0 0}}
+.scrollHint{align-self:center;z-index:3;color:var(--mute);font:500 11px/1.5 var(--mono);letter-spacing:.3em;text-align:center;padding:16px 0 20px}
+.scrollHint svg{display:block;margin:8px auto 0;width:20px;height:20px;stroke:var(--brass);animation:crankspin 5s linear infinite;transform-origin:50% 50%}
 @keyframes crankspin{to{transform:rotate(360deg)}}
 
 /* ticker */
-.ticker{border-top:1px solid rgba(201,161,90,.22);border-bottom:1px solid rgba(201,161,90,.22);background:var(--wood-0);
-  overflow:hidden;white-space:nowrap;padding:13px 0;position:relative;z-index:2}
-.ticker .track{display:inline-block;animation:tick 36s linear infinite;font:600 12.5px/1 var(--mono);letter-spacing:.34em;color:var(--brass)}
+.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--wood-0);
+  overflow:hidden;white-space:nowrap;padding:12px 0;position:relative;z-index:3}
+.ticker .track{display:inline-block;animation:tick 40s linear infinite;font:600 12px/1 var(--mono);letter-spacing:.32em;color:var(--brass)}
 .ticker .track em{font-style:normal;color:var(--ember)}
 @keyframes tick{to{transform:translateX(-50%)}}
 
 /* sections */
 main{position:relative;z-index:2}
-section{padding:clamp(80px,12vw,150px) clamp(20px,6vw,72px);max-width:1180px;margin:0 auto}
-.kicker{font:600 12.5px/1 var(--mono);letter-spacing:.4em;color:var(--ember);margin-bottom:20px}
-h2{font-family:var(--serif);font-optical-sizing:auto;font-weight:680;font-size:clamp(27px,5.4vw,60px);line-height:1.06;color:var(--parch);max-width:18em;overflow-wrap:break-word}
+section{padding:clamp(58px,8vw,108px) clamp(20px,6vw,72px);max-width:1180px;margin:0 auto}
+.kicker{font:600 12px/1 var(--mono);letter-spacing:.4em;color:var(--ember);margin-bottom:20px}
+h2{font-family:var(--serif);font-optical-sizing:auto;font-weight:660;font-size:clamp(26px,5vw,54px);line-height:1.07;color:var(--parch);max-width:19em;overflow-wrap:break-word}
 h2 .b{color:var(--brass-hi)}
-.lede{font-size:clamp(17px,1.9vw,20px);color:var(--parch-dim);max-width:38em;margin-top:22px}
-.lede a{text-decoration-color:rgba(201,161,90,.5)}
+.lede{font-size:clamp(16px,1.8vw,19px);color:var(--parch-dim);max-width:40em;margin-top:20px}
+.lede a{text-decoration-color:var(--line-2)}
+
+/* run replay terminal */
+.term{margin-top:8px;background:#0b0908;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+[data-theme="light"] .term{box-shadow:0 24px 60px rgba(60,44,20,.2)}
+.term .bar{display:flex;align-items:center;gap:8px;background:#1b1410;border-bottom:1px solid rgba(201,161,90,.22);padding:12px 16px}
+.term .dot{width:11px;height:11px;border-radius:50%;background:var(--brass-lo)}
+.term .dot:nth-child(2){background:var(--brass)}
+.term .dot:nth-child(3){background:var(--brass-hi)}
+.term .title{margin-left:8px;font:500 12px/1 var(--mono);color:#9c8a68;letter-spacing:.1em}
+.term .badge{margin-left:auto;font:600 11px/1 var(--mono);letter-spacing:.06em;color:#cbb896;text-decoration:none;border-bottom:1px solid rgba(201,161,90,.4);padding-bottom:2px}
+.term .badge:hover{color:var(--brass-hi)}
+.term .body{padding:20px 22px 24px;font:500 13.5px/1.95 var(--mono);color:#cbb896;overflow-x:auto;cursor:default}
+.term .body .tline{white-space:pre-wrap;word-break:break-word}
+.term .c{color:#8a7355}
+.term .p{color:var(--ember)}
+.term .x{color:#e07a52}
+.term .tline.catch{color:#f0b060}
+.term .tline.ok{color:var(--brass-hi)}
+.term .tline.ok a{color:var(--brass-hi);text-decoration:underline;text-underline-offset:3px}
+.term.play .tline{opacity:0}
+.term.play .tline.shown{opacity:1}
+.term .caret{color:var(--ember)}
+.termNote{margin-top:14px;font:500 12.5px/1.6 var(--mono);color:var(--mute);letter-spacing:.02em}
+
+/* trust band */
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+@media(max-width:820px){.trust{grid-template-columns:1fr}}
+.quote{position:relative;border:1px solid var(--line-2);border-radius:14px;padding:32px 30px 26px;background:var(--panel)}
+.quote::before,.quote::after{content:"";position:absolute;width:12px;height:12px;border-color:var(--brass-hi);border-style:solid}
+.quote::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.quote::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.quote p{font-family:var(--serif);font-size:clamp(18px,2.2vw,23px);line-height:1.42;color:var(--parch)}
+.quote .who{font:600 12px/1.5 var(--mono);letter-spacing:.06em;color:var(--brass);margin-top:18px}
+.quote .who span{color:var(--mute);font-weight:500}
+.byline{margin-top:26px;font:500 13px/1.6 var(--mono);color:var(--mute);letter-spacing:.02em;text-align:center}
+.byline a{color:var(--parch-dim);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.byline a:hover{color:var(--brass-hi)}
+.trustLabel{text-align:center;font:600 11.5px/1 var(--mono);letter-spacing:.34em;color:var(--mute);margin-bottom:26px;text-transform:uppercase}
+
+/* cold open */
+.coldopen{text-align:center;max-width:26em;margin:0 auto}
+.coldopen p{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(22px,3.6vw,40px);line-height:1.3;color:var(--parch)}
+.coldopen p code{font-style:normal;font-family:var(--mono);font-size:.7em;color:var(--brass-hi);background:rgba(201,161,90,.1);padding:1px 7px;border-radius:5px}
+.coldopen .turn{margin-top:26px;font-family:var(--serif);font-weight:640;font-style:normal;color:var(--brass-hi);font-size:clamp(24px,4.2vw,46px)}
 
 /* loop plates */
-.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:54px}
-.plate{position:relative;background:linear-gradient(160deg,var(--wood-2),var(--wood-1) 70%);border:1px solid rgba(201,161,90,.28);border-radius:12px;padding:26px 24px 24px;overflow:hidden}
-.plate::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,198,117,.7),transparent)}
-.plate .n{font:600 12px/1 var(--mono);color:var(--ember);letter-spacing:.28em}
-.plate h3{font:640 23px/1.2 var(--serif);color:var(--brass-hi);margin:13px 0 10px}
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:50px}
+.plate{position:relative;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;padding:26px 24px 24px;overflow:hidden}
+.plate::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--eng-glow),transparent)}
+.plate .n{font:600 12px/1 var(--mono);color:var(--ember);letter-spacing:.26em}
+.plate h3{font:640 22px/1.2 var(--serif);color:var(--brass-hi);margin:13px 0 10px}
 .plate p{font-size:15px;color:var(--parch-dim)}
-.pull{margin:70px auto 0;max-width:20em;text-align:center;font-family:var(--serif);font-weight:600;font-optical-sizing:auto;
-  font-size:clamp(22px,4vw,44px);line-height:1.25;color:var(--parch)}
+.pull{margin:64px auto 0;max-width:21em;text-align:center;font-family:var(--serif);font-weight:600;font-optical-sizing:auto;
+  font-size:clamp(22px,4vw,42px);line-height:1.25;color:var(--parch)}
 .pull .b{color:var(--brass-hi)}
-.pull footer{font:500 12.5px/1 var(--mono);letter-spacing:.3em;color:var(--mute);margin-top:22px}
+.pull cite{display:block;font:500 12px/1 var(--mono);font-style:normal;letter-spacing:.3em;color:var(--mute);margin-top:22px}
 
-/* rules: pins */
-.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:rgba(201,161,90,.16);border:1px solid rgba(201,161,90,.16);border-radius:14px;overflow:hidden;margin-top:54px}
-.rule{background:var(--wood-1);padding:30px 28px}
-.rule .pin{width:11px;height:11px;border-radius:50%;background:var(--brass-lo);box-shadow:0 0 0 3px rgba(201,161,90,.14);margin-bottom:18px;transition:background .5s,box-shadow .5s}
-.rule.lit .pin{background:var(--brass-hi);box-shadow:0 0 18px rgba(232,198,117,.75),0 0 0 3px rgba(232,198,117,.25)}
-.rule h3{font:640 20px/1.25 var(--serif);color:var(--parch);margin-bottom:9px}
+/* discipline strip */
+.stripWrap{margin-top:50px;border:1px solid var(--line-2);border-radius:14px;background:var(--panel);padding:30px 24px 22px;overflow-x:auto}
+.strip{width:100%;min-width:560px;height:auto}
+.strip .bar{stroke:var(--eng-mid);stroke-width:2}
+.strip .tickpin{stroke:var(--eng-pin);stroke-width:2.4;stroke-linecap:round;transition:stroke .5s}
+.strip .pinhead{fill:var(--eng-pin);opacity:.3;transition:opacity .5s,r .3s}
+.strip g.lit .pinhead{opacity:1;filter:drop-shadow(0 0 6px var(--eng-glow))}
+.strip .lbl{font:600 11px/1 var(--mono);letter-spacing:.02em;fill:var(--parch-dim)}
+.strip g.lit .lbl{fill:var(--brass-hi)}
+.strip g.pincol{cursor:pointer}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:20px}
+.rule{background:var(--wood-1);padding:28px 26px;transition:background .3s}
+.rule.hot{background:var(--wood-2)}
+.rule .pin{width:11px;height:11px;border-radius:50%;background:var(--brass-lo);box-shadow:0 0 0 3px rgba(201,161,90,.14);margin-bottom:16px;transition:background .5s,box-shadow .5s}
+.rule.lit .pin{background:var(--brass-hi);box-shadow:0 0 18px var(--eng-glow),0 0 0 3px rgba(232,198,117,.25)}
+.rule h3{font:640 19px/1.25 var(--serif);color:var(--parch);margin-bottom:9px}
 .rule p{font-size:14.5px;color:var(--parch-dim)}
-.rule .src{display:block;margin-top:12px;font:500 11.5px/1.5 var(--mono);letter-spacing:.06em;color:var(--mute)}
+.rule .src{display:block;margin-top:12px;font:500 11.5px/1.5 var(--mono);letter-spacing:.05em;color:var(--mute)}
 
-/* modes */
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:54px}
-@media(max-width:860px){.modes{grid-template-columns:1fr}}
-.mode{border:1px solid rgba(201,161,90,.3);border-radius:14px;padding:34px 30px;background:
-  radial-gradient(120% 100% at 50% 0%,rgba(201,161,90,.07),transparent 60%),var(--wood-1)}
-.mode .tag{display:inline-block;font:600 11.5px/1 var(--mono);letter-spacing:.3em;color:var(--wood-0);background:var(--brass);border-radius:5px;padding:7px 10px}
-.mode.night .tag{background:var(--ember)}
-.mode h3{font:660 26px/1.15 var(--serif);color:var(--brass-hi);margin:18px 0 12px}
-.mode p{font-size:15px;color:var(--parch-dim)}
-.mode ul{list-style:none;margin-top:18px;display:grid;gap:10px}
-.mode li{font:500 13.5px/1.55 var(--mono);color:var(--parch-dim);padding-left:20px;position:relative}
-.mode li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--brass)}
-.mode.night li::before{background:var(--ember)}
-.mode code{color:var(--brass-hi)}
-
-/* upgrade timeline */
-.commits{margin-top:54px;border-left:1px solid rgba(201,161,90,.35);padding-left:34px;display:grid;gap:34px;max-width:760px}
+/* upgrade / kintsugi */
+.commits{margin-top:50px;border-left:1px solid var(--line-2);padding-left:32px;display:grid;gap:32px;max-width:760px}
 .commit{position:relative}
-.commit::before{content:"";position:absolute;left:-40px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--brass-hi);box-shadow:0 0 14px rgba(232,198,117,.6)}
-.commit .h{font:600 13px/1 var(--mono);color:var(--brass);letter-spacing:.06em;margin-bottom:8px}
+.commit::before{content:"";position:absolute;left:-38px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--brass-hi);box-shadow:0 0 14px var(--eng-glow)}
+.commit .h{font:600 13px/1 var(--mono);color:var(--brass);letter-spacing:.05em;margin-bottom:8px}
+.commit .h a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.commit .h a:hover{color:var(--brass-hi)}
 .commit p{font-size:15px;color:var(--parch-dim)}
-.plaque{margin-top:64px;max-width:760px;border:1px solid rgba(201,161,90,.4);border-radius:14px;padding:34px 34px 30px;
-  background:linear-gradient(150deg,var(--wood-2),var(--wood-1));position:relative}
-.plaque::before,.plaque::after{content:"";position:absolute;width:12px;height:12px;border-color:var(--brass-hi);border-style:solid}
-.plaque::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
-.plaque::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
-.plaque p{font-family:var(--serif);font-size:clamp(18px,2.2vw,22px);line-height:1.5;color:var(--parch)}
-.plaque .who{font:500 12.5px/1 var(--mono);letter-spacing:.24em;color:var(--mute);margin-top:18px}
-
-/* kintsugi: the flaw repaired in gold. lapis panel, both themes (kintsugi ware is dark ceramic) */
-.kintsugi-note{max-width:760px;margin:56px 0 0;font-family:var(--serif);font-size:clamp(16px,1.9vw,19px);
-  font-style:italic;color:var(--parch-dim)}
+.catchline{max-width:760px;margin:60px 0 0;font:600 clamp(15px,2vw,19px)/1.6 var(--mono);color:var(--ember);letter-spacing:.01em;min-height:1.6em}
+.catchline .cc{color:var(--mute)}
+.kintsugi-note{max-width:760px;margin:16px 0 0;font-family:var(--serif);font-size:clamp(16px,1.9vw,19px);font-style:italic;color:var(--parch-dim)}
 .kintsugi{position:relative;max-width:760px;margin-top:22px;border-radius:16px;overflow:hidden;
   background:linear-gradient(152deg,#132a54 0%,#0d1d3d 55%,#0a1631 100%);
   border:1px solid rgba(201,161,90,.45);
   box-shadow:0 24px 70px rgba(8,14,30,.5), inset 0 0 70px rgba(24,52,104,.35)}
+[data-theme="light"] .kintsugi{box-shadow:0 24px 60px rgba(30,40,70,.28), inset 0 0 70px rgba(24,52,104,.3)}
 .kintsugi .kv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.kintsugi .plaque{position:relative;z-index:1;margin:0;max-width:none;border:none;box-shadow:none;
-  background:transparent;padding:36px 36px 32px}
-.kintsugi .plaque::before,.kintsugi .plaque::after{border-color:var(--brass-hi)}
-.kintsugi .plaque p{color:#eadecb}
-.kintsugi .plaque .who{color:#93aed6}
+.kintsugi .plaque{position:relative;z-index:1;margin:0;padding:36px 36px 32px}
+.kintsugi .plaque::before,.kintsugi .plaque::after{content:"";position:absolute;width:12px;height:12px;border-color:var(--brass-hi);border-style:solid}
+.kintsugi .plaque::before{top:12px;left:12px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.kintsugi .plaque::after{bottom:12px;right:12px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.kintsugi .plaque p{font-family:var(--serif);font-size:clamp(17px,2.1vw,21px);line-height:1.5;color:#eadecb}
+.kintsugi .plaque .who{font:500 12px/1 var(--mono);letter-spacing:.22em;color:#93aed6;margin-top:18px}
 .kv .vein{fill:none;stroke:url(#kgold);stroke-linecap:round;stroke-linejoin:round;stroke-width:4.2;
   stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.7s cubic-bezier(.4,.7,.3,1)}
 .kv .vein.b{stroke-width:2.6}
-.kv .veinGlow{fill:none;stroke:url(#kgold);stroke-linecap:round;stroke-linejoin:round;stroke-width:9;
-  filter:url(#kglow);opacity:0;transition:opacity 1.5s ease-out .45s}
+.kv .veinGlow{fill:none;stroke:url(#kgold);stroke-linecap:round;stroke-linejoin:round;stroke-width:9;filter:url(#kglow);opacity:0;transition:opacity 1.5s ease-out .45s}
 .kv .kdust circle{fill:#e8c675;opacity:0;transition:opacity 1s ease-out .6s}
 .kintsugi.drawn .kv .vein{stroke-dashoffset:0}
 .kintsugi.drawn .kv .veinGlow{opacity:.8}
@@ -229,32 +289,51 @@ h2 .b{color:var(--brass-hi)}
 .kv .kdust circle:nth-child(2n){animation-delay:.8s}
 .kv .kdust circle:nth-child(3n){animation-delay:1.6s}
 @keyframes ktwinkle{50%{opacity:.22}}
-[data-theme="light"] .kintsugi{box-shadow:0 24px 60px rgba(30,40,70,.28), inset 0 0 70px rgba(24,52,104,.3)}
 
-/* provenance */
-.prov{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:rgba(201,161,90,.14);border:1px solid rgba(201,161,90,.14);border-radius:14px;overflow:hidden;margin-top:54px;font:500 13px/1.6 var(--mono)}
-.prov div{background:var(--wood-0);padding:20px 22px;color:var(--parch-dim)}
-.prov b{display:block;color:var(--brass);font-weight:600;letter-spacing:.04em;margin-bottom:4px}
-.provNote{font:500 12.5px/1.7 var(--mono);color:var(--mute);margin-top:18px;letter-spacing:.03em}
+/* ledger */
+.ledger{margin-top:50px;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:var(--panel)}
+.ledger .row{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--line);font:500 14px/1.4 var(--mono)}
+.ledger .row:last-child{border-bottom:none}
+.ledger .row .d{color:var(--parch-dim)}
+.ledger .row .pc{color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.ledger .row .v{font-weight:600;letter-spacing:.08em;text-align:right;min-width:74px}
+.ledger .row .v.a{color:var(--brass-hi)}
+.ledger .row .v.r{color:var(--ember);opacity:.85}
+.ledger .row.rej .d{color:var(--mute)}
+.ledgerNote{margin-top:16px;font:500 12.5px/1.6 var(--mono);color:var(--mute)}
+.ledgerNote a{color:var(--parch-dim);border-bottom:1px solid var(--line-2);text-decoration:none}
+.ledgerNote a:hover{color:var(--brass-hi)}
 
-/* quickstart terminal */
-.term{margin-top:54px;background:#0b0908;border:1px solid rgba(201,161,90,.35);border-radius:14px;overflow:hidden;max-width:860px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
-.term .bar{display:flex;align-items:center;gap:8px;background:var(--wood-2);border-bottom:1px solid rgba(201,161,90,.25);padding:12px 16px}
-.term .dot{width:11px;height:11px;border-radius:50%;background:var(--brass-lo)}
-.term .dot:nth-child(2){background:var(--brass)}
-.term .dot:nth-child(3){background:var(--brass-hi)}
-.term .title{margin-left:8px;font:500 12px/1 var(--mono);color:var(--mute);letter-spacing:.14em}
-.term .body{padding:24px 24px 26px;font:500 14px/2.1 var(--mono);color:var(--parch-dim);overflow-x:auto}
-.term .c{color:var(--mute)}
-.term .p{color:var(--ember)}
-.term .g{color:var(--brass-hi)}
-.termRow{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-.termRow button{flex:0 0 auto;font:600 11.5px/1 var(--mono);background:transparent;border:1px solid rgba(201,161,90,.4);color:var(--mute);border-radius:6px;padding:6px 9px;cursor:pointer;margin-top:6px;transition:all .15s}
-.termRow button:hover{color:var(--brass-hi);border-color:var(--brass-hi)}
-.termRow button.ok{background:#243d2a;border-color:#4f8f5f;color:#8fd6a0}
+/* lineage */
+.lineage{margin-top:44px;display:grid;gap:0;max-width:820px}
+.lin{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line);align-items:baseline}
+.lin:first-child{border-top:none}
+.lin .yr{font:600 12.5px/1.4 var(--mono);color:var(--brass);letter-spacing:.06em}
+.lin .txt{color:var(--parch-dim);font-size:15px}
+.lin .txt b{color:var(--parch);font-weight:600}
+.lin.now .yr{color:var(--ember)}
+.lin.now .txt b{color:var(--brass-hi)}
+
+/* quick start */
+.qs{margin-top:44px}
+.qsblock{background:#0b0908;border:1px solid var(--line-2);border-radius:14px;overflow:hidden;max-width:900px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+[data-theme="light"] .qsblock{box-shadow:0 20px 46px rgba(60,44,20,.16)}
+.qsblock .bar{display:flex;align-items:center;gap:8px;background:#1b1410;border-bottom:1px solid rgba(201,161,90,.22);padding:12px 16px}
+.qsblock .title{margin-left:8px;font:500 12px/1 var(--mono);color:#9c8a68;letter-spacing:.12em}
+.qsblock .body{padding:22px 22px 24px;font:500 13.5px/2 var(--mono);color:#cbb896;overflow-x:auto}
+.qsblock .c{color:#8a7355}
+.qsblock .p{color:var(--ember)}
+.qsblock .g{color:var(--brass-hi)}
+.qsRow{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.qsRow>div{min-width:0}
+.qsRow button{flex:0 0 auto;font:600 11px/1 var(--mono);background:transparent;border:1px solid rgba(201,161,90,.4);color:#9c8a68;border-radius:6px;padding:6px 9px;cursor:pointer;margin-top:5px;transition:all .15s}
+.qsRow button:hover{color:var(--brass-hi);border-color:var(--brass-hi)}
+.qsRow button.ok{background:#243d2a;border-color:#4f8f5f;color:#8fd6a0}
+.companions{margin-top:22px;font-size:15px;color:var(--parch-dim);max-width:44em}
+.companions code{font-family:var(--mono);font-size:.85em;color:var(--brass-hi)}
 
 /* footer */
-footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);padding:56px clamp(20px,6vw,72px);position:relative;z-index:2}
+footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54px clamp(20px,6vw,72px);position:relative;z-index:2}
 .footInner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:22px;justify-content:space-between}
 .footInner .left{display:flex;align-items:center;gap:14px}
 .footInner img{width:30px;height:30px;border-radius:8px}
@@ -262,71 +341,358 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
 .footInner .fm a{color:var(--parch-dim);text-decoration:none}
 .footInner .fm a:hover{color:var(--brass-hi)}
 
-.reveal{opacity:0;transform:translateY(34px)}
+.js .reveal{opacity:0;transform:translateY(30px)}
+.js .catchline .cx{opacity:0}
+/* capture aid: ?flat caps the hero and force-reveals every section */
+.flat header{min-height:auto!important;padding-bottom:44px}
+.flat .stage{display:block!important}
+.flat .stage .cyl{max-height:440px;display:block;margin:26px auto 0}
+.flat .crankLabel{position:static!important;text-align:center;margin-top:12px}
+.flat .scrollHint{display:none}
+.flat .reveal{opacity:1!important;transform:none!important}
+.flat .catchline .cx{opacity:1!important}
+.flat #strip .pincol .pinhead{opacity:1}
+.flat .kv .vein{stroke-dashoffset:0}
+.flat .kv .veinGlow{opacity:.8}
+.flat .kv .kdust circle{opacity:.7}
+@media(max-width:560px){
+  nav{gap:10px;padding:0 16px}
+  nav .links{gap:12px}
+  nav .links a.anchor{display:none}
+  .eyebrow{letter-spacing:.2em;font-size:10.5px}
+  .release{font-size:10px}
+  .release .v{padding:7px 10px}
+  .release .n{padding:7px 11px}
+  .category{font-size:15px}
+  .install{gap:10px;padding:10px 10px 10px 13px}
+  .install code{max-width:52vw}
+  .heroCtas{gap:12px}
+  .stage .cyl{width:min(1040px,92vw);max-height:40vh}
+  h2{font-size:clamp(24px,7vw,54px)}
+  .quote p{font-size:18px}
+  .ledger .row{padding:12px 14px;gap:10px;font-size:12.5px}
+  .lin{grid-template-columns:104px 1fr;gap:12px}
+  section{padding:clamp(52px,13vw,108px) 20px}
+}
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
-  .reveal{opacity:1;transform:none}
-  .rule .pin{background:var(--brass-hi)}
   html{scroll-behavior:auto}
+  header{min-height:88svh}
+  .reveal{opacity:1;transform:none}
+  .rule .pin,.strip .pinhead{background:var(--brass-hi);opacity:1}
+  .strip g .pinhead{opacity:1}
+  .term.play .tline{opacity:1}
+  .catchline .cx{opacity:1}
 }
 </style>
+<noscript><style>header{min-height:auto!important;padding-bottom:44px}.stage{display:block!important}.stage .cyl{max-height:440px;display:block;margin:28px auto 0}.crankLabel{position:static!important;text-align:center;margin-top:12px}.scrollHint{display:none}</style></noscript>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
-
-<div id="loader" aria-hidden="true">
-  <div>
-    <div class="ns" id="ns"></div>
-    <div class="word" id="lw"><span>C</span><span>R</span><span>A</span><span>N</span><span>K</span></div>
-  </div>
-</div>
+<div class="progress" id="progress"></div>
 
 <nav aria-label="Main">
-  <img class="mark" src="icon-192.png" alt="" width="34" height="34">
+  <img class="mark" src="icon-192.png" alt="" width="32" height="32">
   <a class="word" href="./">CRANK<em>.</em></a>
   <div class="links">
     <button id="themeToggle" class="iconT" aria-label="Toggle light and dark theme" title="Theme (T)">
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg>
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
     </button>
-    <a class="hideS" href="#loop">The loop</a>
-    <a class="hideS" href="#discipline">Discipline</a>
-    <a class="hideS" href="#upgrade">Self-upgrade</a>
-    <a class="hideS" href="#research">Research</a>
-    <a href="#start">Install</a>
-    <a class="gh" id="ghBtn" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener" aria-label="Star Crank on GitHub">
+    <a class="anchor hideS" href="#replay">The run</a>
+    <a class="anchor hideS" href="#loop">The loop</a>
+    <a class="anchor hideS" href="#discipline">Discipline</a>
+    <a class="anchor hideS" href="#upgrade">Self-upgrade</a>
+    <a class="anchor" href="#start">Install</a>
+    <a class="gh" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener" aria-label="Crank on GitHub">
       <svg class="ghstar" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-      GitHub
+      <span class="ghl">GitHub</span>
     </a>
   </div>
 </nav>
 
 <header id="top">
-  <div id="stage" aria-hidden="true"></div>
+  <div class="ghost" aria-hidden="true"><span>CRANK</span></div>
   <div class="heroInner">
-    <p class="nowline">NOW SHOWING &middot; AN OPEN-SOURCE CLAUDE CODE SKILL</p>
-    <h1 id="heroH">Turn the crank.<br><span class="b">The loop runs.</span></h1>
-    <p class="heroSub">Crank sets its own acceptance criteria, runs a fleet of agents, and hands the work to a
-    separate cold verifier whose only job is to fail it before it reaches you. Stop being the thing inside the loop.</p>
+    <p class="eyebrow" id="eyebrow">An open-source Claude Code skill</p>
+    <a class="release" href="https://github.com/victordelrosal/crank/commit/5a0c3b3" target="_blank" rel="noopener">
+      <span class="v">CRANK v2</span><span class="n">cranked itself · 2026-07-04 &rarr;</span>
+    </a>
+    <h1>Turn the crank.<br><span class="b">The loop runs.</span></h1>
+    <p class="category">It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it.</p>
     <div class="heroCtas">
-      <div class="install"><span id="inst">/crank make me proud</span><button data-copy="inst" aria-label="Copy command">COPY</button></div>
-      <a class="gh" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
-      </a>
+      <div class="install">
+        <code id="inst">git clone https://github.com/victordelrosal/crank.git &amp;&amp; cp crank/skill/SKILL.md ~/.claude/skills/crank/</code>
+        <button data-copy="inst" data-plain="git clone https://github.com/victordelrosal/crank.git && mkdir -p ~/.claude/skills/crank && cp crank/skill/SKILL.md ~/.claude/skills/crank/SKILL.md" aria-label="Copy install command">COPY</button>
+      </div>
+      <a class="ghostlink" href="https://github.com/victordelrosal/crank/blob/master/.loop/LOG.md" target="_blank" rel="noopener">Read the run log &rarr;</a>
     </div>
   </div>
-  <div class="scrollHint">SCROLL TO TURN
+
+  <div class="stage">
+    <div class="crankLabel" aria-hidden="true">
+      <div class="t">Turn the crank &#9654;</div>
+      <div class="o">Rounds turned: <span id="odo">0</span></div>
+    </div>
+    <svg class="cyl" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An engraved music-box mechanism: a pinned brass cylinder, a tuned comb, and a hand crank. The programme on the cylinder is the loop; the comb is the verifier it strikes.">
+<g class="eng bedplate">
+<line x1="90" y1="516" x2="1110" y2="516" class="eng-2"/>
+<line x1="120" y1="530" x2="1080" y2="530" class="eng-hair"/>
+<circle cx="150" cy="523" r="6" class="eng-1"/>
+<line x1="146" y1="519" x2="154" y2="527" class="eng-hair"/>
+<line x1="146" y1="527" x2="154" y2="519" class="eng-hair"/>
+<circle cx="1050" cy="523" r="6" class="eng-1"/>
+<line x1="1046" y1="519" x2="1054" y2="527" class="eng-hair"/>
+<line x1="1046" y1="527" x2="1054" y2="519" class="eng-hair"/>
+<circle cx="600" cy="523" r="6" class="eng-1"/>
+<line x1="596" y1="519" x2="604" y2="527" class="eng-hair"/>
+<line x1="596" y1="527" x2="604" y2="519" class="eng-hair"/>
+</g>
+<g class="eng axle">
+<line x1="150" y1="300" x2="1000" y2="300" class="eng-2"/>
+<path d="M182,516 L182,294 Q182,274 202,274 L202,274" class="eng-2" fill="none"/>
+<path d="M218,516 L218,294 Q218,274 198,274" class="eng-2" fill="none"/>
+<circle cx="200" cy="300" r="13" class="eng-1"/>
+<circle cx="200" cy="300" r="5" class="eng-2"/>
+<path d="M866,516 L866,294 Q866,274 886,274 L886,274" class="eng-2" fill="none"/>
+<path d="M902,516 L902,294 Q902,274 882,274" class="eng-2" fill="none"/>
+<circle cx="884" cy="300" r="13" class="eng-1"/>
+<circle cx="884" cy="300" r="5" class="eng-2"/>
+</g>
+<g class="eng barrel">
+<path d="M250,150 L830,150" class="eng-2"/>
+<path d="M250,450 L830,450" class="eng-2"/>
+<ellipse cx="830" cy="300" rx="46" ry="150" class="eng-2 endcap"/>
+<ellipse cx="250" cy="300" rx="46" ry="150" class="eng-2 endcap-front"/>
+<ellipse cx="250" cy="300" rx="35" ry="137" class="eng-hair"/>
+<circle cx="250" cy="300" r="12" class="eng-1"/>
+<ellipse cx="308.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="366.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="424.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="482.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="540.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="598.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="656.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="714.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+<ellipse cx="772.0" cy="300" rx="46" ry="150" class="eng-hair hoop"/>
+</g>
+<g class="eng pins">
+<line x1="287.7" y1="177.3" x2="286.4" y2="169.3" class="eng-pin"/>
+<circle cx="286.4" cy="169.3" r="3.1" class="eng-pindot"/>
+<line x1="287.7" y1="422.7" x2="286.4" y2="430.7" class="eng-pin"/>
+<circle cx="286.4" cy="430.7" r="3.1" class="eng-pindot"/>
+<line x1="307.9" y1="364.4" x2="306.7" y2="372.4" class="eng-pin"/>
+<circle cx="306.7" cy="372.4" r="3.1" class="eng-pindot"/>
+<line x1="328.1" y1="286.7" x2="327.0" y2="278.7" class="eng-pin"/>
+<circle cx="327.0" cy="278.7" r="3.1" class="eng-pindot"/>
+<line x1="348.2" y1="213.0" x2="347.3" y2="205.0" class="eng-pin"/>
+<circle cx="347.3" cy="205.0" r="3.1" class="eng-pindot"/>
+<line x1="368.4" y1="406.7" x2="367.5" y2="414.7" class="eng-pin"/>
+<circle cx="367.5" cy="414.7" r="3.1" class="eng-pindot"/>
+<line x1="388.6" y1="235.6" x2="387.8" y2="227.6" class="eng-pin"/>
+<circle cx="387.8" cy="227.6" r="3.1" class="eng-pindot"/>
+<line x1="388.6" y1="339.5" x2="387.8" y2="347.5" class="eng-pin"/>
+<circle cx="387.8" cy="347.5" r="3.1" class="eng-pindot"/>
+<line x1="408.8" y1="260.5" x2="408.1" y2="252.5" class="eng-pin"/>
+<circle cx="408.1" cy="252.5" r="3.1" class="eng-pindot"/>
+<line x1="429.0" y1="193.3" x2="428.4" y2="185.3" class="eng-pin"/>
+<circle cx="428.4" cy="185.3" r="3.1" class="eng-pindot"/>
+<line x1="429.0" y1="364.4" x2="428.4" y2="372.4" class="eng-pin"/>
+<circle cx="428.4" cy="372.4" r="3.1" class="eng-pindot"/>
+<line x1="449.2" y1="193.3" x2="448.7" y2="185.3" class="eng-pin"/>
+<circle cx="448.7" cy="185.3" r="3.1" class="eng-pindot"/>
+<line x1="449.2" y1="387.0" x2="448.7" y2="395.0" class="eng-pin"/>
+<circle cx="448.7" cy="395.0" r="3.1" class="eng-pindot"/>
+<line x1="469.4" y1="313.3" x2="469.0" y2="321.3" class="eng-pin"/>
+<circle cx="469.0" cy="321.3" r="3.1" class="eng-pindot"/>
+<line x1="489.5" y1="235.6" x2="489.3" y2="227.6" class="eng-pin"/>
+<circle cx="489.3" cy="227.6" r="3.1" class="eng-pindot"/>
+<line x1="489.5" y1="313.3" x2="489.3" y2="321.3" class="eng-pin"/>
+<circle cx="489.3" cy="321.3" r="3.1" class="eng-pindot"/>
+<line x1="509.7" y1="177.3" x2="509.6" y2="169.3" class="eng-pin"/>
+<circle cx="509.6" cy="169.3" r="3.1" class="eng-pindot"/>
+<line x1="509.7" y1="422.7" x2="509.6" y2="430.7" class="eng-pin"/>
+<circle cx="509.6" cy="430.7" r="3.1" class="eng-pindot"/>
+<line x1="529.9" y1="364.4" x2="529.9" y2="372.4" class="eng-pin"/>
+<circle cx="529.9" cy="372.4" r="3.1" class="eng-pindot"/>
+<line x1="529.9" y1="422.7" x2="529.9" y2="430.7" class="eng-pin"/>
+<circle cx="529.9" cy="430.7" r="3.1" class="eng-pindot"/>
+<line x1="550.1" y1="260.5" x2="550.1" y2="252.5" class="eng-pin"/>
+<circle cx="550.1" cy="252.5" r="3.1" class="eng-pindot"/>
+<line x1="550.1" y1="286.7" x2="550.1" y2="278.7" class="eng-pin"/>
+<circle cx="550.1" cy="278.7" r="3.1" class="eng-pindot"/>
+<line x1="570.3" y1="213.0" x2="570.4" y2="205.0" class="eng-pin"/>
+<circle cx="570.4" cy="205.0" r="3.1" class="eng-pindot"/>
+<line x1="590.5" y1="387.0" x2="590.7" y2="395.0" class="eng-pin"/>
+<circle cx="590.7" cy="395.0" r="3.1" class="eng-pindot"/>
+<line x1="590.5" y1="406.7" x2="590.7" y2="414.7" class="eng-pin"/>
+<circle cx="590.7" cy="414.7" r="3.1" class="eng-pindot"/>
+<line x1="610.6" y1="213.0" x2="611.0" y2="205.0" class="eng-pin"/>
+<circle cx="611.0" cy="205.0" r="3.1" class="eng-pindot"/>
+<line x1="610.6" y1="339.5" x2="611.0" y2="347.5" class="eng-pin"/>
+<circle cx="611.0" cy="347.5" r="3.1" class="eng-pindot"/>
+<line x1="630.8" y1="260.5" x2="631.3" y2="252.5" class="eng-pin"/>
+<circle cx="631.3" cy="252.5" r="3.1" class="eng-pindot"/>
+<line x1="651.0" y1="193.3" x2="651.6" y2="185.3" class="eng-pin"/>
+<circle cx="651.6" cy="185.3" r="3.1" class="eng-pindot"/>
+<line x1="651.0" y1="339.5" x2="651.6" y2="347.5" class="eng-pin"/>
+<circle cx="651.6" cy="347.5" r="3.1" class="eng-pindot"/>
+<line x1="671.2" y1="177.3" x2="671.9" y2="169.3" class="eng-pin"/>
+<circle cx="671.9" cy="169.3" r="3.1" class="eng-pindot"/>
+<line x1="671.2" y1="387.0" x2="671.9" y2="395.0" class="eng-pin"/>
+<circle cx="671.9" cy="395.0" r="3.1" class="eng-pindot"/>
+<line x1="691.4" y1="313.3" x2="692.2" y2="321.3" class="eng-pin"/>
+<circle cx="692.2" cy="321.3" r="3.1" class="eng-pindot"/>
+<line x1="711.6" y1="235.6" x2="712.5" y2="227.6" class="eng-pin"/>
+<circle cx="712.5" cy="227.6" r="3.1" class="eng-pindot"/>
+<line x1="711.6" y1="286.7" x2="712.5" y2="278.7" class="eng-pin"/>
+<circle cx="712.5" cy="278.7" r="3.1" class="eng-pindot"/>
+<line x1="731.8" y1="177.3" x2="732.7" y2="169.3" class="eng-pin"/>
+<circle cx="732.7" cy="169.3" r="3.1" class="eng-pindot"/>
+<line x1="731.8" y1="422.7" x2="732.7" y2="430.7" class="eng-pin"/>
+<circle cx="732.7" cy="430.7" r="3.1" class="eng-pindot"/>
+<line x1="751.9" y1="364.4" x2="753.0" y2="372.4" class="eng-pin"/>
+<circle cx="753.0" cy="372.4" r="3.1" class="eng-pindot"/>
+<line x1="751.9" y1="406.7" x2="753.0" y2="414.7" class="eng-pin"/>
+<circle cx="753.0" cy="414.7" r="3.1" class="eng-pindot"/>
+<line x1="772.1" y1="235.6" x2="773.3" y2="227.6" class="eng-pin"/>
+<circle cx="773.3" cy="227.6" r="3.1" class="eng-pindot"/>
+<line x1="772.1" y1="286.7" x2="773.3" y2="278.7" class="eng-pin"/>
+<circle cx="773.3" cy="278.7" r="3.1" class="eng-pindot"/>
+<line x1="792.3" y1="213.0" x2="793.6" y2="205.0" class="eng-pin"/>
+<circle cx="793.6" cy="205.0" r="3.1" class="eng-pindot"/>
+</g>
+<g class="eng comb">
+<line x1="256" y1="496" x2="838" y2="496" class="eng-2"/>
+<line x1="256" y1="504" x2="838" y2="504" class="eng-hair"/>
+<line x1="256" y1="496" x2="256" y2="504" class="eng-hair"/>
+<line x1="838" y1="496" x2="838" y2="504" class="eng-hair"/>
+<line x1="268.0" y1="496" x2="268.0" y2="438.0" class="eng-tooth"/>
+<line x1="289.5" y1="496" x2="289.5" y2="439.4" class="eng-tooth"/>
+<line x1="310.9" y1="496" x2="310.9" y2="440.8" class="eng-tooth"/>
+<line x1="332.4" y1="496" x2="332.4" y2="442.2" class="eng-tooth"/>
+<line x1="353.8" y1="496" x2="353.8" y2="443.5" class="eng-tooth"/>
+<line x1="375.3" y1="496" x2="375.3" y2="444.9" class="eng-tooth"/>
+<line x1="396.8" y1="496" x2="396.8" y2="446.3" class="eng-tooth"/>
+<line x1="418.2" y1="496" x2="418.2" y2="447.7" class="eng-tooth"/>
+<line x1="439.7" y1="496" x2="439.7" y2="449.1" class="eng-tooth"/>
+<line x1="461.2" y1="496" x2="461.2" y2="450.5" class="eng-tooth"/>
+<line x1="482.6" y1="496" x2="482.6" y2="451.8" class="eng-tooth"/>
+<line x1="504.1" y1="496" x2="504.1" y2="453.2" class="eng-tooth"/>
+<line x1="525.5" y1="496" x2="525.5" y2="454.6" class="eng-tooth"/>
+<line x1="547.0" y1="496" x2="547.0" y2="456.0" class="eng-tooth"/>
+<line x1="568.5" y1="496" x2="568.5" y2="457.4" class="eng-tooth"/>
+<line x1="589.9" y1="496" x2="589.9" y2="458.8" class="eng-tooth"/>
+<line x1="611.4" y1="496" x2="611.4" y2="460.2" class="eng-tooth"/>
+<line x1="632.8" y1="496" x2="632.8" y2="461.5" class="eng-tooth"/>
+<line id="strikeTooth" x1="654.3" y1="496" x2="654.3" y2="462.9" class="eng-tooth-lit"/>
+<line x1="675.8" y1="496" x2="675.8" y2="464.3" class="eng-tooth"/>
+<line x1="697.2" y1="496" x2="697.2" y2="465.7" class="eng-tooth"/>
+<line x1="718.7" y1="496" x2="718.7" y2="467.1" class="eng-tooth"/>
+<line x1="740.2" y1="496" x2="740.2" y2="468.5" class="eng-tooth"/>
+<line x1="761.6" y1="496" x2="761.6" y2="469.8" class="eng-tooth"/>
+<line x1="783.1" y1="496" x2="783.1" y2="471.2" class="eng-tooth"/>
+<line x1="804.5" y1="496" x2="804.5" y2="472.6" class="eng-tooth"/>
+<line x1="826.0" y1="496" x2="826.0" y2="474.0" class="eng-tooth"/>
+<line x1="654.3" y1="448" x2="654.3" y2="456.9" class="eng-strike"/>
+<circle cx="654.3" cy="451.9" r="3" class="eng-pindot"/>
+</g>
+<g class="eng crank" id="crankGroup">
+<circle cx="1000" cy="300" r="20" class="eng-2"/>
+<circle cx="1000" cy="300" r="8" class="eng-1"/>
+<path d="M1000,300 L1070,204" class="eng-crankarm"/>
+<path d="M1070,204 q 26,-10 20,-34 q -6,-24 20,-30" class="eng-2 crankhandle" fill="none"/>
+<circle cx="1070" cy="204" r="10" class="eng-2 crankpivot"/>
+<circle cx="1130" cy="140" r="13" class="eng-1 crankknob"/>
+</g>
+<g class="eng hatch">
+<line x1="180" y1="518" x2="170" y2="528" class="eng-hatch"/>
+<line x1="214" y1="518" x2="204" y2="528" class="eng-hatch"/>
+<line x1="248" y1="518" x2="238" y2="528" class="eng-hatch"/>
+<line x1="282" y1="518" x2="272" y2="528" class="eng-hatch"/>
+<line x1="316" y1="518" x2="306" y2="528" class="eng-hatch"/>
+<line x1="350" y1="518" x2="340" y2="528" class="eng-hatch"/>
+<line x1="384" y1="518" x2="374" y2="528" class="eng-hatch"/>
+<line x1="418" y1="518" x2="408" y2="528" class="eng-hatch"/>
+<line x1="452" y1="518" x2="442" y2="528" class="eng-hatch"/>
+<line x1="486" y1="518" x2="476" y2="528" class="eng-hatch"/>
+<line x1="520" y1="518" x2="510" y2="528" class="eng-hatch"/>
+<line x1="554" y1="518" x2="544" y2="528" class="eng-hatch"/>
+<line x1="588" y1="518" x2="578" y2="528" class="eng-hatch"/>
+<line x1="622" y1="518" x2="612" y2="528" class="eng-hatch"/>
+<line x1="656" y1="518" x2="646" y2="528" class="eng-hatch"/>
+<line x1="690" y1="518" x2="680" y2="528" class="eng-hatch"/>
+<line x1="724" y1="518" x2="714" y2="528" class="eng-hatch"/>
+<line x1="758" y1="518" x2="748" y2="528" class="eng-hatch"/>
+<line x1="792" y1="518" x2="782" y2="528" class="eng-hatch"/>
+<line x1="826" y1="518" x2="816" y2="528" class="eng-hatch"/>
+<line x1="860" y1="518" x2="850" y2="528" class="eng-hatch"/>
+<line x1="894" y1="518" x2="884" y2="528" class="eng-hatch"/>
+<line x1="928" y1="518" x2="918" y2="528" class="eng-hatch"/>
+<line x1="962" y1="518" x2="952" y2="528" class="eng-hatch"/>
+<line x1="996" y1="518" x2="986" y2="528" class="eng-hatch"/>
+<line x1="1030" y1="518" x2="1020" y2="528" class="eng-hatch"/>
+</g>
+    </svg>
+  </div>
+
+  <div class="scrollHint" aria-hidden="true">SCROLL TO TURN
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3.4"/><path d="M12 8.6V4.5M15 13.8l3.4 2.4"/></svg>
   </div>
 </header>
 
 <div class="ticker" aria-hidden="true">
-  <span class="track" id="tick"></span>
+  <span class="track">CRANK v2 <em>&#9679;</em> THE VERIFIER GATES THE STOP <em>&#9679;</em> 23 APPROACHES BENCHMARKED <em>&#9679;</em> 6 RULES, EACH WITH A NAMED LINEAGE <em>&#9679;</em> 16 BINARY CRITERIA <em>&#9679;</em> MIT LICENSED <em>&#9679;</em> CRANK v2 <em>&#9679;</em> THE VERIFIER GATES THE STOP <em>&#9679;</em> 23 APPROACHES BENCHMARKED <em>&#9679;</em> 6 RULES, EACH WITH A NAMED LINEAGE <em>&#9679;</em> 16 BINARY CRITERIA <em>&#9679;</em> MIT LICENSED <em>&#9679;</em> </span>
 </div>
 
 <main id="main">
+
+<section id="replay">
+  <p class="kicker reveal">THE RECEIPT</p>
+  <h2 class="reveal">Watch the verifier <span class="b">catch the loop lying.</span></h2>
+  <p class="lede reveal">On 4 July 2026 Crank was pointed at its own operating manual. This is the run, excerpted verbatim from the journal in the repo. Nothing here is dramatised.</p>
+  <div class="term reveal" id="term">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">.loop/LOG.md &mdash; the self-upgrade run</span><a class="badge" href="https://github.com/victordelrosal/crank/blob/master/.loop/LOG.md" target="_blank" rel="noopener">verbatim &#8599;</a></div>
+    <div class="body" id="termBody">
+<div class="tline"><span class="c"># 2026-07-04 &middot; Crank cranked Crank</span></div>
+<div class="tline"><span class="p">$</span> /crank <span class="c">benchmark your own manual against the field</span></div>
+<div class="tline"><span class="c"># ORIENT &middot; ground before you frame</span></div>
+<div class="tline">VERIFIED: installed skill is AHEAD of repo copy; 2026-07-02 edits never synced <span class="c">(diff run, exit 1)</span></div>
+<div class="tline"><span class="c"># FRAME &middot; 16 binary criteria locked, evaluation surface frozen</span></div>
+<div class="tline"><span class="c"># ROUND 1 &middot; cold verifier, fresh agent, criteria + artifacts only</span></div>
+<div class="tline">VERDICT: PASS on C1-C9 and C12 &middot; 5 defects</div>
+<div class="tline defect"><span class="x">&#10007;</span> defect 4: verified LEARNINGS rule announced but not written</div>
+<div class="tline"><span class="c"># ROUND 2 &middot; verifier #2, no context from #1</span></div>
+<div class="tline defect">VERDICT: C13 PARTIAL (6 of 23 approaches unmapped) &middot; <span class="x">false UNVERIFIED claim in this LOG entry</span></div>
+<div class="tline catch"><span class="p">&gt;</span> verifier #2 caught me writing the claim from intention</div>
+<div class="tline ok">FIX: C13 upgraded per-approach coverage 23/23 &middot; ship: commit + push <a href="https://github.com/victordelrosal/crank/commit/5a0c3b3" target="_blank" rel="noopener">5a0c3b3</a></div>
+    </div>
+  </div>
+  <p class="termNote reveal">That catch, defect one from the second verifier, is why Crank exists: a check the loop cannot talk its way past, even when the work being checked is its own upgrade.</p>
+</section>
+
+<section id="trust">
+  <p class="trustLabel reveal">The week the category got its name &middot; June 2026</p>
+  <div class="trust">
+    <blockquote class="quote reveal">
+      <p>&ldquo;you shouldn&rsquo;t be prompting coding agents anymore, you should be designing loops that prompt your agents&rdquo;</p>
+      <div class="who">PETER STEINBERGER <span>&middot; the 2-million-view argument that started it</span></div>
+    </blockquote>
+    <blockquote class="quote reveal">
+      <p>&ldquo;I don&rsquo;t prompt Claude anymore. I have loops running that prompt Claude.&rdquo;</p>
+      <div class="who">BORIS CHERNY <span>&middot; creator of Claude Code</span></div>
+    </blockquote>
+  </div>
+  <p class="byline reveal">Crank is one answer to that argument. Maintained by <a href="https://victordelrosal.com" target="_blank" rel="noopener">Victor del Rosal</a> &middot; built and dogfooded with Claude Code.</p>
+</section>
+
+<section id="why">
+  <div class="coldopen reveal">
+    <p>You were the loop. You were the <code>while</code> condition, the evaluator, and the retry logic, all running in your head. The quality ceiling was how many times you were willing to hit enter that night.</p>
+    <p class="turn">Crank exists so you can stop.</p>
+  </div>
+</section>
 
 <section id="loop">
   <p class="kicker reveal">THE MECHANISM</p>
@@ -336,64 +702,50 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
     <div class="plate reveal"><p class="n">01 &middot; GENERATOR</p><h3>The next prompt</h3><p>A template, a task list, or a mutation of the last attempt. In Crank, the director writes its own brief and binary criteria before spending a token.</p></div>
     <div class="plate reveal"><p class="n">02 &middot; AGENT RUN</p><h3>The work</h3><p>A fleet of specialists, one per independent workstream, each opening with a three-line readback so misalignment dies at line three, not in the artifact.</p></div>
     <div class="plate reveal"><p class="n">03 &middot; EVALUATOR</p><h3>The cold verifier</h3><p>A separate agent, fresh context every round, sees only the criteria and the artifacts, and is instructed to fail the work. For anything runnable, it drives the artifact like a user.</p></div>
-    <div class="plate reveal"><p class="n">04 &middot; CONTROLLER</p><h3>The decision</h3><p>Investigate why a criterion failed, then iterate structurally, fork rival candidates when stuck, or stop honestly. The verifier's verdict gates the stop, not the builder's feelings.</p></div>
+    <div class="plate reveal"><p class="n">04 &middot; CONTROLLER</p><h3>The decision</h3><p>Investigate why a criterion failed, then iterate structurally, fork rival candidates when stuck, or stop honestly. The verifier&rsquo;s verdict gates the stop, not the builder&rsquo;s feelings.</p></div>
   </div>
   <div class="pull reveal">
     &ldquo;A loop with a weak evaluator <span class="b">fails confidently a thousand times</span> and bills you for it.&rdquo;
-    <footer>THE WHOLE SKILL IN ONE SENTENCE</footer>
+    <cite>THE WHOLE SKILL IN ONE SENTENCE</cite>
   </div>
 </section>
 
 <section id="discipline">
   <p class="kicker reveal">THE DISCIPLINE</p>
   <h2 class="reveal">Every pin on the cylinder is a rule that <span class="b">earned its place.</span></h2>
-  <p class="lede reveal">Crank is benchmarked against the field and upgraded under hostile verification. Each rule traces to a named, fetch-verified source.</p>
-  <div class="rules">
-    <div class="rule reveal"><div class="pin"></div><h3>The verifier gates the stop</h3><p>The loop cannot declare done while any binary criterion fails. Self-grading is systematically lenient; the grader lives in a separate context window.</p><span class="src">Anthropic loop experiments &middot; CMA Outcomes</span></div>
-    <div class="rule reveal"><div class="pin"></div><h3>The evaluation surface is frozen</h3><p>Criteria, check scripts and verifier instructions are part of the contract. A fix that edits the test instead of the work is a downgrade in disguise.</p><span class="src">Karpathy autoresearch &middot; Anthropic harness law</span></div>
-    <div class="rule reveal"><div class="pin"></div><h3>Ground before you frame</h3><p>Locate the real artifacts and write an explain-back, every claim marked VERIFIED or ASSUMED, before the contract freezes. The expensive bugs are shared misunderstanding.</p><span class="src">Uriostegui &middot; ClineFlow</span></div>
-    <div class="rule reveal"><div class="pin"></div><h3>Baseline before you improve</h3><p>Measure the unmodified starting state first. Every claim of improvement is proved against the baseline, not against memory of it.</p><span class="src">Karpathy autoresearch</span></div>
-    <div class="rule reveal"><div class="pin"></div><h3>Memory that compounds</h3><p>Verified rules distill to LEARNINGS; reusable scripts promote to a tools library. Run N+1 starts from competence, not from scratch.</p><span class="src">Lance Martin &middot; Voyager &middot; AWM</span></div>
-    <div class="rule reveal"><div class="pin"></div><h3>Freedom stops at the gate</h3><p>Money, reach, publishing, deletion: anything irreversible pauses for a human, or parks in an approval queue when running unattended. The gate never lowers because no one is watching.</p><span class="src">Crank doctrine &middot; scheduled mode</span></div>
+  <p class="lede reveal">Six rules, each traced to a named, fetch-verified source. Hover a pin to find its rule.</p>
+  <div class="stripWrap reveal">
+    <svg class="strip" id="strip" viewBox="0 0 1100 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A music-box programme strip. Each of the six pins is one of Crank's rules.">
+      <line class="bar" x1="40" y1="96" x2="1060" y2="96"/>
+      <g class="pincol" data-rule="0"><line class="tickpin" x1="132" y1="96" x2="132" y2="52"/><circle class="pinhead" cx="132" cy="48" r="7"/><text class="lbl" x="132" y="126" text-anchor="middle">01</text></g>
+      <g class="pincol" data-rule="1"><line class="tickpin" x1="315" y1="96" x2="315" y2="52"/><circle class="pinhead" cx="315" cy="48" r="7"/><text class="lbl" x="315" y="126" text-anchor="middle">02</text></g>
+      <g class="pincol" data-rule="2"><line class="tickpin" x1="498" y1="96" x2="498" y2="52"/><circle class="pinhead" cx="498" cy="48" r="7"/><text class="lbl" x="498" y="126" text-anchor="middle">03</text></g>
+      <g class="pincol" data-rule="3"><line class="tickpin" x1="681" y1="96" x2="681" y2="52"/><circle class="pinhead" cx="681" cy="48" r="7"/><text class="lbl" x="681" y="126" text-anchor="middle">04</text></g>
+      <g class="pincol" data-rule="4"><line class="tickpin" x1="864" y1="96" x2="864" y2="52"/><circle class="pinhead" cx="864" cy="48" r="7"/><text class="lbl" x="864" y="126" text-anchor="middle">05</text></g>
+      <g class="pincol" data-rule="5"><line class="tickpin" x1="1010" y1="96" x2="1010" y2="52"/><circle class="pinhead" cx="1010" cy="48" r="7"/><text class="lbl" x="1010" y="126" text-anchor="middle">06</text></g>
+    </svg>
   </div>
-</section>
-
-<section id="modes">
-  <p class="kicker reveal">TWO WAYS TO TURN IT</p>
-  <h2 class="reveal">Present between rounds, <span class="b">or asleep while it runs.</span></h2>
-  <div class="modes">
-    <div class="mode reveal">
-      <span class="tag">INTERACTIVE</span>
-      <h3>/crank</h3>
-      <p>You hand over the wheel: it grasps intent, writes the contract, dispatches the fleet, red-teams, iterates. Gates pause in-session and wait for you.</p>
-      <ul>
-        <li>ORIENT &rarr; FRAME &rarr; DECOMPOSE &rarr; EXECUTE &rarr; RED-TEAM &rarr; DECIDE</li>
-        <li>Binary criteria frozen at FRAME, downgrades always surfaced</li>
-        <li>Fresh cold verifier every round</li>
-      </ul>
-    </div>
-    <div class="mode night reveal">
-      <span class="tag">SCHEDULED</span>
-      <h3>/crank scheduled</h3>
-      <p>The same loop with the human out of the room. It has to survive a closed laptop and a cold context, so three things become mandatory.</p>
-      <ul>
-        <li>Gates become an async approval queue, never auto-approval</li>
-        <li>A hard budget ceiling that aborts, not asks nicely</li>
-        <li>Crash-safe <code>STATE.json</code>: a cron cold-start resumes mid-run</li>
-      </ul>
-    </div>
+  <div class="rules" id="rules">
+    <div class="rule reveal" data-rule="0"><div class="pin"></div><h3>The verifier gates the stop</h3><p>The loop cannot declare done while any binary criterion fails. Self-grading is systematically lenient; the grader lives in a separate context window.</p><span class="src">Anthropic loop experiments &middot; CMA Outcomes</span></div>
+    <div class="rule reveal" data-rule="1"><div class="pin"></div><h3>The evaluation surface is frozen</h3><p>Criteria, check scripts and verifier instructions are part of the contract. A fix that edits the test instead of the work is a downgrade in disguise.</p><span class="src">Karpathy autoresearch &middot; Anthropic harness law</span></div>
+    <div class="rule reveal" data-rule="2"><div class="pin"></div><h3>Ground before you frame</h3><p>Locate the real artifacts and write an explain-back, every claim marked VERIFIED or ASSUMED, before the contract freezes. The expensive bugs are shared misunderstanding.</p><span class="src">Uriostegui &middot; ClineFlow</span></div>
+    <div class="rule reveal" data-rule="3"><div class="pin"></div><h3>Baseline before you improve</h3><p>Measure the unmodified starting state first. Every claim of improvement is proved against the baseline, not against memory of it.</p><span class="src">Karpathy autoresearch</span></div>
+    <div class="rule reveal" data-rule="4"><div class="pin"></div><h3>Memory that compounds</h3><p>Verified rules distill to LEARNINGS; reusable scripts promote to a tools library. Run N+1 starts from competence, not from scratch.</p><span class="src">Lance Martin &middot; Voyager &middot; AWM</span></div>
+    <div class="rule reveal" data-rule="5"><div class="pin"></div><h3>Freedom stops at the gate</h3><p>Money, reach, publishing, deletion: anything irreversible pauses for a human, or parks in an approval queue when running unattended. The gate never lowers because no one is watching.</p><span class="src">Crank doctrine &middot; scheduled mode</span></div>
   </div>
 </section>
 
 <section id="upgrade">
   <p class="kicker reveal">PROOF OF DISCIPLINE</p>
   <h2 class="reveal">On 4 July 2026, <span class="b">the loop upgraded itself.</span></h2>
-  <p class="lede reveal">Crank was pointed at Crank: benchmark your own operating manual against 23 approaches, upgrade, and ship only what a hostile reviewer passes. The full run record is public in the repo.</p>
+  <p class="lede reveal">Crank benchmarked its own operating manual against 23 approaches and shipped only what a hostile reviewer passed. The full run record is public in the repo.</p>
   <div class="commits">
-    <div class="commit reveal"><p class="h">6f0ee70 &middot; ROUND 1</p><p>Absorbed Uriostegui and ClineFlow: the grounding discipline, the run journal, the builder readback. Also caught its own manual citing a log no section defined, and its public repo three weeks behind the installed skill.</p></div>
-    <div class="commit reveal"><p class="h">d9f0e9a &middot; ROUND 2</p><p>The field benchmark: Karpathy's autoresearch, the Ralph loop, Anthropic's harnesses, Reflexion, LATS, Voyager, GEPA, AlphaEvolve and more. Six new mechanisms adopted; six fashionable ideas rejected with written rationale, including the never-stop directive.</p></div>
-    <div class="commit reveal"><p class="h">5a0c3b3 &middot; THE RECORD</p><p>README, benchmark, bet-weights and both verifier verdicts, published. Nothing quantified from unverified coverage.</p></div>
+    <div class="commit reveal"><p class="h"><a href="https://github.com/victordelrosal/crank/commit/6f0ee70" target="_blank" rel="noopener">6f0ee70</a> &middot; ROUND 1</p><p>Absorbed Uriostegui and ClineFlow: the grounding discipline, the run journal, the builder readback. Also caught its own manual citing a log no section defined, and its public repo three weeks behind the installed skill.</p></div>
+    <div class="commit reveal"><p class="h"><a href="https://github.com/victordelrosal/crank/commit/d9f0e9a" target="_blank" rel="noopener">d9f0e9a</a> &middot; ROUND 2</p><p>The field benchmark: Karpathy&rsquo;s autoresearch, the Ralph loop, Anthropic&rsquo;s harnesses, Reflexion, LATS, Voyager, GEPA, AlphaEvolve and more. Six new mechanisms adopted; six fashionable ideas rejected with written rationale, including the never-stop directive.</p></div>
+    <div class="commit reveal"><p class="h"><a href="https://github.com/victordelrosal/crank/commit/5a0c3b3" target="_blank" rel="noopener">5a0c3b3</a> &middot; THE RECORD</p><p>README, benchmark, bet-weights and both verifier verdicts, published. Nothing quantified from unverified coverage.</p></div>
   </div>
+
+  <p class="catchline reveal" id="catchline" data-text="verifier #2 caught me writing the claim from intention"><span class="cc">// .loop/LOG.md, verifier 2</span><br><span class="cx" id="catchtext">verifier #2 caught me writing the claim from intention</span></p>
   <p class="kintsugi-note reveal">The flaw was not hidden. It was repaired in gold and kept as proof, the way a broken bowl is mended with lacquer so the crack becomes the most valuable line on it.</p>
   <div class="kintsugi reveal" id="kintsugi">
     <svg class="kv" viewBox="0 0 900 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -431,41 +783,64 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
   </div>
 </section>
 
-<section id="research">
-  <p class="kicker reveal">STANDING ON NAMED SHOULDERS</p>
-  <h2 class="reveal">Every source in the canon is <span class="b">fetched and verified.</span></h2>
-  <div class="prov">
-    <div class="reveal"><b>Anthropic</b>Long-running harness experiments v1 + v2; verifier subagents beat self-critique (Lance Martin)</div>
-    <div class="reveal"><b>Karpathy</b>autoresearch: frozen evals, mandatory baselines, git as the undo mechanism</div>
-    <div class="reveal"><b>Practitioners</b>Ralph loop, ClineFlow, Cline Memory Bank, Spec Kit, Kiro, BMAD, Task Master</div>
-    <div class="reveal"><b>arXiv</b>Reflexion 2303.11366 &middot; LATS 2310.04406 &middot; Voyager 2305.16291 &middot; SWE-agent 2405.15793</div>
-    <div class="reveal"><b>arXiv</b>GEPA 2507.19457 &middot; Darwin G&ouml;del Machine 2505.22954 &middot; AlphaEvolve 2506.13131 &middot; AWM 2409.07429</div>
-    <div class="reveal"><b>The record</b>23-approach benchmark, bet-weights for accepted and rejected, full run journal, all in the repo</div>
+<section id="ledger">
+  <p class="kicker reveal">THE LEDGER</p>
+  <h2 class="reveal">Six ideas adopted. Six <span class="b">rejected in writing.</span></h2>
+  <p class="lede reveal">Round two&rsquo;s bet-weights table, verbatim. Rejections carry a confidence too; the never-stop directive lost at five percent.</p>
+  <div class="ledger reveal">
+    <div class="row"><span class="d">Baseline before you improve <span style="color:var(--mute)">&middot; Karpathy</span></span><span class="pc">85%</span><span class="v a">ACCEPT</span></div>
+    <div class="row"><span class="d">Frozen eval surface + script gate <span style="color:var(--mute)">&middot; Karpathy, Anthropic, Kiro</span></span><span class="pc">85%</span><span class="v a">ACCEPT</span></div>
+    <div class="row"><span class="d">Verifier drives the artifact <span style="color:var(--mute)">&middot; Anthropic v1/v2</span></span><span class="pc">82%</span><span class="v a">ACCEPT</span></div>
+    <div class="row"><span class="d">Distill tools, not only rules <span style="color:var(--mute)">&middot; Voyager, AWM</span></span><span class="pc">80%</span><span class="v a">ACCEPT</span></div>
+    <div class="row"><span class="d">Fork best-of-N when stuck <span style="color:var(--mute)">&middot; LATS/DGM kernel</span></span><span class="pc">72%</span><span class="v a">ACCEPT</span></div>
+    <div class="row"><span class="d">Readback verification clause <span style="color:var(--mute)">&middot; Anthropic v2</span></span><span class="pc">65%</span><span class="v a">ACCEPT</span></div>
+    <div class="row rej"><span class="d">Backpressure as skill text <span style="color:var(--mute)">&middot; Ralph</span></span><span class="pc">35%</span><span class="v r">REJECT</span></div>
+    <div class="row rej"><span class="d">MemoryBank hierarchy / SpecKit constitution</span><span class="pc">20%</span><span class="v r">REJECT</span></div>
+    <div class="row rej"><span class="d">Single-scalar fitness</span><span class="pc">15%</span><span class="v r">REJECT</span></div>
+    <div class="row rej"><span class="d">EARS notation</span><span class="pc">15%</span><span class="v r">REJECT</span></div>
+    <div class="row rej"><span class="d">Full MCTS / population evolution</span><span class="pc">10%</span><span class="v r">REJECT</span></div>
+    <div class="row rej"><span class="d">Never-stop directive <span style="color:var(--mute)">&middot; Karpathy</span></span><span class="pc">5%</span><span class="v r">REJECT</span></div>
   </div>
-  <p class="provNote reveal">Secondary coverage that could not be verified is marked UNVERIFIED in the captures and never quoted. MIT licensed.</p>
+  <p class="ledgerNote reveal">Every source fetched and verified; secondary coverage that could not be verified is marked UNVERIFIED in the captures and never quoted. <a href="https://github.com/victordelrosal/crank/blob/master/research/loop-benchmark-2026-07.md" target="_blank" rel="noopener">View all 23 approaches &rarr;</a></p>
+</section>
+
+<section id="lineage">
+  <p class="kicker reveal">THE LINEAGE</p>
+  <h2 class="reveal">Not year zero. <span class="b">A family with a ladder.</span></h2>
+  <div class="lineage reveal">
+    <div class="lin"><span class="yr">ReAct &middot; 2022</span><span class="txt"><b>Reason, act, observe, repeat.</b> One model, one loop, a human watching.</span></div>
+    <div class="lin"><span class="yr">AutoGPT &middot; 2023</span><span class="txt"><b>A goal, and permission to self-prompt.</b> Became famous for spinning forever doing nothing.</span></div>
+    <div class="lin"><span class="yr">Ralph loop &middot; 2025</span><span class="txt"><b>The same prompt file, piped in over and over.</b> Its real move was resetting context to fixed anchors each iteration.</span></div>
+    <div class="lin"><span class="yr">/goal, /loop &middot; 2026</span><span class="txt"><b>The ralph loop, productised</b> until a validator confirms done.</span></div>
+    <div class="lin"><span class="yr">autoresearch &middot; 2026</span><span class="txt"><b>The loop pointed at model training:</b> mutate, run under a fixed budget, keep only what beats a frozen metric.</span></div>
+    <div class="lin now"><span class="yr">Crank &middot; now</span><span class="txt"><b>The closed-loop, budget-disciplined member of the family:</b> a human designs the path, every step has an eval, and there is a defined point where it stops or hands back.</span></div>
+  </div>
 </section>
 
 <section id="start">
   <p class="kicker reveal">QUICK START</p>
   <h2 class="reveal">Install it, then <span class="b">stay the engineer.</span></h2>
-  <div class="term reveal">
-    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">claude-code &mdash; ~/projects</span></div>
-    <div class="body">
-      <div class="termRow"><div>
+  <div class="qs reveal">
+    <div class="qsblock">
+      <div class="bar"><span class="dot" style="width:11px;height:11px;border-radius:50%;background:var(--brass-lo)"></span><span class="dot" style="width:11px;height:11px;border-radius:50%;background:var(--brass)"></span><span class="dot" style="width:11px;height:11px;border-radius:50%;background:var(--brass-hi)"></span><span class="title">claude-code &mdash; ~/projects</span></div>
+      <div class="body">
+        <div class="qsRow"><div>
 <span class="c"># install the skill</span><br>
-<span class="p">$</span> <span id="cmd1">git clone https://github.com/victordelrosal/crank.git<br>$ mkdir -p ~/.claude/skills/crank<br>$ cp crank/skill/SKILL.md ~/.claude/skills/crank/SKILL.md</span>
-      </div><button data-copy="cmd1" aria-label="Copy install commands">COPY</button></div>
-      <br>
-      <div class="termRow"><div>
+<span class="p">$</span> <span id="qs1">git clone https://github.com/victordelrosal/crank.git<br>$ mkdir -p ~/.claude/skills/crank<br>$ cp crank/skill/SKILL.md ~/.claude/skills/crank/SKILL.md</span>
+        </div><button data-copy="qs1" aria-label="Copy install commands">COPY</button></div>
+        <br>
+        <div class="qsRow"><div>
 <span class="c"># hand over the wheel, stay for the gates</span><br>
-<span class="p">&gt;</span> <span class="g" id="cmd2">/crank turn this research report into a publishable pitch package, make me proud</span>
-      </div><button data-copy="cmd2" aria-label="Copy example">COPY</button></div>
-      <br>
-      <div class="termRow"><div>
+<span class="p">&gt;</span> <span class="g" id="qs2">/crank turn this research report into a publishable pitch package, make me proud</span>
+        </div><button data-copy="qs2" aria-label="Copy example">COPY</button></div>
+        <br>
+        <div class="qsRow"><div>
 <span class="c"># or unattended, on a heartbeat, with a hard ceiling</span><br>
-<span class="p">&gt;</span> <span class="g" id="cmd3">/crank scheduled babysit my open PRs overnight; queue anything that needs my call</span>
-      </div><button data-copy="cmd3" aria-label="Copy scheduled example">COPY</button></div>
+<span class="p">&gt;</span> <span class="g" id="qs3">/crank scheduled babysit my open PRs overnight; queue anything that needs my call</span>
+        </div><button data-copy="qs3" aria-label="Copy scheduled example">COPY</button></div>
+      </div>
     </div>
+    <p class="companions reveal">Crank sits on two smaller habits it expects to exist: <code>/diy</code> locks the agent into autonomous execution with no clarifying questions, and <code>/bet-weights</code> is the per-round confidence check the cold verifier judges. The chain is <code>/diy</code> &rarr; <code>/crank</code> &rarr; <code>/bet-weights</code>.</p>
   </div>
 </section>
 
@@ -480,6 +855,7 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
     <span class="fm">
       <a href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp;
       <a href="https://github.com/victordelrosal/crank/tree/master/research" target="_blank" rel="noopener">Research</a> &nbsp;&middot;&nbsp;
+      <a href="https://github.com/victordelrosal/crank/blob/master/.loop/LOG.md" target="_blank" rel="noopener">Run log</a> &nbsp;&middot;&nbsp;
       <a href="https://victordelrosal.com">victordelrosal.com</a>
     </span>
   </div>
@@ -487,319 +863,198 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
-<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
-<script type="module">
-import * as THREE from 'three';
-import {EffectComposer} from './vendor/three-addons/postprocessing/EffectComposer.js';
-import {RenderPass} from './vendor/three-addons/postprocessing/RenderPass.js';
-import {ShaderPass} from './vendor/three-addons/postprocessing/ShaderPass.js';
-import {UnrealBloomPass} from './vendor/three-addons/postprocessing/UnrealBloomPass.js';
+<script>
+(function(){
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var still = new URLSearchParams(location.search).has('still');
 
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const still = new URLSearchParams(location.search).has('still');
-if(still){
-  document.documentElement.style.scrollBehavior='auto';
-  const s=document.createElement('style');
-  s.textContent='header{min-height:900px!important;max-height:900px;overflow:hidden}';
-  document.head.appendChild(s);
-}
-
-/* ---------- ticker ---------- */
-const tickText='CRANK v2 <em>&#9679;</em> THE VERIFIER GATES THE STOP <em>&#9679;</em> 23 SOURCES FETCH-VERIFIED <em>&#9679;</em> 11 RULES, EACH WITH A NAMED LINEAGE <em>&#9679;</em> MIT LICENSED <em>&#9679;</em> ';
-document.getElementById('tick').innerHTML=tickText+tickText;
-
-/* ---------- loader ---------- */
-const loader=document.getElementById('loader');
-const NS='NOW SHOWING';
-if(reduced||still||sessionStorage.getItem('crankSeen')){
-  document.getElementById('ns').textContent=NS;
-  loader.classList.add('done');
-}else{
-  sessionStorage.setItem('crankSeen','1');
-  const nsEl=document.getElementById('ns');
-  const glyphs='&#9679;&#9675;·:*+';
-  let step=0;
-  const dec=setInterval(()=>{
-    step++;
-    nsEl.textContent=NS.split('').map((ch,i)=> i<step? ch : '·:*+●○'[Math.floor((i*7+step*3)%6)]).join('');
-    if(step>NS.length){clearInterval(dec);}
-  },40);
-  gsap.to('#lw span',{opacity:1,duration:.07,stagger:.09,delay:.45,ease:'none'});
-  gsap.to(loader,{opacity:0,duration:.6,delay:1.7,onComplete:()=>loader.classList.add('done')});
-}
-
-/* ---------- three.js: the punched cylinder ---------- */
-const stage=document.getElementById('stage');
-let scrollRot=0;
-try{
-const scene=new THREE.Scene();
-const cam=new THREE.PerspectiveCamera(38,1,0.1,100);
-cam.position.set(0,0.4,10);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
-stage.appendChild(renderer.domElement);
-// opaque hero buffer so bloom runs clean; clear colour = the wood/parchment field
-const CLEAR={dark:0x141009, light:0xf3ecdc};
-function isLight(){return document.documentElement.dataset.theme==='light';}
-renderer.setClearColor(isLight()?CLEAR.light:CLEAR.dark,1);
-
-const ROWS=46, COLS=110, RAD=2.35, LEN=11.5;
-const N=ROWS*COLS;
-const pos=new Float32Array(N*3), aAng=new Float32Array(N), aPin=new Float32Array(N), aRnd=new Float32Array(N);
-let i=0;
-for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-    const x=(r/(ROWS-1)-0.5)*LEN;
-    const ang=(c/COLS)*Math.PI*2;
-    pos[i*3]=x; pos[i*3+1]=0; pos[i*3+2]=0;
-    aAng[i]=ang;
-    // deterministic pin pattern: a sparse punched score
-    aPin[i]=((r*17+c*29)%13===0 || (r*7+c*11)%31===0)?1:0;
-    aRnd[i]=((r*37+c*53)%100)/100;
-    i++;
+  /* ---------- theme ---------- */
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function setTheme(t){
+    document.documentElement.dataset.theme = t;
+    try{localStorage.setItem('crank-theme',t)}catch(e){}
+    themeMeta.setAttribute('content', t==='light' ? '#f6efe0' : '#171310');
   }
-}
-const geo=new THREE.BufferGeometry();
-geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-geo.setAttribute('aAng',new THREE.BufferAttribute(aAng,1));
-geo.setAttribute('aPin',new THREE.BufferAttribute(aPin,1));
-geo.setAttribute('aRnd',new THREE.BufferAttribute(aRnd,1));
-
-const uni={
-  uRot:{value:0},
-  uPx:{value:Math.min(devicePixelRatio,1.75)},
-  uFlashAng:{value:0.9}, // comb position (radians, front-upper)
-  uLight:{value:document.documentElement.dataset.theme==='light'?1:0}
-};
-const mat=new THREE.ShaderMaterial({
-  uniforms:uni,
-  transparent:true,
-  depthWrite:false,
-  blending:THREE.AdditiveBlending,
-  vertexShader:`
-    attribute float aAng; attribute float aPin; attribute float aRnd;
-    uniform float uRot; uniform float uPx; uniform float uFlashAng;
-    varying float vGlow; varying float vPin; varying float vDepth;
-    const float R=${RAD.toFixed(2)};
-    void main(){
-      float ang=aAng+uRot;
-      vec3 p=vec3(position.x, cos(ang)*R, sin(ang)*R);
-      // pins protrude
-      if(aPin>0.5){ p.y=cos(ang)*(R+0.09); p.z=sin(ang)*(R+0.09); }
-      vec4 mv=modelViewMatrix*vec4(p,1.0);
-      float depth=sin(ang); // 1 = front
-      vDepth=depth;
-      // comb strike: pin near comb angle flashes
-      float d=abs(mod(ang-uFlashAng+3.14159,6.28318)-3.14159);
-      float strike=aPin*smoothstep(0.28,0.0,d);
-      vGlow=strike; vPin=aPin;
-      float size=(aPin>0.5? 3.6:1.8)+strike*4.5;
-      gl_PointSize=size*uPx*(300.0/-mv.z)*0.05*(0.6+0.4*depth);
-      gl_Position=projectionMatrix*mv;
-    }`,
-  fragmentShader:`
-    uniform float uLight;
-    varying float vGlow; varying float vPin; varying float vDepth;
-    void main(){
-      vec2 uv=gl_PointCoord-0.5;
-      float d=length(uv);
-      if(d>0.5) discard;
-      float soft=smoothstep(0.5,0.08,d);
-      vec3 col; float alpha;
-      if(uLight>0.5){
-        // daylight workshop: engraved bronze dots on parchment, normal blending
-        vec3 ink=vec3(0.36,0.27,0.12);
-        vec3 pinCol=vec3(0.47,0.33,0.12);
-        vec3 emberL=vec3(0.62,0.29,0.15);
-        col=mix(ink,pinCol,vPin);
-        col=mix(col,emberL,vGlow*0.85);
-        alpha=soft*(0.22+0.45*max(vDepth,0.0)+vPin*0.30+vGlow*0.4);
-      }else{
-        vec3 brass=vec3(0.788,0.631,0.353);
-        vec3 hi=vec3(0.910,0.776,0.459);
-        vec3 ember=vec3(0.851,0.478,0.322);
-        col=mix(brass*0.55,hi,vPin*0.7);
-        col=mix(col,ember,vGlow*0.8);
-        col*=(0.9+vGlow*1.6);
-        alpha=soft*(0.16+0.62*max(vDepth,0.0)+vPin*0.30+vGlow*0.6);
-      }
-      alpha*=smoothstep(-0.12,0.30,vDepth);
-      gl_FragColor=vec4(col,alpha);
-    }`
-});
-const points=new THREE.Points(geo,mat);
-points.rotation.z=-0.18;
-scene.add(points);
-function applyStageTheme(light){
-  uni.uLight.value=light?1:0;
-  mat.blending=light?THREE.NormalBlending:THREE.AdditiveBlending;
-  mat.needsUpdate=true;
-  if(typeof applyBloomTheme==='function') applyBloomTheme(light);
-  if(reduced||still) composer.render();
-}
-addEventListener('cranktheme',e=>applyStageTheme(e.detail==='light'));
-mat.blending=uni.uLight.value?THREE.NormalBlending:THREE.AdditiveBlending;
-
-// comb: a thin row of teeth (line segments) at the strike angle
-const combGeo=new THREE.BufferGeometry();
-const combPts=[];
-const combAng=uni.uFlashAng.value;
-for(let r=0;r<ROWS;r+=1){
-  const x=(r/(ROWS-1)-0.5)*LEN;
-  const y0=Math.cos(combAng)*(RAD+0.16), z0=Math.sin(combAng)*(RAD+0.16);
-  const y1=Math.cos(combAng)*(RAD+0.42), z1=Math.sin(combAng)*(RAD+0.42);
-  combPts.push(x,y0,z0,x,y1,z1);
-}
-combGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(combPts),3));
-const comb=new THREE.LineSegments(combGeo,new THREE.LineBasicMaterial({color:0x8a6c34,transparent:true,opacity:0.5}));
-comb.rotation.z=-0.18;
-scene.add(comb);
-
-// ---- bloom pipeline: the pins bloom like hot metal (ported from eye-candy's
-//      bright/blur/ACES finish, run through three's EffectComposer) ----
-const iw=stage.clientWidth||960, ih=stage.clientHeight||600;
-const composer=new EffectComposer(renderer);
-composer.setPixelRatio(Math.min(devicePixelRatio,1.5));
-composer.setSize(iw,ih);
-composer.addPass(new RenderPass(scene,cam));
-const bloomPass=new UnrealBloomPass(new THREE.Vector2(iw,ih), 0.85, 0.55, 0.22);
-composer.addPass(bloomPass);
-// eye-candy's finish: ACES filmic tonemap + vignette + dithered grain, theme-aware
-const FinishShader={
-  uniforms:{ tDiffuse:{value:null}, uExposure:{value:0.92}, uVig:{value:0.46}, uLight:{value:isLight()?1:0} },
-  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-  fragmentShader:`
-    uniform sampler2D tDiffuse; uniform float uExposure; uniform float uVig; uniform float uLight;
-    varying vec2 vUv;
-    float h21(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
-    void main(){
-      vec3 c=texture2D(tDiffuse,vUv).rgb;
-      if(uLight<0.5){
-        c*=uExposure;
-        c=(c*(2.51*c+0.03))/(c*(2.43*c+0.59)+0.14);   // ACES filmic
-        c=pow(max(c,vec3(0.0)),vec3(0.92));
-        c+=(h21(gl_FragCoord.xy)-0.5)*(1.5/255.0);     // dithered grain
-      }
-      c*=1.0 - uVig*dot(vUv-0.5,vUv-0.5)*2.0;          // vignette (both themes)
-      gl_FragColor=vec4(c,1.0);
-    }`
-};
-const finishPass=new ShaderPass(FinishShader);
-composer.addPass(finishPass);
-function applyBloomTheme(light){
-  renderer.setClearColor(light?CLEAR.light:CLEAR.dark,1);
-  bloomPass.enabled=!light;              // hot-metal bloom is a dark-mode effect; parchment has nothing to bloom
-  finishPass.uniforms.uLight.value=light?1:0;
-  finishPass.uniforms.uVig.value=light?0.22:0.46;
-}
-applyBloomTheme(isLight());
-
-function size(){
-  const w=stage.clientWidth,h=stage.clientHeight;
-  renderer.setSize(w,h);
-  composer.setSize(w,h);
-  bloomPass.setSize(w,h);
-  cam.aspect=w/h;cam.updateProjectionMatrix();
-}
-size();addEventListener('resize',size);
-
-let idle=0, playing=true, heroVisible=true;
-const clock=new THREE.Clock();
-function frame(){
-  if(playing&&(heroVisible||scrollRot!==points.userData.last)){
-    const dt=Math.min(clock.getDelta(),0.05);
-    if(!reduced) idle+=dt*0.12;
-    uni.uRot.value=idle+scrollRot;
-    points.userData.last=scrollRot;
-    composer.render();
-  }
-  requestAnimationFrame(frame);
-}
-if(reduced){uni.uRot.value=1.2;composer.render();}   // one composed frame, no loop
-else frame();
-document.addEventListener('visibilitychange',()=>{playing=!document.hidden;if(playing)clock.getDelta();});
-new IntersectionObserver(e=>{heroVisible=e[0].isIntersecting;},{threshold:0}).observe(stage);
-}catch(err){
-  // No WebGL: the page must still fully work. Quiet brass-glow fallback.
-  stage.style.background='radial-gradient(60% 45% at 50% 42%, rgba(201,161,90,.14), transparent 70%)';
-  console.warn('Crank: WebGL unavailable, static hero fallback.',err);
-}
-
-/* ---------- GSAP choreography ---------- */
-gsap.registerPlugin(ScrollTrigger);
-if(!reduced && !still){
-  // scroll turns the crank: whole-page scrub adds rotation
-  ScrollTrigger.create({
-    trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.6,
-    onUpdate:self=>{scrollRot=self.progress*Math.PI*4;}
+  document.getElementById('themeToggle').addEventListener('click',function(){
+    setTheme(document.documentElement.dataset.theme==='light' ? 'dark' : 'light');
   });
-  // hero headline: kinetic weight + drift
-  gsap.to('#heroH',{
-    fontVariationSettings:"'opsz' 144, 'wght' 380",yPercent:-14,opacity:0.25,ease:'none',
-    scrollTrigger:{trigger:'#top',start:'top top',end:'bottom 25%',scrub:true}
-  });
-  // reveals
-  gsap.utils.toArray('.reveal').forEach(el=>{
-    gsap.to(el,{opacity:1,y:0,duration:0.9,ease:'power3.out',
-      scrollTrigger:{trigger:el,start:'top 86%'}});
-  });
-  // pins light as rules enter
-  gsap.utils.toArray('.rule').forEach((el,k)=>{
-    ScrollTrigger.create({trigger:el,start:'top 78%',
-      onEnter:()=>setTimeout(()=>el.classList.add('lit'),k*90)});
-  });
-  // kintsugi: the crack draws and floods with gold as the plaque enters
-  const kel=document.getElementById('kintsugi');
-  if(kel) ScrollTrigger.create({trigger:kel,start:'top 74%',once:true,
-    onEnter:()=>kel.classList.add('drawn')});
-}else{
-  document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity=1;el.style.transform='none';});
-  document.querySelectorAll('.rule').forEach(el=>el.classList.add('lit'));
-  const kel=document.getElementById('kintsugi'); if(kel) kel.classList.add('drawn');
-}
+  setTheme(document.documentElement.dataset.theme || 'dark');
 
-/* ---------- magnetic CTA (pointer devices only) ---------- */
-if(matchMedia('(pointer:fine)').matches&&!reduced&&!still){
-  document.querySelectorAll('.gh').forEach(btn=>{
-    btn.addEventListener('mousemove',e=>{
-      const r=btn.getBoundingClientRect();
-      gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*0.25,y:(e.clientY-r.top-r.height/2)*0.35,duration:0.3});
-    });
-    btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:0.45,ease:'elastic.out(1,0.4)'}));
-  });
-}
+  /* ---------- progress bar ---------- */
+  var pb = document.getElementById('progress');
+  addEventListener('scroll',function(){
+    var h=document.documentElement, sc=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    pb.style.width=(sc*100)+'%';
+  },{passive:true});
 
-/* ---------- theme toggle ---------- */
-const themeMeta=document.querySelector('meta[name="theme-color"]');
-function setTheme(t){
-  document.documentElement.dataset.theme=t;
-  try{localStorage.setItem('crank-theme',t)}catch(e){}
-  themeMeta.setAttribute('content',t==='light'?'#f6efe0':'#171310');
-  dispatchEvent(new CustomEvent('cranktheme',{detail:t}));
-}
-document.getElementById('themeToggle').addEventListener('click',()=>{
-  setTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
-});
-document.addEventListener('keydown',e=>{
-  if(e.metaKey||e.ctrlKey||e.altKey) return;
-  if(e.target.matches&&e.target.matches('input, textarea, [contenteditable]')) return;
-  if(e.key==='t'||e.key==='T'){
-    setTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
-  }
-});
-setTheme(document.documentElement.dataset.theme||'dark');
-
-/* ---------- copy buttons ---------- */
-document.querySelectorAll('[data-copy]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const src=document.getElementById(btn.dataset.copy);
-    const text=src.innerText.replace(/\n?\$ /g,'\n').replace(/^\n/,'');
-    navigator.clipboard.writeText(text).then(()=>{
-      const o=btn.textContent;btn.textContent='COPIED';btn.classList.add('ok');
-      setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},1800);
+  /* ---------- copy buttons ---------- */
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var src=document.getElementById(btn.dataset.copy);
+      var text = btn.dataset.plain || src.innerText.replace(/\n?\$ /g,'\n').replace(/^\n/,'');
+      navigator.clipboard.writeText(text).then(function(){
+        var o=btn.textContent; btn.textContent='COPIED'; btn.classList.add('ok');
+        setTimeout(function(){btn.textContent=o; btn.classList.remove('ok');},1800);
+      });
     });
   });
-});
+
+  /* ---------- keyboard: T theme, C crank ---------- */
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.target.matches && e.target.matches('input, textarea, [contenteditable]')) return;
+    if(e.key==='t'||e.key==='T'){ setTheme(document.documentElement.dataset.theme==='light'?'dark':'light'); }
+    if(e.key==='c'||e.key==='C'){ turnCrank(); }
+  });
+
+  /* ---------- click the crank: one visible iteration ---------- */
+  var odo = document.getElementById('odo');
+  var crank = document.getElementById('crankGroup');
+  var strikeTooth = document.getElementById('strikeTooth');
+  var termBody = document.getElementById('termBody');
+  var turning = false, rounds = 0;
+  try{ rounds = parseInt(localStorage.getItem('crank-rounds')||'0',10)||0; }catch(e){}
+  if(odo) odo.textContent = rounds;
+
+  function turnCrank(){
+    if(turning) return;
+    rounds++;
+    if(odo) odo.textContent = rounds;
+    try{ localStorage.setItem('crank-rounds', rounds); }catch(e){}
+    if(reduced || !window.gsap || !crank){
+      // instant state swap, no tween
+      appendRound();
+      return;
+    }
+    turning = true;
+    var tl = gsap.timeline({onComplete:function(){turning=false;}});
+    tl.to(crank, {rotation:360, svgOrigin:'1000 300', duration:1.1, ease:'back.out(1.4)'})
+      .set(crank, {rotation:0, svgOrigin:'1000 300'});
+    if(strikeTooth){
+      tl.fromTo(strikeTooth, {scaleY:1}, {scaleY:0.82, transformOrigin:'50% 100%', duration:0.09, yoyo:true, repeat:1, ease:'power2.inOut'}, 0.55);
+    }
+    tl.call(appendRound, null, 0.55);
+  }
+  function appendRound(){
+    var line = document.createElement('div');
+    line.className = 'tline ok';
+    line.innerHTML = 'round ' + rounds + ' &middot; the crank turned, the comb was struck &middot; <span style="color:var(--mute)">verified</span>';
+    if(termBody){ termBody.appendChild(line); }
+  }
+  if(crank){
+    crank.addEventListener('click', turnCrank);
+    crank.setAttribute('tabindex','0');
+    crank.setAttribute('role','button');
+    crank.setAttribute('aria-label','Turn the crank: run one loop iteration');
+    crank.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();turnCrank();} });
+  }
+
+  /* ---------- GSAP: reveals, pins, terminal, kintsugi ---------- */
+  if(window.gsap && window.ScrollTrigger && !reduced && !still){
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.reveal').forEach(function(el){
+      gsap.to(el,{opacity:1,y:0,duration:0.9,ease:'power3.out',
+        scrollTrigger:{trigger:el,start:'top 88%'}});
+    });
+
+    // hero headline: kinetic weight as you leave the hero
+    gsap.to('h1',{fontVariationSettings:"'opsz' 144, 'wght' 400", opacity:0.5, ease:'none',
+      scrollTrigger:{trigger:'#top',start:'top top',end:'bottom 30%',scrub:true}});
+
+    // scroll turns the crank a little (the metaphor made literal)
+    if(crank){
+      ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.8,
+        onUpdate:function(self){ if(!turning) gsap.set(crank,{rotation:self.progress*160, svgOrigin:'1000 300'}); }});
+    }
+
+    // discipline pins light in sequence; hover links pin <-> rule
+    gsap.utils.toArray('#strip .pincol').forEach(function(g,k){
+      ScrollTrigger.create({trigger:'#strip',start:'top 74%',
+        onEnter:function(){ setTimeout(function(){g.classList.add('lit');},k*140); }});
+    });
+    gsap.utils.toArray('.rule').forEach(function(el,k){
+      ScrollTrigger.create({trigger:el,start:'top 82%',
+        onEnter:function(){ setTimeout(function(){el.classList.add('lit');},k*90); }});
+    });
+
+    // terminal typewriter (play once)
+    var term = document.getElementById('term');
+    var lines = Array.prototype.slice.call(document.querySelectorAll('#termBody .tline'));
+    var played = false;
+    try{ played = !!sessionStorage.getItem('crankReplay'); }catch(e){}
+    if(!played && term){
+      ScrollTrigger.create({trigger:term,start:'top 72%',once:true,onEnter:playTerminal});
+    }
+    function playTerminal(){
+      try{ sessionStorage.setItem('crankReplay','1'); }catch(e){}
+      term.classList.add('play');
+      var i=0;
+      function next(){
+        if(i>=lines.length){ term.classList.remove('play'); return; }
+        lines[i].classList.add('shown'); i++;
+        setTimeout(next, 220);
+      }
+      next();
+      term.addEventListener('click',function(){
+        lines.forEach(function(l){l.classList.add('shown');});
+        term.classList.remove('play');
+      });
+    }
+
+    // catchline: type the catch, then draw the kintsugi crack
+    var catchEl = document.getElementById('catchtext');
+    var kel = document.getElementById('kintsugi');
+    if(catchEl){
+      var full = document.getElementById('catchline').getAttribute('data-text');
+      ScrollTrigger.create({trigger:'#catchline',start:'top 76%',once:true,onEnter:function(){
+        catchEl.style.opacity=1; catchEl.textContent='';
+        var i=0;
+        (function type(){
+          if(i<=full.length){ catchEl.textContent = full.slice(0,i) + (i<full.length?'█':''); i++; setTimeout(type,32); }
+          else { catchEl.textContent = full; setTimeout(function(){ if(kel) kel.classList.add('drawn'); }, 1000); }
+        })();
+      }});
+    }
+  } else {
+    // reduced motion / no GSAP: everything visible, pins lit, crack drawn, terminal shown
+    document.querySelectorAll('.reveal').forEach(function(el){el.style.opacity=1;el.style.transform='none';});
+    document.querySelectorAll('.rule').forEach(function(el){el.classList.add('lit');});
+    document.querySelectorAll('#strip .pincol').forEach(function(el){el.classList.add('lit');});
+    var kel2=document.getElementById('kintsugi'); if(kel2) kel2.classList.add('drawn');
+    var ct=document.getElementById('catchtext'); if(ct) ct.style.opacity=1;
+  }
+
+  /* ---------- pin <-> rule hover link (works regardless of motion pref) ---------- */
+  function link(sel, cls){
+    document.querySelectorAll(sel).forEach(function(el){
+      var idx = el.getAttribute('data-rule');
+      el.addEventListener('mouseenter',function(){ highlight(idx,true); });
+      el.addEventListener('mouseleave',function(){ highlight(idx,false); });
+      el.addEventListener('focus',function(){ highlight(idx,true); });
+      el.addEventListener('blur',function(){ highlight(idx,false); });
+    });
+  }
+  function highlight(idx,on){
+    var pin=document.querySelector('#strip .pincol[data-rule="'+idx+'"]');
+    var rule=document.querySelector('.rule[data-rule="'+idx+'"]');
+    if(pin) pin.classList[on?'add':'remove']('lit');
+    if(rule) rule.classList[on?'add':'remove']('hot');
+  }
+  link('#strip .pincol'); link('.rule');
+  document.querySelectorAll('#strip .pincol').forEach(function(g){ g.setAttribute('tabindex','0'); });
+
+  /* ---------- magnetic CTA (pointer devices) ---------- */
+  if(window.gsap && matchMedia('(pointer:fine)').matches && !reduced){
+    document.querySelectorAll('.gh').forEach(function(btn){
+      btn.addEventListener('mousemove',function(e){
+        var r=btn.getBoundingClientRect();
+        gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*0.25,y:(e.clientY-r.top-r.height/2)*0.35,duration:0.3});
+      });
+      btn.addEventListener('mouseleave',function(){gsap.to(btn,{x:0,y:0,duration:0.45,ease:'elastic.out(1,0.4)'});});
+    });
+  }
+})();
 </script>
 </body>
 </html>
