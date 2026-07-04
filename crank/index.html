@@ -100,12 +100,12 @@ nav .word em{font-style:normal;color:var(--brass-hi)}
 nav .links{margin-left:auto;display:flex;align-items:center;gap:clamp(12px,2.4vw,28px);font:500 13.5px/1 var(--mono)}
 nav .links a{color:var(--parch-dim);text-decoration:none;letter-spacing:.04em;padding:8px 2px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
 nav .links a:hover{color:var(--brass-hi);border-bottom-color:var(--brass-hi)}
-.gh{display:inline-flex;align-items:center;gap:10px;background:var(--brass);color:#1a140c!important;padding:12px 18px;border-radius:10px;
+.gh{display:inline-flex;align-items:center;gap:7px;background:var(--brass);color:#1a140c!important;padding:8px 13px;border-radius:8px;
   font:600 13px/1 var(--mono);text-decoration:none;letter-spacing:.02em;border:1px solid var(--brass-hi);transition:transform .18s,box-shadow .18s,background .18s;will-change:transform}
-.gh:hover{box-shadow:0 6px 26px rgba(201,161,90,.4);background:var(--brass-hi)}
+.gh:hover{box-shadow:0 5px 20px rgba(201,161,90,.4);background:var(--brass-hi)}
 .gh svg{width:15px;height:15px;fill:#1a140c;flex:0 0 auto}
 .ghstar{transition:transform .22s ease,fill .22s ease}
-.gh:hover .ghstar{fill:#fff6e2;transform:scale(1.2) rotate(14deg)}
+.gh:hover .ghstar{fill:#fff6e2;transform:scale(1.18) rotate(14deg)}
 .ghlabel{white-space:nowrap}
 .iconT{width:38px;height:38px;border-radius:10px;border:1px solid rgba(201,161,90,.4);background:transparent;color:var(--parch-dim);
   cursor:pointer;display:grid;place-items:center;transition:color .15s,border-color .15s}
@@ -295,10 +295,9 @@ footer.site{border-top:1px solid rgba(201,161,90,.2);background:var(--wood-0);pa
     <a class="hideS" href="#upgrade">Self-upgrade</a>
     <a class="hideS" href="#research">Research</a>
     <a href="#start">Install</a>
-    <a class="gh" id="ghBtn" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener">
-      <svg class="ghmark" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-      <span class="ghlabel">Star<span class="ghl"> on GitHub</span></span>
+    <a class="gh" id="ghBtn" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener" aria-label="Star Crank on GitHub">
       <svg class="ghstar" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+      Star
     </a>
   </div>
 </nav>
