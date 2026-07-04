@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="guacluv — Avocados, with love.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8f5ea"/>
+      <stop offset="100%" stop-color="#eef0cf"/>
+    </linearGradient>
+    <radialGradient id="flesh" cx="50%" cy="42%" r="62%">
+      <stop offset="0%" stop-color="#eef0b4"/><stop offset="100%" stop-color="#d7e08f"/>
+    </radialGradient>
+    <linearGradient id="heart" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f47c72"/><stop offset="100%" stop-color="#e85b52"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8dc63f"/><stop offset="100%" stop-color="#5a9a24"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(150 155) scale(2.3)">
+    <path d="M60 20 q3 -9 9 -12" fill="none" stroke="#3f6b1e" stroke-width="5" stroke-linecap="round"/>
+    <path d="M69 12 q22 -6 30 12 q-22 6 -30 -12 Z" fill="url(#leaf)"/>
+    <path d="M60 18 C40 18 29 46 29 74 C29 106 43 128 60 128 C77 128 91 106 91 74 C91 46 80 18 60 18 Z" fill="#3f7a1f"/>
+    <path d="M60 28 C45 28 37 50 37 75 C37 103 48 120 60 120 C72 120 83 103 83 75 C83 50 75 28 60 28 Z" fill="url(#flesh)"/>
+    <path d="M60 96 C50 84 40 78 40 68 C40 60 46 55 53 55 C57 55 60 58 60 61 C60 58 63 55 67 55 C74 55 80 60 80 68 C80 78 70 84 60 96 Z" fill="url(#heart)"/>
+  </g>
+  <g transform="translate(560 250)" font-family="'Baloo 2','Trebuchet MS',sans-serif">
+    <text x="0" y="0" font-size="132" font-weight="800" fill="#2f5e17" letter-spacing="-2">guacluv</text>
+    <text x="4" y="80" font-size="46" font-weight="600" fill="#4a7a2a">Avocados, with love.</text>
+    <text x="4" y="150" font-size="30" font-weight="500" fill="#7a8a5a">Ripe on the day you want to eat them.</text>
+  </g>
+</svg>
