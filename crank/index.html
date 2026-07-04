@@ -149,8 +149,13 @@ h1 .b{color:var(--brass-hi)}
 .eng-pin{stroke:var(--eng-pin);stroke-width:2.2;stroke-linecap:round}
 .eng-pindot{fill:var(--eng-pin);stroke:none}
 .eng-tooth{stroke:var(--eng-tooth);stroke-width:2;stroke-linecap:round}
-.eng-tooth-lit{stroke:var(--eng-tooth-lit);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--eng-glow))}
+.eng-tooth-lit{stroke:var(--eng-tooth-lit);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--eng-glow));transition:stroke-width .13s ease,filter .13s ease}
+.eng-tooth-lit.plucked{stroke-width:5.5;filter:drop-shadow(0 0 12px var(--eng-glow))}
 .eng-strike{stroke:var(--ember);stroke-width:1.5;stroke-dasharray:2 5;opacity:.75}
+@keyframes pinTwinkle{0%,100%{opacity:1}50%{opacity:.38}}
+.eng .pins circle{animation:pinTwinkle 3.6s ease-in-out infinite}
+.eng .pins circle:nth-of-type(2n){animation-duration:4.4s;animation-delay:1.2s}
+.eng .pins circle:nth-of-type(3n){animation-delay:2.3s}
 .eng-crankarm{stroke:var(--eng-strong);stroke-width:5;stroke-linecap:round}
 .eng-hatch{stroke:var(--eng-hair);stroke-width:.75}
 .crankknob{fill:none;stroke:var(--eng-strong);stroke-width:3}
@@ -912,28 +917,50 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
   var crank = document.getElementById('crankGroup');
   var strikeTooth = document.getElementById('strikeTooth');
   var termBody = document.getElementById('termBody');
-  var turning = false, rounds = 0;
+  var strikeMark = document.querySelector('.comb .eng-strike');
+  var rounds = 0, lastClick = 0;
   try{ rounds = parseInt(localStorage.getItem('crank-rounds')||'0',10)||0; }catch(e){}
   if(odo) odo.textContent = rounds;
 
+  // The crank turns on its own: an idle loop that reads alive at frame one.
+  // Every quarter turn the comb is plucked. Scroll speeds it up; a click kicks
+  // it and records a round. Pauses off-screen, on hidden tab, and reduced-motion.
+  var rot = 0, spin = 50, boost = 0, pluckMark = 0, running = true, heroVis = true, lastT = 0;
+
+  function pluck(strong){
+    if(reduced || !strikeTooth) return;
+    strikeTooth.classList.add('plucked');
+    if(strikeMark && window.gsap) gsap.fromTo(strikeMark,{opacity:strong?1:.8},{opacity:.2,duration:.5,ease:'power2.out'});
+    setTimeout(function(){ strikeTooth.classList.remove('plucked'); }, strong?150:120);
+  }
+  function autoTick(){
+    if(!running || !heroVis || reduced || !crank || !window.gsap){ lastT = 0; return; }
+    var now = performance.now();
+    if(!lastT){ lastT = now; return; }
+    var dt = Math.min(now - lastT, 60); lastT = now;
+    rot += spin*(dt/1000) + boost*(dt/1000)*8;
+    boost *= Math.pow(0.9, dt/16);
+    gsap.set(crank,{rotation:rot, svgOrigin:'1000 300'});
+    var m = Math.floor(rot/90);
+    if(m > pluckMark){ pluckMark = m; pluck(false); }
+  }
   function turnCrank(){
-    if(turning) return;
-    rounds++;
-    if(odo) odo.textContent = rounds;
-    try{ localStorage.setItem('crank-rounds', rounds); }catch(e){}
-    if(reduced || !window.gsap || !crank){
-      // instant state swap, no tween
+    var now = (window.performance && performance.now) ? performance.now() : 0;
+    if(now - lastClick > 320){
+      lastClick = now; rounds++;
+      if(odo) odo.textContent = rounds;
+      try{ localStorage.setItem('crank-rounds', rounds); }catch(e){}
       appendRound();
-      return;
     }
-    turning = true;
-    var tl = gsap.timeline({onComplete:function(){turning=false;}});
-    tl.to(crank, {rotation:360, svgOrigin:'1000 300', duration:1.1, ease:'back.out(1.4)'})
-      .set(crank, {rotation:0, svgOrigin:'1000 300'});
-    if(strikeTooth){
-      tl.fromTo(strikeTooth, {scaleY:1}, {scaleY:0.82, transformOrigin:'50% 100%', duration:0.09, yoyo:true, repeat:1, ease:'power2.inOut'}, 0.55);
-    }
-    tl.call(appendRound, null, 0.55);
+    boost += 80; pluck(true);
+  }
+  if(window.gsap && !reduced && crank){
+    gsap.ticker.add(autoTick);
+    document.addEventListener('visibilitychange',function(){ running = !document.hidden; });
+    try{
+      var stageEl = document.querySelector('.stage') || document.getElementById('top');
+      new IntersectionObserver(function(e){ heroVis = e[0].isIntersecting; },{threshold:0}).observe(stageEl);
+    }catch(e){}
   }
   function appendRound(){
     var line = document.createElement('div');
@@ -962,10 +989,10 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     gsap.to('h1',{fontVariationSettings:"'opsz' 144, 'wght' 400", opacity:0.5, ease:'none',
       scrollTrigger:{trigger:'#top',start:'top top',end:'bottom 30%',scrub:true}});
 
-    // scroll turns the crank a little (the metaphor made literal)
+    // scroll speeds the crank: the metaphor made literal
     if(crank){
-      ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.8,
-        onUpdate:function(self){ if(!turning) gsap.set(crank,{rotation:self.progress*160, svgOrigin:'1000 300'}); }});
+      ScrollTrigger.create({trigger:document.body,start:'top top',end:'bottom bottom',
+        onUpdate:function(self){ var v=Math.abs(self.getVelocity()); if(v>40) boost += Math.min(v/3500, 7); }});
     }
 
     // discipline pins light in sequence; hover links pin <-> rule
