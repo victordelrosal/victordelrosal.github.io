@@ -152,10 +152,7 @@ h1 .b{color:var(--brass-hi)}
 .eng-tooth-lit{stroke:var(--eng-tooth-lit);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 5px var(--eng-glow));transition:stroke-width .13s ease,filter .13s ease}
 .eng-tooth-lit.plucked{stroke-width:5.5;filter:drop-shadow(0 0 12px var(--eng-glow))}
 .eng-strike{stroke:var(--ember);stroke-width:1.5;stroke-dasharray:2 5;opacity:.75}
-@keyframes pinTwinkle{0%,100%{opacity:1}50%{opacity:.38}}
-.eng .pins circle{animation:pinTwinkle 3.6s ease-in-out infinite}
-.eng .pins circle:nth-of-type(2n){animation-duration:4.4s;animation-delay:1.2s}
-.eng .pins circle:nth-of-type(3n){animation-delay:2.3s}
+.eng .pins circle,.eng .pins line{will-change:opacity}
 .eng-crankarm{stroke:var(--eng-strong);stroke-width:5;stroke-linecap:round}
 .eng-hatch{stroke:var(--eng-hair);stroke-width:.75}
 .crankknob{fill:none;stroke:var(--eng-strong);stroke-width:3}
@@ -927,6 +924,41 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
   // it and records a round. Pauses off-screen, on hidden tab, and reduced-motion.
   var rot = 0, spin = 50, boost = 0, pluckMark = 0, running = true, heroVis = true, lastT = 0;
 
+  // The drum rides the same axle as the crank: as the crank turns, each pin
+  // travels around the cylinder, projecting as a tick at the top/bottom edges
+  // and a dot at the equator (facing the viewer), fading as it rounds the back.
+  var CY = 300, RY = 150, CX0 = 250, CX1 = 830, RX = 46, PINLEN = 12;
+  var pinsGroup = document.querySelector('.cyl .pins');
+  var drumPins = [];
+  function buildPins(){
+    if(!pinsGroup) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    var COLS = 26, ROWS = 12, lo = CX0 + RX*0.6, hi = CX1 - RX*0.6;
+    while(pinsGroup.firstChild) pinsGroup.removeChild(pinsGroup.firstChild);
+    for(var c=0;c<COLS;c++){
+      var u = lo + (hi-lo)*((c+0.5)/COLS);
+      for(var r=0;r<ROWS;r++){
+        var lit = ((r*17+c*29)%11===0) || ((r*7+c*11)%19===0);
+        if(!lit) continue;
+        var a0 = -1.02 + 2.04*(r/(ROWS-1));
+        var ln = document.createElementNS(NS,'line'); ln.setAttribute('class','eng-pin'); ln.setAttribute('x1',u.toFixed(1)); ln.setAttribute('x2',u.toFixed(1));
+        var ci = document.createElementNS(NS,'circle'); ci.setAttribute('class','eng-pindot'); ci.setAttribute('cx',u.toFixed(1)); ci.setAttribute('r','3.1');
+        pinsGroup.appendChild(ln); pinsGroup.appendChild(ci);
+        drumPins.push({u:u, a0:a0, ln:ln, ci:ci});
+      }
+    }
+  }
+  function updatePins(){
+    var rr = rot*Math.PI/180;
+    for(var i=0;i<drumPins.length;i++){
+      var p = drumPins[i], th = p.a0 + rr, s = Math.sin(th), co = Math.cos(th);
+      var yb = CY + s*RY, yt = CY + s*(RY+PINLEN);
+      p.ln.setAttribute('y1', yb.toFixed(1)); p.ln.setAttribute('y2', yt.toFixed(1));
+      p.ci.setAttribute('cy', yt.toFixed(1));
+      var op = co > 0 ? (0.34 + 0.66*co) : 0.09;
+      p.ln.style.opacity = op; p.ci.style.opacity = op;
+    }
+  }
   function pluck(strong){
     if(reduced || !strikeTooth) return;
     strikeTooth.classList.add('plucked');
@@ -941,6 +973,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     rot += spin*(dt/1000) + boost*(dt/1000)*8;
     boost *= Math.pow(0.9, dt/16);
     gsap.set(crank,{rotation:rot, svgOrigin:'1000 300'});
+    updatePins();
     var m = Math.floor(rot/90);
     if(m > pluckMark){ pluckMark = m; pluck(false); }
   }
@@ -955,6 +988,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     boost += 80; pluck(true);
   }
   if(window.gsap && !reduced && crank){
+    buildPins(); updatePins();
     gsap.ticker.add(autoTick);
     document.addEventListener('visibilitychange',function(){ running = !document.hidden; });
     try{
