@@ -125,6 +125,16 @@ header{position:relative;min-height:100svh;display:flex;flex-direction:column;ju
 .updated .live{width:7px;height:7px;border-radius:50%;background:var(--brass-hi);box-shadow:0 0 9px var(--brass-hi);animation:updPulse 2.4s ease-in-out infinite}
 @keyframes updPulse{0%,100%{opacity:.45}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.updated .live{animation:none}}
+.whatsnew{display:flex;align-items:center;gap:15px;margin:24px auto 0;max-width:620px;text-align:left;text-decoration:none;
+  background:linear-gradient(100deg,rgba(201,161,90,.17),rgba(201,161,90,.05));border:1px solid var(--line-2);border-radius:14px;
+  padding:14px 18px;transition:transform .18s,box-shadow .18s,border-color .18s;will-change:transform}
+.whatsnew:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(201,161,90,.22);border-color:var(--brass)}
+.whatsnew .tag{flex:0 0 auto;font:700 10px/1 var(--mono);letter-spacing:.16em;color:#1a140c;background:var(--brass-hi);padding:7px 9px;border-radius:7px}
+.whatsnew .wtxt{font-size:14px;line-height:1.45;color:var(--parch-dim)}
+.whatsnew .wtxt b{color:var(--brass-hi);font-weight:600}
+.whatsnew .warw{flex:0 0 auto;margin-left:auto;color:var(--brass-hi);font-family:var(--serif);font-size:22px;transition:transform .18s}
+.whatsnew:hover .warw{transform:translateX(4px)}
+@media(max-width:560px){.whatsnew{flex-wrap:wrap;gap:11px;padding:13px 15px}.whatsnew .wtxt{font-size:13px}.whatsnew .warw{margin-left:0}}
 h1{font-family:var(--serif);font-optical-sizing:auto;font-weight:740;font-variation-settings:'opsz' 144;
   font-size:clamp(31px,8vw,116px);line-height:.96;color:var(--parch);letter-spacing:.004em;margin:18px 0 0;text-shadow:0 2px 40px rgba(15,12,10,.5)}
 [data-theme="light"] h1{text-shadow:0 2px 40px rgba(246,239,224,.7)}
@@ -430,6 +440,11 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <p class="updated"><span class="live" aria-hidden="true"></span>Last updated <time id="lastUpdated" datetime="2026-07-15">15 Jul 2026</time></p>
     <h1>Turn the crank.<br><span class="b">The loop runs.</span></h1>
     <p class="category">It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it.</p>
+    <a class="whatsnew reveal" href="#transmission">
+      <span class="tag">NEW</span>
+      <span class="wtxt"><b>Automatic transmission.</b> Crank now shifts between <b>Fable&nbsp;5</b>, Opus and Sonnet for you, matching each model to the job so you never <code>/model</code>-switch mid-run.</span>
+      <span class="warw" aria-hidden="true">&rarr;</span>
+    </a>
     <div class="heroCtas">
       <div class="install">
         <code id="inst">git clone https://github.com/victordelrosal/crank.git &amp;&amp; cp crank/skill/SKILL.md ~/.claude/skills/crank/</code>
@@ -722,13 +737,13 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
 <section id="transmission">
   <p class="kicker reveal">THE TRANSMISSION</p>
   <h2 class="reveal">You stopped being the loop. <span class="b">Now stop working the gearbox.</span></h2>
-  <p class="lede reveal">Switching models by hand gets old fast: the strong one to plan, the workhorse to build, the cheap one for the menial parts, then back again every few minutes. Crank shifts for you. Every agent the loop dispatches carries an explicit model choice, picked by the shape of the task, so you never <code>/model</code>-switch mid-run.</p>
+  <p class="lede reveal">Switching models by hand gets old fast: Fable 5 to plan, Opus to build, Sonnet for the menial parts, then back again every few minutes. Crank shifts for you. Every agent the loop dispatches carries an explicit model choice, picked by the shape of the task, so you never <code>/model</code>-switch mid-run.</p>
   <div class="plates">
-    <div class="plate reveal"><p class="n">TOP &middot; FABLE</p><h3>Plan and judge</h3><p>The framing on a high-stakes run, the hardest structural bets, and the final cold verifier. The one seat where the sharpest model earns its keep.</p></div>
+    <div class="plate reveal"><p class="n">TOP &middot; FABLE 5</p><h3>Plan and judge</h3><p>The framing on a high-stakes run, the hardest structural bets, and the final cold verifier. The one seat where the sharpest model earns its keep.</p></div>
     <div class="plate reveal"><p class="n">DRIVE &middot; OPUS</p><h3>Build</h3><p>The fleet of builders and most per-round verification. The default gear; when in doubt, drive.</p></div>
     <div class="plate reveal"><p class="n">LOW &middot; SONNET</p><h3>The menial passes</h3><p>Scrapes, grep sweeps, format fixes, bulk plumbing. Cheap work routed to a cheap seat, run at low effort.</p></div>
   </div>
-  <p class="lede reveal" style="margin-top:34px">One honest limit: the loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out. When the director itself needs the top gear, it spawns a <code>fable</code> agent for that one decision and folds the answer back.</p>
+  <p class="lede reveal" style="margin-top:34px">One honest limit: the loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out. When the director itself needs the top gear, it spawns a Fable 5 agent for that one decision and folds the answer back.</p>
   <div class="pull reveal">The gearbox was always there. <span class="b">Crank just stopped making you work it.</span><cite>AUTOMATIC, NOT STICK</cite></div>
 </section>
 
