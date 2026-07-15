@@ -120,6 +120,11 @@ header{position:relative;min-height:100svh;display:flex;flex-direction:column;ju
 .release .v{background:var(--brass);color:#1a140c;padding:8px 12px}
 .release .n{background:transparent;color:var(--parch-dim);padding:8px 14px;transition:color .16s}
 .release:hover .n{color:var(--brass-hi)}
+.updated{margin:14px auto 0;font:600 11px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mute);display:inline-flex;align-items:center;gap:9px}
+.updated time{color:var(--brass-hi)}
+.updated .live{width:7px;height:7px;border-radius:50%;background:var(--brass-hi);box-shadow:0 0 9px var(--brass-hi);animation:updPulse 2.4s ease-in-out infinite}
+@keyframes updPulse{0%,100%{opacity:.45}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.updated .live{animation:none}}
 h1{font-family:var(--serif);font-optical-sizing:auto;font-weight:740;font-variation-settings:'opsz' 144;
   font-size:clamp(31px,8vw,116px);line-height:.96;color:var(--parch);letter-spacing:.004em;margin:18px 0 0;text-shadow:0 2px 40px rgba(15,12,10,.5)}
 [data-theme="light"] h1{text-shadow:0 2px 40px rgba(246,239,224,.7)}
@@ -422,6 +427,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <a class="release" href="https://github.com/victordelrosal/crank/commit/5a0c3b3" target="_blank" rel="noopener">
       <span class="v">CRANK v2</span><span class="n">cranked itself · 2026-07-04 &rarr;</span>
     </a>
+    <p class="updated"><span class="live" aria-hidden="true"></span>Last updated <time id="lastUpdated" datetime="2026-07-15">15 Jul 2026</time></p>
     <h1>Turn the crank.<br><span class="b">The loop runs.</span></h1>
     <p class="category">It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it.</p>
     <div class="heroCtas">
@@ -1129,6 +1135,18 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
       btn.addEventListener('mouseleave',function(){gsap.to(btn,{x:0,y:0,duration:0.45,ease:'elastic.out(1,0.4)'});});
     });
   }
+})();
+</script>
+<script>
+/* Auto last-updated from the file's real Last-Modified date; never goes stale. */
+(function(){
+  var el=document.getElementById('lastUpdated');
+  if(!el) return;
+  var d=new Date(document.lastModified);
+  if(isNaN(d.getTime())||d.getFullYear()<2001) return;
+  var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  el.textContent=d.getDate()+' '+m[d.getMonth()]+' '+d.getFullYear();
+  el.setAttribute('datetime',d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2));
 })();
 </script>
 </body>
