@@ -248,6 +248,10 @@ h2 .b{color:var(--brass-hi)}
 .plate .n{font:600 12px/1 var(--mono);color:var(--ember);letter-spacing:.26em}
 .plate h3{font:640 22px/1.2 var(--serif);color:var(--brass-hi);margin:13px 0 10px}
 .plate p{font-size:15px;color:var(--parch-dim)}
+.readout{margin-top:34px;background:var(--panel);border:1px solid var(--line-2);border-left:2px solid var(--brass-hi);
+  border-radius:10px;padding:20px 22px;font:500 clamp(11.5px,1.5vw,13.5px)/1.75 var(--mono);color:var(--parch-dim);
+  white-space:pre-wrap;overflow-x:auto;max-width:100%}
+.readout b{color:var(--brass-hi);font-weight:600}
 .pull{margin:64px auto 0;max-width:21em;text-align:center;font-family:var(--serif);font-weight:600;font-optical-sizing:auto;
   font-size:clamp(22px,4vw,42px);line-height:1.25;color:var(--parch)}
 .pull .b{color:var(--brass-hi)}
@@ -442,7 +446,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <p class="category">It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it.</p>
     <a class="whatsnew reveal" href="#transmission">
       <span class="tag">NEW</span>
-      <span class="wtxt"><b>Automatic transmission.</b> Crank now shifts between <b>Fable&nbsp;5</b>, Opus and Sonnet for you, matching each model to the job so you never <code>/model</code>-switch mid-run.</span>
+      <span class="wtxt"><b>Automatic transmission, now with a gauge.</b> Crank shifts between <b>Fable&nbsp;5</b>, Opus and Sonnet for you, and tells you which gear it is in before it does anything else.</span>
       <span class="warw" aria-hidden="true">&rarr;</span>
     </a>
     <div class="heroCtas">
@@ -743,7 +747,15 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <div class="plate reveal"><p class="n">DRIVE &middot; OPUS</p><h3>Build</h3><p>The fleet of builders and most per-round verification. The default gear; when in doubt, drive.</p></div>
     <div class="plate reveal"><p class="n">LOW &middot; SONNET</p><h3>The menial passes</h3><p>Scrapes, grep sweeps, format fixes, bulk plumbing. Cheap work routed to a cheap seat, run at low effort.</p></div>
   </div>
-  <p class="lede reveal" style="margin-top:34px">One honest limit: the loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out. When the director itself needs the top gear, it spawns a Fable 5 agent for that one decision and folds the answer back.</p>
+  <p class="lede reveal" style="margin-top:44px">An automatic you cannot see is just a black box. So the run opens by telling you which gear it is in, before anything else, and calls out every shift as it happens. You always know whether the work of the moment is Fable, Opus or Sonnet, without asking.</p>
+  <div class="readout reveal" role="img" aria-label="Example of Crank's opening gearbox readout, which names the session gear and how the run will be routed."><b>⚙ GEARBOX (automatic). Session gear: Fable (top).</b>
+Routing this run: planning + final verify stay in top gear (~10%);
+builders dispatch in drive (Opus); mechanical sweeps in low (Sonnet).
+I'll announce every shift.
+
+  <b>⚙ shifting to low (sonnet):</b> link sweep across 40 pages
+  <b>⚙ top gear (fable):</b> cold verify, final round</div>
+  <p class="lede reveal" style="margin-top:34px">Top gear plans and judges; it never executes. Fable 5 is the hungry model, so it is spent where a single call decides the run and nowhere else: roughly one part in ten. Two honest limits. The loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out; when the director itself needs the top gear, it spawns a Fable 5 agent for that one decision and folds the answer back. And a gear is not a promise of quality: it is where the attention was spent, which is exactly why Crank shows you the number instead of asking you to trust it.</p>
   <div class="pull reveal">The gearbox was always there. <span class="b">Crank just stopped making you work it.</span><cite>AUTOMATIC, NOT STICK</cite></div>
 </section>
 
