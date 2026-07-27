@@ -271,6 +271,10 @@ h2 .b{color:var(--brass-hi)}
 .rule h3{font:640 19px/1.25 var(--serif);color:var(--parch);margin-bottom:9px}
 .rule p{font-size:14.5px;color:var(--parch-dim)}
 .rule .src{display:block;margin-top:12px;font:500 11.5px/1.5 var(--mono);letter-spacing:.05em;color:var(--mute)}
+.rule .n{font:600 11.5px/1.4 var(--mono);color:var(--ember);letter-spacing:.24em;margin:-4px 0 9px}
+#topology .rules{margin-top:50px}
+#topology .rule:last-child{grid-column:1/-1}
+@media(min-width:1040px){#topology .rules{grid-template-columns:repeat(6,1fr)}#topology .rule{grid-column:span 2}#topology .rule:nth-child(n+4){grid-column:span 3}}
 
 /* upgrade / kintsugi */
 .commits{margin-top:50px;border-left:1px solid var(--line-2);padding-left:32px;display:grid;gap:32px;max-width:760px}
@@ -420,6 +424,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <a class="anchor hideS" href="#loop">The loop</a>
     <a class="anchor hideS" href="#transmission">Transmission</a>
     <a class="anchor hideS" href="#discipline">Discipline</a>
+    <a class="anchor hideS" href="#topology">Topology</a>
     <a class="anchor hideS" href="#upgrade">Self-upgrade</a>
     <a class="anchor" href="#start">Install</a>
     <a class="gh" href="https://github.com/victordelrosal/crank" target="_blank" rel="noopener" aria-label="Crank on GitHub">
@@ -441,7 +446,7 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
     <p class="category">It writes its own binary acceptance criteria, runs a fleet of agents, and a cold verifier tries to fail the work before you see it.</p>
     <a class="whatsnew reveal" href="#transmission">
       <span class="tag">NEW</span>
-      <span class="wtxt"><b>Automatic transmission, now with a gauge.</b> Crank shifts between <b>Fable&nbsp;5</b>, Opus and Sonnet for you, and tells you which gear it is in before it does anything else.</span>
+      <span class="wtxt"><b>Automatic transmission, now with a gauge.</b> Crank runs in <b>Opus&nbsp;5</b> and drops to Sonnet for the menial passes, and it tells you which gear it is in before it does anything else.</span>
       <span class="warw" aria-hidden="true">&rarr;</span>
     </a>
     <div class="heroCtas">
@@ -732,21 +737,20 @@ footer.site{border-top:1px solid var(--line);background:var(--wood-0);padding:54
 <section id="transmission">
   <p class="kicker reveal">THE TRANSMISSION</p>
   <h2 class="reveal">You stopped being the loop. <span class="b">Now stop working the gearbox.</span></h2>
-  <p class="lede reveal">Switching models by hand gets old fast: Fable 5 to plan, Opus to build, Sonnet for the menial parts, then back again every few minutes. Crank shifts for you. Every agent the loop dispatches carries an explicit model choice, picked by the shape of the task, so you never <code>/model</code>-switch mid-run.</p>
+  <p class="lede reveal">Switching models by hand gets old fast: the strong seat for anything that needs judgment, the cheap seat for the menial parts, then back again every few minutes. Crank shifts for you. Every agent the loop dispatches carries an explicit model choice, picked by the shape of the task, so you never <code>/model</code>-switch mid-run.</p>
   <div class="plates">
-    <div class="plate reveal"><p class="n">TOP &middot; FABLE 5</p><h3>Plan and judge</h3><p>The framing on a high-stakes run, the hardest structural bets, and the final cold verifier. The one seat where the sharpest model earns its keep.</p></div>
-    <div class="plate reveal"><p class="n">DRIVE &middot; OPUS</p><h3>Build</h3><p>The fleet of builders and most per-round verification. The default gear; when in doubt, drive.</p></div>
-    <div class="plate reveal"><p class="n">LOW &middot; SONNET</p><h3>The menial passes</h3><p>Scrapes, grep sweeps, format fixes, bulk plumbing. Cheap work routed to a cheap seat, run at low effort.</p></div>
+    <div class="plate reveal"><p class="n">DRIVE &middot; OPUS 5</p><h3>Everything that judges</h3><p>The framing, the fleet of builders, every cold verifier, the red-teams, the structural bet after a stuck round. Roughly nineteen parts in twenty. The default gear; when in doubt, drive.</p></div>
+    <div class="plate reveal"><p class="n">LOW &middot; SONNET</p><h3>The menial passes</h3><p>Scrapes, grep sweeps, format fixes, link checks, bulk plumbing. Mechanical work routed to a cheaper seat at low effort, and the moment it turns out to need a judgment call it comes straight back to drive.</p></div>
   </div>
-  <p class="lede reveal" style="margin-top:44px">An automatic you cannot see is just a black box. So the run opens by telling you which gear it is in, before anything else, and calls out every shift as it happens. You always know whether the work of the moment is Fable, Opus or Sonnet, without asking.</p>
-  <div class="readout reveal" role="img" aria-label="Example of Crank's opening gearbox readout, which names the session gear and how the run will be routed."><b>⚙ GEARBOX (automatic). Session gear: Fable (top).</b>
-Routing this run: planning + final verify stay in top gear (~10%);
-builders dispatch in drive (Opus); mechanical sweeps in low (Sonnet).
+  <p class="lede reveal" style="margin-top:44px">Two gears, not a showroom. An automatic you cannot see is just a black box, so the run opens by telling you which gear it is in, before anything else, and calls out every shift as it happens. You always know whether the work of the moment is Opus or Sonnet, without asking.</p>
+  <div class="readout reveal" role="img" aria-label="Example of Crank's opening gearbox readout, which names the session gear and how the run will be routed."><b>⚙ GEARBOX (automatic). Session gear: Opus 5 (drive).</b>
+Routing this run: director thinking, builders and every cold verify stay
+in drive (Opus, ~95%); mechanical sweeps drop to low (Sonnet).
 I'll announce every shift.
 
   <b>⚙ shifting to low (sonnet):</b> link sweep across 40 pages
-  <b>⚙ top gear (fable):</b> cold verify, final round</div>
-  <p class="lede reveal" style="margin-top:34px">Top gear plans and judges; it never executes. Fable 5 is the hungry model, so it is spent where a single call decides the run and nowhere else: roughly one part in ten. Two honest limits. The loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out; when the director itself needs the top gear, it spawns a Fable 5 agent for that one decision and folds the answer back. And a gear is not a promise of quality: it is where the attention was spent, which is exactly why Crank shows you the number instead of asking you to trust it.</p>
+  <b>⚙ staying in drive (opus):</b> cold verify, final round</div>
+  <p class="lede reveal" style="margin-top:34px">Judgment never downshifts. Verification, framing, red-teaming and any call the run hinges on stay in drive, always, and a verifier is never below the builder it grades. What makes the grader honest is context isolation, not a bigger model: a fresh cold read of the criteria and the artifacts, with none of the builder's reasoning. Two honest limits. The loop cannot change the model <span style="color:var(--brass-hi)">you</span> are on, only the agents it sends out. And a gear is not a promise of quality: it is where the attention was spent, which is exactly why Crank shows you the routing instead of asking you to trust it.</p>
   <div class="pull reveal">The gearbox was always there. <span class="b">Crank just stopped making you work it.</span><cite>AUTOMATIC, NOT STICK</cite></div>
 </section>
 
@@ -773,6 +777,25 @@ I'll announce every shift.
     <div class="rule reveal" data-rule="4"><div class="pin"></div><h3>Memory that compounds</h3><p>Verified rules distill to LEARNINGS; reusable scripts promote to a tools library. Run N+1 starts from competence, not from scratch.</p><span class="src">Lance Martin &middot; Voyager &middot; AWM</span></div>
     <div class="rule reveal" data-rule="5"><div class="pin"></div><h3>Freedom stops at the gate</h3><p>Money, reach, publishing, deletion: anything irreversible pauses for a human, or parks in an approval queue when running unattended. The gate never lowers because no one is watching.</p><span class="src">Crank doctrine &middot; scheduled mode</span></div>
   </div>
+</section>
+
+<section id="topology">
+  <p class="kicker reveal">THE TOPOLOGY</p>
+  <h2 class="reveal">A fleet is a shape, and the shape has <span class="b">failure modes of its own.</span></h2>
+  <p class="lede reveal">The loop can be sound and the run still rot, because how the work was cut up fails in ways the loop never sees: a dead agent nobody counted, a wait for nothing, two builders quietly overwriting the same file. Crank now names them.</p>
+  <p class="lede reveal" style="margin-top:26px">Three layers, said once and then used as a diagnostic. The <b>harness</b> is the environment: tools, filesystem, permissions, model routing, budget, logging. The <b>loop</b> is the feedback cycle: generate, act, evaluate, decide. The <b>graph</b> is the topology: what runs next, what fans out, what joins, where the gates are. They nest, and Crank&rsquo;s place in them is smaller than the word &ldquo;fleet&rdquo; suggests.</p>
+  <div class="readout reveal" role="img" aria-label="The three layers nested: the harness contains the graph, the graph contains loops. Crank is the loop, its DECOMPOSE step is its graph step, and the harness is Claude Code's."><b>HARNESS</b>  Claude Code&rsquo;s. Tools, permissions, routing, budget, logs.
+  <b>GRAPH</b>    Crank&rsquo;s DECOMPOSE step. Fan out, reduce, verify, synthesize.
+    <b>LOOP</b>   Crank itself. Generate, act, evaluate, decide.</div>
+  <p class="lede reveal" style="margin-top:34px">So Crank is a loop skill whose DECOMPOSE step is its graph step. It specifies what it needs from the harness instead of building one, and it refuses to become a third mode: the mechanics below are checks inside the step that already existed. Which layer a symptom belongs to is the useful part. Cannot reach the data, lost its state, too much access: harness. Close but unreliable, spins forever, declares done without proof: loop. Specialists in the wrong order, cannot tell which stage broke, work waiting on nothing: graph.</p>
+  <div class="rules">
+    <div class="rule reveal"><div class="pin"></div><p class="n">01 &middot; THE FAN-IN GUARD</p><h3>Count what came back</h3><p>In a chain, a dead step stops everything and you notice. In a fan-out, one dead agent among twenty is a gap in a report that looks complete. So every fan-in counts results returned against agents dispatched, and names the gap when they differ.</p><span class="src">Kopadze &middot; enforces Crank&rsquo;s honesty rubric</span></div>
+    <div class="rule reveal"><div class="pin"></div><p class="n">02 &middot; ANCHORS</p><h3>Topology does not buy truth</h3><p>A fleet where every node&rsquo;s evidence is another node&rsquo;s report is one loop in a costume: consistent, unverified, more expensive. Every criterion rests on something that cannot argue back: a test that ran, a URL that returned 200, a file at the path.</p><span class="src">Kopadze</span></div>
+    <div class="rule reveal"><div class="pin"></div><p class="n">03 &middot; THE FAKE-EDGE TEST</p><h3>Does B consume what A produced?</h3><p>If not, the edge is imaginary and the wait is pure latency. Run it over every ordered pair before dispatch. And if no two workstreams have zero edges between them, there is no fan-out to build: it is a loop, and a loop is fine.</p><span class="src">Kopadze</span></div>
+    <div class="rule reveal"><div class="pin"></div><p class="n">04 &middot; HIDDEN EDGES</p><h3>Audit resources, not just data</h3><p>Two agents whose briefs never mention each other are still coupled if they write the same file or hit the same rate-limited API. Parallelising across that produces overwrites nobody logged, so each builder gets its own worktree.</p><span class="src">Kopadze &middot; the Bun team&rsquo;s shared-workspace overwrite, as reported</span></div>
+    <div class="rule reveal"><div class="pin"></div><p class="n">05 &middot; THE NODE CONTRACT</p><h3>A bounded job and a defined output</h3><p>Scope, input and output shape declared before dispatch. A builder whose output is free prose is a node only a human can consume, so the next stage guesses. Then reduce, dedupe and count in plain code, with no model call: that is where the token waste hides.</p><span class="src">Kopadze &middot; OpenAI Agents SDK structured output</span></div>
+  </div>
+  <div class="pull reveal">Fan-out buys breadth, <span class="b">not judgment,</span> and it bills you for the breadth.<cite>THE PRICE OF A SHAPE</cite></div>
 </section>
 
 <section id="upgrade">
@@ -1056,6 +1079,15 @@ I'll announce every shift.
       gsap.to(el,{opacity:1,y:0,duration:0.9,ease:'power3.out',
         scrollTrigger:{trigger:el,start:'top 88%'}});
     });
+
+    // #topology is the tallest section on the page, so on a fast flick its closing pull quote can
+    // be jumped clean over and never fire. Second, earlier, section-scoped trigger: whichever
+    // fires first wins and the other is a no-op. Scoped on purpose, so no other section changes.
+    var topoPull = document.querySelector('#topology .pull');
+    if(topoPull){
+      gsap.to(topoPull,{opacity:1,y:0,duration:0.9,ease:'power3.out',
+        scrollTrigger:{trigger:'#topology .rules',start:'top 60%'}});
+    }
 
     // hero headline: kinetic weight as you leave the hero
     gsap.to('h1',{fontVariationSettings:"'opsz' 144, 'wght' 400", opacity:0.5, ease:'none',
