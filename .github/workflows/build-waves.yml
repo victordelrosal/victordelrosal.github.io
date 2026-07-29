@@ -41,6 +41,8 @@ jobs:
         run: |
           # Stage wave pages first so we can detect both new and modified files
           git add */index.html 2>/dev/null || true
+          # Fingerprint file lets scheduled runs skip the full 15 MB fetch (egress quota)
+          git add .waves-fingerprint 2>/dev/null || true
           # Check if there are any staged changes
           git diff --cached --quiet || echo "changes=true" >> $GITHUB_OUTPUT
 

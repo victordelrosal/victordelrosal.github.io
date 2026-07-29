@@ -13,6 +13,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 // Supabase Configuration (must be provided via environment)
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -22,6 +23,53 @@ const SITE_URL = 'https://victordelrosal.com';
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY in environment. Aborting build to avoid hitting production with defaults.');
     process.exit(1);
+}
+
+// Jul 29, 2026: the 30-min scheduled rebuild downloaded the FULL published_posts
+// table (~15 MB) every run, ~21 GB/month of Supabase egress against a 5 GB
+// free-tier allowance (org flux quota email, Jul 28). Fetch a tiny fingerprint
+// (24 KB) first and skip the full fetch + rebuild when nothing changed.
+const FINGERPRINT_FILE = path.join(__dirname, '.waves-fingerprint');
+
+function supabaseGet(queryPath) {
+    return new Promise((resolve, reject) => {
+        const url = new URL(`${SUPABASE_URL}${queryPath}`);
+        const options = {
+            hostname: url.hostname,
+            path: url.pathname + url.search,
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json',
+            },
+        };
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                try {
+                    resolve(JSON.parse(data));
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+        req.on('error', reject);
+        req.end();
+    });
+}
+
+/**
+ * Fetch a lightweight fingerprint of the table (ids + timestamps only)
+ * and return a stable hash. Catches new posts, deletions, and edits
+ * (updated_at changes) without downloading content.
+ */
+async function fetchFingerprint() {
+    const rows = await supabaseGet('/rest/v1/published_posts?select=id,slug,updated_at,published_at&order=id.asc');
+    if (!Array.isArray(rows)) {
+        throw new Error(`Fingerprint query did not return an array: ${JSON.stringify(rows).substring(0, 200)}`);
+    }
+    return crypto.createHash('sha256').update(JSON.stringify(rows)).digest('hex');
 }
 
 /**
@@ -417,6 +465,20 @@ async function build() {
     console.log('🌊 Building wave pages for social sharing...\n');
 
     try {
+        // Cheap change detection: skip the full 15 MB fetch when nothing changed.
+        // Bypass with FORCE_REBUILD=1 (or if the fingerprint file is missing).
+        const fingerprint = await fetchFingerprint();
+        const force = process.env.FORCE_REBUILD === '1';
+        let previous = null;
+        try {
+            previous = fs.readFileSync(FINGERPRINT_FILE, 'utf8').trim();
+        } catch (_) { /* no fingerprint yet: build */ }
+
+        if (!force && previous === fingerprint) {
+            console.log('✅ No changes in published_posts (fingerprint match). Skipping rebuild.');
+            return;
+        }
+
         const posts = await fetchPosts();
         console.log(`Found ${posts.length} published posts\n`);
 
@@ -460,6 +522,9 @@ async function build() {
         console.log(`🔄 Updated: ${updated} existing pages`);
         console.log(`📊 Total: ${posts.length} wave pages`);
         console.log(`========================================\n`);
+
+        // Persist the fingerprint so the next scheduled run can skip cheaply.
+        fs.writeFileSync(FINGERPRINT_FILE, fingerprint + '\n', 'utf8');
 
         console.log('📝 Next steps:');
         console.log('   1. git add . && git commit -m "Regenerate wave pages"');
