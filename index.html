@@ -897,7 +897,7 @@
             }
 
             // Fetch posts
-            const posts = await window.PostsAPI.fetchPosts();
+            const posts = await window.PostsAPI.fetchPostsLight();
             if (!posts || posts.length === 0) return;
 
             function getFirstImage(html) {
@@ -930,7 +930,7 @@
             let dainsShown = false;
             const postsWithImages = posts
                 .filter(p => {
-                    const hasImage = getFirstImage(p.content);
+                    const hasImage = window.PostsAPI.getPostImage(p);
                     if (!hasImage) return false;
                     // Allow only the first (most recent) DAINS post
                     if (isDainsPost(p)) {
@@ -948,7 +948,7 @@
                 const thumb = document.createElement('a');
                 thumb.href = '/' + p.slug;
                 thumb.className = 'wave-thumb-item';
-                const imageUrl = getFirstImage(p.content);
+                const imageUrl = window.PostsAPI.getPostImage(p);
                 thumb.innerHTML = `
                     <div class="thumb-img">
                         <img src="${imageUrl}" alt="" loading="lazy">

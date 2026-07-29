@@ -534,7 +534,7 @@
                         // Set up wave navigation (prev/next) and thumbnails
                         (async function () {
                             try {
-                                const allPosts = await window.PostsAPI.fetchPosts();
+                                const allPosts = await window.PostsAPI.fetchPostsLight();
                                 const currentIndex = allPosts.findIndex(p => p.slug === slug);
 
                                 // Only show wave navigation on desktop (screens wider than 1100px)
@@ -575,14 +575,14 @@
 
                                 // Filter to only posts with images, exclude current, take up to 12
                                 const postsWithImages = allPosts
-                                    .filter(p => p.slug !== slug && getFirstImage(p.content))
+                                    .filter(p => p.slug !== slug && window.PostsAPI.getPostImage(p))
                                     .slice(0, 12);
 
                                 postsWithImages.forEach(p => {
                                     const thumb = document.createElement('a');
                                     thumb.href = '/' + p.slug;
                                     thumb.className = 'wave-thumb-item';
-                                    const imageUrl = getFirstImage(p.content);
+                                    const imageUrl = window.PostsAPI.getPostImage(p);
                                     thumb.innerHTML = `
                                         <div class="thumb-img">
                                             <img src="${imageUrl}" alt="" loading="lazy">

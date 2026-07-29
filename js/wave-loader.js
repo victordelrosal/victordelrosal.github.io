@@ -387,7 +387,7 @@
                 // Wave navigation and thumbnails
                 (async function() {
                     try {
-                        const allPosts = await window.PostsAPI.fetchPosts();
+                        const allPosts = await window.PostsAPI.fetchPostsLight();
                         const currentIndex = allPosts.findIndex(p => p.slug === slug);
                         const isDesktop = window.innerWidth > 1100;
 
@@ -432,7 +432,7 @@
                         const postsWithImages = allPosts
                             .filter(p => {
                                 if (p.slug === slug) return false;
-                                const hasImage = getFirstImage(p.content);
+                                const hasImage = window.PostsAPI.getPostImage(p);
                                 if (!hasImage) return false;
                                 // Allow only the first (most recent) DAINS post
                                 if (isDainsPost(p)) {
@@ -447,7 +447,7 @@
                             const thumb = document.createElement('a');
                             thumb.href = '/' + p.slug;
                             thumb.className = 'wave-thumb-item';
-                            const imageUrl = getFirstImage(p.content);
+                            const imageUrl = window.PostsAPI.getPostImage(p);
                             thumb.innerHTML = `
                                 <div class="thumb-img">
                                     <img src="${imageUrl}" alt="" loading="lazy">
