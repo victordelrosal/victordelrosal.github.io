@@ -4,6 +4,29 @@
 
 ---
 
+## Incident: July 29, 2026 — Transient API error + false-alarm fallback race
+
+### What Happened
+The 08:40 scheduled run died with `FATAL ERROR: Connection error.` calling the Anthropic API (transient network failure from the GitHub runner). At 09:22 Verify DAINS correctly detected the miss, dispatched a retry, and the retry **succeeded**, publishing real data by 09:24. But the verifier then checked the live URL seconds after the data landed (build-waves had not rebuilt the static page yet), got a 404, and fired the fallback path: it attempted to publish a placeholder **over the real scan** and emailed "DAINS FAILED - Fallback published". Two accidents kept the data safe: the anon key's insert was rejected by RLS (`42501`), and the step ignored the error and reported success anyway. The 09:33 scheduled run + build-waves later deployed the real page; final state was correct, but the alert was a false alarm and the fallback design was a live footgun.
+
+### Root Causes
+1. **Transient Anthropic connection error** killed the scan; the SDK default of 2 retries wasn't enough.
+2. **Race in verify-dains.yml:** after a successful data retry it never triggered build-waves and gave the page zero time to deploy before declaring Layer 3 dead.
+3. **Placeholder-over-real-data design flaw:** the fallback condition included a Layer-3-only failure, so a mere page lag could overwrite a good scan.
+4. **Dishonest step:** the fallback curl ignored the HTTP response; the RLS rejection (42501, anon key can't insert) was printed and then reported as "Fallback published". The fallback path had likely NEVER been able to write.
+
+### Resolution
+1. **Corrective:** none needed for data (RLS blocked the bad write; real page live).
+2. **Preventive (`build-scan.js`):** Anthropic client now uses `maxRetries: 5`.
+3. **Preventive (`verify-dains.yml`):** build-waves retry now also fires after a successful scan retry, and Layer 3 re-verify polls for up to 10 minutes; the fallback placeholder fires ONLY when no real data exists after retries; the fallback write uses the service role key and checks the HTTP status; a Layer-3-lag with good data sends a distinct "data OK, page pending" alert instead of a placeholder.
+
+### Lessons
+- A verifier must never destroy good data to satisfy a freshness check. Placeholders are for the no-data case only.
+- Any "published X" log line that doesn't check the API response is a lie waiting to happen; the fallback path had silently never worked.
+- Static-page pipelines have deploy lag; verification of the page must poll, not snapshot.
+
+---
+
 ## Incident: June 16, 2026 — Model Retirement (silent + cascading)
 
 ### What Happened

@@ -23,6 +23,7 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
       ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
 
@@ -159,21 +160,6 @@ jobs:
           echo "retried=true" >> $GITHUB_OUTPUT
 
       # ========================================
-      # RETRY: Trigger build-waves
-      # ========================================
-      - name: "Retry: Trigger build-waves if Layer 3 failed (but Layer 2 passed)"
-        id: retry_waves
-        if: steps.layer3.outputs.status == 'failed' && steps.layer2.outputs.status == 'success'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo "🔄 Layer 3 failed but data exists. Triggering build-waves..."
-          gh workflow run build-waves.yml
-          echo "Waiting 2 minutes for workflow and GitHub Pages deploy..."
-          sleep 120
-          echo "retried=true" >> $GITHUB_OUTPUT
-
-      # ========================================
       # RE-VERIFY after retries
       # ========================================
       - name: "Re-verify: Check Supabase after retry"
@@ -198,32 +184,60 @@ jobs:
             echo "❌ Layer 2 STILL FAILED after retry"
           fi
 
-      - name: "Re-verify: Check live URL after retry"
+      # ========================================
+      # RETRY: Rebuild static page when data exists but page is missing.
+      # Runs AFTER layer2_retry so a scan retry that just published data
+      # also gets its page rebuilt (Jul 29, 2026 incident: the page was
+      # checked seconds after the data landed, 404'd, and the workflow
+      # tried to publish a placeholder over real data).
+      # ========================================
+      - name: "Retry: Trigger build-waves if data exists but page missing"
+        id: retry_waves
+        if: |
+          steps.layer3.outputs.status == 'failed' &&
+          (steps.layer2.outputs.status == 'success' || steps.layer2_retry.outputs.status == 'success')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🔄 Layer 3 failed but data exists. Triggering build-waves..."
+          gh workflow run build-waves.yml
+          echo "retried=true" >> $GITHUB_OUTPUT
+
+      - name: "Re-verify: Poll live URL after retry"
         id: layer3_retry
         if: steps.retry_scan.outputs.retried == 'true' || steps.retry_waves.outputs.retried == 'true'
         run: |
-          echo "--- Re-verifying Layer 3 after retry ---"
+          echo "--- Re-verifying Layer 3 after retry (poll up to 10 min) ---"
           URL="https://victordelrosal.com/${{ steps.date.outputs.slug }}/"
-          echo "Re-checking: $URL"
+          echo "Polling: $URL"
 
-          HTTP_CODE=$(curl -s -o /tmp/page2.html -w "%{http_code}" "$URL" --max-time 30)
+          STATUS="failed"
+          for i in $(seq 1 20); do
+            HTTP_CODE=$(curl -s -o /tmp/page2.html -w "%{http_code}" "$URL" --max-time 30)
+            if [ "$HTTP_CODE" = "200" ] && grep -q "Executive Summary" /tmp/page2.html; then
+              STATUS="success"
+              echo "✅ Layer 3 PASSED on retry (attempt $i)"
+              break
+            fi
+            echo "Attempt $i/20: HTTP $HTTP_CODE, page not ready. Waiting 30s..."
+            sleep 30
+          done
 
-          if [ "$HTTP_CODE" = "200" ] && grep -q "Executive Summary" /tmp/page2.html; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "✅ Layer 3 PASSED on retry"
-          else
-            echo "status=failed" >> $GITHUB_OUTPUT
-            echo "❌ Layer 3 STILL FAILED after retry (HTTP $HTTP_CODE)"
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          if [ "$STATUS" = "failed" ]; then
+            echo "❌ Layer 3 STILL FAILED after retry + 10 min of polling"
           fi
 
       # ========================================
       # FALLBACK: Publish placeholder
       # ========================================
-      - name: "Fallback: Publish placeholder if all retries failed"
+      # The placeholder is ONLY for the no-data case. If Supabase has a real
+      # scan (layer 2 passed originally or on retry), never overwrite it with
+      # a placeholder just because the static page lags (Jul 29, 2026 incident).
+      - name: "Fallback: Publish placeholder if today's data is missing after retries"
         id: fallback
         if: |
-          (steps.layer2.outputs.status == 'failed' && steps.layer2_retry.outputs.status != 'success') ||
-          (steps.layer3.outputs.status == 'failed' && steps.layer3_retry.outputs.status != 'success')
+          steps.layer2.outputs.status == 'failed' && steps.layer2_retry.outputs.status != 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -248,10 +262,14 @@ jobs:
 
           FALLBACK_CONTENT="${FALLBACK_CONTENT//DATEPLACEHOLDER/$FORMATTED_DATE}"
 
-          # Insert/update in Supabase
-          curl -X POST "${SUPABASE_URL}/rest/v1/published_posts" \
-            -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+          # Insert/update in Supabase. RLS blocks the anon key from writing
+          # (Jul 29, 2026: the anon-key insert failed with 42501 while the step
+          # still claimed success), so use the service role key.
+          WRITE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-$SUPABASE_ANON_KEY}"
+          HTTP_CODE=$(curl -s -o /tmp/fallback-response.json -w "%{http_code}" \
+            -X POST "${SUPABASE_URL}/rest/v1/published_posts" \
+            -H "apikey: ${WRITE_KEY}" \
+            -H "Authorization: Bearer ${WRITE_KEY}" \
             -H "Content-Type: application/json" \
             -H "Prefer: resolution=merge-duplicates" \
             -d "{
@@ -261,20 +279,27 @@ jobs:
               \"content\": $(echo "$FALLBACK_CONTENT" | jq -Rs .),
               \"image\": \"https://victordelrosal.com/img/daily-ai-news-scan.png\",
               \"published_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
-            }"
+            }")
 
-          echo "Fallback published to Supabase"
-          echo "fallback_published=true" >> $GITHUB_OUTPUT
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "Fallback published to Supabase (HTTP $HTTP_CODE)"
+            echo "fallback_published=true" >> $GITHUB_OUTPUT
 
-          # Trigger build-waves to generate static page
-          echo "Triggering build-waves..."
-          gh workflow run build-waves.yml
+            # Trigger build-waves to generate static page
+            echo "Triggering build-waves..."
+            gh workflow run build-waves.yml
+          else
+            echo "❌ Fallback publish FAILED (HTTP $HTTP_CODE):"
+            cat /tmp/fallback-response.json
+            echo "fallback_published=false" >> $GITHUB_OUTPUT
+            echo "fallback_error=Fallback publish failed with HTTP $HTTP_CODE" >> $GITHUB_OUTPUT
+          fi
 
       # ========================================
       # ALERT: Send critical alert
       # ========================================
-      - name: "Alert: Send critical alert if fallback was published"
-        if: steps.fallback.outputs.fallback_published == 'true'
+      - name: "Alert: Send critical alert if fallback step ran"
+        if: steps.fallback.outcome != 'skipped'
         working-directory: ai-daily-intel
         run: |
           echo "📧 Sending critical alert..."
@@ -282,24 +307,45 @@ jobs:
           LAYER="unknown"
           ERROR="Multiple layers failed after retries"
 
-          if [ "${{ steps.layer1.outputs.status }}" = "failed" ]; then
-            LAYER="1 (Workflow)"
-            ERROR="${{ steps.layer1.outputs.error }}"
-          elif [ "${{ steps.layer2.outputs.status }}" = "failed" ] && [ "${{ steps.layer2_retry.outputs.status }}" != "success" ]; then
+          if [ "${{ steps.layer2.outputs.status }}" = "failed" ] && [ "${{ steps.layer2_retry.outputs.status }}" != "success" ]; then
             LAYER="2 (Supabase)"
             ERROR="${{ steps.layer2.outputs.error }}"
-          elif [ "${{ steps.layer3.outputs.status }}" = "failed" ] && [ "${{ steps.layer3_retry.outputs.status }}" != "success" ]; then
-            LAYER="3 (Live URL)"
-            ERROR="${{ steps.layer3.outputs.error }}"
+          elif [ "${{ steps.layer1.outputs.status }}" = "failed" ]; then
+            LAYER="1 (Workflow)"
+            ERROR="${{ steps.layer1.outputs.error }}"
+          fi
+
+          if [ "${{ steps.fallback.outputs.fallback_published }}" = "true" ]; then
+            ACTION="Fallback placeholder published. Manual investigation required."
+          else
+            ACTION="Fallback publish ALSO FAILED (${{ steps.fallback.outputs.fallback_error }}). No page for today. Manual investigation required."
           fi
 
           node send-alert.js \
             --type critical \
-            --subject "DAINS FAILED - Fallback published for ${{ steps.date.outputs.date }}" \
-            --body "The Daily AI News Scan failed and a fallback placeholder was published." \
+            --subject "DAINS FAILED - No scan data for ${{ steps.date.outputs.date }}" \
+            --body "The Daily AI News Scan failed and no real scan data exists for today." \
             --layer "$LAYER" \
             --error "$ERROR" \
-            --action "Fallback placeholder published. Manual investigation required." \
+            --action "$ACTION" \
+            --workflow-url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: "Alert: Page still not live although data exists"
+        if: |
+          steps.fallback.outcome == 'skipped' &&
+          steps.layer3.outputs.status == 'failed' &&
+          steps.layer3_retry.outputs.status != 'success' &&
+          (steps.layer2.outputs.status == 'success' || steps.layer2_retry.outputs.status == 'success')
+        working-directory: ai-daily-intel
+        run: |
+          echo "📧 Sending page-lag alert..."
+          node send-alert.js \
+            --type critical \
+            --subject "DAINS page not live for ${{ steps.date.outputs.date }} (data OK)" \
+            --body "Today's scan data exists in Supabase, but the static page was still not live after build-waves retry and 10 minutes of polling. No placeholder was published; the real data is intact." \
+            --layer "3 (Live URL)" \
+            --error "${{ steps.layer3.outputs.error }}" \
+            --action "Check build-waves workflow and GitHub Pages deploy. Data is safe; page rebuild is the only pending step." \
             --workflow-url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       # ========================================

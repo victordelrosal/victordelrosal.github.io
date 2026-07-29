@@ -38,6 +38,10 @@ const supabase = createClient(
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
+  // Jul 29, 2026 incident: a transient "Connection error." killed the scheduled run
+  // with the SDK default of 2 retries. Connection errors from a GitHub runner are
+  // common enough to warrant more attempts before declaring the run dead.
+  maxRetries: 5,
 });
 
 const rssParser = new Parser({
