@@ -9,6 +9,32 @@
     --wire-idle: #4c4c57;
     --wire-hairline: rgba(0, 20, 137, 0.10);
     --wire-card-bg: #ffffff;
+
+    /*
+     * Craft tokens taken from sBs/VFX, "the premium tells".
+     *
+     * A duration ladder, not one value: the distance a thing travels sets how long it takes.
+     * A tooltip appears in place, a card lifts a few pixels, a card that changes rank crosses
+     * the screen. One shared duration is the tell that nobody tuned it.
+     */
+    --wire-t-instant: 90ms;    /* appears in place: tooltips, colour */
+    --wire-t-short: 160ms;     /* small travel: hover lift, arrow fill */
+    --wire-t-move: 420ms;      /* a card crossing the board after a vote */
+    --wire-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    /*
+     * Shadows come in layers. A single blurred drop is the sticker problem: the card looks
+     * pasted on rather than resting on the page. Three layers, each tighter and darker than
+     * the last, is how a real object occludes light.
+     */
+    --wire-shadow-rest:
+        0 1px 1px rgba(9, 14, 44, 0.04),
+        0 3px 6px rgba(9, 14, 44, 0.04),
+        0 10px 24px rgba(9, 14, 44, 0.05);
+    --wire-shadow-lift:
+        0 1px 1px rgba(9, 14, 44, 0.05),
+        0 4px 10px rgba(9, 14, 44, 0.06),
+        0 16px 38px rgba(9, 14, 44, 0.08);
 }
 
 .wire-main {
@@ -120,12 +146,13 @@
     border: 1px solid var(--wire-hairline);
     border-radius: 12px;
     padding: 14px 16px 12px;
-    transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+    transition: border-color var(--wire-t-short) var(--wire-ease),
+                box-shadow var(--wire-t-short) var(--wire-ease);
 }
 
 .wire-card:hover {
     border-color: rgba(0, 20, 137, 0.22);
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--wire-shadow-rest);
 }
 
 /* ----- left rail: THE primary control -----
@@ -460,7 +487,8 @@
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 90ms ease, transform 90ms ease;
+    transition: opacity var(--wire-t-instant) var(--wire-ease),
+                transform var(--wire-t-instant) var(--wire-ease);
     z-index: 5;
 }
 
@@ -474,7 +502,7 @@
     border-top-color: #1f2430;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 90ms ease;
+    transition: opacity var(--wire-t-instant) var(--wire-ease);
     z-index: 5;
 }
 
@@ -676,4 +704,27 @@
 .wire-domain--unknown {
     font-style: italic;
     opacity: 0.72;
+}
+
+/*
+ * A card that changes rank must be SEEN to change rank. Upvoting now lifts a story above every
+ * unvoted one, and without this the card teleports: the reader loses the thing they just acted
+ * on, which is the one moment the interface has to be legible. This is the "choreography versus
+ * decoration" tell: the motion has a job, and the job is keeping the eye on the card.
+ *
+ * Applied by wire.js using FLIP: measure, reorder, invert, play.
+ */
+.wire-card.is-moving {
+    transition: transform var(--wire-t-move) var(--wire-ease);
+    will-change: transform;
+}
+
+.wire-card.is-lifted {
+    box-shadow: var(--wire-shadow-lift);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wire-card.is-moving {
+        transition: none;
+    }
 }

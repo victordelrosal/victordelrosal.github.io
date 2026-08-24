@@ -728,7 +728,86 @@
 
   var invite = document.getElementById('wire-invite');
 
+  /*
+   * FLIP across a full rebuild. render() replaces every node, so the classic technique of
+   * animating the SAME element does not apply: instead we remember where each story id sat,
+   * rebuild, then start each surviving card at its old offset and let it travel to the new one.
+   *
+   * This exists because upvoting now lifts a story above every unvoted one. Without it the card
+   * the reader just clicked teleports across the screen, and the single moment the interface most
+   * needs to be legible is the moment it explains itself least.
+   */
+  function capturePositions() {
+    var map = {};
+    var cards = board.querySelectorAll('.wire-card');
+    for (var i = 0; i < cards.length; i++) {
+      // FLIP is a layout effect. Anywhere without layout (a test harness, a server render)
+      // there is nothing to measure and nothing to animate, so skip rather than throw.
+      if (typeof cards[i].getBoundingClientRect !== 'function') return null;
+      map[cards[i].dataset.storyId] = cards[i].getBoundingClientRect().top;
+    }
+    return map;
+  }
+
+  function playMovement(before) {
+    if (!before) return;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    var cards = board.querySelectorAll('.wire-card');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var was = before[card.dataset.storyId];
+      if (was === undefined) continue;
+      if (typeof card.getBoundingClientRect !== 'function') continue;
+      var delta = was - card.getBoundingClientRect().top;
+      if (Math.abs(delta) < 2) continue;          // it did not really move
+      card.style.transform = 'translateY(' + delta + 'px)';
+      card.classList.add('is-moving', 'is-lifted');
+      /* jshint loopfunc:true */
+      (function (node) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            node.style.transform = '';
+            setTimeout(function () {
+              node.classList.remove('is-moving', 'is-lifted');
+              node.style.willChange = '';
+            }, 460);
+          });
+        });
+      })(card);
+    }
+  }
+
+  /**
+   * Reorder the EXISTING cards instead of rebuilding them.
+   *
+   * A full render() on every vote replaces all twenty nodes, which throws away the keyboard
+   * focus sitting on the arrow the reader just pressed and invalidates every handle anything
+   * else is holding. Moving the nodes keeps identity, keeps focus, and makes the FLIP the
+   * classic same-element technique rather than a reconstruction.
+   */
+  function reorderBoard() {
+    var before = capturePositions();
+    var list = ordered();
+    /*
+     * Re-inserting a focused element blurs it, so a keyboard user who presses Enter on an
+     * arrow is dropped back to the body and loses their place entirely. Remember what had
+     * focus and put it back. preventScroll keeps the page still: the card is already
+     * travelling, and a scroll jump on top of that is disorienting.
+     */
+    var focused = document.activeElement;
+    for (var i = 0; i < list.length; i++) {
+      var node = cardFor(list[i].id);
+      if (node) board.appendChild(node);      // appendChild MOVES an existing node
+    }
+    if (focused && focused !== document.body && board.contains(focused)) {
+      try { focused.focus({ preventScroll: true }); } catch (err) { focused.focus(); }
+    }
+    playMovement(before);
+  }
+
   function render() {
+    var before = capturePositions();
     board.textContent = '';
     var list = ordered();
     /*
@@ -749,6 +828,7 @@
       frag.appendChild(buildCard(story));
     });
     board.appendChild(frag);
+    playMovement(before);
   }
 
   function cardFor(id) {
@@ -795,6 +875,13 @@
     story.hot = hotOf(story);
     paintRail(card, story);
     note(card, '');
+    /*
+     * Re-sort now, not on the next reload. Voted stories rank above unvoted ones, so a vote
+     * changes the order, and a change of order the reader never sees is a change that did not
+     * happen as far as they are concerned. render() runs the FLIP, so the card travels rather
+     * than teleporting. Only the Hot tab reorders: Latest is chronological and must not jump.
+     */
+    if (state.tab === 'hot') reorderBoard();
 
     return postVote({
       story_id: story.id,
@@ -805,8 +892,11 @@
       if (result && Number.isFinite(Number(result.ups))) story.ups = num(result.ups);
       if (result && Number.isFinite(Number(result.downs))) story.downs = num(result.downs);
       story.hot = hotOf(story);
-      paintRail(card, story);
-      note(card, '');
+      // The server's counts can differ from the optimistic guess (someone else voted), so the
+      // order is settled against the server, not against what this browser assumed.
+      paintRail(cardFor(story.id), story);
+      if (state.tab === 'hot') reorderBoard();
+      note(cardFor(story.id), '');
     }).catch(function () {
       // rollback: the server refused, so the board goes back to what it knew
       story.ups = snapshot.ups;
