@@ -831,6 +831,7 @@
   }
 
   function reorderBoard() {
+    paintSticky();
     var before = capturePositions();
     var list = ordered();
     /*
@@ -848,6 +849,133 @@
       try { focused.focus({ preventScroll: true }); } catch (err) { focused.focus(); }
     }
     playMovement(before);
+  }
+
+
+  /* ---------------------------------------------------------------------------
+   * The sticky voter.
+   *
+   * On a long board the controls for the story you are actually reading scroll away, so voting
+   * means scrolling back to find the row again. This pins a compact bar to the top carrying the
+   * headline of whichever card is currently under the reading line, with its own arrows and its
+   * own six reactions, wired to exactly the same handlers as the card.
+   *
+   * It is a VIEW of the current story, never a second source of truth: every control calls the
+   * same castArrow and castReaction, and it repaints from the same state the board does.
+   * ------------------------------------------------------------------------- */
+  var sticky = null;
+
+  function buildSticky() {
+    if (sticky || !board) return;
+    /*
+     * A progressive enhancement, and it says so in code. It needs insertBefore, layout
+     * measurement and a frame callback; anywhere those are missing (the test DOM, a server
+     * render) the board simply works without a sticky bar rather than failing to boot.
+     */
+    if (!board.parentNode || typeof board.parentNode.insertBefore !== 'function') return;
+    if (typeof board.getBoundingClientRect !== 'function') return;
+    if (typeof requestAnimationFrame !== 'function') return;
+    var bar = el('div', 'wire-sticky');
+    bar.hidden = true;
+    bar.setAttribute('aria-live', 'off');
+
+    var up = el('button', 'wire-arrow wire-arrow--up wire-sticky-arrow');
+    up.type = 'button'; up.setAttribute('aria-label', 'Upvote the story you are reading');
+    up.appendChild(arrowSvg('up'));
+    var score = el('span', 'wire-score wire-sticky-score', NO_VOTES_MARK);
+    var down = el('button', 'wire-arrow wire-arrow--down wire-sticky-arrow');
+    down.type = 'button'; down.setAttribute('aria-label', 'Downvote the story you are reading');
+    down.appendChild(arrowSvg('down'));
+    var rail = el('div', 'wire-sticky-rail');
+    rail.appendChild(up); rail.appendChild(score); rail.appendChild(down);
+
+    var title = el('span', 'wire-sticky-title', '');
+    var chips = el('div', 'wire-sticky-chips');
+    REACTIONS.forEach(function (r) {
+      var chip = el('button', 'wire-chip wire-sticky-chip');
+      chip.type = 'button';
+      chip.dataset.kind = r.kind;
+      chip.dataset.label = r.label;
+      chip.setAttribute('aria-label', r.label);
+      chip.appendChild(el('span', 'wire-chip-glyph', r.glyph));
+      var c = el('span', 'wire-chip-count', ''); c.hidden = true;
+      chip.appendChild(c);
+      chips.appendChild(chip);
+    });
+
+    bar.appendChild(rail); bar.appendChild(title); bar.appendChild(chips);
+    if (board.parentNode) board.parentNode.insertBefore(bar, board);
+    sticky = { bar: bar, up: up, down: down, score: score, title: title, chips: chips, id: null };
+
+    bar.addEventListener('click', function (event) {
+      if (!sticky.id) return;
+      var story = state.byId[sticky.id];
+      if (!story) return;
+      var arrow = event.target.closest('.wire-sticky-arrow');
+      if (arrow) {
+        state.pending = castArrow(story, arrow.classList.contains('wire-arrow--up') ? 1 : -1);
+        return;
+      }
+      var chip = event.target.closest('.wire-sticky-chip');
+      if (chip) state.pending = castReaction(story, chip.dataset.kind);
+    });
+  }
+
+  /** The card currently crossing the reading line, a third of the way down the viewport. */
+  function storyUnderReadingLine() {
+    var cards = board.querySelectorAll('.wire-card');
+    if (!cards.length) return null;
+    if (typeof cards[0].getBoundingClientRect !== 'function') return null;
+    var line = window.innerHeight / 3;
+    var best = null, bestGap = Infinity;
+    for (var i = 0; i < cards.length; i++) {
+      var r = cards[i].getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) continue;
+      var gap = Math.abs(r.top - line);
+      if (gap < bestGap) { bestGap = gap; best = cards[i]; }
+    }
+    return best ? state.byId[best.dataset.storyId] : null;
+  }
+
+  function paintSticky() {
+    if (!sticky || typeof board.getBoundingClientRect !== 'function') return;
+    var boardTop = board.getBoundingClientRect().top;
+    var story = storyUnderReadingLine();
+    // Hidden until the board has actually scrolled under the header: at rest the cards are
+    // right there and a duplicate bar would be noise rather than help.
+    if (!story || boardTop > 40) { sticky.bar.hidden = true; sticky.id = null; return; }
+    sticky.bar.hidden = false;
+    sticky.id = story.id;
+    sticky.title.textContent = story.headline;
+    var mine = num(state.myVotes[story.id]);
+    var scoreValue = num(story.ups) - num(story.downs);
+    sticky.score.textContent = hasAnyVote(story) ? String(scoreValue) : NO_VOTES_MARK;
+    sticky.score.classList.toggle('is-negative', scoreValue < 0);
+    sticky.bar.classList.toggle('is-upvoted', mine === 1);
+    sticky.bar.classList.toggle('is-downvoted', mine === -1);
+    var counts = reactionCounts(story);
+    var held = state.myReactions[story.id] || {};
+    var chips = sticky.chips.querySelectorAll('.wire-chip');
+    for (var i = 0; i < chips.length; i++) {
+      var kind = chips[i].dataset.kind;
+      var n = num(counts[kind]);
+      var countNode = chips[i].querySelector('.wire-chip-count');
+      countNode.textContent = n > 0 ? String(n) : '';
+      countNode.hidden = n === 0;
+      chips[i].classList.toggle('is-held', !!held[kind]);
+      chips[i].setAttribute('aria-pressed', held[kind] ? 'true' : 'false');
+    }
+  }
+
+  var stickyTick = false;
+  function onScrollOrResize() {
+    if (stickyTick) return;
+    stickyTick = true;
+    requestAnimationFrame(function () { stickyTick = false; paintSticky(); });
+  }
+  if (typeof window !== 'undefined' && window.addEventListener) {
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
   }
 
   function render() {
@@ -874,6 +1002,8 @@
     });
     board.appendChild(frag);
     playMovement(before);
+    buildSticky();
+    paintSticky();
   }
 
   function cardFor(id) {
@@ -954,6 +1084,13 @@
       writeStore('wire.votes', state.myVotes);
       story.hot = hotOf(story);
       paintRail(card, story);
+      /*
+       * The rollback has to undo everything the optimistic vote did, not just the rail. It
+       * previously left the sticky bar showing a vote that never happened and the board in
+       * the order that vote had implied, so a failed request looked exactly like a successful
+       * one everywhere except the one card the reader was not looking at.
+       */
+      if (state.tab === 'hot') reorderBoard(); else paintSticky();
       note(card, 'Vote did not stick. Try again in a moment.');
     });
   }
@@ -997,6 +1134,7 @@
       state.myReactions[story.id] = held;
       writeStore('wire.reactions', state.myReactions);
       paintReactions(card, story);
+      paintSticky();
       note(card, 'Reaction did not stick. Try again in a moment.');
     });
   }

@@ -959,3 +959,70 @@
     .wire-cell:nth-child(3n) { border-right: 0; }
     .wire-cell:nth-child(-n+3) { border-bottom: 1px solid var(--hair); }
 }
+
+/* ----- the sticky voter: the story you are reading, always reachable ----- */
+.wire-sticky {
+    position: sticky;
+    /* The site's own .wave-navbar is fixed and 90px tall, so top:0 parked this bar underneath
+       it where nobody could see or press it. Measured, not guessed. */
+    top: 96px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 12px;
+    margin: 0 0 4px;
+    background: rgba(10, 10, 11, 0.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border: 1px solid var(--hair);
+    border-left: 2px solid var(--amber-line);
+}
+
+.wire-sticky-rail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+/* Horizontal here, not stacked: this is a bar, and a 34px tall row cannot carry the
+   vertical rail without shoving the headline off the line. */
+.wire-sticky-arrow { width: 34px; height: 30px; }
+.wire-sticky-arrow svg { width: 18px; height: 18px; }
+.wire-sticky-score {
+    min-width: 30px;
+    text-align: center;
+    font: 500 14px/1 var(--vfx-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--bone);
+}
+.wire-sticky.is-upvoted .wire-sticky-score { color: var(--amber); }
+.wire-sticky.is-downvoted .wire-sticky-score { color: var(--xray); }
+.wire-sticky.is-upvoted .wire-arrow--up { background: var(--amber); border-color: var(--amber); color: var(--void); }
+.wire-sticky.is-downvoted .wire-arrow--down { background: var(--xray); border-color: var(--xray); color: var(--void); }
+
+.wire-sticky-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    font: 700 13px/1.3 var(--vfx-display);
+    color: var(--bone);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wire-sticky-chips { display: flex; gap: 5px; flex: 0 0 auto; }
+.wire-sticky-chip { padding: 4px 6px; font-size: 11px; }
+
+@media (max-width: 720px) {
+    /* The headline is the first thing to go: the controls are the point of the bar. */
+    .wire-sticky-title { display: none; }
+    .wire-sticky { justify-content: space-between; gap: 8px; }
+}
+
+@media (max-width: 420px) {
+    .wire-sticky-chips { gap: 3px; }
+    .wire-sticky-chip { padding: 4px 4px; }
+    .wire-sticky-chip .wire-chip-count { display: none; }
+}
