@@ -146,13 +146,17 @@
     border: 1px solid var(--wire-hairline);
     border-radius: 12px;
     padding: 14px 16px 12px;
+    /* At rest the card sits on the page; on hover it lifts off it. Two rungs of the same
+       layered ladder, which is what makes the difference read as movement rather than as a
+       light being switched on. */
+    box-shadow: var(--wire-shadow-rest);
     transition: border-color var(--wire-t-short) var(--wire-ease),
                 box-shadow var(--wire-t-short) var(--wire-ease);
 }
 
 .wire-card:hover {
     border-color: rgba(0, 20, 137, 0.22);
-    box-shadow: var(--wire-shadow-rest);
+    box-shadow: var(--wire-shadow-lift);
 }
 
 /* ----- left rail: THE primary control -----
