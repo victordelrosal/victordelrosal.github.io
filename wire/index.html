@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The AI Wire: the day's AI stories ranked by the people reading them, not by an algorithm. Vote the signal up, sink the noise.">
+    <title>The AI Wire | Victor del Rosal</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Victor del Rosal">
+    <meta property="og:url" content="https://victordelrosal.com/wire/">
+    <meta property="og:title" content="The AI Wire | Victor del Rosal">
+    <meta property="og:description" content="The day's AI stories ranked by the people reading them, not by an algorithm. Vote the signal up, sink the noise.">
+    <meta property="og:image" content="https://victordelrosal.com/img/daily-ai-news-scan.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://victordelrosal.com/wire/">
+    <meta name="twitter:title" content="The AI Wire | Victor del Rosal">
+    <meta name="twitter:description" content="The day's AI stories ranked by the people reading them, not by an algorithm. Vote the signal up, sink the noise.">
+    <meta name="twitter:image" content="https://victordelrosal.com/img/daily-ai-news-scan.png">
+
+    <!-- Shared Stylesheet (site wide) -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Only what style.css does not already provide -->
+    <link rel="stylesheet" href="/css/wire.css">
+</head>
+<body class="bg-light">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <!-- Universal Navigation -->
+    <div id="navbar-container" data-active-link="/wire/"></div>
+    <script src="/js/navbar.js"></script>
+
+    <main id="main-content" class="wave-watermark wire-main">
+        <!-- Wave Signature Background Elements -->
+        <div class="wave-signature"></div>
+        <div class="wave-signature-right"></div>
+
+        <header class="wire-header">
+            <p class="wire-eyebrow">Daily AI News Scan</p>
+            <h1 class="wire-title">The AI Wire</h1>
+            <p class="wire-standfirst">Every story the scan finds, ranked by the people reading it. Arrows decide the order; reactions colour it. Nothing is ever hidden by score.</p>
+        </header>
+
+        <!-- A div, not a nav: style.css styles every bare nav element as the floating navbar. -->
+        <div class="wire-tabs" role="tablist" aria-label="Board ranking">
+            <button class="wire-tab is-active" type="button" role="tab" data-tab="hot" aria-selected="true">Hot</button>
+            <button class="wire-tab" type="button" role="tab" data-tab="latest" aria-selected="false">Latest</button>
+        </div>
+
+        <!--
+          T3 / docs/RISKS.md R6. Two lines the risk register calls mandatory before
+          launch, and scripts/preflight-publish.sh refuses to publish without them.
+          They sit here, directly under the tabs and directly above the first card,
+          so they are on the first screen of a phone next to the vote controls, not
+          buried in a footer nobody scrolls to.
+
+          The privacy line is written against what functions/vote actually stores.
+          story_votes holds voter_id and ip_hash, both HMAC-SHA256 hex; the IP salt
+          rotates every UTC day (CONTRACT.md rule 2). There is no account table, no
+          email anywhere in the schema, and no raw address in any column. The random
+          id in local storage is the browser's own, hashed before it reaches the
+          server. If any of that changes, this paragraph changes with it.
+        -->
+        <aside class="wire-notice" aria-label="How the wire works">
+            <p class="wire-notice-line" id="wire-invite" hidden>Nobody has voted yet. The first arrow sets the order.</p>
+            <p class="wire-notice-line"><strong>A link here is not an endorsement.</strong> Stories are gathered automatically and ranked by readers.</p>
+            <p class="wire-notice-line"><strong>Votes are anonymous.</strong> No account, no sign-in, and no IP address stored: your address becomes a one-way hash that changes every day. The hash is kept beside your vote to limit abuse, cannot be read back to an address, and cannot link your votes across days.</p>
+        </aside>
+
+        <p class="wire-status" id="wire-status" role="status" aria-live="polite">Loading the wire.</p>
+
+        <div id="wire-board" class="wire-board"></div>
+
+        <p class="wire-footnote">Arrows rank. Reactions colour. Once a story has at least five reactions and more than 30 per cent of them are Doubt, it keeps its place and wears the Contested badge. Below five reactions no badge is shown, so one click can never brand a story.</p>
+
+        <!-- Cloudflare Turnstile mount. Invisible until a challenge is actually needed:
+             wire.js renders it with execution "execute" and appearance "interaction-only",
+             then executes it on the first vote of a session. -->
+        <div id="wire-turnstile" class="wire-turnstile"></div>
+    </main>
+
+    <!--
+      ###############################################################################
+      #  STOP. THIS PAGE IS NOT PROTECTED.                                          #
+      #                                                                             #
+      #  0x4AAAAAAEaQz5e6MxIR80nt is Cloudflare's ALWAYS-PASSES TEST SITE KEY.       #
+      #  It is not a weak key or an unconfigured key. It is a key whose whole        #
+      #  purpose is to make the challenge succeed for everyone, every time, without  #
+      #  testing anything. With this value in place the board has NO bot protection  #
+      #  in front of its vote endpoint: a script can vote as fast as the per-IP cap  #
+      #  allows, and the Turnstile line of defence described in CONTRACT.md rule 3   #
+      #  is switched off.                                                           #
+      #                                                                             #
+      #  It is here so the page can be rendered and screenshotted offline before the #
+      #  real widget exists. It MUST be replaced at Gate 7 with the Site Key issued  #
+      #  in Gate 2, and GATES.md verifies this exact string is gone before the page  #
+      #  is published. Do not publish this file while the string below is present.   #
+      #                                                                             #
+      #  The Site Key is public by design; it is embedded in every page that uses    #
+      #  the widget. The matching SECRET key never leaves the function environment    #
+      #  (TURNSTILE_SECRET_KEY) and is not in this repo.                             #
+      ###############################################################################
+    -->
+    <script>
+      // ---- TEST KEY. CHALLENGE DISABLED. NOT FOR PUBLICATION. Replace at Gate 7. ----
+      window.WIRE_TURNSTILE_SITE_KEY = '0x4AAAAAAEaQz5e6MxIR80nt'; // CLOUDFLARE ALWAYS-PASSES TEST KEY
+      // Read by nothing in the vote path; it exists so that a human or a check can
+      // see, in one line, that this page is running without bot protection.
+      window.WIRE_TURNSTILE_IS_TEST_KEY_CHALLENGE_DISABLED = true;
+    </script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
+    <!-- The site's own Supabase URL and anon key. Without this the board has no restBase
+         and renders empty, which is exactly how it would have shipped. -->
+    <script src="/js/supabase-config.js"></script>
+    <script src="/js/wire.js"></script>
+</body>
+</html>

@@ -1,0 +1,679 @@
+/* ===== The AI Wire board: only what /css/style.css does not already provide ===== */
+/* No new font stack: everything inherits --font-system from style.css. */
+
+:root {
+    --wire-up: #ff4500;
+    --wire-down: #7193ff;
+    /* Idle arrow ink. #9a9aa2 was too faint to read as a button; this is dark enough
+       to sit in the foreground while still leaving cast votes obviously brighter. */
+    --wire-idle: #4c4c57;
+    --wire-hairline: rgba(0, 20, 137, 0.10);
+    --wire-card-bg: #ffffff;
+}
+
+.wire-main {
+    padding: 120px 24px 100px;
+    max-width: 820px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* style.css paints a fixed ambient wash at z-index 0 over .wave-watermark, so the board's own
+   blocks are lifted above it the same way style.css lifts .post. */
+.wire-header,
+.wire-tabs,
+.wire-notice,
+.wire-status,
+.wire-board,
+.wire-footnote {
+    position: relative;
+    z-index: 2;
+}
+
+/* ----- header ----- */
+
+.wire-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.wire-title {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+}
+
+.wire-standfirst {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-dark-secondary);
+    max-width: 60ch;
+}
+
+.wire-header {
+    margin-bottom: 32px;
+}
+
+/* ----- tabs ----- */
+
+.wire-tabs {
+    display: flex;
+    gap: 6px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--wire-hairline);
+    margin-bottom: 18px;
+}
+
+.wire-tab {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--text-dark-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 7px 18px;
+    cursor: pointer;
+    transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.wire-tab:hover {
+    background: rgba(0, 20, 137, 0.06);
+    color: var(--text-dark);
+}
+
+.wire-tab.is-active {
+    background: var(--accent-blue);
+    color: #ffffff;
+}
+
+.wire-tab:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* ----- board and card ----- */
+
+.wire-status {
+    color: var(--text-dark-secondary);
+    font-size: 0.95rem;
+    padding: 24px 0;
+}
+
+.wire-board {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wire-card {
+    display: flex;
+    gap: 14px;
+    background: var(--wire-card-bg);
+    border: 1px solid var(--wire-hairline);
+    border-radius: 12px;
+    padding: 14px 16px 12px;
+    transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.wire-card:hover {
+    border-color: rgba(0, 20, 137, 0.22);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+}
+
+/* ----- left rail: THE primary control -----
+   The whole interaction model rests on Reddit muscle memory, which is keyed to an
+   obvious arrow pair. Borderless 30x26 chevrons in light grey read as decoration and
+   let the reaction chips outweigh the control that actually ranks the board. So the
+   arrows are the heaviest thing on the card: a real button box, a real border, a
+   dark enough idle colour to read as pressable, and a filled state on the way in. */
+
+.wire-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 0 0 46px;
+    padding-top: 1px;
+}
+
+.wire-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 34px;
+    border: 1px solid rgba(0, 20, 137, 0.20);
+    background: #ffffff;
+    border-radius: 9px;
+    color: var(--wire-idle);
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 20, 137, 0.06);
+    transition: color 0.15s var(--ease-out), background 0.15s var(--ease-out),
+        border-color 0.15s var(--ease-out), transform 0.1s var(--ease-out);
+}
+
+.wire-arrow:hover {
+    transform: translateY(-1px);
+}
+
+.wire-arrow--up:hover {
+    color: var(--wire-up);
+    border-color: var(--wire-up);
+    background: rgba(255, 69, 0, 0.10);
+}
+
+.wire-arrow--down:hover {
+    color: var(--wire-down);
+    border-color: var(--wire-down);
+    background: rgba(113, 147, 255, 0.14);
+}
+
+.wire-arrow:active {
+    transform: translateY(0);
+}
+
+.wire-arrow:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* Cast: the arrow fills, so the card states its own vote from across the room. */
+.wire-card.is-upvoted .wire-arrow--up {
+    color: #ffffff;
+    background: var(--wire-up);
+    border-color: var(--wire-up);
+    box-shadow: 0 2px 8px rgba(255, 69, 0, 0.32);
+}
+
+.wire-card.is-downvoted .wire-arrow--down {
+    color: #ffffff;
+    background: var(--wire-down);
+    border-color: var(--wire-down);
+    box-shadow: 0 2px 8px rgba(113, 147, 255, 0.36);
+}
+
+.wire-score {
+    font-variant-numeric: tabular-nums;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-dark);
+    line-height: 1.15;
+    padding: 1px 0;
+}
+
+.wire-card.is-upvoted .wire-score {
+    color: var(--wire-up);
+}
+
+.wire-card.is-downvoted .wire-score {
+    color: var(--wire-down);
+}
+
+/* A negative score is red whatever the reader's own vote was.
+   These two selectors are (0,3,0) like the two above them and come later, so a story
+   at -41 that you upvoted paints red, not upvote orange. Specificity, not hope. */
+.wire-score.is-negative,
+.wire-card.is-upvoted .wire-score.is-negative,
+.wire-card.is-downvoted .wire-score.is-negative {
+    color: #b23b2e;
+}
+
+/* right body */
+
+.wire-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wire-headline {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+}
+
+.wire-link {
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.wire-link:hover {
+    color: var(--accent-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.wire-domain {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-dark-secondary);
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+.wire-summary {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-dark-secondary);
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.wire-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--text-dark-secondary);
+    margin-bottom: 9px;
+}
+
+.wire-sources-toggle {
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-dark-secondary);
+    background: transparent;
+    border: none;
+    padding: 2px 0;
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+}
+
+.wire-sources-toggle:hover {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+}
+
+.wire-sources-toggle:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* A middle dot (wire.js writes \u00b7), sized so it reads as a separator rather than
+   as a full stop that wandered into the middle of the line. */
+.wire-sep {
+    color: rgba(0, 0, 0, 0.38);
+    font-size: 1.15em;
+    line-height: 1;
+    user-select: none;
+}
+
+.wire-contested {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a5300;
+    background: rgba(255, 176, 32, 0.16);
+    border: 1px solid rgba(255, 176, 32, 0.45);
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+/* source list */
+
+.wire-sources {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 10px 12px;
+    background: rgba(0, 20, 137, 0.035);
+    border: 1px solid var(--wire-hairline);
+    border-radius: 8px;
+}
+
+.wire-source {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.82rem;
+    padding: 3px 0;
+}
+
+.wire-source-link {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.wire-source-link:hover {
+    text-decoration: underline;
+}
+
+.wire-source-domain {
+    color: var(--text-dark-secondary);
+    font-size: 0.76rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wire-source-kind {
+    margin-left: auto;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dark-secondary);
+    border: 1px solid var(--wire-hairline);
+    border-radius: 999px;
+    padding: 1px 7px;
+}
+
+.wire-source--empty {
+    color: var(--text-dark-secondary);
+}
+
+/* reaction chips */
+
+.wire-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    /* Sits to the RIGHT on its own last line, by request. Reactions are the trailing,
+       lighter signal on a card whose left rail and headline carry the weight. */
+    justify-content: flex-end;
+}
+
+/* Deliberately lighter than the arrows: reactions colour, arrows rank. */
+.wire-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-dark-secondary);
+    background: rgba(0, 0, 0, 0.028);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 3px 9px;
+    cursor: pointer;
+    transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+
+.wire-chip:hover {
+    background: rgba(0, 20, 137, 0.08);
+    color: var(--text-dark);
+}
+
+.wire-chip.is-held {
+    background: rgba(0, 20, 137, 0.10);
+    border-color: rgba(0, 20, 137, 0.35);
+    color: var(--accent-blue);
+}
+
+.wire-chip:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+.wire-chip-glyph {
+    font-size: 0.82rem;
+    line-height: 1;
+}
+
+/* .wire-chip-label is no longer rendered: Victor asked for the emoji alone. The word
+   still reaches hover and screen readers via the chip's title and aria-label. */
+
+.wire-nosource {
+    font-style: italic;
+    opacity: 0.75;
+}
+
+.wire-date {
+    white-space: nowrap;
+}
+
+/*
+ * The chips show the emoji alone, so the word has to be one hover away. A native title
+ * attribute would do it, but it waits about a second and cannot be styled; this appears
+ * at once and matches the card. aria-label carries the same word to a screen reader, and
+ * :focus-visible means a keyboard reaches it too.
+ */
+.wire-chip::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(2px);
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: #1f2430;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 90ms ease, transform 90ms ease;
+    z-index: 5;
+}
+
+.wire-chip::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #1f2430;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 90ms ease;
+    z-index: 5;
+}
+
+.wire-chip:hover::after,
+.wire-chip:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.wire-chip:hover::before,
+.wire-chip:focus-visible::before {
+    opacity: 1;
+}
+
+.wire-chip-count {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dark);
+    opacity: 0.75;
+}
+
+.wire-card-note {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: #b23b2e;
+}
+
+.wire-footnote {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--wire-hairline);
+    font-size: 0.8rem;
+    color: var(--text-dark-secondary);
+}
+
+/* ----- narrow screens ----- */
+
+@media (max-width: 560px) {
+    .wire-main {
+        padding: 100px 14px 72px;
+    }
+
+    .wire-card {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    /* The rail does NOT shrink on a phone. It is the primary control everywhere. */
+    .wire-rail {
+        flex-basis: 44px;
+    }
+
+    .wire-arrow {
+        width: 38px;
+        height: 34px;
+    }
+
+    /*
+     * Emoji only, by request. Six glyph chips fit one even row on a phone, so the
+     * old two-rows-of-three grid is no longer needed. The words are still available
+     * on hover and to a screen reader through title and aria-label.
+     */
+    .wire-reactions {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 5px;
+        justify-content: end;
+    }
+
+    .wire-chip {
+        justify-content: center;
+        gap: 3px;
+        padding: 5px 2px;
+        font-size: 0.68rem;
+    }
+
+    .wire-domain {
+        display: block;
+        margin-left: 0;
+        margin-top: 2px;
+    }
+}
+
+/* Very narrow phones: two columns of three rows rather than a cramped three. */
+@media (max-width: 340px) {
+    .wire-reactions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ----- Turnstile mount -----
+   Invisible in the common case; when Cloudflare does decide to show something it
+   needs somewhere to appear that is not on top of the board. */
+
+.wire-turnstile {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 0;
+}
+
+.wire-turnstile:empty {
+    margin-top: 0;
+}
+
+/* ----- the notice strip: the two lines R6 requires, plus the cold-start invitation ----- */
+
+.wire-notice {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--wire-hairline);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 8px;
+    background: rgba(0, 20, 137, 0.03);
+}
+
+.wire-notice-line {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--text-dark-secondary);
+}
+
+.wire-notice-line + .wire-notice-line {
+    margin-top: 6px;
+}
+
+.wire-notice-line strong {
+    color: var(--text-dark);
+    font-weight: 650;
+}
+
+#wire-invite {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+/* ----- the zero state (C12 as amended) ----- */
+
+/* No votes yet: a quiet neutral mark, never a numeral. Presentation only; the
+   underlying ups, downs and reaction_counts are still zero and untouched. */
+.wire-score.is-nothing-yet {
+    color: var(--text-dark-secondary);
+    opacity: 0.6;
+    font-weight: 700;
+}
+
+/* The arrows on an unvoted card carry the invitation instead of the score. */
+.wire-card.is-unvoted .wire-arrow {
+    border-color: rgba(0, 20, 137, 0.22);
+}
+
+.wire-card.is-unvoted .wire-arrow--up:hover {
+    border-color: var(--wire-up);
+}
+
+.wire-card.is-unvoted .wire-arrow--down:hover {
+    border-color: var(--wire-down);
+}
+
+/* A chip with no reactions carries no count at all: [hidden] beats the flex display. */
+.wire-chip-count[hidden] {
+    display: none;
+}
+
+/* ----- T5: the vote is doing something, and it says so ----- */
+
+.wire-card-note.is-working {
+    color: var(--text-dark-secondary);
+}
+
+.wire-card-note.is-working::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+    vertical-align: middle;
+    animation: wire-pulse 1s ease-in-out infinite;
+}
+
+@keyframes wire-pulse {
+    0%, 100% { opacity: 0.25; transform: scale(0.8); }
+    50%      { opacity: 1;    transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wire-card-note.is-working::before {
+        animation: none;
+        opacity: 0.7;
+    }
+}
+
+/* A story whose only link is a redirect wrapper has no publisher to name. Say so in
+   words rather than printing a domain called "unknown". */
+.wire-domain--unknown {
+    font-style: italic;
+    opacity: 0.72;
+}
