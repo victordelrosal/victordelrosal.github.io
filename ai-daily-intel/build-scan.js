@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 import { SYSTEM_PROMPT, getUserPrompt, formatItemsForPrompt, formatStoriesForPrompt } from './prompts.js';
+import { persistStories } from './lib/persist-stories.mjs';
 
 // Get directory of this script
 const __filename = fileURLToPath(import.meta.url);
@@ -642,6 +643,32 @@ async function main() {
     console.log(briefing.html);
     console.log('\n--- END DRY RUN ---');
     return;
+  }
+
+  // Persist the day's clusters as ai-wire story rows (scan_stories, scan_story_sources).
+  // Best effort by design: the wire is downstream of the brief, so a failure here logs
+  // and the scan publishes exactly as it did before this block existed.
+  //
+  // newsletterItems is passed so that each story's published_at can be the earliest
+  // email_received_at among the items behind it, rather than one shared run instant.
+  // Every hit carries the id of its newsletter_items row, which is the join key.
+  // On the RSS fallback branch topStories has no hits, so those stories fall back to
+  // the run instant, which is the right answer for them.
+  console.log('\n--- Persisting story rows (ai-wire) ---');
+  try {
+    const wire = await persistStories(supabase, topStories, {
+      scanSlug: todaySlug,
+      scanDate: targetDate,
+      items: newsletterItems,
+      now: DATE_OVERRIDE ? new Date(DATE_OVERRIDE + 'T07:00:00Z') : new Date(),
+    });
+    if (wire.ok) {
+      console.log(`  Wire: ${wire.inserted} new, ${wire.updated} updated, ${wire.sources} source rows`);
+    } else {
+      console.error(`  Wire persistence did not complete (continuing): ${wire.error}`);
+    }
+  } catch (wireError) {
+    console.error(`  Wire persistence threw (continuing): ${wireError.message}`);
   }
 
   // Publish
