@@ -50,7 +50,8 @@
         <div class="wave-signature"></div>
         <div class="wave-signature-right"></div>
 
-        <header class="wire-header">
+        <div class="wire-plate">
+<header class="wire-header">
             <p class="wire-eyebrow">Daily AI News Scan</p>
             <h1 class="wire-title">The AI Wire</h1>
             <p class="wire-standfirst">Every story the scan finds, ranked by the people reading it. Arrows decide the order; reactions colour it. Nothing is ever hidden by score.</p>
@@ -61,6 +62,15 @@
             <button class="wire-tab is-active" type="button" role="tab" data-tab="hot" aria-selected="true">Hot</button>
             <button class="wire-tab" type="button" role="tab" data-tab="latest" aria-selected="false">Latest</button>
         </div>
+      <div class="wire-titleblock" id="wire-titleblock" hidden>
+        <div class="wire-cell" data-cell="stories"><span class="wire-cell-label">Stories</span><span class="wire-cell-value">0</span></div>
+        <div class="wire-cell" data-cell="sources"><span class="wire-cell-label">Sources</span><span class="wire-cell-value">0</span></div>
+        <div class="wire-cell" data-cell="votes"><span class="wire-cell-label">Votes</span><span class="wire-cell-value">0</span></div>
+        <div class="wire-cell" data-cell="reactions"><span class="wire-cell-label">Reactions</span><span class="wire-cell-value">0</span></div>
+        <div class="wire-cell" data-cell="scanned"><span class="wire-cell-label">Newest</span><span class="wire-cell-value">-</span></div>
+        <div class="wire-cell wire-cell--sheet"><span class="wire-cell-label">Sheet</span><span class="wire-cell-value">AI&#8202;WIRE</span></div>
+      </div>
+
 
         <!--
           T3 / docs/RISKS.md R6. Two lines the risk register calls mandatory before
@@ -92,7 +102,9 @@
              wire.js renders it with execution "execute" and appearance "interaction-only",
              then executes it on the first vote of a session. -->
         <div id="wire-turnstile" class="wire-turnstile"></div>
-    </main>
+    
+</div>
+</main>
 
     <!--
       ###############################################################################

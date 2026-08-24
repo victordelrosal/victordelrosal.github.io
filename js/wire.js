@@ -606,9 +606,21 @@
     badge.hidden = !isContested(counts);
   }
 
-  function buildCard(story) {
+  /** 01, 02, 03: a ranked board should say what rank each thing is. */
+  function rankLabel(i) {
+    return (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
+  }
+
+  function buildCard(story, index) {
     var card = el('article', 'wire-card');
     card.dataset.storyId = story.id;
+
+    /* The drafting ordinal, appended FIRST so no insertBefore is needed: the harness DOM
+       implements appendChild and not the insert family, and a decorative flourish is not
+       worth a test-infrastructure change. */
+    var rank = el('span', 'wire-rank', rankLabel(typeof index === 'number' ? index : 0));
+    rank.setAttribute('aria-hidden', 'true');
+    card.appendChild(rank);
 
     /* left rail: up arrow, score, down arrow */
     var rail = el('div', 'wire-rail');
@@ -786,6 +798,38 @@
    * else is holding. Moving the nodes keeps identity, keeps focus, and makes the FLIP the
    * classic same-element technique rather than a reconstruction.
    */
+  /**
+   * The titleblock, borrowed from the drafting sheets in sBs/VFX: a strip of real counts under
+   * the header, mono and letterspaced over tabular figures. It tells a first-time reader what
+   * this board actually is (how much it holds, how much has been said about it) in one line.
+   */
+  function paintTitleblock(list) {
+    var block = document.getElementById('wire-titleblock');
+    if (!block) return;
+    var votes = 0, sources = 0, reactions = 0;
+    for (var i = 0; i < list.length; i++) {
+      votes += num(list[i].ups) + num(list[i].downs);
+      sources += num(list[i].source_count);
+      var rc = reactionCounts(list[i]);
+      for (var k in rc) if (Object.prototype.hasOwnProperty.call(rc, k)) reactions += num(rc[k]);
+    }
+    var newest = list.reduce(function (acc, s) {
+      var ts = Date.parse(s.published_at);
+      return Number.isFinite(ts) && ts > acc ? ts : acc;
+    }, 0);
+    setCell(block, 'stories', list.length);
+    setCell(block, 'sources', sources);
+    setCell(block, 'votes', votes);
+    setCell(block, 'reactions', reactions);
+    setCell(block, 'scanned', newest ? ageLabel(new Date(newest).toISOString()) : '');
+    block.hidden = false;
+  }
+
+  function setCell(block, name, value) {
+    var node = block.querySelector('[data-cell="' + name + '"] .wire-cell-value');
+    if (node) node.textContent = String(value);
+  }
+
   function reorderBoard() {
     var before = capturePositions();
     var list = ordered();
@@ -823,9 +867,10 @@
       return;
     }
     status.hidden = true;
+    paintTitleblock(list);
     var frag = document.createDocumentFragment();
-    list.forEach(function (story) {
-      frag.appendChild(buildCard(story));
+    list.forEach(function (story, i) {
+      frag.appendChild(buildCard(story, i));
     });
     board.appendChild(frag);
     playMovement(before);
