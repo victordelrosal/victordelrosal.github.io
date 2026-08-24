@@ -51,14 +51,41 @@
 
   var params = new URLSearchParams(window.location.search);
 
+  /**
+   * Only http and https may become an href. Story links come from newsletter email content,
+   * which is third-party text this project does not control, so a javascript: or data: URL is
+   * an achievable XSS on victordelrosal.com rather than a theoretical one.
+   */
+  function safeHttpUrl(raw) {
+    if (!raw) return null;
+    try {
+      var u = new URL(String(raw), window.location.origin);
+      return (u.protocol === 'http:' || u.protocol === 'https:') ? u.href : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  /**
+   * A same-origin RELATIVE path only. voteBase and fixture are development conveniences, and
+   * taking either from the query string let any crafted link redirect the vote POST, which
+   * carries the project anon key in an Authorization header, the Turnstile token in the body,
+   * and the session cookie via credentials: include. Absolute URLs are refused outright.
+   */
+  function sameOriginPath(raw) {
+    if (!raw) return null;
+    var s = String(raw);
+    return (s.charAt(0) === '/' && s.charAt(1) !== '/' && s.indexOf('\\') === -1) ? s : null;
+  }
+
   var config = (function () {
     var supplied = window.WIRE_CONFIG || {};
     var site = window.__SUPABASE_CONFIG || {};
     var base = supplied.supabaseUrl || site.url || '';
     return {
-      fixture: params.get('fixture') || supplied.fixture || null,
+      fixture: sameOriginPath(params.get('fixture')) || supplied.fixture || null,
       restBase: supplied.restBase || (base ? base + '/rest/v1' : ''),
-      voteBase: params.get('voteBase') || supplied.voteBase || (base ? base + '/functions/v1' : ''),
+      voteBase: sameOriginPath(params.get('voteBase')) || supplied.voteBase || (base ? base + '/functions/v1' : ''),
       anonKey: supplied.anonKey || site.anonKey || '',
       // Public Turnstile Site Key. Set in /wire/index.html; see functions/vote/README.md.
       turnstileSiteKey: supplied.turnstileSiteKey || window.WIRE_TURNSTILE_SITE_KEY || '',
@@ -587,7 +614,14 @@
 
     var h2 = el('h2', 'wire-headline');
     var link = el('a', 'wire-link', story.headline);
-    link.href = story.url;
+    var safeStoryUrl = safeHttpUrl(story.url);
+    if (safeStoryUrl) {
+      link.href = safeStoryUrl;
+    } else {
+      // No link at all beats a link that can run script.
+      link.removeAttribute('href');
+      link.setAttribute('aria-disabled', 'true');
+    }
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     h2.appendChild(link);
@@ -835,7 +869,13 @@
         rows.forEach(function (source) {
           var li = el('li', 'wire-source');
           var a = el('a', 'wire-source-link', source.name || source.domain || source.url);
-          a.href = source.url;
+          var safeSourceUrl = safeHttpUrl(source.url);
+          if (safeSourceUrl) {
+            a.href = safeSourceUrl;
+          } else {
+            a.removeAttribute('href');
+            a.setAttribute('aria-disabled', 'true');
+          }
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
           li.appendChild(a);
