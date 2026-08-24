@@ -243,6 +243,11 @@
        * expand list was empty. Production data has 2 such stories in every 10, and the
        * board asserted a citation for both. Treat absent and zero as different things.
        */
+      // sign(ups - downs). Voted stories rank above every unvoted one, by Victor's call:
+      // log10(1) is zero, so under the plain hot formula a first upvote moved nothing at all.
+      vote_tier: row.vote_tier === null || row.vote_tier === undefined
+        ? Math.sign(num(row.ups) - num(row.downs))
+        : num(row.vote_tier),
       source_count: row.source_count === null || row.source_count === undefined
         ? (Array.isArray(row.sources) ? row.sources.length : 1)
         : num(row.source_count),
@@ -270,7 +275,7 @@
     if (!config.restBase) return Promise.resolve([]);
     var url = config.restBase + '/scan_stories'
       + '?select=id,headline,summary,url,domain,source_count,published_at,ups,downs,reaction_counts'
-      + '&order=hot.desc&limit=' + config.limit;
+      + '&order=vote_tier.desc,hot.desc&limit=' + config.limit;
     return fetch(url, { headers: { apikey: config.anonKey, 'Content-Type': 'application/json' } })
       .then(function (res) {
         if (!res.ok) throw new Error('stories ' + res.status);
@@ -497,6 +502,11 @@
 
   /* ---------- rendering ---------- */
 
+  /** The live tier, so an optimistic vote reorders the board before the server answers. */
+  function tierOf(story) {
+    return Math.sign(num(story.ups) - num(story.downs));
+  }
+
   function ordered() {
     var list = state.stories.slice();
     if (state.tab === 'latest') {
@@ -504,8 +514,15 @@
         return Date.parse(b.published_at) - Date.parse(a.published_at);
       });
     } else {
-      // Negative scores sink here; they are never removed from the list.
+      /*
+       * Tier first, then hot. A story anyone has upvoted sits above every unvoted story no
+       * matter how fresh; a downvoted one sits below every unvoted story and is still on the
+       * page. Sorting by hot alone hid the effect of a first vote entirely, because log10(1)
+       * is zero. Negative scores sink here; they are never removed from the list.
+       */
       list.sort(function (a, b) {
+        var ta = tierOf(a), tb = tierOf(b);
+        if (ta !== tb) return tb - ta;
         return b.hot - a.hot;
       });
     }
