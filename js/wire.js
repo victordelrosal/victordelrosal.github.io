@@ -943,7 +943,14 @@
     var story = storyUnderReadingLine();
     // Hidden until the board has actually scrolled under the header: at rest the cards are
     // right there and a duplicate bar would be noise rather than help.
-    if (!story || boardTop > 40) { sticky.bar.hidden = true; sticky.id = null; return; }
+    /*
+     * Hidden until the reader has actually scrolled. Measuring only the board's offset was not
+     * enough: on first paint the layout is not settled, the offset reads small, and the bar
+     * appeared at rest sitting directly above the cards it duplicates. Scroll position is the
+     * unambiguous signal, so it is checked first.
+     */
+    var scrolled = (window.pageYOffset || document.documentElement.scrollTop || 0) > 120;
+    if (!scrolled || !story || boardTop > 40) { sticky.bar.hidden = true; sticky.id = null; return; }
     sticky.bar.hidden = false;
     sticky.id = story.id;
     sticky.title.textContent = story.headline;

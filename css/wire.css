@@ -734,295 +734,294 @@
 }
 
 /* =============================================================================
-   THE PLATE. Applied from sBs/VFX, the visual craft epicentre.
+   THE SKIN. Taken from https://aibrain.pages.dev (Pick my AI Brain).
 
-   The board is now a drafting sheet inset into the page: near-black ground, warm bone ink,
-   amber as the single accent, hairlines instead of cards, mono letterspaced labels over a
-   Spectral serif body, zero-padded ordinals, corner crosses and a titleblock of real counts.
+   Deep navy ground with aurora light, translucent violet-edged glass, a pink to coral to
+   amber accent gradient, generous radii, pill controls, system sans throughout. The drafting
+   plate that was here before came from sBs/VFX; this replaces it wholesale so the wire and
+   the AI Brain read as the same product family.
 
-   Kept dark deliberately. The site around it stays light and the plate reads as an instrument
-   dropped into the page, which is the point: a wire is machinery, not an article.
+   Values sampled from the live page, not eyeballed:
+     ground   linear-gradient(#1a1d2e, #0a0c18)
+     accent   linear-gradient(135deg, #ff2e8a, #ff5e6e 45%, #ff9d2e)
+     panel    rgba(37,42,63,.55) + 1px solid rgba(160,97,255,.28) + blur(20px) saturate(1.8)
+     ink      #ffffff / #e6e8f5 / #aab3d6 / #7a83a8
+     ease     cubic-bezier(.2,.8,.2,1)
    ============================================================================= */
 
 :root {
-    --void: #0a0a0b;
-    --plate: #17181c;
-    --plate-2: #1d1f24;
-    --bone: #eae7df;
-    --bone-2: #b6b2a9;
-    /* VFX ships #7e7b74. On this plate that is 4.20:1, which fails WCAG AA for the 10.5px
-       mono meta labels it is used on here. Lightened along the same warm hue to 5.28:1.
-       Borrowing a palette does not licence borrowing a contrast failure. */
-    --bone-3: #8f8c84;
-    --amber: #ff6a18;
-    --amber-line: rgba(255, 106, 24, 0.4);
-    --amber-dim: rgba(255, 106, 24, 0.16);
-    --hair: rgba(234, 231, 223, 0.11);
-    --hair-2: rgba(234, 231, 223, 0.2);
-    --xray: #79b4ff;
-    /*
-     * VFX loads Bricolage Grotesque, Spectral and JetBrains Mono from Google Fonts. This page
-     * does NOT, and the reason is on the page itself: it tells every reader that no IP address
-     * is stored. Loading a font from Google hands that reader's IP to Google on arrival, which
-     * makes the promise thinner in exactly the way nobody would notice. The look survives on
-     * the local stack; the promise would not survive the font.
-     */
-    --vfx-display: 'Bricolage Grotesque', 'Archivo Black', 'Helvetica Neue', Arial, sans-serif;
-    --vfx-body: 'Spectral', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-    --vfx-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sky-top: #1a1d2e;
+    --sky-bottom: #0a0c18;
+    --panel: rgba(37, 42, 63, 0.55);
+    --panel-solid: #252a3f;
+    --panel-edge: rgba(160, 97, 255, 0.28);
+    --panel-edge-hot: rgba(160, 97, 255, 0.55);
+    --ink: #ffffff;
+    --ink-2: #e6e8f5;
+    --ink-3: #aab3d6;
+    /* The AI Brain page ships #7a83a8. Composited over this panel that is 4.27:1, which fails
+       AA for the small labels it is used on here (meta, cell labels, rank). Lifted along the
+       same hue to 5.06:1. Matching a skin does not mean matching a contrast failure. */
+    --ink-4: #8f97b8;
+    --hot-1: #ff2e8a;
+    --hot-2: #ff5e6e;
+    --hot-3: #ff9d2e;
+    --accent-grad: linear-gradient(135deg, #ff2e8a 0%, #ff5e6e 45%, #ff9d2e 100%);
+    --cool: #6ea8ff;
+    --r-card: 24px;
+    --r-panel: 16px;
+    --r-pill: 999px;
+    --skin-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
 }
 
 .wire-main {
-    background: var(--void);
-    color: var(--bone);
+    background: linear-gradient(var(--sky-top), var(--sky-bottom));
+    color: var(--ink);
+    font-family: var(--sans);
     max-width: none;
-    padding: 96px clamp(18px, 4vw, 64px) 80px;
+    padding: 108px clamp(16px, 4vw, 56px) 90px;
+    position: relative;
+    isolation: isolate;
 }
 
-/* Corner crosses: the sheet edges of a drawing. */
+/* The aurora. Three soft lights, fixed behind the content, exactly the effect the AI Brain
+   page opens with. Purely decorative, so it is hidden from assistive tech and cheap to paint. */
+.wire-main::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(50rem 32rem at 12% -6%, rgba(160, 97, 255, 0.28), transparent 60%),
+        radial-gradient(46rem 30rem at 88% -4%, rgba(255, 157, 46, 0.20), transparent 62%),
+        radial-gradient(52rem 34rem at 86% 104%, rgba(46, 200, 178, 0.18), transparent 64%);
+}
+
 .wire-plate {
     position: relative;
-    max-width: 1180px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: clamp(20px, 3vw, 40px);
-    border: 1px solid var(--hair);
-    background:
-        linear-gradient(var(--hair) 1px, transparent 1px) 0 0 / 100% 100vh,
-        var(--plate);
-    background-blend-mode: normal;
+    padding: clamp(18px, 3vw, 36px);
+    border: 1px solid var(--panel-edge);
+    border-radius: var(--r-card);
+    background: var(--panel);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
 }
-.wire-plate::before,
-.wire-plate::after {
-    content: "+";
-    position: absolute;
-    color: var(--bone-3);
-    font: 300 18px/1 var(--vfx-mono);
-    pointer-events: none;
-}
-/* Inside the plate edge, not outside it. Hanging them out by 7px pushed 11px of horizontal
-   scroll onto a 390px phone, which is the kind of defect a decorative flourish has no business
-   causing. */
-.wire-plate::before { top: 2px; left: 4px; }
-.wire-plate::after  { bottom: 0; right: 4px; }
+.wire-plate::before, .wire-plate::after { content: none; }
 
 .wire-eyebrow {
-    font: 500 11px/1 var(--vfx-mono);
-    letter-spacing: 0.22em;
+    display: inline-block;
+    font: 600 11px/1 var(--sans);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--amber);
+    color: var(--ink-3);
+    border: 1px solid var(--panel-edge);
+    border-radius: var(--r-pill);
+    padding: 6px 12px;
 }
 
 .wire-title {
-    font-family: var(--vfx-display);
+    font-family: var(--sans);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--bone);
-    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-transform: none;
+}
+/* The one gradient word, the way the AI Brain hero paints "AI". */
+.wire-title em, .wire-title .hot {
+    font-style: normal;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-.wire-intro,
-.wire-summary,
+.wire-intro, .wire-summary { font-family: var(--sans); color: var(--ink-3); }
 .wire-notice {
-    font-family: var(--vfx-body);
-    color: var(--bone-2);
+    background: rgba(37, 42, 63, 0.5);
+    border: 1px solid var(--panel-edge);
+    border-left: 1px solid var(--panel-edge);
+    border-radius: var(--r-panel);
+    color: var(--ink-3);
+    font-family: var(--sans);
 }
+.wire-notice strong { color: var(--ink); }
 
-.wire-notice {
-    background: var(--graphite, #121316);
-    border: 1px solid var(--hair);
-    border-left: 2px solid var(--amber-line);
-    color: var(--bone-2);
-}
-.wire-notice strong { color: var(--bone); }
-
-/* ----- the titleblock: real counts, the way a drawing carries its own sheet data ----- */
+/* ----- titleblock becomes a stat rail ----- */
 .wire-titleblock {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-    border: 1px solid var(--hair);
-    margin: 22px 0 26px;
+    border: 1px solid var(--panel-edge);
+    border-radius: var(--r-panel);
+    background: rgba(37, 42, 63, 0.4);
+    margin: 20px 0 24px;
+    overflow: hidden;
 }
 .wire-cell {
-    padding: 10px 12px;
-    border-right: 1px solid var(--hair);
+    /* The old plate rule carried the column layout; replacing the skin dropped it and the label
+       ran straight into its value ("STORIES20"). Layout belongs with the component, not the skin. */
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
+    padding: 12px 14px;
+    border-right: 1px solid rgba(160, 97, 255, 0.16);
 }
 .wire-cell:last-child { border-right: 0; }
 .wire-cell-label {
-    font: 500 9px/1 var(--vfx-mono);
-    letter-spacing: 0.2em;
+    font: 600 9.5px/1 var(--sans);
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--bone-3);
+    color: var(--ink-4);
 }
-.wire-cell-value {
-    font: 500 17px/1 var(--vfx-mono);
-    font-variant-numeric: tabular-nums;
-    color: var(--bone);
+.wire-cell-value { font: 600 18px/1 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink); }
+.wire-cell--sheet .wire-cell-value {
+    font-size: 13px;
+    background: var(--accent-grad);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.wire-cell--sheet .wire-cell-value { color: var(--amber); font-size: 13px; letter-spacing: 0.12em; }
 
-/* ----- cards become ruled rows ----- */
+/* ----- rows ----- */
 .wire-card {
     background: transparent;
-    border: 0;
-    border-top: 1px solid var(--hair);
+    border: 1px solid transparent;
+    border-top: 1px solid rgba(160, 97, 255, 0.14);
     border-radius: 0;
     box-shadow: none;
-    padding: 18px 4px 16px 0;
-    gap: 18px;
-}
-.wire-card:hover {
-    background: rgba(234, 231, 223, 0.02);
-    border-color: var(--hair-2);
-    box-shadow: none;
+    padding: 18px 6px 16px 0;
+    gap: 16px;
+    transition: background var(--wire-t-short) var(--skin-ease),
+                border-color var(--wire-t-short) var(--skin-ease);
 }
 .wire-card:first-child { border-top: 0; }
+.wire-card:hover {
+    background: rgba(160, 97, 255, 0.06);
+    border-color: rgba(160, 97, 255, 0.14);
+    box-shadow: none;
+}
 
 .wire-rank {
-    font: 500 11px/1 var(--vfx-mono);
-    letter-spacing: 0.12em;
-    color: var(--bone-3);
+    font: 600 11px/1 var(--sans);
+    letter-spacing: 0.1em;
+    color: var(--ink-4);
     align-self: flex-start;
-    padding-top: 4px;
+    padding-top: 6px;
     min-width: 22px;
 }
-.wire-card.is-upvoted .wire-rank { color: var(--amber); }
-
-.wire-link {
-    font-family: var(--vfx-display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--bone);
+.wire-card.is-upvoted .wire-rank {
+    background: var(--accent-grad);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.wire-link:hover { color: var(--amber); }
-.wire-domain { font: 400 11px/1 var(--vfx-mono); letter-spacing: 0.06em; color: var(--bone-3); }
-.wire-summary { color: var(--bone-2); }
 
-.wire-meta,
-.wire-sources-toggle,
-.wire-date,
-.wire-age,
-.wire-nosource {
-    font-family: var(--vfx-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--bone-3);
+.wire-link { font-family: var(--sans); font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.wire-link:hover { color: var(--hot-2); }
+.wire-domain { font: 400 11.5px/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--ink-4); }
+.wire-summary { color: var(--ink-3); }
+.wire-meta, .wire-sources-toggle, .wire-date, .wire-age, .wire-nosource {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--ink-4);
 }
-.wire-sources-toggle { color: var(--bone-2); }
+.wire-sources-toggle { color: var(--ink-3); }
 
-/* ----- the rail, in plate colours ----- */
+/* ----- the rail ----- */
 .wire-arrow {
-    /* NOT transparent. An earlier round found faint arrows were the single biggest UX defect,
-       because the whole interaction model rests on them reading as buttons. The plate changes
-       their colours, never their weight. */
-    background: var(--plate-2);
-    border-color: var(--hair-2);
-    color: var(--bone);
+    background: rgba(37, 42, 63, 0.7);
+    border: 1px solid var(--panel-edge);
+    border-radius: 12px;
+    color: var(--ink-2);
 }
-.wire-arrow:hover { border-color: var(--amber-line); color: var(--amber); }
-.wire-card.is-upvoted .wire-arrow--up { background: var(--amber); border-color: var(--amber); color: var(--void); }
-.wire-card.is-downvoted .wire-arrow--down { background: var(--xray); border-color: var(--xray); color: var(--void); }
-.wire-score { color: var(--bone); font-family: var(--vfx-mono); }
-.wire-card.is-upvoted .wire-score { color: var(--amber); }
-.wire-card.is-downvoted .wire-score { color: var(--xray); }
-/* A negative score is a fact about the story, not about the reader, so it paints the same
-   whatever this browser voted. Declared last and doubled up so it beats both states above. */
+.wire-arrow:hover { border-color: var(--panel-edge-hot); color: var(--ink); }
+.wire-card.is-upvoted .wire-arrow--up,
+.wire-sticky.is-upvoted .wire-arrow--up {
+    background: var(--accent-grad);
+    border-color: transparent;
+    color: #1a1020;
+}
+.wire-card.is-downvoted .wire-arrow--down,
+.wire-sticky.is-downvoted .wire-arrow--down {
+    background: var(--cool); border-color: transparent; color: #0a0c18;
+}
+.wire-score { color: var(--ink); font-family: var(--sans); }
+.wire-card.is-upvoted .wire-score { color: var(--hot-2); }
+.wire-card.is-downvoted .wire-score { color: var(--cool); }
 .wire-score.is-negative,
 .wire-card.is-upvoted .wire-score.is-negative,
-.wire-card.is-downvoted .wire-score.is-negative { color: var(--xray); }
+.wire-card.is-downvoted .wire-score.is-negative { color: var(--cool); }
 
-/* ----- chips ----- */
+/* ----- chips as pills ----- */
 .wire-chip {
-    background: rgba(234, 231, 223, 0.04);
-    border: 1px solid var(--hair);
-    color: var(--bone-2);
+    background: rgba(37, 42, 63, 0.55);
+    border: 1px solid rgba(160, 97, 255, 0.16);
+    border-radius: var(--r-pill);
+    color: var(--ink-3);
 }
-.wire-chip:hover { border-color: var(--amber-line); }
-.wire-chip.is-held { background: var(--amber-dim); border-color: var(--amber-line); }
-.wire-chip-count { color: var(--bone); font-family: var(--vfx-mono); }
-.wire-chip::after { background: var(--bone); color: var(--void); font-family: var(--vfx-mono); letter-spacing: 0.08em; }
-.wire-chip::before { border-top-color: var(--bone); }
+.wire-chip:hover { border-color: var(--panel-edge-hot); }
+.wire-chip.is-held { background: rgba(255, 46, 138, 0.16); border-color: rgba(255, 46, 138, 0.45); }
+.wire-chip-count { color: var(--ink); font-family: var(--sans); }
+.wire-chip::after { background: var(--panel-solid); color: var(--ink); font-family: var(--sans); letter-spacing: 0.02em; border: 1px solid var(--panel-edge); }
+.wire-chip::before { border-top-color: var(--panel-solid); }
 
-.wire-tabs .wire-tab { font-family: var(--vfx-mono); letter-spacing: 0.16em; text-transform: uppercase; font-size: 11px; }
-.wire-tab.is-active { background: var(--amber); color: var(--void); }
-.wire-contested { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-line); font-family: var(--vfx-mono); }
-.wire-footnote, .wire-status { font-family: var(--vfx-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--bone-3); }
-.wire-sources li, .wire-source-link { font-family: var(--vfx-mono); font-size: 11px; color: var(--bone-2); }
-
-@media (max-width: 560px) {
-    .wire-main { padding-left: 12px; padding-right: 12px; }
-    .wire-plate { padding: 16px 12px; }
-    .wire-titleblock { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .wire-cell:nth-child(3n) { border-right: 0; }
-    .wire-cell:nth-child(-n+3) { border-bottom: 1px solid var(--hair); }
+.wire-tabs .wire-tab {
+    font-family: var(--sans); font-size: 12px; letter-spacing: 0.04em;
+    text-transform: none; border-radius: var(--r-pill);
+    border: 1px solid var(--panel-edge); color: var(--ink-3); background: transparent;
 }
+.wire-tab.is-active { background: var(--accent-grad); border-color: transparent; color: #1a1020; }
+.wire-contested {
+    background: rgba(255, 46, 138, 0.14); color: var(--hot-2);
+    border: 1px solid rgba(255, 46, 138, 0.4); border-radius: var(--r-pill); font-family: var(--sans);
+}
+.wire-footnote, .wire-status { font-family: var(--sans); font-size: 11.5px; letter-spacing: 0; color: var(--ink-4); }
+.wire-sources li, .wire-source-link { font-family: var(--sans); font-size: 12px; color: var(--ink-3); }
 
-/* ----- the sticky voter: the story you are reading, always reachable ----- */
+/* ----- the sticky voter, in glass ----- */
 .wire-sticky {
     position: sticky;
-    /* The site's own .wave-navbar is fixed and 90px tall, so top:0 parked this bar underneath
-       it where nobody could see or press it. Measured, not guessed. */
     top: 96px;
     z-index: 30;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 8px 12px;
-    margin: 0 0 4px;
-    background: rgba(10, 10, 11, 0.92);
-    backdrop-filter: saturate(140%) blur(10px);
-    -webkit-backdrop-filter: saturate(140%) blur(10px);
-    border: 1px solid var(--hair);
-    border-left: 2px solid var(--amber-line);
+    display: flex; align-items: center; gap: 14px;
+    padding: 9px 14px; margin: 0 0 6px;
+    background: rgba(26, 29, 46, 0.82);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid var(--panel-edge);
+    border-radius: var(--r-pill);
 }
-
-.wire-sticky-rail {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 0 0 auto;
-}
-
-/* Horizontal here, not stacked: this is a bar, and a 34px tall row cannot carry the
-   vertical rail without shoving the headline off the line. */
-.wire-sticky-arrow { width: 34px; height: 30px; }
+.wire-sticky-rail { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.wire-sticky-arrow { width: 34px; height: 30px; border-radius: 10px; }
 .wire-sticky-arrow svg { width: 18px; height: 18px; }
 .wire-sticky-score {
-    min-width: 30px;
-    text-align: center;
-    font: 500 14px/1 var(--vfx-mono);
-    font-variant-numeric: tabular-nums;
-    color: var(--bone);
+    min-width: 30px; text-align: center;
+    font: 700 14px/1 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink);
 }
-.wire-sticky.is-upvoted .wire-sticky-score { color: var(--amber); }
-.wire-sticky.is-downvoted .wire-sticky-score { color: var(--xray); }
-.wire-sticky.is-upvoted .wire-arrow--up { background: var(--amber); border-color: var(--amber); color: var(--void); }
-.wire-sticky.is-downvoted .wire-arrow--down { background: var(--xray); border-color: var(--xray); color: var(--void); }
-
+.wire-sticky.is-upvoted .wire-sticky-score { color: var(--hot-2); }
+.wire-sticky.is-downvoted .wire-sticky-score { color: var(--cool); }
 .wire-sticky-title {
-    flex: 1 1 auto;
-    min-width: 0;
-    font: 700 13px/1.3 var(--vfx-display);
-    color: var(--bone);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    flex: 1 1 auto; min-width: 0;
+    font: 700 13px/1.3 var(--sans); color: var(--ink);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-
 .wire-sticky-chips { display: flex; gap: 5px; flex: 0 0 auto; }
-.wire-sticky-chip { padding: 4px 6px; font-size: 11px; }
+.wire-sticky-chip { padding: 4px 8px; font-size: 11px; }
 
 @media (max-width: 720px) {
-    /* The headline is the first thing to go: the controls are the point of the bar. */
     .wire-sticky-title { display: none; }
     .wire-sticky { justify-content: space-between; gap: 8px; }
 }
-
+@media (max-width: 560px) {
+    .wire-main { padding-left: 10px; padding-right: 10px; }
+    .wire-plate { padding: 16px 12px; border-radius: 18px; }
+    .wire-titleblock { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .wire-cell:nth-child(3n) { border-right: 0; }
+    .wire-cell:nth-child(-n+3) { border-bottom: 1px solid rgba(160, 97, 255, 0.16); }
+}
 @media (max-width: 420px) {
     .wire-sticky-chips { gap: 3px; }
-    .wire-sticky-chip { padding: 4px 4px; }
+    .wire-sticky-chip { padding: 4px 5px; }
     .wire-sticky-chip .wire-chip-count { display: none; }
 }
