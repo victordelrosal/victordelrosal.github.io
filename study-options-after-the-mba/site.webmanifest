@@ -2,10 +2,18 @@
   "name": "What to study after an MBA",
   "short_name": "After the MBA",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ],
-  "theme_color": "#0f0f13",
-  "background_color": "#fdfcfb",
+  "theme_color": "#0a0a0b",
+  "background_color": "#0a0a0b",
   "display": "standalone"
 }
