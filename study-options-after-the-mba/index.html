@@ -237,8 +237,10 @@ ul.unk li::before{content:counter(u,decimal-leading-zero);position:absolute;left
 ul.unk li:last-child{border-bottom:0}
 
 footer{margin-top:30px;padding:26px;border:1px solid var(--border);border-radius:var(--r-card);
-  background:var(--surface);color:var(--ink-4);font-size:14px}
-footer p{max-width:76ch;margin:0}
+  background:var(--surface);color:var(--ink-3);font-size:14.5px}
+footer p{max-width:76ch;margin:0 0 12px}
+footer p:last-child{margin:0}
+footer .fine{color:var(--ink-4);font-size:13.5px}
 .tail{height:70px}
 @media(max-width:640px){
   .zbody{padding:2px 18px 26px}.zhead{padding:18px 18px}
@@ -667,12 +669,11 @@ footer p{max-width:76ch;margin:0}
 </section>
 
 <footer>
-  <p><b>Who wrote this, and why you should discount it.</b> Victor Del Rosal, 25 August 2026. I
-  lecture at NCI, and two of the eight options here are my employer's. I have put the free routes
-  above them, quoted UCD's strengths in UCD's own words, disclosed a register question about one of
-  my own institution's courses, and included the research suggesting the credential may be worth
-  little to you. Read it knowing all of that. Nothing here is being sold, and if it would help to
-  talk any of it through, fifteen minutes on a call costs nothing either.</p>
+  <p><b>Disclaimer.</b> Victor del Rosal is a lecturer at National College of Ireland and has
+  delivered corporate training with the UCD Professional Academy.</p>
+  <p class="fine">Compiled 25 August 2026. Every figure was checked against the live page on that
+  date and courses change, so confirm anything that matters before you apply. Nothing here is being
+  sold. If it would help to talk any of it through, fifteen minutes on a call costs nothing.</p>
 </footer>
 <div class="tail"></div>
 
