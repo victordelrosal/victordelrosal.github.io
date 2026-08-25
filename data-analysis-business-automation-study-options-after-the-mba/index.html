@@ -94,6 +94,14 @@ a{color:inherit}
 [data-theme="bridge"] ::selection{background:rgba(86,104,224,0.30);color:#0a1045}
 :focus-visible{outline:2px solid var(--c-pink);outline-offset:3px;border-radius:8px}
 b,strong{font-weight:600;color:var(--ink)}
+a.cl{color:inherit;text-decoration:none;background-image:linear-gradient(var(--c-pink),var(--c-pink));
+  background-size:100% 1px;background-repeat:no-repeat;background-position:0 100%;
+  padding-bottom:1px;transition:background-size .25s var(--ease),color .25s var(--ease)}
+a.cl:hover{color:var(--c-pink)}
+td a.cl{background-image:linear-gradient(var(--ink-4),var(--ink-4))}
+td a.cl:hover{color:var(--c-pink);background-image:linear-gradient(var(--c-pink),var(--c-pink))}
+.applyline{font-size:13.5px;color:var(--ink-4);margin:10px 0 0}
+.applyline a{color:var(--ink-3)}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,28px)}
 .kicker{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
 .grad{background:var(--grad-primary);-webkit-background-clip:text;background-clip:text;
@@ -304,7 +312,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt free">
     <div class="ohead"><span class="ord">01</span><span>
-      <h4>Introduction to Power BI, then IT Specialist in Data Analytics</h4>
+      <h4><a class="cl" href="https://www.ecollege.ie/all-courses/introduction-powerbi" target="_blank" rel="noopener">Introduction to Power BI, then IT Specialist in Data Analytics</a></h4>
       <div class="prov">eCollege &middot; funded by SOLAS</div></span></div>
     <div class="chips"><span class="chip g"><b>Free</b></span><span class="chip">5 wk, then 16</span>
       <span class="chip">Online</span><span class="chip">Certiport / Cenit</span>
@@ -315,13 +323,14 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
     included in your course." Eligibility is one line: "This course is available to all adults over
     the age of 18 resident in the Republic of Ireland." No deadline, no application maze. If Power
     BI turns out not to suit you, you have lost five weeks and no money.</p>
+    <p class="applyline">Both courses: <a class="cl" href="https://www.ecollege.ie/all-courses/introduction-powerbi" target="_blank" rel="noopener">Introduction to Power BI</a> (5 weeks) and <a class="cl" href="https://www.ecollege.ie/all-courses/it-specialist-data-analytics" target="_blank" rel="noopener">IT Specialist in Data Analytics</a> (16 weeks).</p>
     <p>The honest limit: industry certificates, not NFQ awards. No ECTS, and they stack toward
     nothing academic.</p>
   </div>
 
   <div class="opt">
     <div class="ohead"><span class="ord">02</span><span>
-      <h4>PL-300, Microsoft Certified: Power BI Data Analyst Associate</h4>
+      <h4><a class="cl" href="https://learn.microsoft.com/en-us/credentials/certifications/data-analyst-associate/" target="_blank" rel="noopener">PL-300, Microsoft Certified: Power BI Data Analyst Associate</a></h4>
       <div class="prov">Microsoft</div></span></div>
     <div class="chips"><span class="chip g"><b>Training free</b></span>
       <span class="chip o"><b>Exam fee not verified</b></span><span class="chip">100-min exam</span>
@@ -337,7 +346,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt">
     <div class="ohead"><span class="ord">03</span><span>
-      <h4>Automate Your Work with Microsoft 365 and Power Automate</h4>
+      <h4><a class="cl" href="https://www.ucd.ie/professionalacademy/findyourcourse/business-automation-microsoft-365-power-automate/" target="_blank" rel="noopener">Automate Your Work with Microsoft 365 and Power Automate</a></h4>
       <div class="prov">UCD Professional Academy</div></span></div>
     <div class="chips"><span class="chip"><b>&euro;1,695</b> with code</span>
       <span class="chip">&euro;1,995 full</span><span class="chip">12 wk, Thu 17:30</span>
@@ -353,7 +362,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt">
     <div class="ohead"><span class="ord">04</span><span>
-      <h4>Professional Academy Diploma in Data Analysis Without Coding</h4>
+      <h4><a class="cl" href="https://www.ucd.ie/professionalacademy/findyourcourse/professional-academy-diploma-in-data-analysis-without-coding/" target="_blank" rel="noopener">Professional Academy Diploma in Data Analysis Without Coding</a></h4>
       <div class="prov">UCD Professional Academy</div></span></div>
     <div class="chips"><span class="chip"><b>&euro;1,695</b> with code</span>
       <span class="chip g"><b>&euro;760</b> Skillnet</span><span class="chip">12 wk &middot; 36 hrs</span>
@@ -369,7 +378,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt">
     <div class="ohead"><span class="ord">05</span><span>
-      <h4>Certificate in Big Data and AI in Business: Strategy and Emerging Trends</h4>
+      <h4><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CBAIFPPE" target="_blank" rel="noopener">Certificate in Big Data and AI in Business: Strategy and Emerging Trends</a></h4>
       <div class="prov">National College of Ireland</div></span></div>
     <div class="chips"><span class="chip"><b>&euro;260</b> subsidised</span>
       <span class="chip">&euro;1,300 standard</span><span class="chip g"><b>L9 &middot; 10 ECTS</b></span>
@@ -381,6 +390,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
     One Saturday on campus, 17 October. Strong on the judgement half: problem framing, testing model
     assumptions, ethical governance including the EU Artificial Intelligence Act, and communicating
     results.</p>
+    <p class="applyline">Course page at NCI, but applications go through the HEA portal: <a class="cl" href="https://springboardcourses.ie/details/15886/certificate-in-big-data-and-ai-in-business:-strategy-and-emerging-trends" target="_blank" rel="noopener">apply on Springboard+ (listing 15886)</a>.</p>
     <p>See the next section on SQL and Python. Note also that NCI publishes three different start
     dates across three of its own pages, and the practical deadline is the refund cut-off rather
     than the application date: "No refund will be processed once the student commences the course
@@ -389,7 +399,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt">
     <div class="ohead"><span class="ord">06</span><span>
-      <h4>Postgraduate Certificate in Artificial Intelligence for Professionals</h4>
+      <h4><a class="cl" href="https://www.universityofgalway.ie/courses/adult-and-continuing-education-courses/artificial-intelligence-for-professionals.html" target="_blank" rel="noopener">Postgraduate Certificate in Artificial Intelligence for Professionals</a></h4>
       <div class="prov">University of Galway</div></span></div>
     <div class="chips"><span class="chip"><b>&euro;5,050</b></span>
       <span class="chip g"><b>&euro;3,095</b> itag Skillnet</span>
@@ -410,7 +420,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt">
     <div class="ohead"><span class="ord">07</span><span>
-      <h4>Certificate in AI Technologies</h4>
+      <h4><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CAITFPPE" target="_blank" rel="noopener">Certificate in AI Technologies</a></h4>
       <div class="prov">National College of Ireland</div></span></div>
     <div class="chips"><span class="chip"><b>&euro;300</b> subsidised</span>
       <span class="chip">&euro;1,500 standard</span><span class="chip">L9 &middot; 10 ECTS</span>
@@ -421,6 +431,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
     <p>Credits "may be recognised" toward NCI's Postgraduate Diploma or MSc in AI for Business. Read
     that hedge as written, and see the evidence section on what stacking is actually worth to
     someone who already holds a master's.</p>
+    <p class="applyline">Course page at NCI, applications through the HEA portal: <a class="cl" href="https://springboardcourses.ie/details/15885/certificate-in-ai-technologies" target="_blank" rel="noopener">apply on Springboard+ (listing 15885)</a>.</p>
     <p>Disclosed because you should know it: NCI advertises this as "a NFQ Level 9 Minor award (10
     ECTS), accredited by QQI", and it does not currently appear in the Irish Register of
     Qualifications, while the Big Data certificate above does. Most likely a validation lag, since
@@ -430,7 +441,7 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
 
   <div class="opt free">
     <div class="ohead"><span class="ord">08</span><span>
-      <h4>Certificate in Applied Artificial Intelligence</h4>
+      <h4><a class="cl" href="https://www.dkit.ie/courses/certificate-in-applied-artificial-intelligence" target="_blank" rel="noopener">Certificate in Applied Artificial Intelligence</a></h4>
       <div class="prov">Dundalk Institute of Technology</div></span></div>
     <div class="chips"><span class="chip g"><b>Free</b></span>
       <span class="chip g"><b>L9 &middot; 30 credits</b></span><span class="chip">Online, part time</span>
@@ -538,34 +549,34 @@ footer .fine{color:var(--ink-4);font-size:13.5px}
   <div class="sched"><table>
     <thead><tr><th>Option</th><th>Provider</th><th>NFQ</th><th>ECTS</th><th>Cost</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td class="t">Power BI; IT Specialist Data Analytics</td><td>eCollege / SOLAS</td><td>None</td><td>0</td><td class="g">Free</td><td>Open, exam included</td></tr>
-      <tr><td class="t">PL-300 Power BI Data Analyst</td><td>Microsoft</td><td>None</td><td>0</td><td>Exam only</td><td class="o">Price not verified</td></tr>
-      <tr><td class="t">Automate Your Work with MS 365</td><td>UCD Prof. Academy</td><td>Not on NFQ</td><td>&mdash;</td><td>&euro;1,695</td><td>Open, code ends 31 Aug</td></tr>
-      <tr><td class="t">Data Analysis Without Coding</td><td>UCD Prof. Academy</td><td>Not on NFQ</td><td>&mdash;</td><td>&euro;1,695 / 760</td><td>Open, needs Windows PC</td></tr>
-      <tr><td class="t">Big Data and AI in Business</td><td>NCI</td><td>L9 Minor</td><td>10</td><td>&euro;260 / 1,300</td><td>Apply by 31 Aug</td></tr>
-      <tr><td class="t">PgCert AI for Professionals</td><td>Univ. of Galway</td><td>L9 Major</td><td>30</td><td>&euro;5,050 / 3,095</td><td class="g">Rolling, no deadline</td></tr>
-      <tr><td class="t">AI Technologies</td><td>NCI</td><td>L9 Minor</td><td>10</td><td>&euro;300 / 1,500</td><td class="o">Not yet on register</td></tr>
-      <tr><td class="t">Applied AI</td><td>DkIT</td><td>L9</td><td>30</td><td class="g">Free</td><td>8 places, computing bar</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ecollege.ie/all-courses/it-specialist-data-analytics" target="_blank" rel="noopener">Power BI; IT Specialist Data Analytics</a></td><td>eCollege / SOLAS</td><td>None</td><td>0</td><td class="g">Free</td><td>Open, exam included</td></tr>
+      <tr><td class="t"><a class="cl" href="https://learn.microsoft.com/en-us/credentials/certifications/data-analyst-associate/" target="_blank" rel="noopener">PL-300 Power BI Data Analyst</a></td><td>Microsoft</td><td>None</td><td>0</td><td>Exam only</td><td class="o">Price not verified</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ucd.ie/professionalacademy/findyourcourse/business-automation-microsoft-365-power-automate/" target="_blank" rel="noopener">Automate Your Work with MS 365</a></td><td>UCD Prof. Academy</td><td>Not on NFQ</td><td>&mdash;</td><td>&euro;1,695</td><td>Open, code ends 31 Aug</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ucd.ie/professionalacademy/findyourcourse/professional-academy-diploma-in-data-analysis-without-coding/" target="_blank" rel="noopener">Data Analysis Without Coding</a></td><td>UCD Prof. Academy</td><td>Not on NFQ</td><td>&mdash;</td><td>&euro;1,695 / 760</td><td>Open, needs Windows PC</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CBAIFPPE" target="_blank" rel="noopener">Big Data and AI in Business</a></td><td>NCI</td><td>L9 Minor</td><td>10</td><td>&euro;260 / 1,300</td><td>Apply by 31 Aug</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.universityofgalway.ie/courses/adult-and-continuing-education-courses/artificial-intelligence-for-professionals.html" target="_blank" rel="noopener">PgCert AI for Professionals</a></td><td>Univ. of Galway</td><td>L9 Major</td><td>30</td><td>&euro;5,050 / 3,095</td><td class="g">Rolling, no deadline</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CAITFPPE" target="_blank" rel="noopener">AI Technologies</a></td><td>NCI</td><td>L9 Minor</td><td>10</td><td>&euro;300 / 1,500</td><td class="o">Not yet on register</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.dkit.ie/courses/certificate-in-applied-artificial-intelligence" target="_blank" rel="noopener">Applied AI</a></td><td>DkIT</td><td>L9</td><td>30</td><td class="g">Free</td><td>8 places, computing bar</td></tr>
       <tr><td class="t">AI for Business Professionals</td><td>TU Dublin</td><td>L9</td><td>10</td><td class="o">Not published</td><td>On subsidy list, page not found</td></tr>
-      <tr><td class="t">Driving Performance with AI and Analytics</td><td>Trinity College</td><td>L9</td><td>5</td><td>&euro;1,850 / 2,000</td><td>Open, closes 20 Sept</td></tr>
-      <tr><td class="t">Data Analytics Professional Diploma</td><td>Univ. of Limerick</td><td>L9 Minor</td><td>30</td><td>&euro;5,250</td><td>"Up to 100% funding"</td></tr>
-      <tr><td class="t">Foundations of AI</td><td>ICT Skillnet / TUD</td><td>L8</td><td>10</td><td>&euro;999</td><td>Private-sector employer only</td></tr>
-      <tr><td class="t">DataSMART</td><td>DIGITAL Skillnet</td><td>Not stated</td><td>&mdash;</td><td class="o">Not published</td><td>12 wk, non-IT professionals</td></tr>
-      <tr><td class="t">AI Fluency</td><td>IMI</td><td>Not stated</td><td>&mdash;</td><td>&euro;1,995</td><td>2 days, 22-23 Sept</td></tr>
-      <tr><td class="t">Data-Driven Decision Making with AI</td><td>IMI</td><td>Not stated</td><td>&mdash;</td><td>&euro;1,500</td><td>2 days</td></tr>
-      <tr class="off"><td class="t">AI Strategy, Governance and Leadership</td><td>NCI</td><td>L9 Minor</td><td>20</td><td>&euro;600 / 3,000</td><td>Funded places full</td></tr>
-      <tr class="off"><td class="t">Emerging Digital Technologies</td><td>NCI</td><td>L7</td><td>20</td><td>&euro;340</td><td>Below your level</td></tr>
-      <tr class="off"><td class="t">AI for Business</td><td>CCT College</td><td>L7</td><td>10</td><td>&euro;210</td><td>Cheapest, but Level 7</td></tr>
-      <tr class="off"><td class="t">PgCert Digital Leadership and Transformation</td><td>TU Dublin</td><td>L9</td><td>30</td><td>&euro;3,500</td><td>Closed. Closest content match</td></tr>
-      <tr class="off"><td class="t">PgCert Data Science (TU256)</td><td>TU Dublin</td><td>L9</td><td>30</td><td>&euro;3,220</td><td>Springboard closed</td></tr>
-      <tr class="off"><td class="t">PgDip Human Centered AI Technologies</td><td>TU Dublin</td><td>L9</td><td>60</td><td>&euro;6,800</td><td>Closed</td></tr>
-      <tr class="off"><td class="t">PgDip Big Data Analytics and AI</td><td>ATU</td><td>L9</td><td>60</td><td>&euro;4,200</td><td>Closed, places filled</td></tr>
-      <tr class="off"><td class="t">PgCert / MSc in AI</td><td>MTU</td><td>L9</td><td>30 / 60</td><td>Not published</td><td>Requires Python proficiency</td></tr>
-      <tr class="off"><td class="t">Diploma in AI and Business Analytics</td><td>UCD Smurfit</td><td>L9</td><td>30</td><td>&euro;9,110</td><td>Spring 2027, in person</td></tr>
-      <tr class="off"><td class="t">MSc Computer Science (AI)</td><td>ICT Skillnet / Galway</td><td>L9</td><td>90</td><td>&euro;3,505/yr</td><td>Closed, next Sept 2027</td></tr>
-      <tr class="off"><td class="t">Chartered Director Programme</td><td>IoD Ireland</td><td>Not stated</td><td>&mdash;</td><td>&euro;16,350</td><td>Board-level, different purpose</td></tr>
-      <tr class="off"><td class="t">PRINCE2 7 Foundation</td><td>PeopleCert</td><td>None</td><td>0</td><td>&euro;645</td><td>Project management, not data</td></tr>
-      <tr class="off"><td class="t">Diploma in Professional Digital Marketing L6</td><td>CIM</td><td>UK L6</td><td>&mdash;</td><td>&pound;660 +</td><td>Assessment fee only</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.tcd.ie/courses/microcredentials/by-school/micro-credentials---business/driving-performance-with-ai-and-analytics---micro-credential/" target="_blank" rel="noopener">Driving Performance with AI and Analytics</a></td><td>Trinity College</td><td>L9</td><td>5</td><td>&euro;1,850 / 2,000</td><td>Open, closes 20 Sept</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.ul.ie/gps/courses/data-analytics-professional-diploma" target="_blank" rel="noopener">Data Analytics Professional Diploma</a></td><td>Univ. of Limerick</td><td>L9 Minor</td><td>30</td><td>&euro;5,250</td><td>"Up to 100% funding". Teaches R</td></tr>
+      <tr><td class="t"><a class="cl" href="https://ictskillnet.ie/courses/certificate-in-foundations-of-artificial-intelligence/" target="_blank" rel="noopener">Foundations of AI</a></td><td>ICT Skillnet / TUD</td><td>L8</td><td>10</td><td>&euro;999</td><td>Private-sector employer only</td></tr>
+      <tr><td class="t"><a class="cl" href="https://datasmart.digitalskillnet.ie/" target="_blank" rel="noopener">DataSMART</a></td><td>DIGITAL Skillnet</td><td>Not stated</td><td>&mdash;</td><td class="o">Not published</td><td>12 wk, non-IT professionals</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.imi.ie/programme/ai-fluency/" target="_blank" rel="noopener">AI Fluency</a></td><td>IMI</td><td>Not stated</td><td>&mdash;</td><td>&euro;1,995</td><td>2 days, 22-23 Sept</td></tr>
+      <tr><td class="t"><a class="cl" href="https://www.imi.ie/programme/data-driven-decision-making-with-ai/" target="_blank" rel="noopener">Data-Driven Decision Making with AI</a></td><td>IMI</td><td>Not stated</td><td>&mdash;</td><td>&euro;1,500</td><td>2 days</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CAIGFPPE" target="_blank" rel="noopener">AI Strategy, Governance and Leadership</a></td><td>NCI</td><td>L9 Minor</td><td>20</td><td>&euro;600 / 3,000</td><td>Funded places full</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.ncirl.ie/Courses/NCI-Course-Details/course/CEDT" target="_blank" rel="noopener">Emerging Digital Technologies</a></td><td>NCI</td><td>L7</td><td>20</td><td>&euro;340</td><td>Below your level</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.cct.ie/course/ai-for-business-certificate-microcredential/" target="_blank" rel="noopener">AI for Business</a></td><td>CCT College</td><td>L7</td><td>10</td><td>&euro;210</td><td>Cheapest, but Level 7</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.tudublin.ie/study/postgraduate/courses/digital-leadership-and-transformation-tu339/" target="_blank" rel="noopener">PgCert Digital Leadership and Transformation</a></td><td>TU Dublin</td><td>L9</td><td>30</td><td>&euro;3,500</td><td>Closed. Closest content match</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.tudublin.ie/study/postgraduate/courses/data-science/" target="_blank" rel="noopener">PgCert Data Science (TU256)</a></td><td>TU Dublin</td><td>L9</td><td>30</td><td>&euro;3,220</td><td>Springboard closed</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.tudublin.ie/study/postgraduate/courses/human-centered-artificial-intelligence-technologies-tu242/" target="_blank" rel="noopener">PgDip Human Centered AI Technologies</a></td><td>TU Dublin</td><td>L9</td><td>60</td><td>&euro;6,800</td><td>Closed</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.atu.ie/courses/postgraduate-diploma-computing-in-big-data-analytics-and-artificial-intelligence" target="_blank" rel="noopener">PgDip Big Data Analytics and AI</a></td><td>ATU</td><td>L9</td><td>60</td><td>&euro;4,200</td><td>Closed, places filled</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.mtu.ie/courses/crkarit9/" target="_blank" rel="noopener">PgCert / MSc in AI</a></td><td>MTU</td><td>L9</td><td>30 / 60</td><td>Not published</td><td>Requires Python proficiency</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.smurfitschool.ie/executivedevelopment/programmesforindividuals/professionaldiplomas/artificialintelligenceandbusinessanalytics/" target="_blank" rel="noopener">Diploma in AI and Business Analytics</a></td><td>UCD Smurfit</td><td>L9</td><td>30</td><td>&euro;9,110</td><td>Spring 2027, in person</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://ictskillnet.ie/courses/msc-in-computer-science-artificial-intelligence/" target="_blank" rel="noopener">MSc Computer Science (AI)</a></td><td>ICT Skillnet / Galway</td><td>L9</td><td>90</td><td>&euro;3,505/yr</td><td>Closed, next Sept 2027</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.iodireland.ie/chartered-director-programme" target="_blank" rel="noopener">Chartered Director Programme</a></td><td>IoD Ireland</td><td>Not stated</td><td>&mdash;</td><td>&euro;16,350</td><td>Board-level, different purpose</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.peoplecert.org/browse-certifications/project-programme-and-portfolio-management/PRINCE2-2/PRINCE2-7-foundation-3579" target="_blank" rel="noopener">PRINCE2 7 Foundation</a></td><td>PeopleCert</td><td>None</td><td>0</td><td>&euro;645</td><td>Project management, not data</td></tr>
+      <tr class="off"><td class="t"><a class="cl" href="https://www.cim.co.uk/qualifications/diploma-in-professional-digital-marketing/" target="_blank" rel="noopener">Diploma in Professional Digital Marketing L6</a></td><td>CIM</td><td>UK L6</td><td>&mdash;</td><td>&pound;660 +</td><td>Assessment fee only</td></tr>
     </tbody>
   </table></div>
   </div></div></div>
