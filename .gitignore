@@ -70,3 +70,4 @@ dist/
 *.tmp
 *.temp
 *.log
+supabase/backups/

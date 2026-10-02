@@ -44,7 +44,7 @@ const Comments = {
       throw new Error('You must be signed in to comment');
     }
 
-    const supabase = window.SupabaseClient.getClient();
+    const supabase = window.SupabaseClient.getAuthedClient();
     const trimmedContent = content.trim();
 
     if (!trimmedContent) {
@@ -56,25 +56,24 @@ const Comments = {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('comments')
-        .insert({
-          post_slug: slug,
-          user_id: profile.id,
-          content: trimmedContent,
-          parent_id: parentId
-        })
-        .select()
-        .single();
+      // fil_post_comment identifies the author from their fiveinnolabs (Firebase) sign-in
+      const { data, error } = await supabase.rpc('fil_post_comment', {
+        p_slug: slug,
+        p_content: trimmedContent,
+        p_parent: parentId
+      });
 
       if (error) {
         console.error('Failed to post comment:', error);
-        throw new Error('Failed to post comment. Please try again.');
+        throw new Error(/^(Too many|A comment|That comment)/.test(error.message || '') ? error.message : 'Failed to post comment. Please try again.');
       }
+
+      // XP on the one account: the broker checks the comment in the database before it counts
+      if (data && data.id && window.filXp) window.filXp.report('wave_comment', data.id);
 
       return data;
     } catch (error) {
-      if (error.message === 'Failed to post comment. Please try again.') {
+      if (error.message && error.message !== 'Failed to fetch') {
         throw error;
       }
       console.error('Failed to post comment:', error);
@@ -88,25 +87,13 @@ const Comments = {
    * @returns {Promise<void>}
    */
   async deleteComment(commentId) {
-    const supabase = window.SupabaseClient?.getClient();
+    const supabase = window.SupabaseClient?.getAuthedClient();
     if (!supabase) {
       throw new Error('Not connected');
     }
 
-    try {
-      const { error } = await supabase
-        .from('comments')
-        .update({ is_deleted: true })
-        .eq('id', commentId);
-
-      if (error) {
-        console.error('Failed to delete comment:', error);
-        throw new Error('Failed to delete comment');
-      }
-    } catch (error) {
-      if (error.message === 'Failed to delete comment') {
-        throw error;
-      }
+    const { data, error } = await supabase.rpc('fil_delete_comment', { p_id: commentId });
+    if (error || data !== true) {
       console.error('Failed to delete comment:', error);
       throw new Error('Failed to delete comment');
     }

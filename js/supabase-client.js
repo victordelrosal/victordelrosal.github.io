@@ -1,12 +1,19 @@
 /**
- * Supabase Client with Authentication
- * Handles Google Sign-In with token exchange for branded OAuth experience
+ * Sign-in for victordelrosal.com: the one fiveinnolabs account (2 Oct 2026, /federated-access;
+ * manual in sBs/fiveinnolabs-identity/README.md).
+ *
+ * The person is a Firebase user in project ai-badge-2026, the same account as on AI Badge, aireckon.ing,
+ * Pentaborgs and the radio. Google signs in through Firebase directly; LinkedIn through the aireckon.ing
+ * broker (linkedin-signin.js). Supabase (flux) trusts the Firebase ID token as a third-party issuer, and every
+ * signed-in write goes through the fil_* functions (supabase/fil-federated-2026-10-02.sql).
+ *
+ * window.SupabaseClient keeps the API the pages already call (signInWithGoogle now opens the sign-in sheet
+ * with both ways in). getClient() stays the plain public client for reads; getAuthedClient() carries the
+ * person's Firebase token for the fil_* calls.
  */
 
-// Prevent double-loading
 if (!window.SupabaseClient) {
   (function () {
-    // Supabase Configuration (injected at runtime, not hard-coded)
     const supabaseConfig = window.__SUPABASE_CONFIG || {};
     const SUPABASE_URL = supabaseConfig.url || supabaseConfig.supabaseUrl;
     const SUPABASE_ANON_KEY = supabaseConfig.anonKey || supabaseConfig.supabaseAnonKey;
@@ -16,508 +23,274 @@ if (!window.SupabaseClient) {
       return;
     }
 
-    // Google OAuth Client ID (for branded sign-in on victordelrosal.com)
-    const GOOGLE_CLIENT_ID = '67204010920-ifejjqhm4128lk0gfnlkv3p9cdq7o1tv.apps.googleusercontent.com';
+    /* the account's scripts: the Firebase SDK, then (once the app exists) the LinkedIn return, which reads the
+       #li= hash, and the shared ways-in list, level gem and XP. The Firebase web config comes from the broker,
+       so the key is not in this repo. fil/account.js carries the md5 of its contents: bump it when that file changes. */
+    const FIREBASE_SDK = [
+      'https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js',
+      'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js'
+    ];
+    const FIL_SCRIPTS = [
+      '/js/linkedin-signin.js?v=f10',
+      'https://aireckon.ing/fil/account.js?v=d7059f86'
+    ];
+    const FIL_CONFIG = 'https://aireckon.ing/api/auth/config';
 
-    // Initialize Supabase client (requires supabase-js to be loaded first)
     let supabase = null;
+    let authed = null;
+    let fbUser = null;
     let currentUser = null;
     let commentUserProfile = null;
-    let authStateListeners = [];
-    let googleScriptLoaded = false;
-    let googleScriptLoading = false;
-    let authInitPromise = null;  // Deduplication: track ongoing/completed init
+    const authStateListeners = [];
+    let authInitPromise = null;
+    let sheet = null;
 
-    /**
-     * Initialize the Supabase client
-     * Call this after the supabase-js script has loaded
-     */
-    function initSupabase() {
-      // Don't recreate if client already exists - prevents auth state issues
-      if (supabase) return true;
-
-      // Check for both the namespaced version and direct createClient
-      const createClientFn = window.supabase?.createClient || window.createClient;
-
-      if (createClientFn) {
-        supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY);
-        return true;
-      }
-      console.error('Supabase JS library not loaded.');
-      return false;
+    function addScripts(list) {
+      return Promise.all(list.map(src => new Promise(resolve => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = false;   // run in list order
+        s.onload = resolve;
+        s.onerror = () => { console.warn('[auth] could not load', src); resolve(); };
+        document.head.appendChild(s);
+      })));
     }
 
-    /**
-     * Initialize authentication state
-     * Sets up listener for auth changes and loads current session
-     * Deduplicated: returns existing promise if already running/completed
-     */
-    async function initAuth() {
-      // Deduplication: if already running or completed, return existing promise
-      if (authInitPromise) {
-        return authInitPromise;
+    async function loadScripts() {
+      const [, conf] = await Promise.all([
+        addScripts(FIREBASE_SDK),
+        fetch(FIL_CONFIG).then(r => (r.ok ? r.json() : null)).catch(() => null)
+      ]);
+      if (!window.firebase || !conf || !conf.firebase) return false;
+      window.initFirebase = () => { if (!firebase.apps.length) firebase.initializeApp(conf.firebase); };   // linkedin-signin.js calls this
+      window.initFirebase();
+      await addScripts(FIL_SCRIPTS);
+      return true;
+    }
+
+    function initSupabase() {
+      if (supabase) return true;
+      const createClientFn = window.supabase?.createClient || window.createClient;
+      if (!createClientFn) {
+        console.error('Supabase JS library not loaded.');
+        return false;
       }
+      supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY);
+      authed = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        accessToken: async () => (fbUser ? await fbUser.getIdToken() : null)
+      });
+      return true;
+    }
 
-      // Create the promise and store it immediately to prevent race conditions
+    /* the shape the pages were written for (Supabase's user object) */
+    function shape(u) {
+      if (!u) return null;
+      const name = u.displayName || (u.email ? u.email.split('@')[0] : 'Reader');
+      return {
+        id: u.uid,
+        email: u.email || '',
+        provider: '',
+        user_metadata: { full_name: name, name, avatar_url: u.photoURL || '', picture: u.photoURL || '' }
+      };
+    }
+
+    function notify() {
+      authStateListeners.forEach(cb => { try { cb(currentUser, commentUserProfile); } catch (e) { console.error(e); } });
+    }
+
+    async function loadUserProfile() {
+      if (!fbUser || !initSupabase()) return null;
+      const { data, error } = await authed.rpc('fil_me');
+      if (error) { console.error('Failed to load user profile:', error); return null; }
+      commentUserProfile = data;
+      if (data && data.created_at && Date.now() - new Date(data.created_at).getTime() < 60000) {
+        let seen = null;
+        try { seen = localStorage.getItem(`welcome_shown_${data.id}`); localStorage.setItem(`welcome_shown_${data.id}`, 'true'); } catch (e) {}
+        if (!seen) window.dispatchEvent(new CustomEvent('supabase:new-user', { detail: { user: data } }));
+      }
+      return data;
+    }
+
+    function initAuth() {
+      if (authInitPromise) return authInitPromise;
       authInitPromise = (async () => {
-        if (!supabase) {
-          if (!initSupabase()) return;
+        if (!(await loadScripts()) || !firebase.auth) { console.warn('[auth] sign-in unavailable: browsing signed out'); return; }
+        initSupabase();
+        if (window.filXp) {
+          filXp.use({ idToken: () => (fbUser ? fbUser.getIdToken() : null), anchor: () => document.querySelector('#user-profile-btn .user-avatar-wrap') });
         }
-
-        const AUTH_TIMEOUT = 5000; // 5 second timeout for auth operations
-
-        try {
-          // Get current session with timeout
-          const sessionPromise = supabase.auth.getSession();
-          const timeoutPromise = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Auth session timeout')), AUTH_TIMEOUT)
-          );
-
-          let session = null;
-          try {
-            const result = await Promise.race([sessionPromise, timeoutPromise]);
-            session = result?.data?.session;
-          } catch (e) {
-            console.warn('[auth] Session retrieval timed out, continuing without session');
-          }
-
-          if (session) {
-            currentUser = session.user;
-            // Load profile with timeout
+        firebase.auth().onAuthStateChanged(async (u) => {
+          const switched = (fbUser && fbUser.uid) !== (u && u.uid);
+          fbUser = u;
+          currentUser = shape(u);
+          if (switched) commentUserProfile = null;
+          if (window.filXp) { if (u) filXp.hello(u.uid); else filXp.reset(); }
+          if (u) {
+            closeSheet();
             try {
-              await Promise.race([
-                loadUserProfile(),
-                new Promise((_, reject) =>
-                  setTimeout(() => reject(new Error('Profile load timeout')), AUTH_TIMEOUT)
-                )
-              ]);
-            } catch (e) {
-              console.warn('[auth] Profile load timed out, continuing without profile');
-            }
+              const t = await u.getIdTokenResult();
+              const p = t.signInProvider;
+              currentUser.provider = p === 'google.com' ? 'google' : (p === 'custom' && t.claims.li) ? 'linkedin' : (p === 'password' || p === 'emailLink') ? 'email' : '';
+            } catch (e) {}
+            try {
+              await Promise.race([loadUserProfile(), new Promise(r => setTimeout(r, 5000))]);
+            } catch (e) { console.warn('[auth] profile load failed', e); }
+            if (fbUser !== u) return;   // signed out or switched while loading
           }
-
-          // Listen for auth changes (only register once due to deduplication)
-          supabase.auth.onAuthStateChange(async (event, session) => {
-            currentUser = session?.user || null;
-
-            if (currentUser) {
-              // Don't block on profile load in listener
-              loadUserProfile().catch(e => console.warn('[auth] Profile load failed:', e));
-            } else {
-              commentUserProfile = null;
-            }
-
-            // Notify all listeners
-            authStateListeners.forEach(callback => callback(currentUser, commentUserProfile));
+          notify();
+        });
+        /* back from LinkedIn: a failed sign-in reopens the sheet with the reason; a link result goes to the card */
+        if (window.linkedInSignInResult) {
+          window.linkedInSignInResult.then(r => {
+            if (!r) return;
+            if (r.mode === 'link') window.dispatchEvent(new CustomEvent('fil:link-result', { detail: r }));
+            else if (!r.success) { openSheet(); say(r.error); }
           });
-        } catch (error) {
-          console.error('Failed to initialize auth:', error);
         }
       })();
-
       return authInitPromise;
     }
 
-    /**
-     * Add a listener for auth state changes
-     * @param {Function} callback - Called with (user, profile) on auth changes
-     */
     function onAuthStateChange(callback) {
       authStateListeners.push(callback);
-      // Immediately call with current state
       callback(currentUser, commentUserProfile);
     }
 
-    /**
-     * Load Google Identity Services script
-     */
-    function loadGoogleScript() {
-      return new Promise((resolve, reject) => {
-        if (googleScriptLoaded) {
-          resolve();
-          return;
-        }
+    /* ---------- the sign-in sheet: Google and LinkedIn, the same account either way ---------- */
+    const G_ICON = '<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.8c4.3-4 6.9-9.9 6.9-17.2z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.8c-2.1 1.4-4.8 2.3-8.5 2.3-6.3 0-11.6-4.2-13.5-10l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>';
+    const LI_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>';
+    const SHEET_CSS = [
+      '.fil-scrim{position:fixed;inset:0;z-index:10000;background:rgba(2,6,20,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fil-fade .18s ease-out}',
+      '.fil-sheet{position:fixed;z-index:10001;top:50%;left:50%;transform:translate(-50%,-50%);width:min(380px,calc(100vw - 32px));padding:28px 22px 20px;box-sizing:border-box;',
+      '  font-family:var(--font-system,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);color:#fff;border-radius:24px;',
+      '  background:linear-gradient(165deg,rgba(8,15,40,.96) 0%,rgba(12,22,55,.95) 40%,rgba(8,18,48,.96) 100%);',
+      '  border:1px solid rgba(0,180,255,.14);border-top-color:rgba(0,212,255,.28);box-shadow:0 24px 80px -16px rgba(0,30,80,.7),inset 0 1px 0 rgba(0,212,255,.15);animation:fil-fade .18s ease-out}',
+      '.fil-sheet[hidden],.fil-scrim[hidden]{display:none}',
+      '@keyframes fil-fade{from{opacity:0}to{opacity:1}}',
+      '@media (prefers-reduced-motion:reduce){.fil-sheet,.fil-scrim{animation:none}}',
+      '.fil-sheet h2{margin:0 0 8px;font-size:22px;font-weight:700;letter-spacing:-.02em;color:#fff}',
+      '.fil-sheet p{margin:0 0 20px;font-size:14px;line-height:1.5;color:rgba(180,210,255,.75)}',
+      '.fil-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:48px;margin:0 0 10px;border-radius:999px;font:600 15px/1 inherit;font-family:inherit;cursor:pointer;transition:background .2s ease}',
+      '.fil-btn.g{background:#fff;color:#1f1f1f;border:1px solid #fff}.fil-btn.g:hover{background:#eceef3}',
+      '.fil-btn.li{background:#0A66C2;color:#fff;border:1px solid #0A66C2}.fil-btn.li:hover{background:#004182}',
+      '.fil-btn:focus-visible,.fil-x:focus-visible{outline:2px solid #00D4FF;outline-offset:2px}',
+      '.fil-msg{min-height:18px;margin-top:4px;font-size:13px;line-height:1.45;color:#ff9a8a}',
+      '.fil-fine{margin-top:10px;font-size:12px;line-height:1.45;color:rgba(180,210,255,.6)}',
+      '.fil-x{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:none;color:rgba(180,210,255,.7);font:400 24px/1 inherit;cursor:pointer}.fil-x:hover{color:#fff}'
+    ].join('\n');
+    let scrim = null;
 
-        if (googleScriptLoading) {
-          // Wait for existing load
-          const checkLoaded = setInterval(() => {
-            if (googleScriptLoaded) {
-              clearInterval(checkLoaded);
-              resolve();
-            }
-          }, 100);
-          return;
-        }
+    function say(text) { if (sheet) sheet.querySelector('.fil-msg').textContent = text || ''; }
 
-        googleScriptLoading = true;
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = () => {
-          googleScriptLoaded = true;
-          googleScriptLoading = false;
-          resolve();
-        };
-        script.onerror = () => {
-          googleScriptLoading = false;
-          reject(new Error('Failed to load Google Identity Services'));
-        };
-        document.head.appendChild(script);
+    function mountSheet() {
+      if (sheet) return;
+      const st = document.createElement('style'); st.textContent = SHEET_CSS; document.head.appendChild(st);
+      scrim = document.createElement('div'); scrim.className = 'fil-scrim'; scrim.hidden = true;
+      scrim.addEventListener('click', closeSheet);
+      sheet = document.createElement('div'); sheet.className = 'fil-sheet'; sheet.hidden = true;
+      sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'fil-sheet-title');
+      sheet.innerHTML = '<button class="fil-x" type="button" aria-label="Close">&times;</button>' +
+        '<h2 id="fil-sheet-title">Sign in</h2>' +
+        '<p>One fiveinnolabs account, the same one you use on AI Badge and aireckon.ing. Sign in to comment on waves and get the weekly email.</p>' +
+        '<button class="fil-btn g" type="button">' + G_ICON + 'Continue with Google</button>' +
+        '<button class="fil-btn li" type="button">' + LI_ICON + 'Continue with LinkedIn</button>' +
+        '<div class="fil-msg" role="status"></div>' +
+        '<div class="fil-fine">Same email, same account, whichever you choose.</div>';
+      sheet.querySelector('.fil-x').addEventListener('click', closeSheet);
+      sheet.querySelector('.fil-btn.g').addEventListener('click', () => {
+        say('');
+        firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e => {
+          if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
+          say(e && e.code === 'auth/popup-blocked'
+            ? 'Your browser blocked the Google window. Allow pop-ups for this site and try again.'
+            : 'Google sign-in did not go through. Please try again.');
+        });
       });
+      sheet.querySelector('.fil-btn.li').addEventListener('click', () => { signInWithLinkedIn(); });
+      document.body.append(scrim, sheet);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
     }
 
-    /**
-     * Generate a random nonce for Google Sign-In / Supabase token exchange
-     */
-    function generateNonce() {
-      const array = new Uint8Array(32);
-      crypto.getRandomValues(array);
-      return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+    function openSheet() {
+      mountSheet();
+      say('');
+      scrim.hidden = false; sheet.hidden = false;
+      sheet.querySelector('.fil-btn.g').focus();
     }
 
-    /**
-     * SHA-256 hash a string (returns hex)
-     */
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      return Array.from(new Uint8Array(hashBuffer), b => b.toString(16).padStart(2, '0')).join('');
+    function closeSheet() {
+      if (!sheet) return;
+      scrim.hidden = true; sheet.hidden = true;
     }
 
-    // Store the current nonce so handleGoogleCredential can access it
-    let currentNonce = null;
-
-    /**
-     * Handle Google credential response and exchange with Supabase
-     */
-    async function handleGoogleCredential(response) {
-      if (!supabase) {
-        console.error('Supabase not initialized');
-        return;
-      }
-
-      try {
-        const options = {
-          provider: 'google',
-          token: response.credential,
-        };
-        // Pass the raw nonce so Supabase can verify it against the hashed one in the token
-        if (currentNonce) {
-          options.nonce = currentNonce;
-        }
-
-        const { data, error } = await supabase.auth.signInWithIdToken(options);
-
-        if (error) {
-          console.error('Token exchange error:', error);
-          throw error;
-        }
-
-        return data;
-      } catch (error) {
-        console.error('Failed to exchange token:', error);
-        throw error;
-      }
-    }
-
-    /**
-     * Sign in with Google
-     * Uses Google Identity Services for branded sign-in experience
-     * Shows "Continue to victordelrosal.com" instead of ugly Supabase URL
-     */
+    /* the name every page already calls: now opens the sheet with both ways in */
     async function signInWithGoogle() {
-      if (!supabase) {
-        if (!initSupabase()) {
-          console.error('Supabase not initialized');
-          return;
-        }
-      }
-
-      try {
-        // Load Google Identity Services if not already loaded
-        await loadGoogleScript();
-
-        // Generate nonce for secure token exchange
-        currentNonce = generateNonce();
-        const hashedNonce = await sha256(currentNonce);
-
-        // For ID token flow, use the ID client
-        return new Promise((resolve, reject) => {
-          google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            nonce: hashedNonce,
-            use_fedcm_for_prompt: true,
-            callback: async (response) => {
-              try {
-                await handleGoogleCredential(response);
-                resolve();
-              } catch (error) {
-                reject(error);
-              }
-            },
-          });
-
-          // Trigger the One Tap or popup
-          google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-              // One Tap not available or skipped, fall back to button click flow
-              // Create a temporary container for Google button
-              const container = document.createElement('div');
-              container.style.position = 'fixed';
-              container.style.top = '50%';
-              container.style.left = '50%';
-              container.style.transform = 'translate(-50%, -50%)';
-              container.style.zIndex = '10000';
-              container.style.background = 'white';
-              container.style.padding = '20px';
-              container.style.borderRadius = '8px';
-              container.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
-              container.id = 'google-signin-container';
-
-              // Check if container already exists to avoid duplicates
-              if (document.getElementById('google-signin-container')) {
-                  return;
-              }
-
-              // Add close button
-              const closeBtn = document.createElement('button');
-              closeBtn.innerHTML = '&times;';
-              closeBtn.style.cssText = 'position:absolute;top:5px;right:10px;border:none;background:none;font-size:24px;cursor:pointer;color:#666;';
-              closeBtn.onclick = () => {
-                container.remove();
-                reject(new Error('Sign in cancelled'));
-              };
-              container.appendChild(closeBtn);
-
-              // Add instruction text
-              const text = document.createElement('p');
-              text.textContent = 'Sign in with Google';
-              text.style.cssText = 'margin:0 0 15px 0;font-weight:500;text-align:center;';
-              container.appendChild(text);
-
-              // Render Google button
-              const buttonDiv = document.createElement('div');
-              container.appendChild(buttonDiv);
-              document.body.appendChild(container);
-
-              google.accounts.id.renderButton(buttonDiv, {
-                theme: 'outline',
-                size: 'large',
-                width: 250,
-              });
-            }
-          });
-        });
-      } catch (error) {
-        console.error('Failed to sign in:', error);
-        throw error;
-      }
+      await initAuth();
+      if (!window.firebase || !firebase.auth || !firebase.apps.length) { alert('Sign-in could not load. Please check your connection and try again.'); return; }
+      openSheet();
     }
 
-    /**
-     * Sign out the current user
-     */
     async function signOut() {
-      if (!supabase) return;
-
-      try {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-      } catch (error) {
-        console.error('Failed to sign out:', error);
-        throw error;
-      }
+      if (window.firebase && firebase.auth) await firebase.auth().signOut();
     }
 
-    /**
-     * Load or create the user's comment profile
-     * Called automatically after sign-in
-     */
-    async function loadUserProfile() {
-      if (!supabase || !currentUser) return null;
+    function getCurrentUser() { return currentUser; }
+    function getUserProfile() { return commentUserProfile; }
+    function isAdmin() { return commentUserProfile?.is_admin === true; }
+    function getIdToken() { return fbUser ? fbUser.getIdToken() : Promise.resolve(null); }
+    function getFirebaseUser() { return fbUser; }
 
-      try {
-        const { data, error } = await supabase.rpc('get_or_create_comment_user');
-
-        if (error) {
-          console.error('Failed to load user profile:', error);
-          return null;
-        }
-
-        commentUserProfile = data;
-
-        // Check if new user (created within last minute) and welcome not shown
-        if (data && data.created_at) {
-          const createdTime = new Date(data.created_at).getTime();
-          const now = Date.now();
-          const isRecent = (now - createdTime) < 60000; // 1 minute
-          const hasSeenWelcome = localStorage.getItem(`welcome_shown_${data.id}`);
-
-          if (isRecent && !hasSeenWelcome) {
-            // Mark as shown immediately to prevent double showing
-            localStorage.setItem(`welcome_shown_${data.id}`, 'true');
-
-            // Dispatch event for UI to handle
-            window.dispatchEvent(new CustomEvent('supabase:new-user', {
-              detail: { user: data }
-            }));
-          }
-        }
-
-        return data;
-      } catch (error) {
-        console.error('Failed to load user profile:', error);
-        return null;
-      }
+    async function updateProfile(fields) {
+      if (!fbUser || !initSupabase()) throw new Error('Not signed in');
+      const { data, error } = await authed.rpc('fil_update_profile', fields);
+      if (error) throw error;
+      commentUserProfile = data;
+      return true;
     }
+    const updateSubscription = isSubscribed => updateProfile({ p_subscribed: isSubscribed });
+    const updateTimezone = timezone => updateProfile({ p_timezone: timezone });
 
-    /**
-     * Get the current authenticated user
-     * @returns {Object|null} The current user or null
-     */
-    function getCurrentUser() {
-      return currentUser;
-    }
-
-    /**
-     * Get the current user's comment profile
-     * @returns {Object|null} The user's comment profile or null
-     */
-    function getUserProfile() {
-      return commentUserProfile;
-    }
-
-    /**
-     * Check if the current user is an admin
-     * @returns {boolean} True if user is admin
-     */
-    function isAdmin() {
-      return commentUserProfile?.is_admin === true;
-    }
-
-    /**
-     * Update email subscription status
-     * @param {boolean} isSubscribed 
-     */
-    async function updateSubscription(isSubscribed) {
-      if (!supabase || !currentUser) return;
-
-      try {
-        const { error } = await supabase
-          .from('comment_users')
-          .update({ is_subscribed: isSubscribed })
-          .eq('auth_id', currentUser.id);
-
-        if (error) throw error;
-
-        // Update local cache
-        if (commentUserProfile) {
-          commentUserProfile.is_subscribed = isSubscribed;
-        }
-        return true;
-      } catch (error) {
-        console.error('Failed to update subscription:', error);
-        throw error;
-      }
-    }
-
-    /**
-     * Update user timezone
-     * @param {string} timezone 
-     */
-    async function updateTimezone(timezone) {
-      if (!supabase || !currentUser) return;
-
-      try {
-        const { error } = await supabase
-          .from('comment_users')
-          .update({ timezone: timezone })
-          .eq('auth_id', currentUser.id);
-
-        if (error) throw error;
-
-        // Update local cache
-        if (commentUserProfile) {
-          commentUserProfile.timezone = timezone;
-        }
-        return true;
-      } catch (error) {
-        console.error('Failed to update timezone:', error);
-        throw error;
-      }
-    }
-
-    /**
-     * Delete the user's account (profile and auth)
-     */
+    /* deletes this site's profile and comments; the fiveinnolabs account itself is shared with other sites and stays */
     async function deleteAccount() {
-      if (!supabase || !currentUser) {
-        throw new Error('Not authenticated');
-      }
-
-      try {
-        // Get current session for auth header
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) throw new Error('No active session');
-
-        // Call Edge Function to fully delete account
-        const response = await fetch(`${SUPABASE_URL}/functions/v1/delete-account`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Failed to delete account');
-        }
-
-        // Clear local state
-        currentUser = null;
-        userProfile = null;
-
-        // Notify listeners
-        authStateListeners.forEach(listener => listener(null));
-
-        return true;
-      } catch (error) {
-        console.error('Failed to delete account:', error);
-        throw error;
-      }
+      if (!fbUser || !initSupabase()) throw new Error('Not authenticated');
+      const { error } = await authed.rpc('fil_delete_my_data');
+      if (error) throw error;
+      commentUserProfile = null;
+      await signOut();
+      return true;
     }
 
-    /**
-     * Get the raw Supabase client for direct queries
-     * @returns {Object} The Supabase client instance
-     */
     function getClient() {
       if (!supabase) initSupabase();
       return supabase;
     }
+    function getAuthedClient() {
+      if (!authed) initSupabase();
+      return authed;
+    }
 
-    // Export to global scope
     window.SupabaseClient = {
       initSupabase,
       initAuth,
       onAuthStateChange,
       signInWithGoogle,
+      signIn: signInWithGoogle,
       signOut,
       getCurrentUser,
       getUserProfile,
+      getFirebaseUser,
+      getIdToken,
       isAdmin,
       updateSubscription,
       updateTimezone,
       deleteAccount,
       getClient,
-      // Expose constants for other modules
+      getAuthedClient,
       SUPABASE_URL,
-      SUPABASE_ANON_KEY,
-      GOOGLE_CLIENT_ID
+      SUPABASE_ANON_KEY
     };
 
+    /* start now, so a #li= return is read before anything else touches the address */
+    initAuth();
   })();
 }

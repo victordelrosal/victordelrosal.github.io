@@ -152,6 +152,9 @@ const Navbar = {
                 this.updateAuthUI(user);
             });
 
+            // A LinkedIn connected from the account card (fiveinnolabs-identity)
+            window.addEventListener('fil:link-result', (e) => this.showLinkResult(e.detail));
+
             // Listen for new user welcome event
             window.addEventListener('supabase:new-user', (e) => {
                 this.showWelcomeModal(e.detail.user);
@@ -172,7 +175,7 @@ const Navbar = {
         modal.innerHTML = `
             <div class="welcome-modal">
                 <div class="welcome-icon">👋</div>
-                <h2>Welcome, ${user.display_name.split(' ')[0]}!</h2>
+                <h2>Welcome, ${String(user.display_name || '').split(' ')[0].replace(/[&<>"']/g, '')}!</h2>
                 <p>You are now subscribed for updates.</p>
                 <button class="welcome-btn" id="welcome-close-btn">Awesome!</button>
             </div>
@@ -324,11 +327,11 @@ const Navbar = {
         modal.innerHTML = `
             <div class="delete-modal">
                 <div class="delete-modal-icon">⚠️</div>
-                <h2>Delete Account?</h2>
-                <p>This will permanently delete your account, all your XP, achievements, and progress. This action <strong>cannot be undone</strong>.</p>
+                <h2>Delete your data on this site?</h2>
+                <p>This permanently deletes your comments and email settings on victordelrosal.com. Your fiveinnolabs account, its XP and level stay, since other sites use them too. This <strong>cannot be undone</strong>.</p>
                 <div class="delete-modal-buttons">
                     <button class="delete-modal-cancel" id="delete-cancel-btn">Cancel</button>
-                    <button class="delete-modal-confirm" id="delete-confirm-btn">Delete My Account</button>
+                    <button class="delete-modal-confirm" id="delete-confirm-btn">Delete my data</button>
                 </div>
             </div>
         `;
@@ -362,9 +365,9 @@ const Navbar = {
                 document.body.classList.remove('modal-open');
             } catch (err) {
                 console.error('Failed to delete account', err);
-                confirmBtn.textContent = 'Delete My Account';
+                confirmBtn.textContent = 'Delete my data';
                 confirmBtn.disabled = false;
-                alert('Failed to delete account. Please try again.');
+                alert('Could not delete your data. Please try again.');
             }
         });
 
@@ -399,11 +402,10 @@ const Navbar = {
     updateAuthUI(user) {
         const container = document.getElementById('auth-container');
         if (!container) return;
-
-        const navbar = document.getElementById('wave-navbar');
+        this.injectAccountStyles();
 
         if (user) {
-            // User is logged in
+            // Signed in: the one fiveinnolabs account (photo with its sign-in method, level gem and XP, ways in)
             const avatarUrl = user.user_metadata.avatar_url || user.user_metadata.picture;
             const name = user.user_metadata.full_name || user.user_metadata.name || user.email;
 
@@ -431,62 +433,30 @@ const Navbar = {
                 timezones.sort();
             }
 
+            const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
             const timezoneOptions = timezones.map(tz =>
-                `<option value="${tz}" ${tz === userTimezone ? 'selected' : ''}>${tz.replace('_', ' ')}</option>`
+                `<option value="${esc(tz)}" ${tz === userTimezone ? 'selected' : ''}>${esc(tz.replace('_', ' '))}</option>`
             ).join('');
 
-            // Get gamification data if available
-            let gamifyHTML = '';
-            if (window.Gamification) {
-                const xp = window.Gamification.getXP();
-                const levelProgress = window.Gamification.getLevelProgress(xp);
-                const streak = window.Gamification.getStreak();
-                const showOnLeaderboard = window.Gamification.getShowOnLeaderboard?.() || false;
-                gamifyHTML = `
-                    <div class="dropdown-gamify-section">
-                        <div class="dropdown-gamify-header">
-                            <div class="dropdown-gamify-level">
-                                <span class="dropdown-gamify-icon" style="background: ${levelProgress.current.color}">${levelProgress.current.icon}</span>
-                                <div class="dropdown-gamify-info">
-                                    <span class="dropdown-gamify-name">${levelProgress.current.name}</span>
-                                    <span class="dropdown-gamify-xp">${xp.toLocaleString()} XP</span>
-                                </div>
-                                ${streak.count > 1 ? `<span class="dropdown-gamify-streak">🔥${streak.count}</span>` : ''}
-                            </div>
-                            <div class="dropdown-gamify-bar">
-                                <div class="dropdown-gamify-fill" style="width: ${levelProgress.progress}%"></div>
-                            </div>
-                            ${levelProgress.next
-                                ? `<span class="dropdown-gamify-next">${levelProgress.xpToNext} XP to ${levelProgress.next.name}</span>`
-                                : `<span class="dropdown-gamify-next">Max level!</span>`
-                            }
-                        </div>
-                        <button id="view-journey-btn" class="dropdown-item journey-btn">
-                            🌊 View Your Journey
-                        </button>
-                        <button id="view-leaderboard-btn" class="dropdown-item journey-btn">
-                            🏆 Leaderboard
-                        </button>
-                        <label class="dropdown-item checkbox-item leaderboard-toggle">
-                            <input type="checkbox" id="leaderboard-checkbox" ${showOnLeaderboard ? 'checked' : ''}>
-                            <span>Show me on leaderboard</span>
-                        </label>
-                    </div>
-                    <div class="dropdown-divider"></div>
-                `;
-            }
+            const via = user.provider || '';
+            const said = 'Your account' + (via ? ', signed in with ' + this.METHOD_NAME[via] : '');
+            const photo = /^https:\/\//.test(avatarUrl || '')
+                ? `<img src="${esc(avatarUrl)}" alt="" class="user-avatar" referrerpolicy="no-referrer">`
+                : `<span class="user-avatar user-avatar-ini">${esc((name || '?').trim().charAt(0).toUpperCase())}</span>`;
+            const tag = this.METHOD_TAG[via] ? `<span class="fil-tag ${via}">${this.METHOD_TAG[via]}</span>` : '';
+            const total = window.filXp && window.filXp.total != null ? ` xp="${window.filXp.total}"` : '';
 
             container.innerHTML = `
                 <div class="user-profile" id="user-profile-btn">
-                    <img src="${avatarUrl}" alt="${name}" class="user-avatar">
-                    <div class="user-dropdown">
+                    <button type="button" class="user-avatar-wrap" aria-haspopup="dialog" aria-expanded="false" aria-label="${esc(said)}" title="${esc(said)}">${photo}${tag}</button>
+                    <div class="user-dropdown" role="dialog" aria-label="Your account">
                         <div class="user-info">
-                            <span class="user-name">${name}</span>
-                            <span class="user-email">${user.email}</span>
+                            <span class="user-name-row"><span class="user-name">${esc(name)}</span><fil-level mine level="${this.filLevel || 0}"${total}></fil-level></span>
+                            <span class="user-email">${esc(user.email)}</span>
                         </div>
-                        <div class="dropdown-divider"></div>
 
-                        ${gamifyHTML}
+                        <fil-ways auth="firebase"></fil-ways>
+                        <div class="dropdown-divider"></div>
 
                         <div class="subscription-container">
                             <label class="dropdown-item checkbox-item">
@@ -506,7 +476,7 @@ const Navbar = {
                         </div>
 
                         <button id="delete-account-btn" class="dropdown-item delete-item">
-                            Delete Account
+                            Delete my data on this site
                         </button>
                         <div class="dropdown-divider"></div>
                         <button id="logout-btn" class="logout-btn">Sign Out</button>
@@ -514,7 +484,19 @@ const Navbar = {
                 </div>
             `;
 
-            // Add event listeners
+            // The shared ways-in list (aireckon.ing/fil/account.js): who is asking, and how to add Google
+            const ways = container.querySelector('fil-ways');
+            ways.idToken = () => window.SupabaseClient.getIdToken();
+            ways.connectGoogle = () => {
+                const u = window.SupabaseClient.getFirebaseUser();
+                return u.linkWithPopup(new firebase.auth.GoogleAuthProvider()).then(() => u.reload());
+            };
+            ways.addEventListener('fil-ways', (e) => {
+                const l = (e.detail && e.detail.level) || 0;
+                this.filLevel = l;
+                const lv = container.querySelector('.user-name-row fil-level');
+                if (lv) lv.setAttribute('level', l);
+            });
 
             // Timezone selector
             const tzSelect = document.getElementById('timezone-select');
@@ -533,7 +515,6 @@ const Navbar = {
             const subCheckbox = document.getElementById('subscribe-checkbox');
             const subWarning = document.getElementById('subscription-warning');
 
-            // Initial state check
             if (subCheckbox && subWarning) {
                 subWarning.style.display = subCheckbox.checked ? 'none' : 'block';
             }
@@ -541,17 +522,12 @@ const Navbar = {
             if (subCheckbox) {
                 subCheckbox.addEventListener('change', async (e) => {
                     const isChecked = e.target.checked;
-                    // Toggle warning immediately for responsiveness
                     if (subWarning) {
                         subWarning.style.display = isChecked ? 'none' : 'block';
                     }
 
                     try {
                         await window.SupabaseClient.updateSubscription(isChecked);
-                        // Gamification: track subscription
-                        if (isChecked && window.Gamification) {
-                            window.Gamification.trackSubscription();
-                        }
                     } catch (err) {
                         console.error('Failed to update subscription', err);
                         e.target.checked = !isChecked; // Revert on error
@@ -563,52 +539,7 @@ const Navbar = {
                 });
             }
 
-            // View Journey button (gamification)
-            const journeyBtn = document.getElementById('view-journey-btn');
-            if (journeyBtn) {
-                journeyBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent dropdown from closing
-                    // Close the dropdown
-                    const dropdown = document.querySelector('.user-dropdown');
-                    if (dropdown) dropdown.classList.remove('show');
-                    // Open gamification panel
-                    if (window.GamificationUI) {
-                        window.GamificationUI.toggleAchievementsPanel();
-                    }
-                });
-            }
-
-            // View Leaderboard button
-            const leaderboardBtn = document.getElementById('view-leaderboard-btn');
-            if (leaderboardBtn) {
-                leaderboardBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const dropdown = document.querySelector('.user-dropdown');
-                    if (dropdown) dropdown.classList.remove('show');
-                    if (window.GamificationUI) {
-                        window.GamificationUI.toggleLeaderboardPanel();
-                    }
-                });
-            }
-
-            // Leaderboard visibility toggle
-            const leaderboardCheckbox = document.getElementById('leaderboard-checkbox');
-            if (leaderboardCheckbox) {
-                leaderboardCheckbox.addEventListener('change', async (e) => {
-                    const isChecked = e.target.checked;
-                    try {
-                        if (window.Gamification) {
-                            await window.Gamification.setShowOnLeaderboard(isChecked);
-                        }
-                    } catch (err) {
-                        console.error('Failed to update leaderboard visibility', err);
-                        e.target.checked = !isChecked; // Revert on error
-                        alert('Failed to update leaderboard setting. Please try again.');
-                    }
-                });
-            }
-
-            // Delete account
+            // Delete this site's data
             const deleteBtn = document.getElementById('delete-account-btn');
             if (deleteBtn) {
                 deleteBtn.addEventListener('click', () => {
@@ -620,60 +551,49 @@ const Navbar = {
                 window.SupabaseClient.signOut();
             });
 
-            // Toggle dropdown on click
+            // Toggle the card from the photo
             const profileBtn = document.getElementById('user-profile-btn');
-            profileBtn.addEventListener('click', (e) => {
-                if (e.target.closest('.user-dropdown')) return;
-                profileBtn.classList.toggle('active');
-            });
+            const avatarBtn = profileBtn.querySelector('.user-avatar-wrap');
+            const setOpen = (open) => {
+                profileBtn.classList.toggle('active', open);
+                avatarBtn.setAttribute('aria-expanded', String(open));
+                if (open && ways.refresh) ways.refresh();
+            };
+            avatarBtn.addEventListener('click', () => setOpen(!profileBtn.classList.contains('active')));
+            this.openAccountCard = () => setOpen(true);
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!profileBtn.contains(e.target)) {
-                    profileBtn.classList.remove('active');
-                }
-            });
-
-        } else {
-            // User is logged out - show anonymous game button + sign in
-            let anonGameHTML = '';
-            if (window.Gamification) {
-                const xp = window.Gamification.getXP();
-                const levelProgress = window.Gamification.getLevelProgress(xp);
-                const anonName = window.Gamification.getAnonDisplayName?.() || 'Guest';
-                const streak = window.Gamification.getStreak();
-
-                anonGameHTML = `
-                    <button id="anon-game-btn" class="anon-game-btn" title="Your progress as ${anonName}">
-                        <span class="anon-game-icon" style="background: ${levelProgress.current.color}">${levelProgress.current.icon}</span>
-                        <span class="anon-game-xp">${xp} XP</span>
-                        ${streak.count > 1 ? `<span class="anon-game-streak">🔥${streak.count}</span>` : ''}
-                    </button>
-                `;
+            // Close when clicking outside (once per page) or on Escape
+            if (!this.outsideBound) {
+                this.outsideBound = true;
+                document.addEventListener('click', (e) => {
+                    const p = document.getElementById('user-profile-btn');
+                    const w = p && p.querySelector('fil-ways');
+                    if (p && !p.contains(e.target) && !(w && w.busy)) {
+                        p.classList.remove('active');
+                        const b = p.querySelector('.user-avatar-wrap'); if (b) b.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                document.addEventListener('keydown', (e) => {
+                    const p = document.getElementById('user-profile-btn');
+                    if (e.key === 'Escape' && p && p.classList.contains('active')) {
+                        p.classList.remove('active');
+                        const b = p.querySelector('.user-avatar-wrap'); if (b) { b.setAttribute('aria-expanded', 'false'); b.focus(); }
+                    }
+                });
             }
 
+            // A LinkedIn connected (or refused) from this card comes back here
+            if (this.pendingLink) { const r = this.pendingLink; this.pendingLink = null; this.showLinkResult(r); }
+
+        } else {
             container.innerHTML = `
-                ${anonGameHTML}
                 <button id="login-btn" class="login-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                        <circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-4 4.2-6 7.5-6s6.3 2 7.5 6"/>
                     </svg>
                     <span>Sign in</span>
                 </button>
             `;
-
-            // Anonymous game button - opens journey/leaderboard panel
-            const anonGameBtn = document.getElementById('anon-game-btn');
-            if (anonGameBtn) {
-                anonGameBtn.addEventListener('click', () => {
-                    if (window.GamificationUI) {
-                        window.GamificationUI.toggleAchievementsPanel();
-                    }
-                });
-            }
 
             const loginBtn = document.getElementById('login-btn');
             loginBtn.addEventListener('click', () => {
@@ -685,7 +605,7 @@ const Navbar = {
                     loginBtn.classList.remove('pinched');
                     loginBtn.classList.add('bouncing');
 
-                    // Trigger sign-in during bounce
+                    // Open the sign-in sheet during bounce
                     setTimeout(() => {
                         window.SupabaseClient.signInWithGoogle();
                     }, 150);
@@ -697,34 +617,50 @@ const Navbar = {
                 }, 44);
             });
         }
+    },
+
+    /* the method tag on the photo: which key opened this account today */
+    METHOD_NAME: { google: 'Google', linkedin: 'LinkedIn', email: 'email' },
+    METHOD_TAG: {
+        google: '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.2C12.4 13.7 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.4 5.8c4.3-4 6.9-9.9 6.9-17.2z"/><path fill="#FBBC05" d="M10.6 28.5c-.5-1.4-.8-2.9-.8-4.5s.3-3.1.8-4.5l-7.9-6.2C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.4-5.8c-2.1 1.4-4.8 2.3-8.5 2.3-6.3 0-11.6-4.2-13.5-10l-7.9 6.2C6.6 42.6 14.6 48 24 48z"/></svg>',
+        linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M2.6 8.3h4.3V22H2.6zM4.8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM9.5 8.3h4.1v1.9c.6-1.1 2-2.2 4.1-2.2 4.4 0 5.2 2.9 5.2 6.6V22h-4.3v-6.7c0-1.6 0-3.6-2.2-3.6s-2.6 1.7-2.6 3.5V22H9.5z"/></svg>',
+        email: '<svg viewBox="0 0 24 24" fill="none" stroke="#05060a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7.2 12 13l8.2-5.8"/></svg>'
+    },
+
+    /* back from connecting a LinkedIn from the card: open the card and say how it went */
+    showLinkResult(r) {
+        const p = document.getElementById('user-profile-btn');
+        const ways = p && p.querySelector('fil-ways');
+        if (!ways || !this.openAccountCard) { this.pendingLink = r; return; }
+        this.openAccountCard();
+        if (r.success) { ways.say('good', 'LinkedIn connected. Either one now opens this account.'); if (ways.flash) ways.flash('linkedin'); }
+        else ways.say('bad', (window.FIL_WAYS_ERR || {})[r.code] || r.error);
+    },
+
+    /* the account card's own pieces, in the navbar's glass style */
+    injectAccountStyles() {
+        if (document.getElementById('fil-account-styles')) return;
+        const st = document.createElement('style');
+        st.id = 'fil-account-styles';
+        st.textContent = `
+            .user-avatar-wrap{position:relative;display:block;padding:0;border:0;background:none;border-radius:50%;cursor:pointer}
+            .user-avatar-wrap:focus-visible{outline:2px solid #00D4FF;outline-offset:3px}
+            .user-avatar-wrap .user-avatar{display:block;object-fit:cover}
+            .user-avatar-ini{display:grid;place-items:center;box-sizing:border-box;background:#0b1a4a;color:#fff;font:700 15px/1 var(--font-system)}
+            .fil-tag{position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 0 0 2px #0a1640;pointer-events:none}
+            .fil-tag svg{width:10px;height:10px;display:block}.fil-tag.linkedin{background:#0A66C2}.fil-tag.linkedin svg{width:9px;height:9px}
+            .user-dropdown{width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 110px);overflow-y:auto;overscroll-behavior:contain;cursor:default}
+            .user-name-row{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:4px}
+            .user-name-row .user-name{margin-bottom:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+            .user-name-row fil-level{flex:none}
+            .user-dropdown fil-ways{position:relative;z-index:1;display:block;margin-bottom:4px;
+                --fil-ink:#fff;--fil-muted:rgba(180,210,255,.7);--fil-line:rgba(0,180,255,.15);--fil-accent:#00D4FF;--fil-accent-ink:#04102e;
+                --fil-chip:rgba(0,212,255,.12);--fil-bad:#ff9a8a;--fil-font:var(--font-system,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif)}
+            .login-btn svg{color:#3c4043}
+        `;
+        document.head.appendChild(st);
     }
 };
-
-// Load gamification scripts dynamically
-function loadGamification() {
-    // Skip if already loaded
-    if (window.Gamification || document.querySelector('script[src*="gamification.js"]')) {
-        return;
-    }
-
-    // Load gamification.js first, then gamification-ui.js
-    const cacheBust = 'v3';
-    const gamificationScript = document.createElement('script');
-    gamificationScript.src = `/js/gamification.js?${cacheBust}`;
-    gamificationScript.onload = () => {
-        const uiScript = document.createElement('script');
-        uiScript.src = `/js/gamification-ui.js?${cacheBust}`;
-        uiScript.onload = () => {
-            // Re-render auth UI to include gamification section (for both logged in AND anonymous users)
-            if (window.Navbar) {
-                const user = window.SupabaseClient?.getCurrentUser?.();
-                window.Navbar.updateAuthUI(user);
-            }
-        };
-        document.head.appendChild(uiScript);
-    };
-    document.head.appendChild(gamificationScript);
-}
 
 // Auto-initialize if DOM is ready
 if (document.readyState === 'loading') {
@@ -736,8 +672,6 @@ if (document.readyState === 'loading') {
                 pageTitle: container.dataset.pageTitle || null,
                 activeLink: container.dataset.activeLink || null
             });
-            // Load gamification after navbar is ready
-            loadGamification();
         }
     });
 } else {
@@ -747,8 +681,6 @@ if (document.readyState === 'loading') {
             pageTitle: container.dataset.pageTitle || null,
             activeLink: container.dataset.activeLink || null
         });
-        // Load gamification after navbar is ready
-        loadGamification();
     }
 }
 
