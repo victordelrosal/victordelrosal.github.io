@@ -657,6 +657,17 @@ const Navbar = {
                 --fil-ink:#fff;--fil-muted:rgba(180,210,255,.7);--fil-line:rgba(0,180,255,.15);--fil-accent:#00D4FF;--fil-accent-ink:#04102e;
                 --fil-chip:rgba(0,212,255,.12);--fil-bad:#ff9a8a;--fil-font:var(--font-system,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif)}
             .login-btn svg{color:#3c4043}
+            /* phones: the nav pill (fixed, z 1000) covers the top-right corner, so the account sits bottom-left,
+               lifted above the sticky footer bar when it shows, and its card opens upward */
+            @media (max-width:600px){
+                .auth-container{position:fixed;top:auto;right:auto;left:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:none;z-index:1001;transition:bottom .3s ease-out}
+                body:has(.sticky-footer-bar.visible) .auth-container{bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+                .login-btn{width:44px;height:44px;padding:0;justify-content:center;border-radius:50%}
+                .login-btn span{display:none}
+                .login-btn svg{width:20px;height:20px}
+                .user-avatar-wrap .user-avatar{width:44px;height:44px;box-shadow:0 4px 16px rgba(0,20,80,.25)}
+                .user-dropdown{top:auto;bottom:calc(100% + 12px);right:auto;left:0;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 150px);transform-origin:bottom left}
+            }
         `;
         document.head.appendChild(st);
     }
