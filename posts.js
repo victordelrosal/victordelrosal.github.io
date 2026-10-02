@@ -116,7 +116,6 @@ const WAVE_THUMBS = {
   "introduction-the-economics-of-transformative-ai": "https://images.squarespace-cdn.com/content/v1/6691576f827f0850462cadb1/1764723613213-0X546W6UIF56HP3UZTMS/IntroBanner.png?format=750w",
   "large-language-models-will-never-be-intelligent-expert-says": "https://futurism.com/wp-content/uploads/2025/11/large-language-models-will-never-be-intelligent.jpg?w=1152&amp;h=768",
   "learning-ai-from-scratch-in-2026": "https://victordelrosal.com/img/learning-AI-2026.png",
-  "netflix-generative-ai-content-mock": "/img/wave-thumbs/netflix-generative-ai-content-mock.jpg",
   "one-day-three-systems-an-ode-to-vibe-coding": "/img/wave-thumbs/one-day-three-systems-an-ode-to-vibe-coding.jpg",
   "pay-with-squats": "/img/wave-thumbs/pay-with-squats.jpg",
   "remember-minority-report": "https://miro.medium.com/1*6EL4Mcv22wLxck3NMfMcBA.jpeg",
