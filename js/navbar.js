@@ -653,7 +653,9 @@ const Navbar = {
             .user-name-row{display:flex;align-items:center;gap:8px;min-width:0;margin-bottom:4px}
             .user-name-row .user-name{margin-bottom:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
             .user-name-row fil-level{flex:none}
-            .user-dropdown fil-ways{position:relative;z-index:1;display:block;margin-bottom:4px;
+            .user-dropdown{text-align:left;color:#fff}
+            .user-dropdown fil-ways{position:relative;z-index:1;display:block;margin-bottom:4px}
+            .user-dropdown{
                 --fil-ink:#fff;--fil-muted:rgba(180,210,255,.7);--fil-line:rgba(0,180,255,.15);--fil-accent:#00D4FF;--fil-accent-ink:#04102e;
                 --fil-chip:rgba(0,212,255,.12);--fil-bad:#ff9a8a;--fil-font:var(--font-system,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif)}
             .login-btn svg{color:#3c4043}
