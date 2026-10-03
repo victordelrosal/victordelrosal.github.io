@@ -32,7 +32,7 @@ if (!window.SupabaseClient) {
     ];
     const FIL_SCRIPTS = [
       '/js/linkedin-signin.js?v=f10',
-      'https://aireckon.ing/fil/account.js?v=d7059f86'
+      'https://aireckon.ing/fil/account.js?v=c8782b64'
     ];
     const FIL_CONFIG = 'https://aireckon.ing/api/auth/config';
 
