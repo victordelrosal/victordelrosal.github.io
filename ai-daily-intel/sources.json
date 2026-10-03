@@ -10,10 +10,10 @@
     {
       "id": "anthropic-news",
       "name": "Anthropic News",
-      "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml",
+      "url": "https://news.google.com/rss/search?q=site:anthropic.com+when:7d&hl=en-US&gl=US&ceid=US:en",
       "priority": 1,
       "enabled": true,
-      "note": "anthropic.com/rss.xml returns 404 (2026-10-03); Anthropic publishes no official feed. Using community-maintained scrape of anthropic.com/news (github.com/Olshansk/rss-feeds), regenerated hourly. Verified 262 items, newest 2026-10-02."
+      "note": "anthropic.com/rss.xml returns 404 (2026-10-03) and Anthropic publishes no official feed. Third-party scrape mirrors rejected as an untrusted supply-chain source. Using a Google News site:anthropic.com query; links are Google News redirects. Verified 18 items (7d window)."
     },
     {
       "id": "deepmind-blog",
@@ -47,10 +47,10 @@
     {
       "id": "meta-ai-blog",
       "name": "Meta AI Blog",
-      "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_meta_ai.xml",
+      "url": "https://news.google.com/rss/search?q=site:ai.meta.com+when:7d&hl=en-US&gl=US&ceid=US:en",
       "priority": 1,
       "enabled": true,
-      "note": "ai.meta.com/blog/rss/ returns 400 (2026-10-03); Meta AI has no official feed. Using community-maintained scrape of ai.meta.com/blog (github.com/Olshansk/rss-feeds). Verified 88 items, newest 2026-07-27."
+      "note": "ai.meta.com/blog/rss/ returns 400 (2026-10-03) and Meta AI has no official feed. Third-party scrape mirrors rejected as an untrusted supply-chain source. Using a Google News site:ai.meta.com query; links are Google News redirects. Verified 3 items (7d window), mostly research papers."
     },
     {
       "id": "arxiv-cs-ai",
