@@ -55,20 +55,20 @@
     {
       "id": "arxiv-cs-ai",
       "name": "arXiv cs.AI",
-      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "url": "https://export.arxiv.org/api/query?search_query=cat:cs.AI&sortBy=submittedDate&sortOrder=descending&max_results=10",
       "priority": 2,
       "enabled": true,
       "maxItems": 5,
-      "note": "Returns 0 items on Saturdays and Sundays (feed declares skipDays; no announcements at weekends). Verified empty on Sat 2026-10-03 with HTTP 200; not dead. Re-check on a weekday."
+      "note": "rss.arxiv.org returns 0 items at weekends (skipDays). Switched to the official arXiv API (export.arxiv.org), newest submissions first; verified 10 entries on Sat 2026-10-03 with rss-parser."
     },
     {
       "id": "arxiv-cs-lg",
       "name": "arXiv cs.LG",
-      "url": "https://rss.arxiv.org/rss/cs.LG",
+      "url": "https://export.arxiv.org/api/query?search_query=cat:cs.LG&sortBy=submittedDate&sortOrder=descending&max_results=10",
       "priority": 2,
       "enabled": true,
       "maxItems": 5,
-      "note": "Returns 0 items on Saturdays and Sundays (feed declares skipDays; no announcements at weekends). Verified empty on Sat 2026-10-03 with HTTP 200; not dead. Re-check on a weekday."
+      "note": "rss.arxiv.org returns 0 items at weekends (skipDays). Switched to the official arXiv API (export.arxiv.org), newest submissions first; verified 10 entries on Sat 2026-10-03 with rss-parser."
     },
     {
       "id": "mit-tech-review-ai",
