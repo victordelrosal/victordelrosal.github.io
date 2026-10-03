@@ -174,6 +174,8 @@ if (!window.SupabaseClient) {
       '.fil-btn.g{background:#fff;color:#1f1f1f;border:1px solid #fff}.fil-btn.g:hover{background:#eceef3}',
       '.fil-btn.li{background:#0A66C2;color:#fff;border:1px solid #0A66C2}.fil-btn.li:hover{background:#004182}',
       '.fil-btn:focus-visible,.fil-x:focus-visible{outline:2px solid #00D4FF;outline-offset:2px}',
+      '.fil-more{margin-top:2px}.fil-more>summary{cursor:pointer;list-style:none;text-align:center;padding:10px 0;font-size:13px;color:rgba(180,210,255,.75);text-decoration:underline;text-underline-offset:3px}',
+      '.fil-more>summary::-webkit-details-marker{display:none}.fil-more>summary:hover{color:#fff}.fil-more[open]>summary{margin-bottom:8px}',
       '.fil-msg{min-height:18px;margin-top:4px;font-size:13px;line-height:1.45;color:#ff9a8a}',
       '.fil-fine{margin-top:10px;font-size:12px;line-height:1.45;color:rgba(180,210,255,.6)}',
       '.fil-x{position:absolute;top:10px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:none;color:rgba(180,210,255,.7);font:400 24px/1 inherit;cursor:pointer}.fil-x:hover{color:#fff}'
@@ -192,8 +194,10 @@ if (!window.SupabaseClient) {
       sheet.innerHTML = '<button class="fil-x" type="button" aria-label="Close">&times;</button>' +
         '<h2 id="fil-sheet-title">Sign in</h2>' +
         '<p>One fiveinnolabs account, the same one you use on AI Badge and aireckon.ing. Sign in to comment on waves and get the weekly email.</p>' +
-        '<button class="fil-btn g" type="button">' + G_ICON + 'Continue with Google</button>' +
+        /* LinkedIn first (Victor, 3 Oct 2026); Google waits under "Other ways to sign in" */
         '<button class="fil-btn li" type="button">' + LI_ICON + 'Continue with LinkedIn</button>' +
+        '<details class="fil-more"><summary>Other ways to sign in</summary>' +
+        '<button class="fil-btn g" type="button">' + G_ICON + 'Continue with Google</button></details>' +
         '<div class="fil-msg" role="status"></div>' +
         '<div class="fil-fine">Same email, same account, whichever you choose.</div>';
       sheet.querySelector('.fil-x').addEventListener('click', closeSheet);
@@ -214,8 +218,10 @@ if (!window.SupabaseClient) {
     function openSheet() {
       mountSheet();
       say('');
+      const noLi = typeof signInWithLinkedIn !== 'function';   // LinkedIn unavailable: nothing to hide Google behind
+      if (noLi) sheet.querySelector('.fil-more').open = true;
       scrim.hidden = false; sheet.hidden = false;
-      sheet.querySelector('.fil-btn.g').focus();
+      sheet.querySelector(noLi ? '.fil-btn.g' : '.fil-btn.li').focus();
     }
 
     function closeSheet() {
