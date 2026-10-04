@@ -26,6 +26,8 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
       ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+      # GitHub Pages apex IPs; Layer 3 checks the origin, not Cloudflare.
+      PAGES_ORIGIN: "--resolve victordelrosal.com:443:185.199.108.153,185.199.109.153,185.199.110.153,185.199.111.153"
 
     steps:
       - name: Checkout repository
@@ -122,9 +124,15 @@ jobs:
           URL="https://victordelrosal.com/${{ steps.date.outputs.slug }}/"
           echo "Fetching: $URL"
 
-          HTTP_CODE=$(curl -s -o /tmp/page.html -w "%{http_code}" "$URL" --max-time 30)
+          # Ask GitHub Pages (the origin) directly. Cloudflare sits in front of
+          # victordelrosal.com and has returned 403 to GitHub Actions runner IPs
+          # since Sep 9, 2026, while the page served 200 to readers. Pinning the
+          # hostname to the GitHub Pages IPs keeps TLS and the Host header valid
+          # and checks what build-waves actually deployed.
+          HTTP_CODE=$(curl -s -o /tmp/page.html -w "%{http_code}" "$URL" --max-time 30 $PAGES_ORIGIN)
 
           echo "HTTP Response Code: $HTTP_CODE"
+          echo "(info) Via Cloudflare from this runner: HTTP $(curl -s -o /dev/null -w '%{http_code}' "$URL" --max-time 30)"
 
           if [ "$HTTP_CODE" != "200" ]; then
             echo "status=failed" >> $GITHUB_OUTPUT
@@ -213,7 +221,7 @@ jobs:
 
           STATUS="failed"
           for i in $(seq 1 20); do
-            HTTP_CODE=$(curl -s -o /tmp/page2.html -w "%{http_code}" "$URL" --max-time 30)
+            HTTP_CODE=$(curl -s -o /tmp/page2.html -w "%{http_code}" "$URL" --max-time 30 $PAGES_ORIGIN)
             if [ "$HTTP_CODE" = "200" ] && grep -q "Executive Summary" /tmp/page2.html; then
               STATUS="success"
               echo "✅ Layer 3 PASSED on retry (attempt $i)"
